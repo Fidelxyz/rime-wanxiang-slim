@@ -47,7 +47,7 @@ jobs:
       - name: Inject Scheme & Smart Sync
         env:
           # 垃圾文件过滤
-          DELETE_LIST: ".git .github .gitignore *.md plum weasel.yaml version.txt wanxiang_t9.schema.yaml LICENSE *.png *.jpg unused_folder update_log.txt"
+          DELETE_LIST: ".git .github .gitignore *.md plum weasel.yaml version.txt LICENSE *.png *.jpg unused_folder update_log.txt"
         run: |
           sudo apt-get update && sudo apt-get install -y opencc
           REPO_ROOT="$GITHUB_WORKSPACE/wanxiang_root"

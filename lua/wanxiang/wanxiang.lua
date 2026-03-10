@@ -251,7 +251,6 @@ wanxiang.INPUT_METHOD_MARKERS = {
     ["Ⅻ"] = "hxlong", --汉心龙
     ["Ⅼ"] = "lxsq", --乱序17
     ["ⅲ"] = "ⅲ", -- 间接辅助标记：命中则额外返回 md="ⅲ"
-    ["ⅱ"] = "t9", -- 拼音九键
 }
 
 local __input_type_cache = {}      -- 缓存首个命中的 id（兼容旧用法）

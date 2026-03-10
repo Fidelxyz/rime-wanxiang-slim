@@ -103,7 +103,6 @@ package_schema_pro() {
     --exclude='/dicts' \
     --exclude='release-please-config.json' \
     --exclude='pro-*-fuzhu-dicts' \
-    --exclude='wanxiang_t9.schema.yaml' \
     --exclude='CHANGELOG.md' \
     --exclude='wanxiang.dict.yaml' \
     --exclude='wanxiang.schema.yaml' \

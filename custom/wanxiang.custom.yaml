@@ -328,10 +328,3 @@ patch:
     # s - sh
     - derive/^s([^h]*)/sh$1
     - derive/^sh/s
-#使用方案跟在拼写运算后面
-18jian:
-  __append:
-    - xlit/qwertyuiopasdfghjklzxcvbnm/QWWRRYUIIPASSFFHJJLZXXVBBM
-14jian:
-  __append:
-    - xlit/qwertyuiopasdfghjklzxcvbnm/QQEETTUUOOAADDGGJJLZZCCBBM

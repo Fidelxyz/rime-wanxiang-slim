@@ -324,7 +324,6 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 | `lua/wanxiang/super_replacer.lua` | 超级替换模块（746 行），LevelDB 数据库 `lua/replacer.userdb` |
 | `lua/data/emoji.txt` | Emoji 数据 |
 | `lua/data/abbrev.txt` | 公共简码数据 |
-| `lua/data/t9_abbrev.txt` | T9 简码数据 |
 | `lua/data/STCharacters.txt` | 简繁单字转换 |
 | `lua/data/STPhrases.txt` | 简繁词组转换 |
 | `lua/data/HKVariants.txt` | 香港繁体变体 |
@@ -422,24 +421,6 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 | `custom/wanxiang_pro.schema.yaml` | PRO 版方案定义 |
 | `custom/wanxiang_pro.dict.yaml` | PRO 版词库（带辅助码） |
 | `custom/wanxiang_pro.custom.yaml` | PRO 版自定义模板 |
-
-### T9 九宫格方案
-
-移动端 T9 输入方案。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `wanxiang_t9.schema.yaml` | 九宫格方案定义（400 行） |
-| `lua/data/t9_abbrev.txt` | T9 专用简码数据 |
-
-### 14 键 / 18 键设定
-
-移动端缩减键盘布局的转写支持。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `wanxiang_algebra.yaml` | `18jian` / `14jian` 转写段落 |
-| `custom/*.custom.yaml` | 各方案 custom 模板中的引用示例 |
 
 ---
 
@@ -566,3 +547,20 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `lua/data/chinese_english.txt` | 中译英数据（54169 行） |
 | `lua/data/english_chinese.txt` | 英译中数据（43788 行） |
 | `wanxiang.schema.yaml` 等 | `chinese_english` 开关、replacer type、Ctrl+E 绑定 |
+
+### T9 九宫格方案
+
+移动端 T9 输入方案。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `wanxiang_t9.schema.yaml` | 九宫格方案定义（316 行） |
+| `lua/data/t9_abbrev.txt` | T9 专用简码数据（4027 行） |
+
+### 14 键 / 18 键设定
+
+移动端缩减键盘布局的转写支持。
+
+| 已删除配置 | 说明 |
+|------------|------|
+| `custom/wanxiang.custom.yaml` | `18jian` / `14jian` xlit 转写段落 |
