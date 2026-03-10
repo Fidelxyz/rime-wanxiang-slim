@@ -40,7 +40,7 @@
 
 ### 创新 Lua 扩展
 
-成对符号包裹首选、多类型 Tips、输入后反查、OpenCC 替代、超级注释、手动实时排序、无感造词、输入统计。
+成对符号包裹首选、多类型 Tips、输入后反查、OpenCC 替代、超级注释、手动实时排序、无感造词。
 
 > 各功能的具体实现见下方"功能一览"各节。
 
@@ -162,16 +162,6 @@
 | `dicts/cn&en.dict.yaml` | 中英混合词条 |
 | `wanxiang_algebra.yaml` (`mixed/` 段) | 混合编码转写规则 |
 
-### 日期、时间、节日、节气、问候模板
-
-`/sj` 时间、`/rq` 日期、`/nl` 农历、`/jr` 节日、`/jq` 节气、`N0101` N 日期模式等。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/shijian.lua` | 日期时间翻译器（3155 行）：天文计算、农历、节气、节日、问候、格式化 |
-| `wanxiang.schema.yaml` | `shijian` 段配置（日期/时间格式、引导键） |
-| `lua/wanxiang/key_binder.lua` | `shijian_keys` 引导前缀配置 |
-
 ### Unicode 输入
 
 大写 `U` 开头输入 Unicode 码点（如 `U62fc` 得到"拼"）。
@@ -180,43 +170,6 @@
 |----------|------|
 | `lua/wanxiang/unicode.lua` | Unicode 字符翻译器（44 行） |
 | `wanxiang.schema.yaml` | recognizer 中 `unicode` 模式配置 |
-
-### 数字、金额大写
-
-大写 `R` 开头（如 `R1234` 得到中文大小写数字与金额）。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/number_translator.lua` | 数字金额翻译器（175 行） |
-| `wanxiang.schema.yaml` | recognizer 中 `number` 模式配置 |
-
-### `/` 引导符号输入
-
-通过 `/sx`（数学）、`/yd`（圆点）等输入特殊符号，`/wx` 查版本。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `wanxiang_symbols.yaml` | 符号映射表（829 行） |
-| `lua/wanxiang/version_display.lua` | `/wx` 版本显示翻译器（16 行） |
-| `wanxiang.schema.yaml` | `punctuator` 与 recognizer 中符号模式配置 |
-
-### 输入统计
-
-`/rtj` 日统计、`/ztj` 周统计、`/ytj` 月统计、`/ntj` 年统计、`/tj` 生涯统计。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/input_statistics.lua` | 输入统计 Lua 模块（334 行），数据库 `lua/stats.userdb` |
-| `wanxiang.schema.yaml` | 统计触发编码配置 |
-
-### 计算器
-
-大写 `V` 引导（如 `V3+5` 得到 `8`），支持科学计算、方程求解、单位换算等。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_calculator.lua` | 超级计算器翻译器（3491 行） |
-| `wanxiang.schema.yaml` | recognizer 中 `calculator` 模式配置 |
 
 ### 自动上屏
 
@@ -370,8 +323,6 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 |----------|------|
 | `lua/wanxiang/super_replacer.lua` | 超级替换模块（746 行），LevelDB 数据库 `lua/replacer.userdb` |
 | `lua/data/emoji.txt` | Emoji 数据 |
-| `lua/data/chinese_english.txt` | 中译英数据 |
-| `lua/data/english_chinese.txt` | 英译中数据 |
 | `lua/data/abbrev.txt` | 公共简码数据 |
 | `lua/data/t9_abbrev.txt` | T9 简码数据 |
 | `lua/data/STCharacters.txt` | 简繁单字转换 |
@@ -439,25 +390,13 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 |----------|------|
 | `lua/wanxiang/partial_commit.lua` | 部分上屏处理器（191 行） |
 
-### 翻译模式
-
-Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_replacer.lua` | 翻译功能通过 replacer 的 comment 模式实现 |
-| `lua/data/chinese_english.txt` | 中译英数据 |
-| `lua/data/english_chinese.txt` | 英译中数据 |
-| `wanxiang.schema.yaml` | `super_replacer` types 中的翻译选项配置 |
-
 ### 万能键斜杠 `/`
 
-符号扩展、辅助码聚拢、间接辅助码引导、短码英文前置、快符、双击上屏斜杠。
+辅助码聚拢、间接辅助码引导、短码英文前置、快符、双击上屏斜杠。
 
 | 实现位置 | 说明 |
 |----------|------|
 | `wanxiang_algebra.yaml` | `/` 相关的转写规则（辅助码聚拢、英文前置） |
-| `wanxiang_symbols.yaml` | `/` 引导的符号扩展映射 |
 | `lua/wanxiang/super_processor.lua` | 快符逻辑、双击斜杠 |
 | `wanxiang.schema.yaml` | 斜杠相关的 speller/recognizer 配置 |
 
@@ -515,15 +454,6 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `lua/wanxiang/key_binder.lua` | 正则增强按键绑定处理器（92 行） |
 | `wanxiang.schema.yaml` | `key_binder/bindings` 段配置 |
 
-### 版本显示
-
-`/wx` 查询仓库链接和当前版本。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/version_display.lua` | 版本显示翻译器（16 行） |
-| `lua/wanxiang/wanxiang.lua` | 版本常量定义（由 release-please 管理） |
-
 ### 自定义短语
 
 `custom_phrase.txt` 实现编码到自定义输出的映射。
@@ -572,3 +502,67 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `dicts/en.dict.yaml` | 英文词条 |
 | `dicts/cn&en.dict.yaml` | 中英混合词条 |
 | `dicts/chengyu.txt` | 成语数据 |
+
+---
+
+## 已移除功能
+
+以下功能已从本仓库中移除。保留记录以便从上游合并时参考。
+
+### 时间日期 Lua（shijian）
+
+多种中文日期时间格式输入。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/shijian.lua` | 时间日期翻译器（3155 行） |
+
+### 数字翻译器 Lua
+
+大小写中文数字转换。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/number_translator.lua` | 数字翻译器（175 行） |
+
+### 符号输入方案
+
+`/` 前缀触发特殊符号候选。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `wanxiang_symbols.yaml` | 符号输入方案定义（829 行） |
+
+### 计算器 Lua
+
+输入数学表达式直接得到计算结果。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/super_calculator.lua` | 超级计算器（3491 行） |
+
+### 输入统计 Lua
+
+统计用户输入字数等数据。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/input_statistics.lua` | 输入统计模块（334 行） |
+
+### 版本显示 Lua
+
+`/wx` 触发显示万象版本号。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/version_display.lua` | 版本显示翻译器（16 行） |
+
+### 翻译模式
+
+Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
+
+| 已删除文件/配置 | 说明 |
+|-----------------|------|
+| `lua/data/chinese_english.txt` | 中译英数据（54169 行） |
+| `lua/data/english_chinese.txt` | 英译中数据（43788 行） |
+| `wanxiang.schema.yaml` 等 | `chinese_english` 开关、replacer type、Ctrl+E 绑定 |

@@ -18,16 +18,7 @@ super_replacer:
         prefix: "_em_"          # 前缀用于区分同一个数据库的不同用途数据
         files:
           - lua/data/emoji.txt
-      # 场景2：输入 'hello' -> 显示 'hello 〔你好 | 哈喽〕'
-      - option: chinese_english
-        mode: append        # <--- 添加注释模式
-        comment_mode: none
-        tags: [abc]
-        prefix: "_en_"
-        files:
-          - lua/data/english_chinese.txt
-          - lua/data/chinese_english.txt
-      # 场景3：用于常驻的直接替换 option: true
+      # 场景2：用于常驻的直接替换 option: true
       - option: true
         mode: append        # <--- 新增候选模式
         comment_mode: none
