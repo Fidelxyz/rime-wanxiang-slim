@@ -27,7 +27,9 @@
 
 ## 精简说明
 
-本仓库是 [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang) 的 fork，已移除以下功能以精简方案体积：
+本仓库是 [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang) 的 fork。
+
+这是一个专注于输入的精简分支，移除了以下无关功能：
 
 | 已移除功能 | 说明 |
 | --- | --- |
@@ -74,32 +76,34 @@
 
 1. 从 [Release](https://github.com/amzxyz/rime_wanxiang/releases) 页面下载方案文件，或使用[万象工具箱](#万象工具箱)。
 2. 将解压后的文件放入 Rime **用户目录**。
-3. 点击"重新部署"。
+3. 点击“重新部署”。
 
-**切换输入方案**：在输入状态下输入 `/` 引导指令，如 `/flypy` 切换为小鹤双拼，切换后根据提示再次部署。
+### 2. 切换输入方案
+
+在输入状态下，输入以下由 `/` 引导的指令切换对应方案。切换后需**重新部署**。
 
 可用切换指令：
 
-```
-/flypy    → 小鹤双拼
-/mspy     → 微软双拼
-/zrm      → 自然码
-/sogou    → 搜狗双拼
-/znabc    → 智能ABC
-/ziguang  → 紫光双拼
-/pyjj     → 拼音加加
-/gbpy     → 国标双拼
-/lxsq     → 乱序17
-/pinyin   → 全拼
-/wxsp     → 万象双拼
-/zrlong   → 自然龙（反查为全拼）
-/hxlong   → 汉心龙（反查为全拼）
-/jjf      → 间接辅助
-/zjf      → 直接辅助
-```
+| 指令 | 方案 |
+| --- | --- |
+| `/flypy` | 小鹤双拼 |
+| `/mspy` | 微软双拼 |
+| `/zrm` | 自然码 |
+| `/sogou` | 搜狗双拼 |
+| `/znabc` | 智能ABC |
+| `/ziguang` | 紫光双拼 |
+| `/pyjj` | 拼音加加 |
+| `/gbpy` | 国标双拼 |
+| `/lxsq` | 乱序17 |
+| `/pinyin` | 全拼 |
+| `/wxsp` | 万象双拼 |
+| `/zrlong` | 自然龙（反查为全拼） |
+| `/hxlong` | 汉心龙（反查为全拼） |
+| `/jjf` | 间接辅助 |
+| `/zjf` | 直接辅助 |
 
 <details>
-<summary>⚠️ iOS 平台特殊操作指南</summary>
+<summary>⚠️ <strong>iOS 平台方案切换步骤</strong></summary>
 
 **仓输入法 (Hamster)**
 
@@ -126,12 +130,13 @@
 > 语法模型为静态二进制文件，大小固定，CPU 计算为主，内存占用极低。
 
 <details>
-<summary>⚠️ Android 用户注意事项（Fcitx5 等前端）</summary>
+<summary>⚠️ <strong>Android 用户注意事项（Fcitx5 等前端）</strong></summary>
 
 部分安卓前端的数据存储在 `/data` 目录下，受严格权限控制。
 
-- **不要**使用 MT 管理器等工具直接复制文件，会导致权限不一致，引发读取失败。
-- **正确做法**：使用输入法 App 自带的"导入文件"功能；或（Root 用户）手动复制后修正 `chown` 和 `chmod`。
+**不要**使用 MT 管理器等工具直接复制文件，这会导致由权限不一致引发的读取失败。
+
+须使用输入法 App 自带的“导入文件”功能；或（Root 用户）手动复制后使用 `chown` 和 `chmod` 修正权限。
 
 </details>
 
@@ -146,16 +151,16 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 
 通过 `/` 指令切换方案时，脚本会自动将模板从 `custom` 文件夹复制到根目录完成初始化。初始化后请仔细阅读每一行，保留需要的配置并删除不需要的。
 
-更多方法参见 `custom` 目录中的 [patch 方法论](custom/patch方法论.md)。
+更多方法参见 `custom` 目录中的 [Rime Custom Patch 语法指南](PATCH_GUIDE.md)。
 
 补丁对应关系：
 
-```
-wanxiang.custom.yaml  →  wanxiang.schema.yaml
-default.custom.yaml   →  全局配置（通常留给前端控制）
-squirrel.custom.yaml  →  Mac 鼠须管外观
-weasel.custom.yaml    →  Win 小狼毫外观
-```
+| Custom 文件 | 对应方案文件 | 用途 |
+| --- | --- | --- |
+| `wanxiang.custom.yaml` | `wanxiang.schema.yaml` | 输入方案配置 |
+| `default.custom.yaml` | `default.yaml` | 全局配置（通常留给前端控制） |
+| `squirrel.custom.yaml` | `squirrel.yaml` | Mac 鼠须管外观 |
+| `weasel.custom.yaml` | `weasel.yaml` | Win 小狼毫外观 |
 
 > [!IMPORTANT]
 > 不要在 `default.custom.yaml` 中修改输入方案配置。所有方案相关修改（模糊音、快捷键等）应针对具体 `schema` 进行 patch，`default` 文件请留给输入法前端自动管理。
@@ -166,15 +171,13 @@ weasel.custom.yaml    →  Win 小狼毫外观
 
 ### 万象工具箱
 
-PC 用户推荐使用 **Wanxiang Tools (All-in-one)**，内置在线更新器。
+PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)，内置在线更新器。
 
 - **智能更新**：自动检测 GitHub / CNB 源，自动下载并解压覆盖。
 - **白名单保护**：支持受控文件覆盖，防止个人配置被覆盖。
 - **双重重置模式**：
   - 构建重置：清空 `build` 目录，强制重新编译。
   - 纯净重置：仅保留白名单文件，其余全部替换为官方最新版。
-
-**[下载万象工具箱](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)**
 
 ### 第三方更新工具
 

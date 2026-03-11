@@ -42,10 +42,9 @@ package_schema_base() {
     --exclude='/custom' \
     --exclude='/dist' \
     --exclude='/pro-*-fuzhu-dicts' \
-    --exclude='release-please-config.json' \
-    --exclude='AGENTS.md' \
-    --exclude='CHANGELOG.md' \
-    --exclude='FEATURES.md' \
+    --include='README.md' \
+    --include='CHANGELOG.md' \
+    --exclude='*.md' \
     --exclude="/$OUT_BASE" \
     "$ROOT_DIR/" "$OUT_DIR/"
 }
@@ -103,10 +102,9 @@ package_schema_pro() {
     --exclude='/dist' \
     --exclude='/dicts' \
     --exclude='/pro-*-fuzhu-dicts' \
-    --exclude='release-please-config.json' \
-    --exclude='AGENTS.md' \
-    --exclude='CHANGELOG.md' \
-    --exclude='FEATURES.md' \
+    --include='README.md' \
+    --include='CHANGELOG.md' \
+    --exclude='*.md' \
     --exclude='wanxiang.dict.yaml' \
     --exclude='wanxiang.schema.yaml' \
     --exclude="/$OUT_BASE" \
