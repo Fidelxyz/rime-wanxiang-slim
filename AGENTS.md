@@ -72,7 +72,7 @@ Some simpler modules return a single function directly (`return translator`, `re
 ### Imports / Requires
 ```lua
 local wanxiang = require("wanxiang/wanxiang")  -- shared utilities
-local userdb = require("wanxiang/userdb")       -- database utilities
+local userdb = require("wanxiang/userdb")      -- database utilities
 ```
 - Always use `local` for requires.
 - Path uses `/` separator: `require("wanxiang/modulename")`.
@@ -97,21 +97,12 @@ but `snake_case` is the dominant convention. Follow the existing style in the fi
   symbol definitions.
 - **Line length**: No strict limit. Lines up to ~120 chars are common. Long `if` chains and
   tables often exceed 100 chars.
-- **Semicolons**: Used sparingly for compact one-liners:
-  ```lua
-  local s=0; for _,v in ipairs(a) do s=s+v end; return s
-  env.cache, env.locked = nil, false
-  ```
 - **Blank lines**: Separate logical sections. Major function groups separated by comment headers.
 
 ### Comments
 - **Single-line** `-- comment` is the standard. Chinese-language comments dominate.
 - **Section headers**: `-- 1. 全局常量定义 (Constants)`, `-- 2. 核心辅助函数 (Utilities)`
-- **File headers**: Author attribution and feature description at the top:
-  ```lua
-  -- @amzxyz  https://github.com/amzxyz/rime_wanxiang
-  -- 功能描述...
-  ```
+- **File headers**: Feature description at the top.
 - **EmmyLua/LuaLS annotations** are used in `wanxiang.lua` and `librime.lua`:
   ```lua
   ---@param env Env
@@ -170,23 +161,32 @@ but `snake_case` is the dominant convention. Follow the existing style in the fi
 - Bash arrays for lists. `rsync -av` for file operations. `zip -r -9 -q` for packaging.
 - `[[ ]]` for conditionals. Chinese-language emoji-prefixed status messages.
 
+## Documentation
+
+- **README.md**: The primary project documentation, containing installation instructions,
+  configuration guides, and a high-level feature overview.
+- **FEATURES.md**: A detailed mapping of project features to their implementation files.
+
+When modifying functional code (Lua) or configuration (YAML), always check if the changes
+impact the features described in `README.md` or the implementation mappings in `FEATURES.md`.
+Update these documentation files accordingly to keep them in sync with the codebase.
+
 ## Key Warnings for Agents
 
-1. **No package manager** — Do NOT run `npm install`, `pip install`, `cargo build`, etc.
-2. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
-3. **Rime globals** — `rime_api`, `yield`, `Candidate`, `log`, `utf8` are provided by the Rime
+1. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
+2. **Rime globals** — `rime_api`, `yield`, `Candidate`, `log`, `utf8` are provided by the Rime
    engine runtime and will show as undefined in static analysis. Use `---@diagnostic disable:
    undefined-global` where needed.
-4. **Version management** — Do NOT manually edit version numbers. They are managed by
+3. **Version management** — Do NOT manually edit version numbers. They are managed by
    release-please across `version.txt`, `.release-please-manifest.json`, and
    `lua/wanxiang/wanxiang.lua`.
-5. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire
+4. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire
    dictionary files; they can be tens of thousands of lines.
-6. **Chinese documentation** — README, comments, and commit messages are in Chinese. This is
+5. **Chinese documentation** — README, comments, and commit messages are in Chinese. This is
    intentional and should be maintained.
-7. **Conventional commits** — Use the format: `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`,
+6. **Conventional commits** — Use the format: `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`,
    `docs:`, `chore:`, `ci:`. Messages may be in Chinese.
-8. **Release file exclusions** — Markdown (`*.md`) and image (`*.jpg`, `*.png`) files are
+7. **Release file exclusions** — Markdown (`*.md`) and image (`*.jpg`, `*.png`) files are
    excluded from release ZIP packages in `release-build.sh`. When adding or renaming
    documentation or image files, update the `--exclude` and `--include` patterns in the rsync
    calls within that script to ensure the new files are properly excluded from (or included in)
