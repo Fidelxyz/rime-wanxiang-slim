@@ -413,6 +413,34 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 ---
 
+## CI / 构建脚本
+
+### PRO 辅助码词库生成脚本（`aux_go.py`）
+
+将通用词库与辅助码表合并，生成 7 种辅码方案的 PRO 词库。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `.github/workflows/scripts/aux_go.py` | 主脚本（~384 行） |
+| `custom/aux_code.txt` | 辅助码源表（字 → 分号分隔的多方案辅码段） |
+| `dicts/*.dict.yaml` | 输入词库（9 个文件，合计约 244 万行） |
+| `pro-*-fuzhu-dicts/` | 各方案输出目录（7 个） |
+
+#### 脚本设计要点
+
+| 模块 | 说明 |
+|------|------|
+| `load_aux_table()` | 加载 `aux_code.txt`，返回 `字 → aux_list` 映射 |
+| `build_schema_maps()` | 启动时为 7 个 schema 预计算 `字 → 辅码字符串` 扁平映射，消除运行期切片与 join |
+| `tokenize_word()` | 用 `re.split`（单次 C 级操作）将词切分为汉字/非汉字块，替代逐字符 Python 循环 |
+| `get_alignment()` | 迭代栈版对齐（替代递归）；纯汉字词走快速路径；一次计算所有 schema 的辅码 |
+| `process_file_all_schemas()` | 每个输入文件只读一次，同时向 7 个输出文件写入，消除 7× 重复 I/O |
+| `process_batch()` | 外层循环改为"按文件"而非"按 schema"，统筹调用上述函数 |
+
+写入采用每文件 256 KB 系统缓冲区 + 4096 行应用层批量 `writelines`，减少 syscall 开销。
+
+---
+
 ## 词库文件一览
 
 | 文件 | 内容 |
