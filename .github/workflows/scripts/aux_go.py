@@ -1,6 +1,7 @@
 import os
 import re
-from typing import List, Optional, Tuple
+from contextlib import ExitStack
+from pathlib import Path
 
 # ---------- 极广的汉字正则匹配：涵盖基础汉字、扩展区 A-H 以及 "〇" ----------
 # 用于 split 的捕获组版本，一次调用即可切分整个词
@@ -8,12 +9,12 @@ CJK_SPLIT = re.compile(r"([〇\u3400-\u4DBF\u4E00-\u9FFF\U00020000-\U000323AF])"
 
 
 # ---------- 中英文本边界解析 ----------
-def tokenize_word(word: str) -> List[Tuple[str, str]]:
+def tokenize_word(word: str) -> list[tuple[str, str]]:
     """
     将词组按照汉字和非汉字块进行拆分，返回 (type, text) 元组列表。
     使用 re.split 单次 C 级操作替代逐字符 Python 循环，性能更高。
     """
-    units = []
+    units: list[tuple[str, str]] = []
     for part in CJK_SPLIT.split(word):
         if not part or part.isspace():
             continue
@@ -29,8 +30,8 @@ def tokenize_word(word: str) -> List[Tuple[str, str]]:
 
 # ---------- 对齐：将汉字/非汉字块与拼音分段对齐 ----------
 def get_alignment(
-    units: List[Tuple[str, str]], segs: List[str], per_schema_maps: List[dict]
-) -> Optional[List[List[str]]]:
+    units: list[tuple[str, str]], segs: list[str], per_schema_maps: list[dict]
+) -> list[list[str]] | None:
     """
     迭代版对齐：将汉字和非汉字块对齐到拼音分段。
     一次性为所有 schema 计算对齐结果，避免重复对齐。
@@ -102,55 +103,79 @@ def get_alignment(
     return None
 
 
-# ---------- 在第一个点前插入后缀（例：base.dict.yaml -> base.pro.dict.yaml） ----------
 def add_suffix_before_extensions(filename: str, suffix: str) -> str:
+    """
+    在第一个点前插入后缀。
+
+    >>> add_suffix_before_extensions("base.dict.yaml", ".pro")
+    'base.pro.dict.yaml'
+    """
     if not suffix:
         return filename
     i = filename.find(".")
-    return (filename + suffix) if i == -1 else (filename[:i] + suffix + filename[i:])
+    if i == -1:
+        return filename + suffix
+    return filename[:i] + suffix + filename[i:]
 
 
-# ========== 1) 从"单个 aux 文件"加载 字 -> 辅助码段列表，并预计算各 schema 映射 ==========
-# 行格式：字<TAB>;段1;段2;... （保留空段，不偏移；段内逗号原样保留）
-def load_aux_table(aux_file_path):
-    if not os.path.isfile(aux_file_path):
-        raise FileNotFoundError(f"aux 文件不存在：{aux_file_path}")
-    aux_map = {}
-    print(f"加载辅助码表文件: {os.path.basename(aux_file_path)}")
-    with open(aux_file_path, "r", encoding="utf-8") as f:
-        for raw in f:
-            line = raw.strip()
+def load_aux_table(aux_file: Path) -> dict[str, list[str]]:
+    """
+    从单个 aux 文件加载“字 -> 辅助码段”列表，并预计算各 schema 映射。
+    每行格式：
+        字<TAB>段1;段2;...
+    （保留空段，不偏移；段内逗号原样保留）
+    """
+    if not aux_file.is_file():
+        raise FileNotFoundError(f"aux 文件不存在：{aux_file}")
+
+    print(f"加载辅助码表文件: {aux_file.name}")
+
+    aux_map: dict[str, list[str]] = {}
+    with aux_file.open("r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
             if not line or line.startswith("#"):
                 continue
-            parts = line.split("\t")
-            if len(parts) < 2:
+
+            cols = line.split("\t")
+            if len(cols) < 2:
                 continue
-            ch = parts[0]
-            aux_list = parts[1].split(";")  # 保留空串占位（分号才是边界）
+
+            ch = cols[0]
+            aux_list = cols[1].split(";")
             aux_map[ch] = aux_list
+
     return aux_map
 
 
-# ========== 2) 区间选择（严格：第 N 段 = aux_list[N]；N 从 1 起）==========
-# 不处理逗号：分号窗口原样拼接
-def select_aux_segment(aux_list, start_idx, end_idx=None):
+def select_aux_segment(aux_list: list[str], begin: int, end: int | None = None) -> str:
+    """
+    从 aux_list 中选择指定区间的段，连接成字符串返回。
+    """
     if not aux_list:
         return ""
-    s = max(1, start_idx)
-    e = end_idx if end_idx is not None else len(aux_list)
-    e = max(s, min(e, len(aux_list)))
-    window = aux_list[s:e]  # 允许空段
+
+    if end is None:
+        end = len(aux_list)
+
+    begin = max(1, begin)
+    end = max(begin, min(end, len(aux_list)))
+
+    window = aux_list[begin:end]  # 允许空段
+
     return "".join(window) if window else ""
 
 
-def build_schema_maps(aux_map: dict, index_mapping: list) -> List[dict]:
-    """为每个 schema 预计算 字 -> 辅助码字符串 的扁平映射表。
-    将 select_aux_segment 的切片/join 从每行每字提前到启动时一次性完成。
+def build_schema_maps(
+    aux_map: dict[str, list[str]], index_mapping: list[tuple[int, int | None, str]]
+) -> list[dict[str, str]]:
     """
-    schema_maps = []
-    for s_idx, e_idx, subdir in index_mapping:
+    为每个 schema 预计算“字 -> 辅助码字符串”的扁平映射表。
+    """
+    schema_maps: list[dict[str, str]] = []
+    for begin, end, subdir in index_mapping:
         m = {
-            ch: select_aux_segment(aux_list, s_idx, e_idx)
+            ch: select_aux_segment(aux_list, begin, end)
             for ch, aux_list in aux_map.items()
         }
         schema_maps.append(m)
@@ -161,33 +186,15 @@ def build_schema_maps(aux_map: dict, index_mapping: list) -> List[dict]:
 DIGIT_RE = re.compile(r"^\d+$")
 
 
-# ========== 3) 处理单个词库（单次读取，同时写入所有 schema 输出）==========
-def process_file_all_schemas(in_file, out_files, per_schema_maps, sep=";"):
-    """一次读取输入文件，同时向所有 schema 输出文件写入。
-    避免重复 I/O 和重复行解析。
+def process_dict(
+    dict_file: Path,
+    out_files: list[Path],
+    per_schema_maps: list[dict[str, str]],
+    sep: str = ";",
+):
     """
-    n_schemas = len(per_schema_maps)
-
-    # 打开输入文件
-    try:
-        fin = open(in_file, "r", encoding="utf-8")
-    except Exception as e:
-        print(f"读取失败 {in_file}: {e}")
-        return
-
-    # 打开所有输出文件
-    fouts = []
-    for out_file in out_files:
-        os.makedirs(os.path.dirname(out_file) or ".", exist_ok=True)
-        try:
-            fouts.append(open(out_file, "w", encoding="utf-8", buffering=256 * 1024))
-        except Exception as e:
-            for f in fouts:
-                f.close()
-            fin.close()
-            print(f"写入失败 {out_file}: {e}")
-            return
-
+    处理单个词库文件，输出所有 schema 的结果。
+    """
     passthrough_set = {
         "的\td\t1000",
         "了\tl\t999",
@@ -195,111 +202,102 @@ def process_file_all_schemas(in_file, out_files, per_schema_maps, sep=";"):
         "吧\tb\t999",
     }
 
-    # 写入缓冲区（每个输出文件一个）
-    BUF_SIZE = 4096
-    bufs: List[List[str]] = [[] for _ in range(n_schemas)]
+    for out_file in out_files:
+        os.makedirs(out_file.parent or ".", exist_ok=True)
 
-    def flush_all():
-        for i, fout in enumerate(fouts):
-            if bufs[i]:
-                fout.writelines(bufs[i])
-                bufs[i] = []
+    with ExitStack() as stack:  # Close all files on exit
+        fin = stack.enter_context(dict_file.open("r", encoding="utf-8"))
+        fouts = [
+            stack.enter_context(out_file.open("w", encoding="utf-8"))
+            for out_file in out_files
+        ]
 
-    def write_all(text: str):
-        for i in range(n_schemas):
-            bufs[i].append(text)
-        if len(bufs[0]) >= BUF_SIZE:
-            flush_all()
+        processing = False
+        for line in fin:
+            if not processing:
+                for fout in fouts:
+                    fout.write(line)
+                if "..." in line:
+                    processing = True
+                continue
 
-    def write_schema(i: int, text: str):
-        bufs[i].append(text)
-        if len(bufs[i]) >= BUF_SIZE:
-            fouts[i].writelines(bufs[i])
-            bufs[i] = []
+            raw = line.rstrip("\n")
+            if (not raw) or raw.lstrip().startswith("#"):
+                for fout in fouts:
+                    fout.write(line)
+                continue
 
-    processing = False
-    for line in fin:
-        if not processing:
-            write_all(line)
-            if "..." in line:
-                processing = True
-            continue
+            parts = raw.split("\t")
+            if len(parts) == 1:
+                for fout in fouts:
+                    fout.write(line)
+                continue
 
-        raw = line.rstrip("\n")
-        if (not raw) or raw.lstrip().startswith("#"):
-            write_all(line)
-            continue
+            han = parts[0]
+            col2 = parts[1] if len(parts) > 1 else ""
+            col3 = parts[2] if len(parts) > 2 else ""
+            col4 = parts[3] if len(parts) > 3 else ""
 
-        parts = raw.split("\t")
-        if len(parts) == 1:
-            write_all(line)
-            continue
+            # 第二列若是频率（全数字），挪到第三列
+            if DIGIT_RE.fullmatch(col2 or ""):
+                col3, col2 = col2, ""
 
-        han = parts[0]
-        col2 = parts[1] if len(parts) > 1 else ""
-        col3 = parts[2] if len(parts) > 2 else ""
-        col4 = parts[3] if len(parts) > 3 else ""
+            # 特定行直通
+            if raw.strip() in passthrough_set:
+                for fout in fouts:
+                    fout.write(raw + "\n")
+                continue
 
-        # 第二列若是频率（全数字），挪到第三列
-        if DIGIT_RE.fullmatch(col2 or ""):
-            col3, col2 = col2, ""
+            pinyins = col2.split(" ") if col2 else []
 
-        # 特定行直通
-        stripped_raw = raw.strip()
-        if stripped_raw in passthrough_set:
-            write_all(raw + "\n")
-            continue
+            # 对齐：一次性为所有 schema 计算
+            units = tokenize_word(han)
+            aligned = get_alignment(units, pinyins, per_schema_maps)
 
-        pinyins = col2.split(" ") if col2 else []
-
-        # 对齐：一次性为所有 schema 计算
-        units = tokenize_word(han)
-        aligned = get_alignment(units, pinyins, per_schema_maps)
-
-        if aligned is None:
-            warn_base = f"# 警告: 拼音数与字数不匹配或无法对齐（{in_file}) => {raw}\n"
-            print(warn_base.rstrip())
-            write_all(warn_base)
-            continue
-
-        # 为每个 schema 构造输出行
-        for si in range(n_schemas):
-            new_cols = []
-            for i, py in enumerate(pinyins):
-                aux = aligned[i][si] if i < len(aligned) else ""
-                new_cols.append(py + sep + aux)
-            new_col2 = " ".join(new_cols)
-            if col4:
-                out_line = (
-                    f"{han}\t{new_col2}\t{col3}\t{col4}\n"
-                    if col3
-                    else f"{han}\t{new_col2}\t\t{col4}\n"
+            if aligned is None:
+                warn_line = (
+                    f"# 警告: 拼音数与字数不匹配或无法对齐（{dict_file}) => {raw}\n"
                 )
-            else:
-                out_line = (
-                    f"{han}\t{new_col2}\t{col3}\n" if col3 else f"{han}\t{new_col2}\n"
-                )
-            write_schema(si, out_line)
+                print(warn_line.rstrip())
+                for fout in fouts:
+                    fout.write(warn_line)
+                continue
 
-    flush_all()
-    fin.close()
-    for fout in fouts:
-        fout.close()
+            # 为每个 schema 构造输出行
+            for si, fout in enumerate(fouts):
+                new_cols = []
+                for i, py in enumerate(pinyins):
+                    aux = aligned[i][si] if i < len(aligned) else ""
+                    new_cols.append(py + sep + aux)
+                new_col2 = " ".join(new_cols)
+                if col4:
+                    out_line = (
+                        f"{han}\t{new_col2}\t{col3}\t{col4}\n"
+                        if col3
+                        else f"{han}\t{new_col2}\t\t{col4}\n"
+                    )
+                else:
+                    out_line = (
+                        f"{han}\t{new_col2}\t{col3}\n"
+                        if col3
+                        else f"{han}\t{new_col2}\n"
+                    )
+                fout.write(out_line)
+
     for out_file in out_files:
         print(f"已处理: {out_file}")
 
 
-# ========== 4) 扫目录 + 七套区间（按白名单）==========
-def process_batch(
-    input_dir,
-    aux_file_path,
-    base_out_dir,
-    index_mapping,
-    files_whitelist=None,
-    sep=";",
-    output_suffix="",
+def process(
+    dicts_dir: Path,
+    aux_file: Path,
+    base_out_dir: Path,
+    index_mapping: list[tuple[int, int | None, str]],
+    files_whitelist: list[str] | None = None,
+    sep: str = ";",
+    output_suffix: str = "",
 ):
-    aux_map = load_aux_table(aux_file_path)
+    aux_map = load_aux_table(aux_file)
     print(f"已加载辅助码条目：{len(aux_map)}")
 
     # 预计算所有 schema 的扁平映射表
@@ -308,13 +306,15 @@ def process_batch(
 
     # 预建输出目录
     for _, _, subdir in index_mapping:
-        os.makedirs(os.path.join(base_out_dir, subdir), exist_ok=True)
+        (base_out_dir / subdir).mkdir(parents=True, exist_ok=True)
 
     # 收集要处理的文件
-    to_process = []
-    for entry in os.scandir(input_dir):
+    dict_files: list[Path] = []
+    for entry in dicts_dir.iterdir():
         if not entry.is_file():
             continue
+
+        # Filter by whitelist if provided
         name = entry.name
         if files_whitelist and name not in files_whitelist:
             continue
@@ -322,28 +322,25 @@ def process_batch(
             name.endswith(".yaml") or name.endswith(".yml") or name.endswith(".txt")
         ):
             continue
-        to_process.append(entry.path)
 
-    if not to_process:
-        print("输入目录内没有匹配文件")
-        return
+        dict_files.append(entry)
+
+    if not dict_files:
+        raise FileNotFoundError("输入目录内没有匹配文件")
 
     # 每个输入文件只读一次，同时写出所有 schema 输出
-    for in_file in to_process:
-        fn = os.path.basename(in_file)
-        out_name = add_suffix_before_extensions(fn, output_suffix)
+    for dict_file in dict_files:
+        out_filename = add_suffix_before_extensions(dict_file.name, output_suffix)
         out_files = [
-            os.path.join(base_out_dir, subdir, out_name)
-            for _, _, subdir in index_mapping
+            (base_out_dir / subdir / out_filename) for _, _, subdir in index_mapping
         ]
-        print(f"\n=== 处理 {fn} → {len(out_files)} 个输出 ===")
-        process_file_all_schemas(in_file, out_files, per_schema_maps, sep=sep)
+        print(f"\n=== 处理 {dict_file.name} → {len(out_files)} 个输出 ===")
+        process_dict(dict_file, out_files, per_schema_maps, sep=sep)
 
 
-# ========== 5) 入口 ==========
 if __name__ == "__main__":
     # 七套区间（第 N 段，从 1 起）
-    index_mapping = [
+    INDEX_MAPPING: list[tuple[int, int | None, str]] = [
         (1, 2, "pro-moqi-fuzhu-dicts"),
         (2, 3, "pro-flypy-fuzhu-dicts"),
         (3, 4, "pro-zrm-fuzhu-dicts"),
@@ -354,9 +351,9 @@ if __name__ == "__main__":
     ]
 
     # 路径
-    AUX_FILE = "custom/aux_code.txt"  # ← 单个 aux 文件
-    INPUT_DIR = "dicts"  # ← 词库文件夹
-    OUT_ROOT = "."  # ← 输出根目录
+    AUX_FILE = Path("custom/aux_code.txt")  # 单个 aux 文件
+    DICTS_DIR = Path("dicts")  # 词库文件夹
+    OUT_DIR = Path(".")  # 输出根目录
 
     # 仅处理这些文件
     FILES = [
@@ -374,11 +371,11 @@ if __name__ == "__main__":
     # 输出文件在第一个点前插这个后缀（如 ".pro"；设为空串则不加）
     OUTPUT_SUFFIX = ".pro"
 
-    process_batch(
-        INPUT_DIR,
+    process(
+        DICTS_DIR,
         AUX_FILE,
-        OUT_ROOT,
-        index_mapping,
+        OUT_DIR,
+        INDEX_MAPPING,
         files_whitelist=FILES,
         sep=";",
         output_suffix=OUTPUT_SUFFIX,

@@ -158,7 +158,7 @@ but `snake_case` is the dominant convention. Follow the existing style in the fi
 
 - `#!/bin/bash` with `set -e`.
 - `UPPER_SNAKE_CASE` for constants and directory paths.
-- Bash arrays for lists. `rsync -av` for file operations. `zip -r -9 -q` for packaging.
+- Bash arrays for lists. `rsync -av` for file operations. `zip -r -q` for packaging.
 - `[[ ]]` for conditionals. Chinese-language emoji-prefixed status messages.
 
 ## Documentation
