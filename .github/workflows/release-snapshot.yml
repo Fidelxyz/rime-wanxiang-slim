@@ -1,7 +1,7 @@
 name: Build release branch snapshot
 
 on:
-  workflow_dispatch: # 手动触发
+  workflow_dispatch:  # 手动触发
   push:
     branches:
       - wanxiang
@@ -191,7 +191,7 @@ jobs:
           GIT_AUTHOR_EMAIL: ci@example.com
           GIT_COMMITTER_NAME: ci-bot
           GIT_COMMITTER_EMAIL: ci@example.com
-        run: |
+        run: |-
           set -euo pipefail
 
           # 当前开发分支（通常是 wanxiang）

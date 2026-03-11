@@ -45,8 +45,7 @@ bash .github/workflows/scripts/generate-release-note.sh
 |----------|---------|
 | `release.yml` | Orchestrates release-please + build + publish |
 | `release-build.yml` | Packages 8 ZIP variants (base + 7 auxiliary code types) |
-| `releases-napshot.yml` | Nightly dictionary snapshots, per-scheme snapshot branches |
-| `Wanxiang_Matrix.yml` | Android APK matrix build (Trime app with schema baked in) |
+| `release-snapshot.yml` | Nightly dictionary snapshots, per-scheme snapshot branches |
 
 ### Manual Testing
 No automated tests exist. Testing is done by deploying the schema to a Rime client and using the
