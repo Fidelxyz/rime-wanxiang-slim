@@ -178,6 +178,32 @@ merges can resolve upstream conflicts and reintroductions safely.
 Also add the removed feature to the **精简说明** table in `README.md` so the fork's diff from
 upstream is clearly documented for users.
 
+## Merging from Upstream
+Before merging any upstream changes, follow this procedure:
+
+### Step 1: Check for new features
+Review the upstream diff/commits for any new features being introduced. If new features are found:
+
+1. List all new features clearly.
+2. **PAUSE and ASK the user** whether to introduce each feature.
+3. Based on the user's answer:
+   - **Yes, introduce it**: Add the feature to the appropriate section in `FEATURES.md`.
+   - **No, skip it**: Add the feature to the `## 已移除功能` section in `FEATURES.md`, documenting
+   the files/config blocks involved so future merges can handle conflicts.
+
+### Step 2: Check removed features before merging
+Before merging, read the `## 已移除功能` section in `FEATURES.md`. If any upstream change touches
+a feature listed there, **do not introduce it** — skip or revert that change during the merge.
+
+### Step 3: Resolving conflicts
+When resolving merge conflicts, always consult `patch.patch` to see exactly what the upstream changed.
+Auto-merging can introduce false changes — do not blindly accept them. Compare each conflict hunk
+against the patch to determine the correct resolution.
+
+### Step 4: Merge docs clearly
+When merging text-heavy files (e.g., Markdown docs, guides, notes), paraphrase upstream wording for
+clarity and readability before finalizing the merge result.
+
 ## Key Warnings for Agents
 
 1. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
