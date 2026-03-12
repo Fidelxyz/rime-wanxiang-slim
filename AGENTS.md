@@ -24,33 +24,6 @@ collection of YAML configuration files, Lua extensions, and dictionary data for 
 
 There is **no traditional build system** (no Makefile, npm, cargo, etc.) and **no test framework**.
 
-### Packaging (CI only)
-```bash
-# Run from repo root — packages all schema variants into ZIP files
-bash .github/workflows/scripts/release-build.sh
-
-# Generates release notes
-bash .github/workflows/scripts/generate-release-note.sh
-```
-
-### Release Management
-- **Versioning**: Automated via [release-please](https://github.com/googleapis/release-please).
-- **Canonical version**: `version.txt` (also patched into `lua/wanxiang/wanxiang.lua` via release-please `extra-files`).
-- **Commit style**: [Conventional Commits](https://www.conventionalcommits.org/) — `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`, `docs:`, `chore:`, `ci:`.
-  - `dict:` is a **custom commit type** for dictionary updates.
-- **Schema YAML files** use `version: "LTS"` (fixed label, not the numeric version).
-
-### CI Workflows (GitHub Actions)
-| Workflow | Purpose |
-|----------|---------|
-| `release.yml` | Orchestrates release-please + build + publish |
-| `release-build.yml` | Packages 8 ZIP variants (base + 7 auxiliary code types) |
-| `release-snapshot.yml` | Nightly dictionary snapshots, per-scheme snapshot branches |
-
-### Manual Testing
-No automated tests exist. Testing is done by deploying the schema to a Rime client and using the
-input method. After modifying Lua or YAML files, redeploy in Rime and verify behavior manually.
-
 ## Lua Code Style
 
 All Lua source files are in `lua/wanxiang/`. They are loaded by the Rime engine as processor,
@@ -74,29 +47,11 @@ Some simpler modules return a single function directly (`return translator`, `re
 local wanxiang = require("wanxiang/wanxiang")  -- shared utilities
 local userdb = require("wanxiang/userdb")      -- database utilities
 ```
-- Always use `local` for requires.
-- Path uses `/` separator: `require("wanxiang/modulename")`.
 - The shared module `wanxiang.lua` provides utility functions, version constant, and device detection.
 
-### Naming Conventions
-| Element | Convention | Examples |
-|---------|-----------|----------|
-| Module tables | Short uppercase or abbreviated | `M`, `F`, `AP` |
-| Local functions | `snake_case` | `fast_type`, `is_table_type`, `get_shichen_and_ke` |
-| Public module functions | `M.snake_case` or `M.PascalCase` | `M.init`, `M.func`, `wanxiang.IsChineseCharacter` |
-| Constants | `UPPER_SNAKE_CASE` | `K_REJECT`, `K_ACCEPT`, `MAX_REPEAT`, `KP_MAP` |
-| Local variables | `snake_case` | `code_len`, `last_seg`, `wrap_key` |
-| Rime globals | As-is from Rime API | `rime_api`, `yield`, `Candidate`, `log` |
-
-Note: Naming is not perfectly consistent. Some functions use `PascalCase` (`IsChineseCharacter`),
-but `snake_case` is the dominant convention. Follow the existing style in the file you are editing.
-
 ### Formatting
-- **Indentation**: 4 spaces (no tabs).
 - **Strings**: Double quotes `"string"` is dominant. Single quotes appear in table keys and
   symbol definitions.
-- **Line length**: No strict limit. Lines up to ~120 chars are common. Long `if` chains and
-  tables often exceed 100 chars.
 - **Blank lines**: Separate logical sections. Major function groups separated by comment headers.
 
 ### Comments
@@ -126,15 +81,6 @@ but `snake_case` is the dominant convention. Follow the existing style in the fi
 - No `assert()` or `error()` usage — Lua errors crash the input method, so defensive coding
   with nil checks is preferred.
 
-### Performance Patterns
-- **Localize standard library functions** at module top for hot paths:
-  ```lua
-  local byte, find, gsub, upper, sub = string.byte, string.find, string.gsub, string.upper, string.sub
-  ```
-- **Caching**: Schema-level caches (e.g., `__input_type_cache`, `env.wrap_parts`) computed once
-  in `init()` and reused across calls.
-- **`_G.WanxiangSharedState`**: Global shared state table for cross-module communication.
-
 ### Rime-Specific Patterns
 - `yield(Candidate(...))` to output candidates from translators/filters.
 - `env.engine.schema.config:get_string(...)` / `get_bool(...)` / `get_int(...)` for config access.
@@ -144,22 +90,14 @@ but `snake_case` is the dominant convention. Follow the existing style in the fi
 
 ## YAML Style
 
-- **Indentation**: 2 spaces (Rime ecosystem standard).
+- **Indentation**: 2 spaces.
 - **Comments**: Chinese-language. Inline `# comment` with whitespace alignment padding.
   Full-line `#` comments for section headers. Commented-out config preserved with `#`.
-- **File headers**: `# Rime schema` / `# Rime dictionary` + `# encoding: utf-8`.
 - **Quoting**: Double quotes for version strings and special values. Single quotes for symbol
   definitions. Unquoted for simple identifiers.
 - **Flow style**: `states: [ 中文, 英文 ]`, `{ when: has_menu, accept: minus, send: Page_Up }`.
 - **Block style**: `description: |` for multiline strings.
 - **Modular composition**: Heavy use of `__patch`, `__include`, `__append` directives.
-
-## Shell Script Style (CI scripts)
-
-- `#!/bin/bash` with `set -e`.
-- `UPPER_SNAKE_CASE` for constants and directory paths.
-- Bash arrays for lists. `rsync -av` for file operations. `zip -r -q` for packaging.
-- `[[ ]]` for conditionals. Chinese-language emoji-prefixed status messages.
 
 ## Documentation
 
@@ -179,7 +117,8 @@ Also add the removed feature to the **精简说明** table in `README.md` so the
 upstream is clearly documented for users.
 
 ## Merging from Upstream
-Before merging any upstream changes, follow this procedure:
+
+When merging any upstream changes, **ALWAYS** follow this procedure:
 
 ### Step 1: Check for new features
 Review the upstream diff/commits for any new features being introduced. If new features are found:
@@ -208,18 +147,14 @@ clarity and readability before finalizing the merge result.
 
 1. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
 2. **Rime globals** — `rime_api`, `yield`, `Candidate`, `log`, `utf8` are provided by the Rime
-   engine runtime and will show as undefined in static analysis. Use `---@diagnostic disable:
-   undefined-global` where needed.
-3. **Version management** — Do NOT manually edit version numbers. They are managed by
-   release-please across `version.txt`, `.release-please-manifest.json`, and
-   `lua/wanxiang/wanxiang.lua`.
-4. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire
+   engine runtime and will show as undefined in static analysis.
+3. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire
    dictionary files; they can be tens of thousands of lines.
-5. **Chinese documentation** — README, comments, and commit messages are in Chinese. This is
+4. **Chinese documentation** — README, comments, and commit messages are in Chinese. This is
    intentional and should be maintained.
-6. **Conventional commits** — Use the format: `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`,
+5. **Conventional commits** — Use the format: `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`,
    `docs:`, `chore:`, `ci:`. Messages may be in Chinese.
-7. **Release file exclusions** — Markdown (`*.md`) and image (`*.jpg`, `*.png`) files are
+6. **Release file exclusions** — Markdown (`*.md`) and image (`*.jpg`, `*.png`) files are
    excluded from release ZIP packages in `release-build.sh`. When adding or renaming
    documentation or image files, update the `--exclude` and `--include` patterns in the rsync
    calls within that script to ensure the new files are properly excluded from (or included in)
