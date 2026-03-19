@@ -1,19 +1,23 @@
 #!/bin/bash
 set -e
 
-ROOT_DIR="$(cd "$(dirname "$0")/../../../" && pwd)"
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+ROOT_DIR="$SCRIPT_DIR/.."
 DIST_DIR="$ROOT_DIR/dist"
 CUSTOM_DIR="$ROOT_DIR/custom"
+
 EXCLUDE_DICT_FILES=(
     "wuzhong.dict.yaml"
     "renming.dict.yaml"
     "wuzhong.pro.dict.yaml"
     "renming.pro.dict.yaml"
 )
+
 SCHEMA_LIST=("base" "flypy" "hanxin" "moqi" "tiger" "wubi" "zrm" "shouyou")
 
 package_schema_base() {
     OUT_DIR=$1
+
     rm -rf "$OUT_DIR"
     mkdir -p "$OUT_DIR"
 
@@ -48,15 +52,16 @@ package_schema_base() {
 package_schema_pro() {
     SCHEMA_NAME="$1"
     OUT_DIR="$2"
+
     rm -rf "$OUT_DIR"
     mkdir -p "$OUT_DIR"
 
     # 1) 移动分包后的 dicts
-    if [[ -d "$ROOT_DIR/pro-$SCHEMA_NAME-fuzhu-dicts" ]]; then
-        mv "$ROOT_DIR/pro-$SCHEMA_NAME-fuzhu-dicts" "$OUT_DIR/dicts"
+    if [[ -d "$DIST_DIR/pro-$SCHEMA_NAME-fuzhu-dicts" ]]; then
+        mv "$DIST_DIR/pro-$SCHEMA_NAME-fuzhu-dicts" "$OUT_DIR/dicts"
     fi
     # 1.1) 补充必要的附加文件
-    for f in en.dict.yaml "cn&en.dict.yaml" chengyu.txt people.dict.yaml; do
+    for f in "en.dict.yaml" "cn&en.dict.yaml" "chengyu.txt" "people.dict.yaml"; do
         if [[ -f "$ROOT_DIR/dicts/$f" ]]; then
             cp "$ROOT_DIR/dicts/$f" "$OUT_DIR/dicts/"
         fi
@@ -113,6 +118,7 @@ package_schema_pro() {
 
 package_schema() {
     SCHEMA_NAME="$1"
+    echo
     echo "=== 开始打包方案：$SCHEMA_NAME"
 
     if [[ "$SCHEMA_NAME" == "base" ]]; then
@@ -136,10 +142,12 @@ package_schema() {
 }
 
 
+rm -rf "$DIST_DIR"
+mkdir -p "$DIST_DIR"
+
 echo "=== PRO 分包开始"
-python3 "$ROOT_DIR/.github/workflows/scripts/aux_go.py"
+python3 "$SCRIPT_DIR/split_aux.py"
 echo "=== PRO 分包完毕"
-echo
 
 # 如果没有传入参数，则打包所有 schema
 if [[ -z "$SCHEMA_NAME" ]]; then

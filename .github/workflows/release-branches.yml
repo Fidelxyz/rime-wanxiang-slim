@@ -1,0 +1,112 @@
+name: Update release branches
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-branches
+  cancel-in-progress: true
+
+jobs:
+  release-branches:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Commit and force push per-scheme branches
+        env:
+          TAG_NAME: ${{ github.event_name == 'release' && github.event.release.tag_name || 'manual-build' }}
+        run: |-
+          set -euo pipefail
+
+          ORIG_BRANCH=$(git rev-parse --abrev-ref HEAD)
+
+          # 方案列表
+          schemes=("base" "shouyou-fuzhu" "zrm-fuzhu" "tiger-fuzhu" "moqi-fuzhu" "flypy-fuzhu" "wubi-fuzhu" "hanxin-fuzhu")
+
+          # 每个方案公共文件清单（在分支根目录使用）
+          COMMON_FILES=(
+            "dicts/*.*"
+            "custom/*.*"
+            "lua/*.*"
+            "lua/lib/*.*"
+            "lua/tips/*.*"
+            "default.yaml"
+            "weasel.yaml"
+            "wanxiang*.*yaml"
+            "README.md"
+            "custom_phrase.txt"
+          )
+
+          for scheme in "${schemes[@]}"; do
+            branch="wanxiang-${scheme}"
+            src_dir="dist/rime-wanxiang-${scheme}"
+
+            echo "=== Building branch ${branch} from ${src_dir} ==="
+
+            if [ ! -d "$src_dir" ]; then
+              echo "Warning: ${src_dir} not found, skip ${branch}."
+              continue
+            fi
+
+            if git show-ref --verify --quiet "refs/heads/$branch"; then
+              # Switch to the existing branch
+              git checkout "$branch"
+            else
+              # Create a new orphan branch
+              git checkout --orphan "$branch"
+            fi
+
+            # Remove all files from the branch (except .git and dist/)
+            find . -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "dist" -exec rm -rf {} +
+
+            cp -a "$src_dir/." .
+
+            mkdir -p plum
+
+            #################################
+            # Generate plum/full.recipe.yaml
+            #################################
+            {
+              echo "# encoding: utf-8"
+              echo "---"
+              echo "recipe:"
+              echo "  Rx: plum/full"
+              echo "  args:"
+              echo "  description: >-"
+              echo "    万象拼音 ${scheme} 版（整个方案目录）- 分支 ${branch}"
+              echo "install_files: >-"
+              for path in "${COMMON_FILES[@]}"; do
+                echo "  ${path}"
+              done
+            } > "plum/full.recipe.yaml"
+
+            #################################
+            # Generate plum/dicts.recipe.yaml
+            #################################
+            {
+              echo "# encoding: utf-8"
+              echo "---"
+              echo "recipe:"
+              echo "  Rx: plum/dicts"
+              echo "  args:"
+              echo "  description: >-"
+              echo "    万象拼音 ${scheme} 版，仅词库（dicts-only）- 分支 ${branch}"
+              echo "install_files: >-"
+              echo "  dicts/*.*"
+            } > "plum/dicts.recipe.yaml"
+
+            git add -- . ':!dist' # Exclude dist/ from staging
+            git status
+
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            git commit -m "chore(${branch}): release for ${TAG_NAME}"
+            git push -f origin "${branch}"
+          done
+
+          git checkout "${ORIG_BRANCH}"
