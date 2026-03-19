@@ -474,7 +474,7 @@ end
 function ZH.func(input, env)
     local config = env.engine.schema.config
     local context = env.engine.context
-    local input_str = context.input
+    local input_str = context.input or ""
     local is_radical_mode = wanxiang.is_in_radical_mode(env)
     local should_skip_candidate_comment = wanxiang.is_function_mode_active(context) or input_str == ""
     local is_tone_comment = env.engine.context:get_option("tone_hint")

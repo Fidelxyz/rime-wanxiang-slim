@@ -9,7 +9,7 @@ super_replacer:
     delimiter: "|"
     comment_format: "〔%s〕"
     chain: true  #true表示流水线作业，上一个option产出交给下一个处理，典型的s2t>t2hk=s2hk，false就是并行，直接用text转换
-    types:
+    rules:
       # 场景1：输入 '哈哈' -> 变成 '1.哈哈 2.😄'
       - option: emoji          # 开关名称与上面开关名称保持一致
         mode: append            # 新增候选append 替换原候选replace 替换注释comment
@@ -113,7 +113,8 @@ local function get_utf8_offsets(text)
     insert(offsets, len + 1)
     return offsets
 end
--- 光速文件特征采样（替代耗时的全量哈希计算）
+
+-- 光速文件特征采样
 local function generate_files_signature(tasks)
     local sig_parts = {}
     for _, task in ipairs(tasks) do
@@ -151,8 +152,9 @@ local function generate_files_signature(tasks)
     -- 将所有文件的特征码合并
     return concat(sig_parts, "||")
 end
+
 -- 重建数据库 (仅在 wanxiang 版本变更时运行)
-local function rebuild(tasks, db)
+local function rebuild(tasks, db, delimiter)
     if db.empty then
         db:empty()
     end
@@ -161,6 +163,7 @@ local function rebuild(tasks, db)
         local prefix = task.prefix
         -- 获取转换表
         local conversion = task.conversion
+        local p_delim = task.preedit_delim
 
         local f = open(txt_path, "r")
         if f then
@@ -168,7 +171,9 @@ local function rebuild(tasks, db)
                 if line ~= "" and not s_match(line, "^%s*#") then
                     local k, v = s_match(line, "^(%S+)%s+(.+)")
                     if k and v then
-                        -- [新增] 逻辑：如果有转换表，先进行按键转换
+                        local orig_k = k
+
+                        -- 如果有转换表，先进行按键转换
                         -- 使用 gsub 配合 table 进行单字符映射，非常高效且不关注顺序
                         if conversion then
                             k = s_gsub(k, ".", conversion)
@@ -176,7 +181,21 @@ local function rebuild(tasks, db)
 
                         -- 转换完成后，再和 prefix 组合
                         v = s_match(v, "^%s*(.-)%s*$")
-                        db:update(prefix .. k, v)
+
+                        if p_delim and p_delim ~= "" then
+                            if not string.find(v, p_delim, 1, true) then
+                                v = v .. p_delim .. orig_k
+                            end
+                        end
+
+                        local db_key = prefix .. k
+                        local existing_v = db:fetch(db_key)
+
+                        if existing_v and existing_v ~= "" then
+                            v = existing_v .. delimiter .. v
+                        end
+
+                        db:update(db_key, v)
                     end
                 end
             end
@@ -186,9 +205,8 @@ local function rebuild(tasks, db)
     return true
 end
 
--- 连接或重连数据库 (Singleton Logic)
--- 连接或重连数据库 (融入光速特征校验)
-local function connect_db(db_name, current_version, delimiter, tasks)
+-- 连接或重连数据库
+local function connect_db(db_name, current_version, delimiter, tasks, config_sig)
     if replacer_instance then
         local status, _ = pcall(function()
             return replacer_instance:fetch("___test___")
@@ -208,7 +226,7 @@ local function connect_db(db_name, current_version, delimiter, tasks)
     end
 
     -- 1. 瞬间计算当前所有物理文件的特征码
-    local current_signature = generate_files_signature(tasks)
+    local current_signature = generate_files_signature(tasks) .. "||" .. (config_sig or "")
 
     local needs_rebuild = false
     if db:open_read_only() then
@@ -216,7 +234,7 @@ local function connect_db(db_name, current_version, delimiter, tasks)
         local db_delim = db:meta_fetch("_delim")
         local db_sig = db:meta_fetch("_files_sig") or "" -- 读取数据库里存的特征码
 
-        -- 核心优雅点：版本变了、分隔符变了、或者文件内容被用户改了，统统触发重建！
+        -- 版本变了、分隔符变了、或者文件内容被用户改了，触发重建
         if db_ver ~= current_version or db_delim ~= delimiter or db_sig ~= current_signature then
             needs_rebuild = true
         end
@@ -227,14 +245,14 @@ local function connect_db(db_name, current_version, delimiter, tasks)
 
     if needs_rebuild then
         if db:open() then
-            -- 优雅地清空旧数据，防止体积无意义膨胀
+            -- 清空旧数据，防止体积无意义膨胀
             if db.clear then
                 db:clear()
             elseif db.empty then
                 db:empty()
             end
 
-            rebuild(tasks, db)
+            rebuild(tasks, db, delimiter)
             fmm_cache = {} --只要词库重建，彻底清空旧缓存
             -- 更新最新的烙印
             db:meta_update("_wanxiang_ver", current_version)
@@ -319,8 +337,8 @@ local function segment_convert(text, db, prefix, split_pat)
     end
     return concat(result_parts)
 end
--- 模块接口
 
+-- 模块接口
 function M.init(env)
     local ns = env.name_space
     ns = s_gsub(ns, "^%*", "")
@@ -342,6 +360,11 @@ function M.init(env)
         current_version = wanxiang.version
     end
 
+    env.input_type = "unknown"
+    if wanxiang and wanxiang.get_input_method_type then
+        env.input_type = wanxiang.get_input_method_type(env)
+    end
+
     env.chain = config:get_bool(ns .. "/chain")
     if env.chain == nil then
         env.chain = false
@@ -354,9 +377,8 @@ function M.init(env)
         env.split_pattern = "([^" .. esc .. "]+)"
     end
 
-    -- 2. 解析 Types (这部分必须保留在 init，因为不同 schema 可能配置不同)
-    env.types = {}
-    local tasks = {} -- 用于重建数据库的文件列表
+    env.rules = {}
+    local tasks = {}
 
     local function resolve_path(relative)
         if not relative then
@@ -377,12 +399,12 @@ function M.init(env)
         return user_path
     end
 
-    local types_path = ns .. "/types"
-    local type_list = config:get_list(types_path)
+    local rules_path = ns .. "/rules"
+    local rule_list = config:get_list(rules_path)
 
-    if type_list then
-        for i = 0, type_list.size - 1 do
-            local entry_path = types_path .. "/@" .. i
+    if rule_list then
+        for i = 0, rule_list.size - 1 do
+            local entry_path = rules_path .. "/@" .. i
 
             -- 解析 triggers
             local triggers = {}
@@ -442,20 +464,6 @@ function M.init(env)
 
                 -- 解析 编码转换conv
                 local conversion_map = nil
-                local conversion_str = config:get_string(entry_path .. "/conv")
-                if conversion_str then
-                    -- 分割 "from>to"，例如 "abc>123"
-                    local from_str, to_str = s_match(conversion_str, "^(.-)>(.+)$")
-                    if from_str and to_str and #from_str == #to_str then
-                        conversion_map = {}
-                        -- 构建映射表 {a='1', b='2', ...}
-                        for char_idx = 1, #from_str do
-                            local f_char = s_sub(from_str, char_idx, char_idx)
-                            local t_char = s_sub(to_str, char_idx, char_idx)
-                            conversion_map[f_char] = t_char
-                        end
-                    end
-                end
 
                 local comment_mode = config:get_string(entry_path .. "/comment_mode")
                 if not comment_mode then
@@ -466,13 +474,28 @@ function M.init(env)
                     fmm = false
                 end
 
-                insert(env.types, {
+                -- 解析 cand_type
+                local custom_cand_type = config:get_string(entry_path .. "/cand_type")
+
+                local always_qty = 1
+                local always_idx = 1
+                if mode == "abbrev" then
+                    local rule_str = config:get_string(entry_path .. "/abbrev_rule") or "1,1"
+                    local qty_str, idx_str = s_match(rule_str, "^(%d+)%s*,%s*(%d+)$")
+                    always_qty = tonumber(qty_str) or 1
+                    always_idx = tonumber(idx_str) or 1
+                end
+
+                insert(env.rules, {
                     triggers = triggers,
                     tags = target_tags,
                     prefix = prefix,
                     mode = mode,
+                    always_qty = always_qty,
+                    always_idx = always_idx,
                     comment_mode = comment_mode,
                     fmm = fmm,
+                    cand_type = custom_cand_type,
                 })
 
                 -- 收集文件路径 (仅用于可能发生的 rebuild)
@@ -499,8 +522,15 @@ function M.init(env)
             end
         end
     end
+
+    local config_sig_parts = {}
+    for _, t in ipairs(env.rules) do
+        insert(config_sig_parts, (t.cand_type or ""))
+    end
+    local config_sig = concat(config_sig_parts, "|")
+
     -- 3. DB 初始化 (使用单例连接)
-    env.db = connect_db(db_name, current_version, env.delimiter, tasks)
+    env.db = connect_db(db_name, current_version, env.delimiter, tasks, config_sig)
 end
 
 function M.fini(env)
@@ -508,45 +538,59 @@ function M.fini(env)
     env.db = nil
 end
 
--- [Core Function] 核心逻辑 (保持原有逻辑不变)
+local shared_pending = {}
+local shared_comments = {}
+local function clear_table(t)
+    for i = 1, #t do
+        t[i] = nil
+    end
+end
+
+-- [Core Function] 核心逻辑
 function M.func(input, env)
     local ctx = env.engine.context
     local input_code = ctx.input
     local db = env.db
-    local types = env.types
+    local rules = env.rules
     local split_pat = env.split_pattern
     local comment_fmt = env.comment_format
     local is_chain = env.chain
-    local HIGH_THRESHOLD = 99
-    local input_type = "unknown"
+
     if not ctx:is_composing() or ctx.input == "" then
         fmm_cache = {}
-    end
-    -- 如果数据库未连接，直接透传
-    if not env.types or #env.types == 0 or not env.db then
+        collectgarbage("step", 200)
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
 
-    if wanxiang and wanxiang.get_input_method_type then
-        input_type = wanxiang.get_input_method_type(env)
+    if not env.rules or #env.rules == 0 or not env.db then
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
     end
 
     local seg = ctx.composition:back()
     local current_seg_tags = seg and seg.tags or {}
 
+    if seg then
+        input_code = string.sub(ctx.input, seg.start + 1, seg._end)
+    end
+
     -- [Helper] 通用处理函数
     local function process_rules(cand)
+        local results = {}
         local current_text = cand.text
         local show_main = true
         local current_main_comment = cand.comment
+        local matched_cand_type = nil
 
-        local pending_candidates = {}
-        local comments = {}
+        clear_table(shared_pending)
+        clear_table(shared_comments)
 
-        for _, t in ipairs(types) do
+        for _, t in ipairs(rules) do
             if t.mode ~= "abbrev" then
                 local is_active = false
                 for _, trigger in ipairs(t.triggers) do
@@ -583,6 +627,8 @@ function M.func(input, env)
                     end
 
                     if val then
+                        matched_cand_type = t.cand_type or matched_cand_type
+
                         local mode = t.mode
                         local rule_comment = ""
                         if t.comment_mode == "text" then
@@ -596,7 +642,7 @@ function M.func(input, env)
                             for p in s_gmatch(val, split_pat) do
                                 insert(parts, p)
                             end
-                            insert(comments, concat(parts, " "))
+                            insert(shared_comments, concat(parts, " "))
                         elseif mode == "replace" then
                             if is_chain then
                                 local first = true
@@ -610,18 +656,18 @@ function M.func(input, env)
                                         end
                                         first = false
                                     else
-                                        insert(pending_candidates, { text = p, comment = rule_comment })
+                                        insert(shared_pending, { text = p, comment = rule_comment })
                                     end
                                 end
                             else
                                 show_main = false
                                 for p in s_gmatch(val, split_pat) do
-                                    insert(pending_candidates, { text = p, comment = rule_comment })
+                                    insert(shared_pending, { text = p, comment = rule_comment })
                                 end
                             end
                         elseif mode == "append" then
                             for p in s_gmatch(val, split_pat) do
-                                insert(pending_candidates, { text = p, comment = rule_comment })
+                                insert(shared_pending, { text = p, comment = rule_comment })
                             end
                         end
                     end
@@ -629,209 +675,218 @@ function M.func(input, env)
             end
         end
 
-        if #comments > 0 then
-            local comment_str = concat(comments, " ")
+        if #shared_comments > 0 then
+            local comment_str = concat(shared_comments, " ")
             local fmt = s_format(comment_fmt, comment_str)
-            if cand.comment and cand.comment ~= "" then
-                cand.comment = cand.comment .. fmt
+            if current_main_comment and current_main_comment ~= "" then
+                current_main_comment = current_main_comment .. fmt
             else
-                cand.comment = fmt
+                current_main_comment = fmt
             end
         end
 
         if show_main then
             if is_chain and current_text ~= cand.text then
-                local nc = Candidate(cand.type or "kv", cand.start, cand._end, current_text, current_main_comment)
+                local final_type = matched_cand_type or cand.type or "kv"
+                local nc = Candidate(final_type, cand.start, cand._end, current_text, current_main_comment)
                 nc.preedit = cand.preedit
                 nc.quality = cand.quality
-                yield(nc)
+                insert(results, nc)
             else
-                yield(cand)
+                cand.comment = current_main_comment
+                insert(results, cand)
             end
         end
 
-        for _, item in ipairs(pending_candidates) do
+        for _, item in ipairs(shared_pending) do
             if not (show_main and item.text == current_text) then
-                local nc = Candidate("derived", cand.start, cand._end, item.text, item.comment)
+                local final_type = matched_cand_type or "derived"
+                local nc = Candidate(final_type, cand.start, cand._end, item.text, item.comment)
                 nc.preedit = cand.preedit
                 nc.quality = cand.quality
-                yield(nc)
+                insert(results, nc)
             end
         end
+        return results
     end
 
-    -- 核心状态变量
-    local pending_cands = {}
-    local seen_texts = {} -- 去重表
-    local limit = 10
-    local has_phrase = false
-    local cand_count = 0
-    local abbrev_triggered = false
+    -- 流式拦截器 + 候车室 架构
+    local yield_count = 0
+    local quality_dropped = false
+    local has_exact_phrase = false
+    local seen_texts = {}
+    local global_yielded = {}
+    local always_cands = {}
+    local lazy_cands = {}
+    local top_buffer = {}
 
-    -- [Helper 1] 规则处理封装
-    local function process_and_record(cand)
-        seen_texts[cand.text] = true
-        process_rules(cand)
-    end
+    -- 第一步：提前提取简码候选，分配阵营
+    for _, t in ipairs(rules) do
+        if t.mode == "abbrev" then
+            local is_active = false
+            for _, trigger in ipairs(t.triggers) do
+                if trigger == true then
+                    is_active = true
+                    break
+                elseif type(trigger) == "string" and ctx:get_option(trigger) then
+                    is_active = true
+                    break
+                end
+            end
 
-    -- [Helper 2] 融合后的简码逻辑
-    local function try_trigger_abbrev_logic(is_empty_override, target_quality)
-        for _, t in ipairs(types) do
-            if t.mode == "abbrev" and input_type ~= "pinyin" then
-                local is_tag_match = true
-                if t.tags then
-                    is_tag_match = false
-                    for req_tag, _ in pairs(t.tags) do
-                        if current_seg_tags[req_tag] then
-                            is_tag_match = true
-                            break
-                        end
+            local is_tag_match = true
+            if t.tags then
+                is_tag_match = false
+                for req_tag, _ in pairs(t.tags) do
+                    if current_seg_tags[req_tag] then
+                        is_tag_match = true
+                        break
                     end
                 end
+            end
 
-                if is_tag_match then
-                    local lazy_switch = t.triggers[1]
-                    local always_switch = t.triggers[2]
-                    local active_mode = "none"
+            if is_active and is_tag_match and input_code ~= "" then -- 加上输入非空保护
+                local key = t.prefix .. input_code
+                local val = db:fetch(key)
+                    or (not s_match(input_code, "[A-Z]") and db:fetch(t.prefix .. s_upper(input_code)))
 
-                    if always_switch then
-                        if
-                            always_switch == true or (type(always_switch) == "string" and ctx:get_option(always_switch))
-                        then
-                            active_mode = "always"
-                        end
-                    end
-                    if active_mode == "none" and lazy_switch then
-                        if lazy_switch == true or (type(lazy_switch) == "string" and ctx:get_option(lazy_switch)) then
-                            active_mode = "lazy"
-                        end
-                    end
+                if val then
+                    local count = 0
+                    for p in s_gmatch(val, split_pat) do
+                        if not seen_texts[p] then
+                            seen_texts[p] = true
 
-                    local should_trigger = false
-                    if active_mode == "always" then
-                        should_trigger = true
-                    elseif active_mode == "lazy" and is_empty_override then
-                        should_trigger = true
-                    end
+                            --简码也支持强制注入 type
+                            local final_type = t.cand_type or "abbrev"
+                            local abbrev_cand =
+                                Candidate(final_type, seg and seg.start or 0, seg and seg._end or #input_code, p, "")
 
-                    if should_trigger then
-                        local key = t.prefix .. input_code
-                        local val = db:fetch(key)
-                        if not val and not s_match(input_code, "[A-Z]") then
-                            val = db:fetch(t.prefix .. s_upper(input_code))
-                        end
+                            count = count + 1
 
-                        if val then
-                            for p in s_gmatch(val, split_pat) do
-                                if not seen_texts[p] then
-                                    local abbrev_cand = Candidate("abbrev", 0, #input_code, p, "")
-                                    abbrev_cand.quality = target_quality
-                                    process_and_record(abbrev_cand)
-                                end
+                            if count <= t.always_qty then
+                                abbrev_cand.quality = 999
+                                insert(always_cands, { cand = abbrev_cand, index = t.always_idx + (count - 1) })
+                            else
+                                abbrev_cand.quality = 98
+                                insert(lazy_cands, abbrev_cand)
                             end
                         end
                     end
                 end
             end
         end
-        abbrev_triggered = true
     end
 
-    -- [主循环]
-    for cand in input:iter() do
-        cand_count = cand_count + 1
-        local q = cand.quality or 0
+    table.sort(always_cands, function(a, b)
+        return a.index < b.index
+    end)
 
-        if cand.type == "phrase" then
-            has_phrase = true
-        end
-
-        -- 1. [权重跳水/插队检测]
-        if not abbrev_triggered and q < HIGH_THRESHOLD and #pending_cands > 0 then
-            local max_q = 0
-            local has_high_q = false
-            for _, pc in ipairs(pending_cands) do
-                local pq = pc.quality or 0
-                if pq > max_q then
-                    max_q = pq
-                end
-                if pq > HIGH_THRESHOLD then
-                    has_high_q = true
-                end
-            end
-
-            if has_high_q then
-                for _, pc in ipairs(pending_cands) do
-                    process_and_record(pc)
-                end
-                pending_cands = {}
-                if not has_phrase then
-                    try_trigger_abbrev_logic(true, max_q - 0.001)
-                end
-            end
-        end
-
-        -- 2. [基础缓存逻辑]
-        if cand_count <= limit then
-            table.insert(pending_cands, cand)
-        else
-            if cand_count == limit + 1 then
-                local has_high_q = false
-                for _, pc in ipairs(pending_cands) do
-                    if (pc.quality or 0) > HIGH_THRESHOLD then
-                        has_high_q = true
-                        break
+    -- 标准吐词函数（含精准定位插队）
+    local function output_cand(cand)
+        local processed_cands = process_rules(cand)
+        for _, pc in ipairs(processed_cands) do
+            while #always_cands > 0 and (yield_count + 1) >= always_cands[1].index do
+                local ac = table.remove(always_cands, 1)
+                local ac_processed = process_rules(ac.cand)
+                for _, apc in ipairs(ac_processed) do
+                    if not global_yielded[apc.text] then
+                        global_yielded[apc.text] = true
+                        yield(apc)
+                        yield_count = yield_count + 1
                     end
                 end
-
-                if not abbrev_triggered then
-                    try_trigger_abbrev_logic(not has_phrase, has_high_q and 99 or 9999)
-                end
-                for _, pc in ipairs(pending_cands) do
-                    process_and_record(pc)
-                end
-                pending_cands = nil
             end
-            process_and_record(cand)
+            if not global_yielded[pc.text] then
+                global_yielded[pc.text] = true
+                yield(pc)
+                yield_count = yield_count + 1
+            end
         end
     end
 
-    -- 3. [收尾阶段]
-    if pending_cands then
-        if not abbrev_triggered then
-            local max_q = 0
-            local has_high_q = false
-            for _, pc in ipairs(pending_cands) do
-                local pq = pc.quality or 0
-                if pq > max_q then
-                    max_q = pq
-                end
-                if pq > HIGH_THRESHOLD then
-                    has_high_q = true
+    -- 清空候车室机制
+    local function flush_buffer()
+        if has_exact_phrase then
+            -- 正常有词,执行定位插队，替补直接销毁
+            for _, cand in ipairs(top_buffer) do
+                output_cand(cand)
+            end
+        else
+            -- 空码救场
+            for _, cand in ipairs(top_buffer) do
+                local processed_cands = process_rules(cand)
+                for _, pc in ipairs(processed_cands) do
+                    if not global_yielded[pc.text] then
+                        global_yielded[pc.text] = true
+                        yield(pc)
+                        yield_count = yield_count + 1
+                    end
                 end
             end
 
-            if has_high_q then
-                for _, pc in ipairs(pending_cands) do
-                    process_and_record(pc)
-                end
-                if not has_phrase then
-                    try_trigger_abbrev_logic(true, max_q - 0.001)
-                end
-            else
-                if not has_phrase then
-                    try_trigger_abbrev_logic(true, 9999)
-                end
-                for _, pc in ipairs(pending_cands) do
-                    process_and_record(pc)
+            -- 立刻倾泻所有主力简码（无视设定的 index 坑位了，紧紧跟在后面）
+            while #always_cands > 0 do
+                local ac = table.remove(always_cands, 1)
+                local ac_processed = process_rules(ac.cand)
+                for _, apc in ipairs(ac_processed) do
+                    if not global_yielded[apc.text] then
+                        global_yielded[apc.text] = true
+                        yield(apc)
+                        yield_count = yield_count + 1
+                    end
                 end
             end
-            pending_cands = nil
+
+            -- 立刻倾泻所有替补简码
+            for _, lc in ipairs(lazy_cands) do
+                local lc_processed = process_rules(lc)
+                for _, lpc in ipairs(lc_processed) do
+                    if not global_yielded[lpc.text] then
+                        global_yielded[lpc.text] = true
+                        yield(lpc)
+                        yield_count = yield_count + 1
+                    end
+                end
+            end
+            lazy_cands = {}
         end
+        top_buffer = {}
+    end
 
-        if pending_cands then
-            for _, pc in ipairs(pending_cands) do
-                process_and_record(pc)
+    -- 第二步：遍历底层流
+    for cand in input:iter() do
+        if cand.type == "phrase" or cand.type == "user_phrase" then
+            has_exact_phrase = true
+        end
+        local q = cand.quality or 0
+
+        if not quality_dropped then
+            if q >= 99 then
+                insert(top_buffer, cand)
+            else
+                quality_dropped = true
+                flush_buffer()
+                output_cand(cand)
+            end
+        else
+            output_cand(cand)
+        end
+    end
+
+    -- 第三步：如果流从头到尾都没跌破 99（很短的流），做最后的兜底收尾
+    if not quality_dropped then
+        flush_buffer()
+    end
+
+    -- 清理残余（应对 index 设定极大，流长度不够的情况）
+    while #always_cands > 0 do
+        local ac = table.remove(always_cands, 1)
+        local ac_processed = process_rules(ac.cand)
+        for _, apc in ipairs(ac_processed) do
+            if not global_yielded[apc.text] then
+                global_yielded[apc.text] = true
+                yield(apc)
+                yield_count = yield_count + 1
             end
         end
     end

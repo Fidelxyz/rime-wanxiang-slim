@@ -31,8 +31,8 @@ switches:
     states: [表情关, 表情开]
   - options: [s2s, s2t, s2hk, s2tw]  # 简繁转换开关组，可以在一个空选项和多个实际“- simplifier@s2hk”引入的项目之前切换，这是一个开关组，你可以将其中任意一个s2s等设置为toggle快捷键，多次按下将轮询
     states: [简体, 通繁, 港繁, 臺繁]
-  - options: [abbrev_off, abbrev_lazy, abbrev_always]
-    states: [简码关, 空出简, 总出简]
+  - name: abbrev
+    states: [简码关, 简码开]
     reset: 1
   - options: [comment_off, tone_hint, toneless_hint]  #开启后在候选的注释里面实时显示全拼声调，不开启则采用系统配置，影响的是comment_format，归属：super_comment.lua
     states: [注释关, 有声调, 无声调]
@@ -70,7 +70,6 @@ engine:
     - lua_translator@*wanxiang.set_schema  #输入'/zrm'，快速切换为自然码双拼， /flypy→小鹤双拼 /mspy→微软双拼 /zrm→自然码 /sogou→搜狗双拼 /abc→智能ABC /ziguang→紫光双拼 /pyjj→拼音加加 /gbpy→国标双拼 /lxsq→乱序17 /pinyin→全拼
     - lua_translator@*wanxiang.unicode  #通过输入大写U引导，并输入Unicode编码获得汉字输出
     - table_translator@custom_phrase  #自定义短语 custom_phrase.txt，用于置顶自定义编码候选词
-    - table_translator@chengyu  #简码成语词汇表导入
     - table_translator@wanxiang_english  #英文词汇表导入
     - table_translator@wanxiang_mixedcode  #混合编码词汇表导入
     - reverse_lookup_translator@wanxiang_reverse  #挂接部件组字和笔画反查
@@ -109,12 +108,23 @@ super_comment:  # 超级注释模块，子项配置 true 开启，false 关闭
     completion: ""
     abbrev: ""
 
+super_processor:
+  enable_backspace_limit: true  # 开启/关闭退格限制
+  enable_seg_loop: true  # 开启/关闭分词符（'）循环
+  enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想，对齐大厂
+  kp_number_mode: auto  # 小键盘模式 (auto / compose)
+  limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+  select_character: "[,]"  # 开启以词定字，自动拆解第一位上屏首字，第二位上屏尾字
+  # 下面这些写法都支持：
+  # select_character: "[,]"                      # [ 上屏首字，] 上屏尾字（推荐）
+  # select_character: "bracketleft, bracketright"  # [ 上屏首字，] 上屏尾字（英文全拼）
+
 super_replacer:
   db_name: lua/replacer
   delimiter: "|"
   comment_format: "〔%s〕"
   chain: true  #true表示流水线作业，上一个option产出交给下一个处理，典型的s2t>t2hk=s2hk，false就是并行，直接用text转换
-  types:
+  rules:
     # 场景1：输入 '哈哈' -> 变成 '1.哈哈 2.😄'
     - option: emoji  # 开关名称与上面开关名称保持一致
       mode: append  # 新增候选append 替换原候选replace 替换注释comment 简码模式abbrev匹配输入编码置顶词组
@@ -157,13 +167,16 @@ super_replacer:
       prefix: "_s2tw_"
       files:
         - lua/data/TWVariants.txt
-    - option: [abbrev_lazy, abbrev_always]
-      mode: abbrev  # <--- 新增的简码模式
+    - option: abbrev  # 对应上面开关名称
+      mode: abbrev  # <--- 简码模式
       tags: [abc]
       prefix: "_abbr_"
-      #conv: "abcdefghijklmnopqrstuvwxyz>ABCDEFGHIJKLMNOPQRSTUVWXYZ" #从txt里编码转换为实际打字需要的编码，例如九键维护用字母加载数据库变数字
+      abbrev_rule: "1,6"
+      # 前置数量1，前置位置6,数量说的是你维护得数据库编码后面分割了几个词前几个要前置显示,位置说的是你要前置到第二候选还是第几
+      # 然后空码或只有英文等自定义词组的时候直接全部兜底显示,这个新的设计简化的应用层面,我们只需要维护一个数据库即可.
       files:
-        - lua/data/abbrev.txt  # 格式：zm\t怎么|在吗
+        - lua/data/abbrev.txt
+        - lua/data/chengyu.txt
 
 # 字符集过滤lua
 # a,通用规范汉字表
@@ -189,15 +202,15 @@ charset:
       - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞"
     blacklist: []
   - option: s2t
-    base: f
+    base: fa
     addlist: []
     blacklist: []
   - option: s2hk
-    base: h
+    base: ha
     addlist: []
     blacklist: []
   - option: s2tw
-    base: t
+    base: ta
     addlist: []
     blacklist: []
 
@@ -206,9 +219,7 @@ kp_number_mode: auto
 #小键盘数字处理逻辑
 #  "compose" : 小键盘数字始终不上屏参与编码
 #  "auto"    : 输入中 push，空闲时 commit（默认）
-
-#成语简码前置位置，只能设置在第一页，大于当前页数量则默认在最后一个，0代表关闭前置
-idiom_preposition: 0
+#
 
 # 主翻译器，拼音
 translator:
@@ -243,15 +254,6 @@ custom_phrase:
   enable_sentence: false  #禁止造句
   initial_quality: 99  #custom_phrase 的权重应该比 pinyin 和 wanxiang_en 大
 
-# 简码词库导入位于dicts得chengyu.txt文件词库
-chengyu:
-  dictionary: ""
-  user_dict: dicts/chengyu
-  db_class: stabledb
-  enable_sentence: false
-  enable_completion: false
-  initial_quality: 1.3
-
 # 中文、英文、数字、符号等混合词汇
 wanxiang_english:
   dictionary: wanxiang_english
@@ -261,6 +263,7 @@ wanxiang_english:
   initial_quality: 2.1
   comment_format:  #这里很重要如果残留带声调字母，剩余编码提示计算出错引发程序崩溃
     - xform/^~.+$//
+  #以下是lua相关配置，与原生处理器无关
   #英文自动加空格，除关闭外共有3种模式可供选择
   #off: 关闭; before: 总是前加; after: 总是后加;
   #smart: 智能模式连续输入英文时第二个单词前开始加空格，非输入状态的回车与空格都能打断加空格状态
@@ -268,6 +271,7 @@ wanxiang_english:
   english_spacing: smart
   spacing_timeout: 5
   max_candidates: 3  #英文候选输出最大候选数(适用于需要选单字组词的用户)
+  trigger: "\\"  #英文造词符号\，写一个用时双击
 
 wanxiang_mixedcode:
   dictionary: wanxiang_mixedcode
@@ -297,9 +301,8 @@ recognizer:
   import_preset: default  # 从 default.yaml 继承通用的
   patterns:  # 再增加方案专有的：
     wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 wanxiang_reverse/prefix 匹配
-    #add_user_dict: "^ac[A-Za-z/`']*$"   #引导式造词
     unicode: "^U[a-f0-9]+"  # U 作为触发前缀，响应 lua_translator@unicode，输出 Unicode 字符
-    #add_user_dict: "^ac[A-Za-z/`']*$"      #自造词引导方式
+    #add_user_dict: "^``[A-Za-z/`']*$"      #自造词引导方式
     email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"  # email @ 之后不上屏
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
 
@@ -323,9 +326,6 @@ key_binder:
     down: "Control+k"  # 下移
     reset: "Control+l"  # 重置
     pin: "Control+p"  # 置顶
-  # Lua 配置: 以词定字（上屏当前词句的第一个或最后一个字），和中括号翻页有冲突
-  select_first_character: "bracketleft"  # 左中括号 [
-  select_last_character: "bracketright"  # 右中括号 ]
   bindings:  # 也可以再增加方案专有的
     # 通过按下/发送/+1节约一个按键，不冲突的时候可以开启
     #- { match: "[a-z]{1,4}", accept: "/",  send_sequence: "/1" }

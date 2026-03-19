@@ -38,8 +38,8 @@ switches:
     states: [注释关, 辅助开, 读音开]
   - options: [s2s, s2t, s2hk, s2tw]  # 简繁转换开关组，可以在一个空选项和多个实际“- simplifier@s2hk”引入的项目之前切换，这是一个开关组，你可以将其中任意一个s2s等设置为toggle快捷键，多次按下将轮询
     states: [简体, 通繁, 港繁, 臺繁]
-  - options: [abbrev_off, abbrev_lazy, abbrev_always]
-    states: [简码关, 空出简, 总出简]
+  - name: abbrev
+    states: [简码关, 简码开]
     reset: 1
   - name: char_priority  #多体现在编码重合但候选有单字或者多字的情况`引导的辅码查词时是否单字优先，全拼常见，类似于特定编码情况下、反查状态下的调序能力。归属：super_lookup.lua
     states: [词组先, 单字先]
@@ -74,7 +74,6 @@ engine:
     - lua_translator@*wanxiang.set_schema  #输入'/zrm'，快速切换为自然码双拼， /flypy→小鹤双拼 /mspy→微软双拼 /zrm→自然码 /sogou→搜狗双拼 /abc→智能ABC /ziguang→紫光双拼 /pyjj→拼音加加 /gbpy→国标双拼 /lxsq→乱序17 /pinyin→全拼
     - lua_translator@*wanxiang.unicode  #通过输入大写U引导，并输入Unicode编码获得汉字输出
     - table_translator@custom_phrase  #自定义短语 custom_phrase.txt，用于置顶自定义编码候选词
-    - table_translator@chengyu  #简码成语词汇表导入
     - table_translator@wanxiang_english  #英文词汇表导入
     - table_translator@wanxiang_mixedcode  #混合编码词汇表导入
     - reverse_lookup_translator@wanxiang_reverse  #挂接部件组字和笔画反查
@@ -114,6 +113,17 @@ super_comment:  # 超级注释模块，子项配置 true 开启，false 关闭
     abbrev: ""
     fallback: "~"
 
+super_processor:
+  enable_backspace_limit: true  # 开启/关闭退格限制
+  enable_seg_loop: true  # 开启/关闭分词符（'）循环
+  enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想，对齐大厂
+  kp_number_mode: auto  # 小键盘模式 (auto / compose)
+  limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+  select_character: "[,]"  # 开启以词定字，自动拆解第一位上屏首字，第二位上屏尾字
+  # 下面这些写法都支持：
+  # select_character: "[,]"                      # [ 上屏首字，] 上屏尾字（推荐）
+  # select_character: "bracketleft, bracketright"  # [ 上屏首字，] 上屏尾字（英文全拼）
+
 force_upper_aux:
   hotkey: "period"  #用来固定候选的快捷键，原理是用双大写字母定字,能用组合键能用符号Tab等，按一下固定当前可见候选，按两下固定N-1个字状态下记录的字
   symbol: "›"  #用来替代双大写字母辅助的preedit视觉拉长的问题
@@ -123,9 +133,6 @@ kp_number_mode: auto
 #小键盘数字处理逻辑
 #  "compose" : 小键盘数字始终不上屏参与编码
 #  "auto"    : 输入中 push，空闲时 commit（默认）
-
-#成语简码前置位置，只能设置在第一页，大于当前页数量则默认在最后一个，0代表关闭前置
-idiom_preposition: 0
 
 super_replacer:
   db_name: lua/replacer
@@ -175,13 +182,16 @@ super_replacer:
       prefix: "_s2tw_"
       files:
         - lua/data/TWVariants.txt
-    - option: [abbrev_lazy, abbrev_always]
-      mode: abbrev  # <--- 新增的简码模式
+    - option: abbrev  # 对应上面开关名称
+      mode: abbrev  # <--- 简码模式
       tags: [abc]
       prefix: "_abbr_"
-      #conv: "abcdefghijklmnopqrstuvwxyz>ABCDEFGHIJKLMNOPQRSTUVWXYZ" #从txt里编码转换为实际打字需要的编码，例如九键维护用字母加载数据库变数字
+      abbrev_rule: "1,6"
+      # 前置数量1，前置位置6,数量说的是你维护得数据库编码后面分割了几个词前几个要前置显示,位置说的是你要前置到第二候选还是第几
+      # 然后空码或只有英文等自定义词组的时候直接全部兜底显示,这个新的设计简化的应用层面,我们只需要维护一个数据库即可.
       files:
-        - lua/data/abbrev.txt  # 格式：zm\t怎么|在吗
+        - lua/data/abbrev.txt
+        - lua/data/chengyu.txt
 
 # 字符集过滤lua
 # a,通用规范汉字表
@@ -207,15 +217,15 @@ charset:
       - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞"
     blacklist: []
   - option: s2t
-    base: f
+    base: fa
     addlist: []
     blacklist: []
   - option: s2hk
-    base: h
+    base: ha
     addlist: []
     blacklist: []
   - option: s2tw
-    base: t
+    base: ta
     addlist: []
     blacklist: []
 
@@ -248,15 +258,6 @@ custom_phrase:
   enable_sentence: false  # 禁止造句
   initial_quality: 99  # custom_phrase 的权重应该比 pinyin 和 wanxiang_en 大
 
-# 简码词库导入位于dicts得txt文件词库
-chengyu:
-  dictionary: ""
-  user_dict: dicts/chengyu
-  db_class: stabledb
-  enable_sentence: false
-  enable_completion: false
-  initial_quality: 1.2  #本表词和系统词重码居后
-
 # 中文、英文、数字、符号等混合词汇
 wanxiang_english:
   dictionary: wanxiang_english
@@ -266,6 +267,7 @@ wanxiang_english:
   initial_quality: 2.1
   comment_format:  #这里很重要如果残留带声调字母，剩余编码提示计算出错引发程序崩溃
     - xform/^~.+$//
+  #以下是lua相关配置，与原生处理器无关
   #英文自动加空格，除关闭外共有3种模式可供选择
   #off: 关闭; before: 总是前加; after: 总是后加;
   #smart: 智能模式连续输入英文时第二个单词前开始加空格，非输入状态的回车与空格都能打断加空格状态
@@ -273,6 +275,7 @@ wanxiang_english:
   english_spacing: smart
   spacing_timeout: 5
   max_candidates: 3  #英文候选输出最大候选数(适用于需要选单字组词的用户)
+  trigger: "\\"  #英文造词符号\，写一个用时双击
 
 wanxiang_mixedcode:
   dictionary: wanxiang_mixedcode
@@ -326,9 +329,6 @@ punctuator:
 # 从 default 继承快捷键
 key_binder:
   import_preset: default  # 从 default.yaml 继承通用的
-  # Lua 配置: 以词定字（上屏当前词句的第一个或最后一个字），和中括号翻页有冲突
-  select_first_character: "bracketleft"  # 左中括号 [
-  select_last_character: "bracketright"  # 右中括号 ]
   sequence:  # Lua 配置：手动排序的快捷键 super_sequence.lua，不要用方向键，各种冲突，一定要避免冲突
     up: "Control+j"  # 上移
     down: "Control+k"  # 下移

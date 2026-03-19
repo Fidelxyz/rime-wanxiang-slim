@@ -124,7 +124,7 @@
 
 </details>
 
-### 2. 安装语法模型（推荐）
+### 3. 安装语法模型（推荐）
 
 下载语法模型文件，放置于 Rime **用户目录根目录**，无需额外配置。
 
@@ -141,7 +141,7 @@
 
 </details>
 
-### 3. 个人配置：Custom Patch
+### 4. 个人配置：Custom Patch
 
 `*.custom.yaml` 是对方案文件的补丁，属于个人私有配置，**不会被升级覆盖**。
 
@@ -345,10 +345,8 @@ PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/r
 | --- | --- | --- |
 | `renming.dict.yaml` | 人名词库（Pro 版使用工具箱刷新编码） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
 | `wuzhong.dict.yaml` | 物种词库（动植物分类等词条，Pro 版使用工具箱刷新） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
-| `jm_flypy.txt` | 小鹤双拼简码 | 复制内容追加到根目录 `custom_phrase.txt` |
-| `jm_zrm.txt` | 自然码双拼简码 | 复制内容追加到根目录 `custom_phrase.txt` |
 
----
+--
 
 ## 数据文件说明
 
@@ -462,6 +460,8 @@ charset:
 | `abbrev` | 匹配输入编码而非文本 | `zm` → `1.怎么 2.在吗` |
 
 **手动排序 Lua**：Ctrl+J 向左，Ctrl+K 向右，Ctrl+L 移除排序，Ctrl+P 置顶。支持多设备同步（通过 `/sync` 目录）。
+
+**固定已输入的语句（Lua）**：按下句号锁定当前候选，双击句号锁定上一次 N-1 字候选，防止后续输入导致前面内容变化。
 
 **Pro 版开启自动调频**：在 `wanxiang_pro.custom.yaml` 中添加：
 

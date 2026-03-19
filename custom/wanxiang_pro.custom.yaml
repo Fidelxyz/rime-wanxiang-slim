@@ -27,12 +27,23 @@ patch:
       abbrev: ""
       fallback: "~"
 
+  super_processor:
+    enable_backspace_limit: true  # 开启/关闭退格限制
+    enable_seg_loop: true  # 开启/关闭分词符（'）循环
+    enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想，对齐大厂
+    kp_number_mode: auto  # 小键盘模式 (auto / compose)
+    limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+    select_character: "[,]"  # 开启以词定字，自动拆解第一位上屏首字，第二位上屏尾字
+    # 下面这些写法都支持：
+    # select_character: "[,]"                      # [ 上屏首字，] 上屏尾字（推荐）
+    # select_character: "bracketleft, bracketright"  # [ 上屏首字，] 上屏尾字（英文全拼）
+
   super_replacer:
     db_name: lua/replacer
     delimiter: "|"
     comment_format: "〔%s〕"
     chain: true  #true表示流水线作业，上一个option产出交给下一个处理，典型的s2t>t2hk=s2hk，false就是并行，直接用text转换
-    types:
+    rules:
       # 场景1：输入 '哈哈' -> 变成 '1.哈哈 2.😄'
       - option: emoji  # 开关名称与上面开关名称保持一致
         mode: append  # 新增候选append 替换原候选replace 替换注释comment 简码模式abbrev匹配输入编码置顶词组
@@ -41,7 +52,7 @@ patch:
         prefix: "_em_"  # 前缀用于区分同一个数据库的不同用途数据
         files:
           - lua/data/emoji.txt
-      # 场景2：用于常驻的直接替换 option: true
+      # 场景3：用于常驻的直接替换 option: true
       - option: true
         mode: append  # <--- 新增候选模式
         comment_mode: none
@@ -75,12 +86,18 @@ patch:
         prefix: "_s2tw_"
         files:
           - lua/data/TWVariants.txt
-      - option: [abbrev_lazy, abbrev_always]
-        mode: abbrev  # <--- 新增的简码模式
+      - option: abbrev  # 对应上面开关名称
+        mode: abbrev  # <--- 简码模式
+
         tags: [abc]
         prefix: "_abbr_"
+        abbrev_rule: "1,6"
+        # 前置数量1，前置位置6,数量说的是你维护得数据库编码后面分割了几个词前几个要前置显示,位置说的是你要前置到第二候选还是第几
+        # 然后空码或只有英文等自定义词组的时候直接全部兜底显示,这个新的设计简化的应用层面,我们只需要维护一个数据库即可.
         files:
-          - lua/data/abbrev.txt  # 格式：zm\t怎么|在吗
+          - lua/data/abbrev.txt
+          - lua/data/chengyu.txt
+
   # 字符集过滤lua
   # a,通用规范汉字表
   # b,GB2312,
@@ -105,26 +122,18 @@ patch:
         - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞"
       blacklist: []
     - option: s2t
-      base: f
+      base: fa
       addlist: []
       blacklist: []
     - option: s2hk
-      base: h
+      base: ha
       addlist: []
       blacklist: []
     - option: s2tw
-      base: t
+      base: ta
       addlist: []
       blacklist: []
 
-  # 给 kp_number_processor 用的小键盘模式，能自动读取recognizer下面正则与之功能对齐
-  kp_number_mode: auto
-  #小键盘数字处理逻辑
-  #  "compose" : 小键盘数字始终不上屏参与编码
-  #  "auto"    : 输入中 push，空闲时 commit（默认）
-
-  #成语简码前置位置，只能设置在第一页，大于当前页数量则默认在最后一个，0代表关闭前置
-  idiom_preposition: 0
   #下面用来改变你的windows小狼毫右下角软件图标
   #schema/+:
   #  icon: "icons/zhong.ico"

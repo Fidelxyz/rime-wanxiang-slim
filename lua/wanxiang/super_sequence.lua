@@ -10,12 +10,7 @@
 -- sequence_开头，后面跟着installation_id，这个参数来自用户目录installation.yaml
 -- 清单有什么文件就会读取什么文件
 -- 仅使用 installation.yaml 的 sync_dir；读不到就回退到 user_dir/sync
--- 核心规则： 向前移动 = "Control+j", 向后移动 = "Control+k", 重置 = "Control+l", 置顶 = "Control+p"
--- 1) p>0：有效排序（DB upsert + 导出）
--- 2) p=0：墓碑（DB 删除 + 导出墓碑）
--- 3) 初始化：先 flush 本机增量到导出 → 外部合并(所有设备文件+本机DB，LWW) → 重写本机导出(含墓碑) → 导入覆盖DB，p=0删除键，不导入
--- 4) 同步路径策略：能从 installation.yaml 读取到 sync_dir 就用它；读不到才用默认 user_dir/sync
--- 带 Ctrl 可视化标记
+
 -- ✨是给上一层滤镜传递排序上下文信息的代码，不用时便于删除
 local wanxiang = require("wanxiang/wanxiang")
 local userdb = require("wanxiang/userdb")
@@ -658,6 +653,9 @@ function P.func(key_event, env)
 
     local selected_cand = context:get_selected_candidate()
     if not context:has_menu() or not selected_cand or not selected_cand.text then
+        if context:get_option("_seq_show_markers") then
+            context:set_option("_seq_show_markers", false)
+        end
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
@@ -695,13 +693,15 @@ function P.func(key_event, env)
         curr_state.offset = nil
         curr_state.mode = curr_state.ADJUST_MODE.Pin
     else
+        if context:get_option("_seq_show_markers") then
+            context:set_option("_seq_show_markers", false)
+            process_adjustment(context)
+        end
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
-
     process_adjustment(context)
     return wanxiang.RIME_PROCESS_RESULTS.kAccepted
 end
-
 ------------------------------------------------------------
 -- 十、Filter (含标记可视化)
 ------------------------------------------------------------

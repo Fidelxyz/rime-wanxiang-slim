@@ -256,7 +256,6 @@ base:
       - xform/^(.)(ài|ián|üě|uě|uí|uǎn|uàng|ǘ)$/$1B/
       - xform/^(.)(í|iǎng|ǎn)$/$1N/
       - xform/^(.)(ú|iāng|iang|ěng|ǔn)$/$1M/
-      - xlit/QWERTYUIOPASDFGHMJCKLZXVBN/qwertyuiopasdfghmjcklzxvbn/
 
   小鹤双拼:
     __append:
@@ -582,7 +581,6 @@ base:
       - xform/^(.)ou$/$1Ⓒ/
       - xform/^(.)an$/$1Ⓕ/
       - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⓂⒿⒸⓀⓁⓏⓍⓋⒷⓃ/qwrtyuiopsdfghmjcklzxvbn/
-      #- xform/^(aj|ak|al|ob|ez|ef)$//  # 释放非原本自然码规则
 
   乱序17:
     __append:

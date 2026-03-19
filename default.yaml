@@ -15,13 +15,12 @@ menu:
   #alternative_select_labels: [ ⒈, ⒉, ⒊, ⒋, ⒌, ⒍, ⒎, ⒏, ⒐, ⒑ ]  # 修改候选项标签，Linux用这行用了加点字符
   #alternative_select_keys: ASDFGHJKL  # 这里战略性占用选字按键，如编码字符占用数字键，则需另设选字键
 
-# 方案选单相关
+# 万象状态面板相关
 switcher:
-  caption: 「方案选单」
+  caption: 「万象状态面板」
   hotkeys:
     - Control+grave
-    # - Alt+grave
-  save_options:  # 开关记忆（方案中的 switches），从方案选单（而非快捷键）切换时会记住的选项，需要记忆的开关不能设定 reset
+  save_options:  # 开关记忆（方案中的 switches），从万象状态面板（而非快捷键）切换时会记住的选项，需要记忆的开关不能设定 reset
     - ascii_punct
     - s2t
     - s2hk
@@ -34,11 +33,12 @@ switcher:
     - fuzhu_hint
     - tone_hint
     - search_single_char
+    - abbrev
   fold_options: true  # 呼出时是否折叠，多方案时建议折叠 true ，一个方案建议展开 false
   abbreviate_options: true  # 折叠时是否缩写选项
-  option_list_separator: ' / '  # 折叠时的选项分隔符
+option_list_separator: ' / '  # 折叠时的选项分隔符
 
-# 中西文切换
+# 中英文切换
 #
 # good_old_caps_lock:
 # true   切换大写

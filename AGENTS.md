@@ -121,10 +121,11 @@ upstream is clearly documented for users.
 When merging any upstream changes, **ALWAYS** follow this procedure:
 
 ### Step 1: Check for new features
-Review the upstream diff/commits for any new features being introduced. If new features are found:
+Review the upstream diff/commits for any new features being introduced (i.e. The **ENTIRE** patch,
+if there is any). If new features are found:
 
 1. List all new features clearly.
-2. **PAUSE and ASK the user** whether to introduce each feature.
+2. **PAUSE and ASK the user** a **multiple-choice** question for whether to introduce each feature.
 3. Based on the user's answer:
    - **Yes, introduce it**: Add the feature to the appropriate section in `FEATURES.md`.
    - **No, skip it**: Add the feature to the `## 已移除功能` section in `FEATURES.md`, documenting

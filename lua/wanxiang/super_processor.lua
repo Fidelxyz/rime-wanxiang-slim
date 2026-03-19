@@ -10,7 +10,7 @@ local M = {}
 
 local K_REJECT, K_ACCEPT, K_NOOP = 0, 1, 2
 
--- 1. 全局常量定义 (Constants)
+-- 1. 全局常量定义
 
 -- [KpNumber] 小键盘键码映射
 local KP_MAP = {
@@ -40,9 +40,7 @@ local LETTER_SEL_MAP = {
     [0x70] = 10,
 }
 
--- [LimitRepeated] 重复限制配置
-local MAX_REPEAT = 8
-local MAX_SEGMENTS = 40
+-- [LimitRepeated] 重复限制默认配置 (现已支持配置覆盖)
 local INITIALS = "[bpmfdtnlgkhjqxrzcsywiu]"
 
 -- [SuperSegmentation] 分词模式配置
@@ -56,7 +54,7 @@ local SEG_PATTERNS = {
     [10] = { all = { { 2, 2, 2, 2, 2 } } },
 }
 
--- 2. 核心辅助函数 (Utilities)
+-- 2. 核心辅助函数
 
 -- 字符串转义
 local function escp(ch)
@@ -237,7 +235,7 @@ local function prompt(ctx, msg)
     end
 end
 
--- 3. 初始化与资源管理 (Init & Fini)
+-- 3. 初始化与资源管理
 
 function M.init(env)
     local engine = env.engine
@@ -246,22 +244,112 @@ function M.init(env)
 
     -- [1] 配置加载 (按功能模块分类)
 
+    env.enable_backspace_limit = true
+    env.enable_seg_loop = true
+    env.enable_limit_repeated = true
+    env.enable_predict_space = true
+    env.pending_predict_space = false
+    env.max_repeat = 8
+    env.max_segments = 40
+    env.sc_first_key = nil
+    env.sc_last_key = nil
+
+    if config then
+        -- 基础开关加载
+        local ok_bs, bs_val = pcall(function()
+            return config:get_bool("super_processor/enable_backspace_limit")
+        end)
+        if ok_bs and bs_val ~= nil then
+            env.enable_backspace_limit = bs_val
+        end
+
+        local ok_seg, seg_val = pcall(function()
+            return config:get_bool("super_processor/enable_seg_loop")
+        end)
+        if ok_seg and seg_val ~= nil then
+            env.enable_seg_loop = seg_val
+        end
+
+        local ok_ps, ps_val = pcall(function()
+            return config:get_bool("super_processor/enable_predict_space")
+        end)
+        if ok_ps and ps_val ~= nil then
+            env.enable_predict_space = ps_val
+        end
+
+        -- 长度限制配置加载（支持 false, "", "8,40"）
+        local ok_lr_bool, lr_bool = pcall(function()
+            return config:get_bool("super_processor/limit_repeated")
+        end)
+        local ok_lr_str, lr_str = pcall(function()
+            return config:get_string("super_processor/limit_repeated")
+        end)
+
+        if ok_lr_bool and lr_bool == false then
+            env.enable_limit_repeated = false
+        elseif ok_lr_str and type(lr_str) == "string" then
+            local str_trim = lr_str:match("^%s*(.-)%s*$")
+            if str_trim == "" or str_trim:lower() == "false" then
+                env.enable_limit_repeated = false
+            else
+                local p1, p2 = str_trim:match("^(%d+)%s*,%s*(%d+)$")
+                if p1 and p2 then
+                    env.max_repeat = tonumber(p1)
+                    env.max_segments = tonumber(p2)
+                end
+            end
+        end
+
+        -- 以词定字配置加载（支持 false, "", "[,]", "bracketleft, bracketright"）
+        local has_new_config = false
+        local ok_sc_bool, sc_bool = pcall(function()
+            return config:get_bool("super_processor/select_character")
+        end)
+        local ok_sc_str, sc_str = pcall(function()
+            return config:get_string("super_processor/select_character")
+        end)
+
+        if ok_sc_bool and sc_bool == false then
+            env.sc_first_key, env.sc_last_key = nil, nil
+            has_new_config = true
+        elseif ok_sc_str and type(sc_str) == "string" then
+            local str_trim = sc_str:match("^%s*(.-)%s*$")
+            if str_trim == "" or str_trim:lower() == "false" then
+                env.sc_first_key, env.sc_last_key = nil, nil
+            else
+                -- 尝试使用逗号分割
+                local p1, p2 = str_trim:match("^(.-),(.-)$")
+                if p1 and p2 then
+                    env.sc_first_key = p1:match("^%s*(.-)%s*$")
+                    env.sc_last_key = p2:match("^%s*(.-)%s*$")
+                elseif #str_trim >= 2 then
+                    -- 兜底兼容旧的 "[]" 无逗号写法
+                    env.sc_first_key = str_trim:sub(1, 1)
+                    env.sc_last_key = str_trim:sub(2, 2)
+                end
+            end
+            has_new_config = true
+        end
+
+        if not has_new_config then
+            -- 兜底：只有在新配置完全缺失时，才去读旧配置
+            env.sc_first_key = config:get_string("key_binder/select_first_character")
+            env.sc_last_key = config:get_string("key_binder/select_last_character")
+        end
+    end
+
     -- [BackspaceLimit]
     env.bs_prev_len = -1
     env.bs_sequence = false
 
     -- [KpNumber] 小键盘
     env.kp_page_size = config:get_int("menu/page_size") or 6
-    local m = config:get_string("kp_number_mode") or "auto"
+    local m = config:get_string("super_processor/kp_number_mode") or "auto"
     env.kp_mode = (m == "auto" or m == "compose") and m or "auto"
     env.kp_func_patterns = wanxiang.load_regex_patterns(config, "recognizer/patterns")
 
     -- [LetterSelector] 字母选词状态位
     env.ls_active = false
-
-    -- [SelectCharacter] 以词定字
-    env.sc_first_key = config:get_string("key_binder/select_first_character")
-    env.sc_last_key = config:get_string("key_binder/select_last_character")
 
     -- [SuperSegmentation] 超强分词
     local delim = config:get_string("speller/delimiter") or " '"
@@ -276,6 +364,14 @@ function M.init(env)
 
     env.conn_update = context.update_notifier:connect(function(ctx)
         local input = ctx.input or ""
+
+        -- [Predict Space] 联想空格接力起跑点
+        if env.pending_predict_space then
+            env.pending_predict_space = false
+            ctx:set_option("_dummy_predict_update", false)
+            ctx:clear()
+            env.engine:commit_text(" ")
+        end
 
         -- A. [SuperSegmentation] 缓存数据
         local seg = ctx.composition:back()
@@ -297,7 +393,6 @@ function M.init(env)
         -- C. [KpNumber] 缓存状态
         env.kp_is_composing = ctx:is_composing()
         env.kp_has_menu = ctx:has_menu()
-
     end)
 end
 
@@ -309,10 +404,27 @@ function M.fini(env)
     env.memory = nil
 end
 
--- 4. 逻辑分发处理 (Handlers)
+-- 4. 逻辑分发处理
+
+-- [Predict Space] 联想空格接力起跑点
+local function handle_predict_space(key, env, ctx)
+    if not env.enable_predict_space then
+        return false
+    end
+    if (not ctx:is_composing() or ctx.input == "") and ctx:has_menu() then
+        env.pending_predict_space = true
+        ctx:set_option("_dummy_predict_update", true)
+        return true
+    end
+    return false
+end
 
 -- [SuperSegmentation] 处理分词符 '
 local function handle_segmentation(key, env, ctx)
+    if not env.enable_seg_loop then
+        return false
+    end
+
     if key.keycode ~= string.byte(env.seg_manual_delim) then
         env.seg_core, env.seg_start_idx, env.seg_N, env.seg_base = nil, nil, nil, nil
         return false
@@ -429,6 +541,10 @@ end
 
 -- [Backspace Limit] 退格限制
 local function handle_backspace(key, env, ctx)
+    if not env.enable_backspace_limit then
+        return false
+    end
+
     local kc = key.keycode
     if kc ~= 0xFF08 or key:release() then
         env.bs_sequence = false
@@ -453,6 +569,10 @@ end
 
 -- [Limit Repeated] 重复输入限制
 local function handle_limit_repeat(key, env, ctx)
+    if not env.enable_limit_repeated then
+        return false
+    end
+
     local kc = key.keycode
     if not (kc >= 0x61 and kc <= 0x7A) then
         return false
@@ -470,12 +590,12 @@ local function handle_limit_repeat(key, env, ctx)
     local nxt = input .. ch
     local last, rep_n = tail_rep(nxt)
 
-    if last:match(INITIALS) and rep_n > MAX_REPEAT then
+    if last:match(INITIALS) and rep_n > env.max_repeat then
         prompt(ctx, " 〔已超最大重复声母〕")
         return true
     end
 
-    if segs >= MAX_SEGMENTS then
+    if segs >= env.max_segments then
         prompt(ctx, " 〔已超最大输入长度〕")
         return true
     end
@@ -512,7 +632,7 @@ local function handle_letter_select(key, env, ctx)
     return true
 end
 
--- [Select Character] 以词定字逻辑 (New!)
+-- [Select Character] 以词定字逻辑
 local function handle_select_character(key, env, ctx)
     -- 1. 检查配置是否存在
     if not (env.sc_first_key or env.sc_last_key) then
@@ -524,10 +644,15 @@ local function handle_select_character(key, env, ctx)
         return false
     end
 
-    -- 3. 键值匹配
+    -- 3. 键值与字符双重匹配（解决 Rime 返回 "bracketleft" 无法匹配 "[" 的问题）
     local repr = key:repr()
-    local is_first = (repr == env.sc_first_key)
-    local is_last = (repr == env.sc_last_key)
+    local ch = ""
+    if key.keycode >= 0x20 and key.keycode <= 0x7E then
+        ch = string.char(key.keycode)
+    end
+
+    local is_first = (env.sc_first_key and (repr == env.sc_first_key or ch == env.sc_first_key))
+    local is_last = (env.sc_last_key and (repr == env.sc_last_key or ch == env.sc_last_key))
     if not (is_first or is_last) then
         return false
     end
@@ -646,7 +771,7 @@ local function handle_number_logic(key, env, ctx)
     return false
 end
 
--- 5. 主入口函数 (Main Logic Flow)
+-- 5. 主入口函数
 function M.func(key, env)
     local ctx = env.engine.context
 
@@ -657,6 +782,13 @@ function M.func(key, env)
     end
 
     local kc = key.keycode
+
+    -- [Predict Space] 联想空格
+    if kc == 0x20 then
+        if handle_predict_space(key, env, ctx) then
+            return K_ACCEPT
+        end
+    end
 
     if ctx.composition:empty() then
         if kc == 0xff0d or kc == 0xff8d or kc == 0x20 then
@@ -674,7 +806,7 @@ function M.func(key, env)
         end
     end
 
-    -- 3. Select Character 以词定字 (New!)
+    -- 3. Select Character 以词定字
     -- 它的优先级很高，因为是针对当前候选的操作
     -- 但必须在 Backspace 之后，防止误操作
     if handle_select_character(key, env, ctx) then
@@ -688,7 +820,7 @@ function M.func(key, env)
         end
     end
 
-    -- 5. 字母键 (a-z)[Limit Repeated] 重复输入限制
+    -- 5. 字母键[Limit Repeated] 重复输入限制
     if kc >= 0x61 and kc <= 0x7A then
         if handle_limit_repeat(key, env, ctx) then
             return K_ACCEPT

@@ -28,7 +28,9 @@ end
 local function get_delimiters(ctx)
     local cfg = ctx.engine and ctx.engine.schema and ctx.engine.schema.config
     local delimiter = (cfg and cfg:get_string("speller/delimiter")) or " '"
-    return delimiter:sub(1, 1), delimiter:sub(2, 2)
+    local d1 = get_utf8_char(delimiter, 1) or " "
+    local d2 = get_utf8_char(delimiter, 2) or "'"
+    return d1, d2
 end
 
 -- 转义正则符号
@@ -82,7 +84,7 @@ function ForceUpperAux.init(env)
     local dict_name = config:get_string("translator/dictionary") or "wanxiang_pro"
     env.dict = ReverseLookup(dict_name)
 
-    env.history_first = {} -- 记录每个长度最初出现的首选
+    env.history_first = {}
     env.press_count = 0
     env.is_cycling = false
     env.snapshot_parts = nil
@@ -91,9 +93,11 @@ function ForceUpperAux.init(env)
     env.on_update = function(ctx)
         -- 调用外部模块函数，如果在功能模式则不记录历史
         -- 这里 env.is_cycling 起到了锁的作用，防止在按快捷键修改输入时陷入循环
-        if env.is_cycling or wanxiang.is_function_mode_active(ctx) then
+        local is_special_mode = wanxiang.s2t_conversion and wanxiang.s2t_conversion(ctx)
+        if env.is_cycling or wanxiang.is_function_mode_active(ctx) or is_special_mode then
             return
         end
+
         if not ctx:is_composing() then
             env.history_first = {}
             env.press_count = 0
@@ -141,8 +145,9 @@ function ForceUpperAux.func(key_event, env)
     end
     local ctx = env.engine.context
 
-    -- 功能模式检查
-    if wanxiang.is_function_mode_active(ctx) then
+    -- 功能模式检查 + 特殊标签检查（数字、标点等）
+    local is_special_mode = wanxiang.s2t_conversion and wanxiang.s2t_conversion(ctx)
+    if wanxiang.is_function_mode_active(ctx) or is_special_mode then
         return 2
     end
 
@@ -188,20 +193,36 @@ function ForceUpperAux.func(key_event, env)
             apply_until = n_minus_1
         end
 
-        -- 性能优化：使用表来收集字符串分片，最后使用 table.concat 一次性拼接
+        -- 使用表来收集字符串分片，最后使用 table.concat 一次性拼接
         local new_input_parts = {}
         local text_len = utf8.len(candidate_text) or 0
+        local found_any_aux = false
+
         for i = 1, parts_count do
             local syl = parts[i]
             if i <= apply_until and i <= text_len then
-                local pinyin = syl:sub(1, 2)
+                local pinyin_offset = utf8.offset(syl, 3)
+                local pinyin = pinyin_offset and string.sub(syl, 1, pinyin_offset - 1) or syl
+
                 local char = get_utf8_char(candidate_text, i)
                 local aux = lookup_aux_code(env, char)
-                new_input_parts[i] = pinyin .. aux
+                if aux and aux ~= "" then
+                    new_input_parts[i] = pinyin .. aux
+                    found_any_aux = true
+                else
+                    new_input_parts[i] = syl
+                end
             else
                 new_input_parts[i] = syl
             end
         end
+        if not found_any_aux then
+            env.press_count = 0
+            env.is_cycling = false
+            env.snapshot_parts = nil
+            return 2
+        end
+
         local new_input = table.concat(new_input_parts)
 
         if new_input ~= "" and new_input ~= ctx.input then

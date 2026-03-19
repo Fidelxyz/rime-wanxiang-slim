@@ -20,8 +20,8 @@ _G.WanxiangSharedState = _G.WanxiangSharedState
         page_cache = {}, -- 存放排序后的终极缓存
     }
 -- 性能优化：本地化字符串函数
-local byte, find, gsub, upper, sub = string.byte, string.find, string.gsub, string.upper, string.sub
-local utf8_codes = utf8.codes -- 本地化 utf8 迭代器
+local byte = string.byte
+local find = string.find
 local utf8_len = utf8.len
 
 local function fast_type(c)
@@ -51,22 +51,6 @@ local function has_english_token_fast(s)
     end
     return false
 end
--- 纯ASCII判定
-local function is_english_candidate(cand)
-    local txt = cand and cand.text
-    if not txt or txt == "" then
-        return false
-    end
-    if not has_english_token_fast(txt) then
-        return false
-    end
-    -- 使用局部变量 find，而非 string.find
-    if find(txt, "[\128-\255]") then
-        return false
-    end
-    return true
-end
-
 -- 1. 内部常量与工具函数
 local escape_map = {
     ["\\n"] = "\n", -- 换行
@@ -101,36 +85,39 @@ local ke_names = { "初刻", "二刻", "三刻", "四刻", "五刻", "六刻", "
 local function get_shichen_and_ke(hour, min)
     local total_minutes = hour * 60 + min
 
-    -- 遍历所有时辰
     for _, shichen in ipairs(shichen_data) do
         local shichen_name = shichen.name
         local start_hour = shichen.start_hour
         local end_hour = shichen.end_hour
 
-        -- 计算时辰的起始和结束分钟数
         local start_minutes = start_hour * 60
         local end_minutes = end_hour * 60
+        local is_match = false
 
         -- 处理跨天的子时
         if start_hour > end_hour then
-            end_minutes = end_hour * 60 + 1440 -- 第二天的时间
+            if total_minutes >= start_minutes or total_minutes < end_minutes then
+                is_match = true
+            end
+        else
+            if total_minutes >= start_minutes and total_minutes < end_minutes then
+                is_match = true
+            end
         end
 
-        -- 检查是否在当前时辰内
-        if total_minutes >= start_minutes and total_minutes < end_minutes then
-            -- 计算在此时辰内的分钟偏移量
-            local offset_minutes = total_minutes - start_minutes
+        if is_match then
+            local calc_minutes = total_minutes
+            if start_hour > end_hour and total_minutes < end_minutes then
+                calc_minutes = total_minutes + 1440
+            end
 
-            -- 计算刻数索引 (0-7对应初刻-八刻)
-            -- 每刻15分钟，四舍五入到最近的刻
+            local offset_minutes = calc_minutes - start_minutes
             local ke_index = math.floor(offset_minutes / 15)
-
-            -- 边界处理：当offset_minutes为120时，应该是八刻，所以索引为7
             if ke_index >= 8 then
                 ke_index = 7
             end
 
-            return shichen_name, ke_names[ke_index + 1] -- +1因为Lua数组从1开始
+            return shichen_name, ke_names[ke_index + 1]
         end
     end
 
@@ -156,7 +143,15 @@ local function process_datetime_internal(s)
     end
     local ampm = (dt.hour < 12) and "am" or "pm"
     local raw_tz = os.date("%z") or "+0800"
-    local tz_colon = raw_tz:sub(1, 3) .. ":" .. raw_tz:sub(4, 5)
+    local tz_colon
+    do
+        local sign, h_str, m_str = raw_tz:match("^([%+%-])(%d%d)(%d%d)$")
+        if sign then
+            tz_colon = sign .. h_str .. ":" .. m_str
+        else
+            tz_colon = raw_tz
+        end
+    end
 
     -- 计算中文时段 A
     local zh_period
@@ -198,7 +193,7 @@ local function process_datetime_internal(s)
     }
 
     return s:gsub("\\(%a)", function(char)
-        return time_map[char] or char
+        return time_map[char] or ("\\" .. char)
     end)
 end
 
@@ -327,20 +322,26 @@ function M.func(input, env)
     local code = ctx and (ctx.input or "") or ""
     local comp = ctx and ctx.composition or nil
 
-    -- 1. 快速环境检查
+    -- 1. 空环境清理
     if not code or code == "" or (comp and comp:empty()) then
-        env.locked = false
-        -- 【新增】清空兜底缓存
         env.last_2code_char = nil
+        env.page_cache = {}
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
     end
 
     -- 计算当前拼音片段长度，用于精确判定2码和3码
     local last_seg = comp and comp:back()
     local code_len = #code
     local seg_len = last_seg and (last_seg._end - last_seg.start) or code_len
-
-    -- 2. 状态缓存
     local enable_taichi = env.enable_taichi_filter
+
+    -- 及时清理兜底数据
+    if seg_len < 2 or seg_len > 3 then
+        env.last_2code_char = nil
+    end
 
     -- 3. 成对符号包裹功能已移除
     env.page_cache = {}

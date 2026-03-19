@@ -51,7 +51,6 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `custom/wanxiang_pro.schema.yaml` | PRO 版方案（辅码功能仅 PRO 版） |
-| `lua/wanxiang/force_upper_aux.lua` | 大写辅助码自动应用处理器 |
 | `lua/wanxiang/super_comment_preedit.lua` | 辅助码注释提示（Ctrl+a 循环切换） |
 | `custom/wanxiang_chaifen_*.dict.yaml` | 7 种辅码拆分字典（自然码、墨奇、鹤形、虎码、五笔、汉心、首右） |
 | `custom/wanxiang_chaifen.schema.yaml` | 辅码拆分反查方案 |
@@ -70,7 +69,6 @@
 |----------|------|
 | `custom/wanxiang_pro.schema.yaml` | PRO 方案中的辅助码编码配置 |
 | `custom/wanxiang_pro.dict.yaml` | 携带辅助码的 PRO 词库（格式：`字 拼音;辅码 词频`） |
-| `lua/wanxiang/force_upper_aux.lua` | 大写辅助码自动应用（单按锁定、双按回退） |
 | `wanxiang_algebra.yaml` | `/` 引导辅助码聚拢的转写规则 |
 
 #### 间接辅助码（仅 PRO 版）
@@ -88,7 +86,6 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/force_upper_aux.lua` | 大写辅助码处理 |
 | `wanxiang_algebra.yaml` | 大小写转写规则 |
 
 ### 反查系统
@@ -236,11 +233,33 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 
 ### 英文造词 Lua
 
-任意英文输入编码末尾输入 `\\` 触发英文造词，记录到 `en.userdb`。
+英文输入编码末尾输入指定符号（默认 `\\`）触发英文造词，记录到 `en.userdb`。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/auto_phrase.lua` | 英文造词逻辑 |
+| `lua/wanxiang/super_english.lua` | 英文造词逻辑（`trigger` 配置可自定义触发符） |
+| `wanxiang.schema.yaml` | `super_english` 段 `trigger` 配置 |
+
+### 简码系统（Super Replacer 简码模式）
+
+公共简码与用户自定义简码，支持 `abbrev_rule` 参数控制简码规则，单开关控制启用/禁用，成语库已合并。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/super_replacer.lua` | 简码处理逻辑（`abbrev` 类型规则） |
+| `lua/data/abbrev.txt` | 公共简码数据 |
+| `lua/data/chengyu.txt` | 成语数据（约 23k 行） |
+| `wanxiang.schema.yaml` | `abbrev` 开关、`abbrev_rule` 参数配置 |
+| `custom/wanxiang.custom.yaml` 等 | 用户简码配置模板 |
+
+### 联想空格打断功能
+
+空格键打断联想并上屏空格，对齐大厂输入法行为。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/super_processor.lua` | `predict_space` 配置与打断逻辑 |
+| `wanxiang.schema.yaml` | `super_processor/predict_space` 配置项 |
 
 ### 用户词删除
 
@@ -274,7 +293,7 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 | `lua/data/HKVariants.txt` | 香港繁体变体 |
 | `lua/data/TWVariants.txt` | 台湾繁体变体 |
 | `lua/data/others.txt` | 其他替换数据 |
-| `wanxiang.schema.yaml` | `super_replacer` 段配置（types、chain、db_name 等） |
+| `wanxiang.schema.yaml` | `super_replacer` 段配置（rules、chain、db_name 等） |
 
 ### 手动排序 Lua
 
@@ -284,6 +303,14 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 |----------|------|
 | `lua/wanxiang/super_sequence.lua` | 手动排序模块（726 行），LevelDB 数据库 `lua/sequence.userdb` |
 | `wanxiang.schema.yaml` | 排序快捷键配置 |
+
+### 固定已输入语句 Lua
+
+按下句号锁定当前候选句子，双击句号锁定上一个N-1长度的候选句子。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/force_upper_aux.lua` | 自动施加辅助码 |
 
 ### 小键盘有妙用 Lua
 

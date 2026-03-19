@@ -1,6 +1,6 @@
 -- lua/super_english.lua
 -- https://github.com/amzxyz/rime_wanxiang
--- @description: 英文全能处理器 (Filter Only: 锚点切分 + 动态分隔符 + 超时销毁)
+-- @description: 英文全能处理器 (Filter Only: 锚点切分 + 动态分隔符 + 超时销毁 + 性能极速优化)
 -- @author: amzxyz
 
 -- 核心功能清单:
@@ -9,6 +9,7 @@
 -- 3. [Memory] 全量历史缓存，完美解决回删乱码问题
 -- 4. [Construct] 原生优先构造策略 (短词无分词则重置为原生输入)
 -- 5. [Order] 单字母(a/A) 智能插队排序,补齐单字母候选
+-- 6. [Limit & Perf] 纯英文数量限制，并增加极速防卡顿熔断机制
 
 local F = {}
 
@@ -66,7 +67,6 @@ local allowed_ascii_symbols = {
     [45] = true, -- -
     [43] = true, -- +
     [46] = true, -- .
-    [63] = true, -- ?
 
     [48] = true,
     [49] = true,
@@ -80,21 +80,26 @@ local allowed_ascii_symbols = {
     [57] = true,
 }
 
+-- 必须包含至少一个英文字母，否则纯数字/符号直接返回 false
 local function is_ascii_phrase_fast(s)
     if not s or s == "" then
         return false
     end
     local len = #s
+    local has_alpha = false
     for i = 1, len do
         local b = byte(s, i)
         local is_upper = (b >= 65 and b <= 90)
         local is_lower = (b >= 97 and b <= 122)
         local is_allowed_sym = allowed_ascii_symbols[b]
-        if not (is_upper or is_lower or is_allowed_sym) then
+
+        if is_upper or is_lower then
+            has_alpha = true
+        elseif not is_allowed_sym then
             return false
         end
     end
-    return true
+    return has_alpha
 end
 
 local function has_letters(s)
@@ -233,7 +238,7 @@ local function apply_formatting(cand, code_ctx)
         text = norm
         changed = true
     end
-    if is_ascii_phrase_fast(text) and has_letters(text) then
+    if is_ascii_phrase_fast(text) then
         if code_ctx.raw_input then
             local new_text = apply_segment_formatting(text, code_ctx.raw_input)
             if new_text ~= text then
@@ -278,6 +283,9 @@ function F.init(env)
     env.english_spacing_mode = "off"
     env.spacing_timeout = 0
     env.lookup_key = "`"
+    env.max_eng_cands = 0
+    env.pair_symbol = "\\"
+    local delimiter_str = " '"
     if cfg then
         local str = cfg:get_string("wanxiang_english/english_spacing")
         if str then
@@ -295,12 +303,13 @@ function F.init(env)
         if max_cands then
             env.max_eng_cands = max_cands
         end
-    end
-    env.lookup_key_esc = gsub(env.lookup_key, "([%%%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
-    local delimiter_str = " '"
-    if cfg then
+        local sym = cfg:get_string("wanxiang_english/trigger")
+        if sym and #sym > 0 then
+            env.pair_symbol = sub(sym, 1, 1)
+        end
         delimiter_str = cfg:get_string("speller/delimiter") or delimiter_str
     end
+    env.lookup_key_esc = gsub(env.lookup_key, "([%%%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
     env.delimiter_char = sub(delimiter_str, 1, 1)
     local escaped_delims = gsub(delimiter_str, "([%%%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
     env.split_pattern = "[^" .. escaped_delims .. "]+"
@@ -381,6 +390,7 @@ function F.func(input, env)
     end
 
     local curr_input = ctx.input
+    local symbol = env.pair_symbol
     if not has_letters(curr_input) then
         for cand in input:iter() do
             yield(cand)
@@ -393,7 +403,7 @@ function F.func(input, env)
     local code_len = #curr_input
 
     -- [Feature] 强制英文造词
-    if code_len > 2 and sub(curr_input, -2) == "\\\\" then
+    if code_len > 2 and sub(curr_input, -2) == symbol .. symbol then
         local raw_text = sub(curr_input, 1, code_len - 2)
         if is_ascii_phrase_fast(raw_text) then
             if ctx.composition and not ctx.composition:empty() then
@@ -444,55 +454,87 @@ function F.func(input, env)
     else
         single_char_injected = true
     end
-    local eng_yield_count = 0
-    local max_eng_cands = env.max_eng_cands
-    for cand in input:iter() do
-        local good_cand = restore_sentence_spacing(cand, env.split_pattern, env.delim_check_pattern)
-        local fmt_cand = apply_formatting(good_cand, code_ctx)
 
-        -- 仅在 wanxiang_english 方案下，去除注释中的太极符号
-        if env.schema_id == "wanxiang_english" then
-            if fmt_cand.comment and find(fmt_cand.comment, "\226\152\175") then
-                local nc = Candidate(fmt_cand.type, fmt_cand.start, fmt_cand._end, fmt_cand.text, "")
-                nc.preedit = fmt_cand.preedit
-                fmt_cand = nc
-            end
-        end
+    local eng_yield_count = 0
+    -- 如果存在单字母派生，预先将这两个候选计入配额
+    if has_single_chars then
+        eng_yield_count = 2
+    end
+
+    local safe_max_cands = tonumber(env.max_eng_cands) or 0
+    local consecutive_skips = 0
+
+    for cand in input:iter() do
         local c_type = cand.type
-        local is_ascii = is_ascii_phrase_fast(fmt_cand.text)
-        local is_tbl = is_table_type(cand)
+        local raw_text = cand.text
 
         -- [垃圾词判定]：保护符号，只去重单字母
         local is_garbage = (c_type == "raw")
         if not is_garbage and code_len == 1 and has_letters(curr_input) then
-            if lower(fmt_cand.text) == lower(curr_input) then
+            if lower(raw_text) == lower(curr_input) then
                 is_garbage = true
             end
         end
 
         if not is_garbage then
             local skip_cand = false
-            local safe_max_cands = tonumber(max_eng_cands) or 0
+            local is_ascii = is_ascii_phrase_fast(raw_text)
+
+            -- [前置判断]
             if is_ascii then
-                if safe_max_cands > 0 and eng_yield_count >= safe_max_cands then
+                if c_type == "user_phrase" or c_type == "user_table" then
+                    -- 命中用户自定义词库(纯英文)，直接放行，既不拦截也不消耗限流名额
+                elseif safe_max_cands > 0 and eng_yield_count >= safe_max_cands then
                     skip_cand = true
                 else
                     eng_yield_count = eng_yield_count + 1
                 end
             end
 
-            -- 如果未被限流，则照常输出
-            if not skip_cand then
+            if skip_cand then
+                -- 即使当前的词被丢弃，也要确保单字母（若存在）成功插队输出
+                if has_single_chars and not single_char_injected then
+                    if not best_candidate_saved then
+                        env.memory[curr_input] = { text = single_chars[1].text, preedit = curr_input }
+                        best_candidate_saved = true
+                    end
+                    for _, c in ipairs(single_chars) do
+                        yield(c)
+                    end
+                    single_char_injected = true
+                    has_valid_candidate = true
+                end
+
+                consecutive_skips = consecutive_skips + 1
+                if consecutive_skips > 50 then
+                    break
+                end
+            else
+                consecutive_skips = 0
+
+                local good_cand = restore_sentence_spacing(cand, env.split_pattern, env.delim_check_pattern)
+                local fmt_cand = apply_formatting(good_cand, code_ctx)
+
+                if
+                    env.schema_id == "wanxiang_english"
+                    and fmt_cand.comment
+                    and find(fmt_cand.comment, "\226\152\175")
+                then
+                    local nc = Candidate(fmt_cand.type, fmt_cand.start, fmt_cand._end, fmt_cand.text, "")
+                    nc.preedit = fmt_cand.preedit
+                    fmt_cand = nc
+                end
+
                 has_valid_candidate = true
 
-                -- [VIP 优先逻辑]
-                local is_vip_type = (c_type == "user_table" or c_type == "fixed" or c_type == "phrase")
+                local final_type = fmt_cand.type
+                local is_vip_type = (final_type == "user_table" or final_type == "fixed" or final_type == "phrase")
                 local is_hidden_vip = (not is_vip_type) and not is_ascii
                 local treat_as_vip = is_vip_type or is_hidden_vip
 
                 if treat_as_vip then
                     -- VIP 通道：不仅是 user_table，包括汉字等，都直接输出，不让单字母插队
-                    if not best_candidate_saved and cand.comment ~= "~" and not env.block_derivation then
+                    if not best_candidate_saved and fmt_cand.comment ~= "~" and not env.block_derivation then
                         env.memory[curr_input] = {
                             text = fmt_cand.text,
                             preedit = curr_input,
@@ -514,7 +556,7 @@ function F.func(input, env)
                         has_valid_candidate = true
                     end
 
-                    if not best_candidate_saved and cand.comment ~= "~" and not env.block_derivation then
+                    if not best_candidate_saved and fmt_cand.comment ~= "~" and not env.block_derivation then
                         env.memory[curr_input] = {
                             text = fmt_cand.text,
                             preedit = curr_input,
@@ -552,12 +594,15 @@ function F.func(input, env)
                 local is_code_mode = find(curr_input, "[/\\]") or (env.sticky_countdown > 0)
 
                 if is_code_mode then
-                    -- 代码/路径保护期：内部绝对不加空格，无缝相连！
-                    local output_text = anchor.text .. diff
+                    local clean_diff = diff
+                    if sub(clean_diff, -1) == symbol then
+                        clean_diff = sub(clean_diff, 1, -2)
+                    end
+                    local output_text = anchor.text .. clean_diff
                     local output_preedit = (anchor.preedit or anchor.text) .. diff
                     output_text = apply_segment_formatting(output_text, curr_input)
 
-                    local cand = Candidate("completion", 0, #curr_input, output_text, "~")
+                    local cand = Candidate("fallback", 0, #curr_input, output_text, "~")
                     cand.preedit = output_preedit
                     cand.quality = 999
                     yield(cand)
@@ -577,27 +622,20 @@ function F.func(input, env)
 
                     if has_spacing or last_len > 3 then
                         output_text = anchor.text .. spacer .. diff
-                        output_preedit = (anchor.preedit or anchor.text) .. spacer .. diff
+                        output_preedit = anchor.text .. spacer .. diff
                     else
                         output_text = curr_input
                         output_preedit = curr_input
                     end
 
                     output_text = apply_segment_formatting(output_text, curr_input)
-                    local cand = Candidate("completion", 0, #curr_input, output_text, "~")
-                    cand.preedit = output_preedit
+                    local cand = Candidate("fallback", 0, #curr_input, output_text, "~")
+                    cand.preedit = output_text
                     cand.quality = 999
                     yield(cand)
                     yielded_derived = true
                 end
             end
-        end
-
-        -- [Phase 4] 兜底
-        if not yielded_derived then
-            local cand = Candidate("completion", 0, #curr_input, curr_input, "~")
-            cand.preedit = curr_input
-            yield(cand)
         end
     end
 end
