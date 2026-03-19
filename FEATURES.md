@@ -13,7 +13,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `dicts/*.dict.yaml` | 带声调拼音标注的词库数据 |
-| `wanxiang_algebra.yaml` | 声调拼音到输入编码的转写规则（~2428 行，12+ 拼音方案） |
+| `wanxiang_algebra.yaml` | 声调拼音到输入编码的转写规则（12+ 拼音方案） |
 | `lua/wanxiang/super_comment_preedit.lua` | 声调注释显示 |
 
 ### 极致权重与分词
@@ -96,7 +96,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_lookup.lua` | 候选筛选核心逻辑（~525 行），支持 aux/db 双数据源 |
+| `lua/wanxiang/super_lookup.lua` | 候选筛选核心逻辑，支持 aux/db 双数据源 |
 | `wanxiang.schema.yaml` (`wanxiang_lookup` 段) | 反查配置（引导符、tags、数据源优先级） |
 
 #### 输入前反查
@@ -115,7 +115,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_english.lua` | 英文全能过滤器（533 行）：格式化、智能加空格、大小写、空码补全 |
+| `lua/wanxiang/super_english.lua` | 英文全能过滤器：格式化、智能加空格、大小写、空码补全 |
 | `wanxiang_english.schema.yaml` | 英文输入方案定义 |
 | `wanxiang_english.dict.yaml` | 英文词典数据 |
 | `dicts/en.dict.yaml` | 英文词条 |
@@ -147,7 +147,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/unicode.lua` | Unicode 字符翻译器（44 行） |
+| `lua/wanxiang/unicode.lua` | Unicode 字符翻译器 |
 | `wanxiang.schema.yaml` | recognizer 中 `unicode` 模式配置 |
 
 ### 自动上屏
@@ -164,7 +164,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_filter.lua` | 3 码回退逻辑（875 行），空码候选恢复与 `~` 标注 |
+| `lua/wanxiang/super_filter.lua` | 3 码回退逻辑，空码候选恢复与 `~` 标注 |
 | `lua/wanxiang/super_english.lua` | 英文场景的空码补全 |
 
 ### 数字后自动半角
@@ -209,7 +209,7 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_comment_preedit.lua` | 注释显示模块（~513 行）：辅助码提示、拆分提示 |
+| `lua/wanxiang/super_comment_preedit.lua` | 注释显示模块：辅助码提示、拆分提示 |
 | `custom/wanxiang_chaifen.schema.yaml` | 拆分反查方案 |
 | `custom/wanxiang_chaifen_*.dict.yaml` | 7 种辅码拆分字典 |
 
@@ -228,7 +228,7 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/auto_phrase.lua` | 自动造词模块（256 行） |
+| `lua/wanxiang/auto_phrase.lua` | 自动造词模块 |
 | `wanxiang.schema.yaml` | `add_user_dict` 段配置 |
 
 ### 英文造词 Lua
@@ -275,7 +275,7 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/charset_filter.lua` | 字符集过滤模块（328 行） |
+| `lua/wanxiang/charset_filter.lua` | 字符集过滤模块 |
 | `lua/data/charset.reverse.bin` | 二进制字符集标记数据库 |
 | `wanxiang.schema.yaml` | `charset` 段配置（option、base、addlist、blacklist） |
 
@@ -285,7 +285,7 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_replacer.lua` | 超级替换模块（746 行），LevelDB 数据库 `lua/replacer.userdb` |
+| `lua/wanxiang/super_replacer.lua` | 超级替换模块，LevelDB 数据库 `lua/replacer.userdb` |
 | `lua/data/emoji.txt` | Emoji 数据 |
 | `lua/data/abbrev.txt` | 公共简码数据 |
 | `lua/data/STCharacters.txt` | 简繁单字转换 |
@@ -301,7 +301,7 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_sequence.lua` | 手动排序模块（726 行），LevelDB 数据库 `lua/sequence.userdb` |
+| `lua/wanxiang/super_sequence.lua` | 手动排序模块，LevelDB 数据库 `lua/sequence.userdb` |
 | `wanxiang.schema.yaml` | 排序快捷键配置 |
 
 ### 固定已输入语句 Lua
@@ -351,7 +351,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/partial_commit.lua` | 部分上屏处理器（191 行） |
+| `lua/wanxiang/partial_commit.lua` | 部分上屏处理器 |
 
 ### 万能键斜杠 `/`
 
@@ -373,7 +373,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/set_schema.lua` | 方案切换翻译器（171 行），自动修改 custom 文件 |
+| `lua/wanxiang/set_schema.lua` | 方案切换翻译器，自动修改 custom 文件 |
 | `wanxiang_algebra.yaml` | 12+ 拼音方案的转写规则 |
 | `custom/` 目录 | custom 文件模板 |
 
@@ -396,7 +396,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/key_binder.lua` | 正则增强按键绑定处理器（92 行） |
+| `lua/wanxiang/key_binder.lua` | 正则增强按键绑定处理器 |
 | `wanxiang.schema.yaml` | `key_binder/bindings` 段配置 |
 
 ### 自定义短语
@@ -423,9 +423,9 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 文件 | 说明 |
 |------|------|
-| `lua/wanxiang/wanxiang.lua` | 共享工具库（557 行）：设备检测、正则解析、中文判断、UTF-8 工具 |
-| `lua/wanxiang/userdb.lua` | UserDb 封装库（116 行）：元数据操作、弱引用池、迭代器 |
-| `lua/wanxiang/librime.lua` | Rime API 类型标注（722 行，仅用于 IDE 提示，非运行时代码） |
+| `lua/wanxiang/wanxiang.lua` | 共享工具库：设备检测、正则解析、中文判断、UTF-8 工具 |
+| `lua/wanxiang/userdb.lua` | UserDb 封装库：元数据操作、弱引用池、迭代器 |
+| `lua/wanxiang/librime.lua` | Rime API 类型标注（仅用于 IDE 提示，非运行时代码） |
 | `default.yaml` | Rime 全局设置（方案列表、菜单、切换器） |
 | `weasel.yaml` | Windows 小狼毫前端配置 |
 
@@ -439,7 +439,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `.github/workflows/scripts/aux_go.py` | 主脚本（~384 行） |
+| `.github/workflows/scripts/aux_go.py` | 主脚本 |
 | `custom/aux_code.txt` | 辅助码源表（字 → 分号分隔的多方案辅码段） |
 | `dicts/*.dict.yaml` | 输入词库（9 个文件，合计约 244 万行） |
 | `pro-*-fuzhu-dicts/` | 各方案输出目录（7 个） |
@@ -454,8 +454,6 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 | `get_alignment()` | 迭代栈版对齐（替代递归）；纯汉字词走快速路径；一次计算所有 schema 的辅码 |
 | `process_file_all_schemas()` | 每个输入文件只读一次，同时向 7 个输出文件写入，消除 7× 重复 I/O |
 | `process_batch()` | 外层循环改为"按文件"而非"按 schema"，统筹调用上述函数 |
-
-写入采用每文件 256 KB 系统缓冲区 + 4096 行应用层批量 `writelines`，减少 syscall 开销。
 
 ---
 
@@ -513,18 +511,18 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件/配置 | 说明 |
 |-----------------|------|
-| `lua/wanxiang/super_tips.lua` | Tips 系统（257 行），LevelDB 数据库 `lua/tips.userdb` |
-| `lua/data/tips_show.txt` | Tips 自带数据（7009 行） |
+| `lua/wanxiang/super_tips.lua` | Tips 系统，LevelDB 数据库 `lua/tips.userdb` |
+| `lua/data/tips_show.txt` | Tips 自带数据 |
 | `lua/data/tips_user.txt预留自定义文件` | Tips 用户自定义数据 |
 | `wanxiang.schema.yaml` 等 | `tips` 段配置（`disabled_types`、`tips_key`）、Ctrl+t 开关、`super_tips` 开关与处理器 |
 
-### 时间日期 Lua（shijian）
+### 时间日期 Lua
 
 多种中文日期时间格式输入。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `lua/wanxiang/shijian.lua` | 时间日期翻译器（3155 行） |
+| `lua/wanxiang/shijian.lua` | 时间日期翻译器 |
 
 ### 短语格式化 Lua
 
@@ -540,7 +538,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `lua/wanxiang/number_translator.lua` | 数字翻译器（175 行） |
+| `lua/wanxiang/number_translator.lua` | 数字翻译器 |
 
 ### 符号输入方案
 
@@ -548,7 +546,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `wanxiang_symbols.yaml` | 符号输入方案定义（829 行） |
+| `wanxiang_symbols.yaml` | 符号输入方案定义 |
 
 ### 计算器 Lua
 
@@ -556,7 +554,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `lua/wanxiang/super_calculator.lua` | 超级计算器（3491 行） |
+| `lua/wanxiang/super_calculator.lua` | 超级计算器 |
 
 ### 输入统计 Lua
 
@@ -564,7 +562,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `lua/wanxiang/input_statistics.lua` | 输入统计模块（334 行） |
+| `lua/wanxiang/input_statistics.lua` | 输入统计模块 |
 
 ### 版本显示 Lua
 
@@ -572,7 +570,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `lua/wanxiang/version_display.lua` | 版本显示翻译器（16 行） |
+| `lua/wanxiang/version_display.lua` | 版本显示翻译器 |
 
 ### 翻译模式
 
@@ -580,8 +578,8 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 
 | 已删除文件/配置 | 说明 |
 |-----------------|------|
-| `lua/data/chinese_english.txt` | 中译英数据（54169 行） |
-| `lua/data/english_chinese.txt` | 英译中数据（43788 行） |
+| `lua/data/chinese_english.txt` | 中译英数据 |
+| `lua/data/english_chinese.txt` | 英译中数据 |
 | `wanxiang.schema.yaml` 等 | `chinese_english` 开关、replacer type、Ctrl+E 绑定 |
 
 ### T9 九宫格方案
@@ -590,8 +588,8 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 
 | 已删除文件 | 说明 |
 |------------|------|
-| `wanxiang_t9.schema.yaml` | 九宫格方案定义（316 行） |
-| `lua/data/t9_abbrev.txt` | T9 专用简码数据（4027 行） |
+| `wanxiang_t9.schema.yaml` | 九宫格方案定义 |
+| `lua/data/t9_abbrev.txt` | T9 专用简码数据 |
 
 ### 14 键 / 18 键设定
 
@@ -607,7 +605,7 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 
 | 已删除配置 | 说明 |
 |------------|------|
-| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则（~673 行） |
+| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
 | `wanxiang.schema.yaml` 等 | `alphabet` 中 7890、`tone_display`/`full_pinyin` 开关 |
 | `lua/wanxiang/super_processor.lua` | 声调回退逻辑（在 7890 之间轮巡切换） |
 | `lua/wanxiang/super_lookup.lua` | 反查中声调筛选与 `tone_map` 表 |
