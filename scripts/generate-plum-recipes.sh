@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 scheme="$1"
 branch="$2"
 

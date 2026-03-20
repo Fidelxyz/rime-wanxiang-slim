@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 script_dir="$(dirname "$(realpath "$0")")"
@@ -16,7 +16,7 @@ exclude_dict_files=(
 schema_list=("base" "flypy" "hanxin" "moqi" "tiger" "wubi" "zrm" "shouyou")
 
 package_schema_base() {
-    out_dir=$1
+    local out_dir=$1
 
     rm -rf "${out_dir}"
     mkdir -p "${out_dir}"
@@ -35,30 +35,30 @@ package_schema_base() {
         "${custom_dir}/" "${out_dir}/custom/"
 
     # 2) 根目录 → ${out_dir}（不排 dicts/），排除若干
-    OUT_BASE="$(basename "${out_dir}")"
+    out_base="$(basename "${out_dir}")"
     rsync -av --ignore-existing \
         --exclude='.*' \
         --exclude='/custom' \
         --exclude='/dist' \
-        --exclude='/pro-*-fuzhu-dicts' \
+        --exclude='/scripts' \
         --exclude='release-please-config.json' \
         --include='README.md' \
         --include='CHANGELOG.md' \
         --exclude='*.md' \
-        --exclude="/$OUT_BASE" \
+        --exclude="/$out_base" \
         "${root_dir}/" "${out_dir}/"
 }
 
 package_schema_pro() {
-    schema_name="$1"
-    out_dir="$2"
+    local schema="$1"
+    local out_dir="$2"
 
     rm -rf "${out_dir}"
     mkdir -p "${out_dir}"
 
     # 1) 移动分包后的 dicts
-    if [[ -d "$dist_dir/pro-${schema_name}-fuzhu-dicts" ]]; then
-        mv "$dist_dir/pro-${schema_name}-fuzhu-dicts" "${out_dir}/dicts"
+    if [[ -d "${dist_dir}/pro-${schema}-fuzhu-dicts" ]]; then
+        mv "${dist_dir}/pro-${schema}-fuzhu-dicts" "${out_dir}/dicts"
     fi
     # 1.1) 补充必要的附加文件
     for file in "en.dict.yaml" "cn&en.dict.yaml" "chengyu.txt" "people.dict.yaml"; do
@@ -68,7 +68,7 @@ package_schema_pro() {
     done
 
     # 2) 复制拆分表并重命名，同时拷贝 schema
-    src="${root_dir}/custom/wanxiang_chaifen_${schema_name}.dict.yaml"
+    src="${root_dir}/custom/wanxiang_chaifen_${schema}.dict.yaml"
     dst="${out_dir}/wanxiang_chaifen.dict.yaml"
     [[ -f "$src" ]] && cp "$src" "$dst"
 
@@ -95,21 +95,19 @@ package_schema_pro() {
         --exclude='*' \
         "${root_dir}/custom/" "${out_dir}/custom/"
 
-    # 4) 根目录 → ${out_dir}（排除若干）
-    OUT_BASE="$(basename "${out_dir}")"
+    # 4) 根目录 → ${out_dir}
     rsync -av --ignore-existing \
         --exclude='.*' \
         --exclude='/custom' \
         --exclude='/dicts' \
         --exclude='/dist' \
-        --exclude='/pro-*-fuzhu-dicts' \
+        --exclude='/scripts' \
         --exclude='release-please-config.json' \
         --include='README.md' \
         --include='CHANGELOG.md' \
         --exclude='*.md' \
         --exclude='wanxiang.dict.yaml' \
         --exclude='wanxiang.schema.yaml' \
-        --exclude="/$OUT_BASE" \
         "${root_dir}/" "${out_dir}/"
 
     # 5) default.yaml: - schema: wanxiang -> - schema: wanxiang_pro
@@ -122,28 +120,26 @@ package_schema() {
     echo "=== 开始打包方案：${schema_name}"
 
     if [[ "${schema_name}" == "base" ]]; then
-        out_dir="$dist_dir/rime-wanxiang-base"
+        out_dir="${dist_dir}/rime-wanxiang-base"
         package_schema_base "${out_dir}"
-        zip_name="rime-wanxiang-${schema_name}.zip"
     else
-        out_dir="$dist_dir/rime-wanxiang-${schema_name}-fuzhu"
+        out_dir="${dist_dir}/rime-wanxiang-${schema_name}-fuzhu"
         package_schema_pro "${schema_name}" "${out_dir}"
     fi
 
     zip_name="$(basename "${out_dir}").zip"
-    # 构建 zip 的排除列表格式：-x "dicts/file1" "dicts/file2" ...
+    # Exclude ${exclude_dict_files[@]} files for only zip packages.
     zip_exclude_args=()
     for file in "${exclude_dict_files[@]}"; do
         zip_exclude_args+=("dicts/${file}")
     done
-    # 使用 -x 排除文件，文件物理上仍留在 ${out_dir} 中
-    (cd "${out_dir}" && zip -r -q "../${zip_name}" . -x "${zip_exclude_args[@]}" && cd ..)
+    (cd "${out_dir}" && zip -r -q "../${zip_name}" . -x "${zip_exclude_args[@]}")
     echo "=== 完成打包: ${zip_name}"
 }
 
 
-rm -rf "$dist_dir"
-mkdir -p "$dist_dir"
+rm -rf "${dist_dir}"
+mkdir -p "${dist_dir}"
 
 echo "=== PRO 分包开始"
 python3 "${script_dir}/split_aux.py"
