@@ -472,6 +472,17 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 
 以下功能已从本仓库中移除。保留记录以便从上游合并时参考。
 
+### 超级 Tips
+
+表情、化学式、翻译、简码提示等，通过自定义按键直接上屏，不占候选框。
+
+| 已删除文件/配置 | 说明 |
+|-----------------|------|
+| `lua/wanxiang/super_tips.lua` | Tips 系统，LevelDB 数据库 `lua/tips.userdb` |
+| `lua/data/tips_show.txt` | Tips 自带数据 |
+| `lua/data/tips_user.txt预留自定义文件` | Tips 用户自定义数据 |
+| `wanxiang.schema.yaml` 等 | `tips` 段配置（`disabled_types`、`tips_key`）、Ctrl+t 开关、`super_tips` 开关与处理器 |
+
 ### 快符输入 Lua
 
 单字母 + `/` 快速上屏自定义符号（如 `a/` 上屏"！"），支持 `repeat` 重复上屏。
@@ -483,6 +494,26 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 | `custom/wanxiang_pro.schema.yaml` | `quick_symbol_text` 配置段 |
 | `custom/wanxiang.custom.yaml` | `quick_symbol_text` 配置段（模板） |
 | `custom/wanxiang_pro.custom.yaml` | `quick_symbol_text` 配置段（模板） |
+
+### 声调辅助筛选
+
+7890 数字键代表一二三四声，支持与辅助码混合使用。
+
+| 已删除配置 | 说明 |
+|------------|------|
+| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
+| `wanxiang.schema.yaml` 等 | `alphabet` 中 7890、`tone_display`/`full_pinyin` 开关 |
+| `lua/wanxiang/super_processor.lua` | 声调回退逻辑（在 7890 之间轮巡切换） |
+| `lua/wanxiang/super_lookup.lua` | 反查中声调筛选与 `tone_map` 表 |
+
+### 输入码音调显示 Lua
+
+Ctrl+S 使输入码实时显示全拼并加音调，Shift+Enter 上屏编码字符串。
+
+| 已删除配置 | 说明 |
+|------------|------|
+| `lua/wanxiang/super_comment_preedit.lua` | preedit 音调显示逻辑、`full_pinyin` 上屏功能 |
+| `custom/wanxiang.custom.yaml` 等 | `tone_preedit` 配置段落 |
 
 ### 成对符号包裹 Lua
 
@@ -497,34 +528,15 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 | `custom/wanxiang.custom.yaml` | `paired_symbols` 配置段（模板） |
 | `custom/wanxiang_pro.custom.yaml` | `paired_symbols` 配置段（模板） |
 
-### 超级 Tips
-
-表情、化学式、翻译、简码提示等，通过自定义按键直接上屏，不占候选框。
-
-| 已删除文件/配置 | 说明 |
-|-----------------|------|
-| `lua/wanxiang/super_tips.lua` | Tips 系统，LevelDB 数据库 `lua/tips.userdb` |
-| `lua/data/tips_show.txt` | Tips 自带数据 |
-| `lua/data/tips_user.txt预留自定义文件` | Tips 用户自定义数据 |
-| `wanxiang.schema.yaml` 等 | `tips` 段配置（`disabled_types`、`tips_key`）、Ctrl+t 开关、`super_tips` 开关与处理器 |
-
 ### 时间日期 Lua
 
-多种中文日期时间格式输入。
+多种日期时间格式输入。
 
 | 已删除文件 | 说明 |
 |------------|------|
 | `lua/wanxiang/shijian.lua` | 时间日期翻译器 |
 
-### 短语格式化 Lua
-
-自定义短语中重复字符与动态变量（时间、日期等）格式化。
-
-| 已删除文件 | 说明 |
-|------------|------|
-| `lua/wanxiang/super_filter.lua` | 短语动态变量格式化 |
-
-### 数字翻译器 Lua
+### 数字翻译 Lua
 
 大小写中文数字转换。
 
@@ -564,6 +576,22 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 |------------|------|
 | `lua/wanxiang/version_display.lua` | 版本显示翻译器 |
 
+### 固定已输入语句 Lua
+
+按下句号锁定当前候选句子，双击句号锁定上一个N-1长度的候选句子。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/force_upper_aux.lua` | 自动施加辅助码 |
+
+### 短语格式化 Lua
+
+自定义短语中重复字符与动态变量（时间、日期等）格式化。
+
+| 已删除文件 | 说明 |
+|------------|------|
+| `lua/wanxiang/super_filter.lua` | 短语动态变量格式化 |
+
 ### 翻译模式
 
 Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
@@ -583,38 +611,10 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `wanxiang_t9.schema.yaml` | 九宫格方案定义 |
 | `lua/data/t9_abbrev.txt` | T9 专用简码数据 |
 
-### 14 键 / 18 键设定
+### 14 键 / 18 键
 
 移动端缩减键盘布局的转写支持。
 
 | 已删除配置 | 说明 |
 |------------|------|
 | `custom/wanxiang.custom.yaml` | `18jian` / `14jian` xlit 转写段落 |
-
-### 声调辅助筛选
-
-7890 数字键代表一二三四声，支持与辅助码混合使用。
-
-| 已删除配置 | 说明 |
-|------------|------|
-| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
-| `wanxiang.schema.yaml` 等 | `alphabet` 中 7890、`tone_display`/`full_pinyin` 开关 |
-| `lua/wanxiang/super_processor.lua` | 声调回退逻辑（在 7890 之间轮巡切换） |
-| `lua/wanxiang/super_lookup.lua` | 反查中声调筛选与 `tone_map` 表 |
-
-### 输入码音调显示 Lua
-
-Ctrl+s 使输入码实时显示全拼并加音调，Shift+Enter 上屏编码字符串。
-
-| 已删除配置 | 说明 |
-|------------|------|
-| `lua/wanxiang/super_comment_preedit.lua` | preedit 音调显示逻辑、`full_pinyin` 上屏功能 |
-| `custom/wanxiang.custom.yaml` 等 | `tone_preedit` 配置段落 |
-
-### 固定已输入语句 Lua
-
-按下句号锁定当前候选句子，双击句号锁定上一个N-1长度的候选句子。
-
-| 已删除文件 | 说明 |
-|------------|------|
-| `lua/wanxiang/force_upper_aux.lua` | 自动施加辅助码 |
