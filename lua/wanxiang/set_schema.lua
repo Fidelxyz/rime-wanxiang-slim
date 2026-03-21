@@ -1,6 +1,8 @@
-local wanxiang = require("wanxiang/wanxiang")
+local wanxiang = require("wanxiang.wanxiang")
 
--- 文件复制函数
+---@param src string
+---@param dest string
+---@return boolean
 local function copy_file(src, dest)
     local fi = io.open(src, "r")
     if not fi then
@@ -18,22 +20,15 @@ local function copy_file(src, dest)
     return true
 end
 
--- 检查文件是否存在
-local function file_exists(path)
-    local f = io.open(path, "r")
-    if f then
-        f:close()
-        return true
-    end
-    return false
-end
-
--- 替换方案函数
+---@param file_path string
+---@param target_schema string
+---@return boolean
 local function replace_schema(file_path, target_schema)
     local f = io.open(file_path, "r")
     if not f then
         return false
     end
+    ---@type string
     local content = f:read("*a")
     f:close()
 
@@ -58,29 +53,35 @@ local function replace_schema(file_path, target_schema)
     return true
 end
 
--- translator 主函数
+---translator 主函数
+---@param input string
+---@param seg Segment
+---@param env Env
 local function translator(input, seg, env)
     -- 处理直接辅助/间接辅助切换
     if input == "/zjf" or input == "/jjf" then
         local target_aux = (input == "/zjf") and "直接辅助" or "间接辅助"
+
         local user_dir = rime_api.get_user_data_dir()
         local paths = {
             user_dir .. "/wanxiang_pro.custom.yaml",
             user_dir .. "/wanxiang.custom.yaml",
         }
 
-        local total_hits, touched = 0, 0
+        local total_hits = 0
+        local touched = 0
         for _, p in ipairs(paths) do
-            if file_exists(p) then
+            if wanxiang.file_exists(p) then
                 local f = io.open(p, "r")
                 if not f then
                     goto continue
                 end
-
+                ---@type string
                 local content = f:read("*a")
                 f:close()
 
-                local n1, n2 = 0, 0
+                local n1 = 0
+                local n2 = 0
                 content, n1 =
                     content:gsub("(%-+%s*wanxiang_algebra:/pro/)直接辅助(%s*#?.*)", "%1" .. target_aux .. "%2")
                 content, n2 =
@@ -96,6 +97,7 @@ local function translator(input, seg, env)
                     total_hits = total_hits + n
                     touched = touched + 1
                 end
+
                 ::continue::
             end
         end
@@ -125,42 +127,39 @@ local function translator(input, seg, env)
     local target_schema = schema_map[input]
     if target_schema then
         local user_dir = rime_api.get_user_data_dir()
-        -- ★ 新增：获取系统共享目录（安装目录）
+        -- 获取系统共享目录（安装目录）
         local shared_dir = rime_api.get_shared_data_dir()
 
         -- 检查根目录是否存在自定义文件
         local pro_file = user_dir .. "/wanxiang_pro.custom.yaml"
         local normal_file = user_dir .. "/wanxiang.custom.yaml"
-        local custom_file_exists = file_exists(pro_file) or file_exists(normal_file)
+        local custom_file_exists = wanxiang.file_exists(pro_file) or wanxiang.file_exists(normal_file)
 
+        local main_custom_file = wanxiang.is_pro_scheme(env) and "wanxiang_pro.custom.yaml" or "wanxiang.custom.yaml"
         local files = {
             "wanxiang_mixedcode.custom.yaml",
             "wanxiang_reverse.custom.yaml",
             "wanxiang_english.custom.yaml",
+            main_custom_file,
         }
-
-        -- 判断是否为专业版
-        local is_pro = wanxiang.is_pro_scheme(env)
-        local fourth_file = is_pro and "wanxiang_pro.custom.yaml" or "wanxiang.custom.yaml"
-        table.insert(files, fourth_file)
 
         for _, name in ipairs(files) do
             -- 1. 优先尝试从 系统目录/custom/ 下寻找
             local src = shared_dir .. "/custom/" .. name
 
             -- 2. 如果系统目录没有，尝试从 用户目录/custom/ 下寻找（作为后备）
-            if not file_exists(src) then
+            if not wanxiang.file_exists(src) then
                 src = user_dir .. "/custom/" .. name
             end
 
             local dest = user_dir .. "/" .. name
 
-            if name == fourth_file and custom_file_exists then
+            if name == main_custom_file and custom_file_exists then
                 -- 根目录自定义文件已存在，不复制，但依然修改内容
                 replace_schema(dest, target_schema)
             else
                 -- 其他文件: 只有当源文件存在时才复制
-                if file_exists(src) then
+                if wanxiang.file_exists(src) then
                     if copy_file(src, dest) then
                         replace_schema(dest, target_schema)
                     end
@@ -197,4 +196,5 @@ local function translator(input, seg, env)
         end
     end
 end
+
 return translator

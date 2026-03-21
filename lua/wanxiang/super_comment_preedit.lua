@@ -1,7 +1,40 @@
---@amzxyz https://github.com/amzxyz/rime_wanxiang
+---@class SuperCommentConfig
+---@field auto_delimiter string
+---@field candidate_length integer
+---@field cand_type_symbols table<string, string>
 
-local wanxiang = require("wanxiang/wanxiang")
+---@class SuperCommentDecompositorConfig
+---@field display_left string
+---@field display_right string
 
+---@class SuperCommentDecompositorState
+---@field decomp_dict ReverseLookup?
+
+---@class SuperCommentCorrectorConfig
+---@field enabled boolean
+---@field display_left string
+---@field display_right string
+
+---@class SuperCommentCorrectorState
+---@field corrections_cache table<string, {text: string, comment: string}>
+
+---@class SuperCommentStoreState
+---@field seq_sig string
+---@field last_pre string
+---@field saved_input_for_seq string
+---@field ctx_conn Connection
+
+---@class Env
+---@field super_comment_config SuperCommentConfig?
+---@field super_comment_decompositor_config SuperCommentDecompositorConfig?
+---@field super_comment_decompositor_state SuperCommentDecompositorState?
+---@field super_comment_corrector_config SuperCommentCorrectorConfig?
+---@field super_comment_corrector_state SuperCommentCorrectorState?
+---@field super_comment_store_state SuperCommentStoreState?
+
+local wanxiang = require("wanxiang.wanxiang")
+
+---@type table<string, string>
 local tone_map = {
     ["ā"] = "a",
     ["á"] = "a",
@@ -32,6 +65,8 @@ local tone_map = {
     ["ń"] = "n",
 }
 
+---@param s string
+---@return string
 local function remove_pinyin_tone(s)
     local result = {}
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
@@ -44,191 +79,232 @@ end
 -- # 辅助码拆分提示模块
 -- PRO 专用
 -- ----------------------
-local CF = {}
-function CF.init(env)
-    if wanxiang.is_pro_scheme(env) then -- pro 版直接初始化
-        CF.get_dict(env)
+local decompositor = {}
+
+---@param state SuperCommentDecompositorState
+---@return ReverseLookup
+function decompositor.get_dict(state)
+    if not state.decomp_dict then
+        state.decomp_dict = ReverseLookup("wanxiang_chaifen")
     end
+    return state.decomp_dict
 end
 
-function CF.fini(env)
-    env.chaifen_dict = nil
-    collectgarbage()
-end
-
-function CF.get_dict(env)
-    if env.chaifen_dict == nil then
-        env.chaifen_dict = ReverseLookup("wanxiang_chaifen")
-    end
-    return env.chaifen_dict
-end
-
-function CF.get_comment(cand, env)
-    local dict = CF.get_dict(env)
-    if not dict then
-        return ""
-    end
+---@param cand Candidate
+---@param config SuperCommentDecompositorConfig
+---@param state SuperCommentDecompositorState
+---@return string
+function decompositor.get_comment(cand, config, state)
+    local dict = decompositor.get_dict(state)
 
     local raw = dict:lookup(cand.text)
-    if not raw or raw == "" then
+    if raw == "" then
         return ""
     end
 
-    local tpl = (env and env.settings and env.settings.chaifen) or ""
+    return config.display_left .. raw .. config.display_right
+end
 
-    if tpl ~= "" then
-        -- 取 chaifen 左右两边
-        local left, right = tpl:match("^(.-)chaifen(.-)$")
-        if left then
-            return left .. raw .. right
-        end
+---@param env Env
+function decompositor.init(env)
+    local rime_config = env.engine.schema.config
+
+    local format = rime_config:get_string("super_comment/chaifen") or "〔chaifen〕"
+    local display_left, display_right = format:match("^(.-)chaifen(.-)$")
+
+    env.super_comment_decompositor_config = {
+        display_left = display_left or "",
+        display_right = display_right or "",
+    }
+
+    env.super_comment_decompositor_state = {
+        decomp_dict = nil,
+    }
+
+    if wanxiang.is_pro_scheme(env) then
+        decompositor.get_dict(env.super_comment_decompositor_state)
     end
+end
 
-    return raw
+---@param env Env
+function decompositor.fini(env)
+    env.super_comment_decompositor_state = nil
 end
 
 -- ----------------------
 -- # 错音错字提示模块
 -- ----------------------
-local CR = {}
-local corrections_cache = nil -- 用于缓存已加载的词典
-function CR.init(env)
-    CR.style = env.settings.corrector_type or "{comment}"
-    --if corrections_cache then return end
-    local auto_delimiter = env.settings.auto_delimiter
+
+local corrector = {}
+
+---@param cand Candidate
+---@param config SuperCommentCorrectorConfig
+---@param state SuperCommentCorrectorState
+---@return string?
+function corrector.get_comment(cand, config, state)
+    local correction = state.corrections_cache[cand.comment]
+    if not correction or cand.text ~= correction.text then
+        return nil
+    end
+
+    return config.display_left .. correction.comment .. config.display_right
+end
+
+---@param env Env
+function corrector.init(env)
+    local config = env.engine.schema.config
+
+    local format = config:get_string("super_comment/corrector_type") or "{comment}"
+    local display_left, display_right = format:match("^(.-)comment(.-)$")
+
+    env.super_comment_corrector_config = {
+        enabled = config:get_bool("super_comment/corrector") or true,
+        display_left = display_left or "",
+        display_right = display_right or "",
+    }
+
+    env.super_comment_corrector_state = {
+        corrections_cache = {},
+    }
+
+    local auto_delimiter = env.super_comment_config.auto_delimiter
+
     local is_pro = wanxiang.is_pro_scheme(env)
-    -- 根据方案选择加载路径
-    local path = (is_pro and "dicts/cuoyin.pro.dict.yaml") or "dicts/cuoyin.dict.yaml"
+    local path = is_pro and "dicts/cuoyin.pro.dict.yaml" or "dicts/cuoyin.dict.yaml"
+
     local file, close_file, err = wanxiang.load_file_with_fallback(path)
+
     if not file then
-        log.error(string.format("[super_comment]: 加载失败 %s，错误: %s", path, err))
+        log.error(("[super_comment]: 加载失败 %s，错误: %s"):format(path, err))
         return
     end
-    corrections_cache = {}
+
     for line in file:lines() do
         if not line:match("^#") then
+            ---@type string, string, string, string?
             local text, code, _, comment = line:match("^(.-)\t(.-)\t(.-)\t(.-)$")
             if text and code then
+                ---@type string
                 text = text:match("^%s*(.-)%s*$")
+                ---@type string
                 code = code:match("^%s*(.-)%s*$")
+                ---@type string
                 comment = comment and comment:match("^%s*(.-)%s*$") or ""
+
                 comment = comment:gsub("%s+", auto_delimiter)
                 code = code:gsub("%s+", auto_delimiter)
-                corrections_cache[code] = { text = text, comment = comment }
+
+                env.super_comment_corrector_state.corrections_cache[code] = { text = text, comment = comment }
             end
         end
     end
+
     close_file()
 end
 
-function CR.get_comment(cand)
-    local correction = corrections_cache and corrections_cache[cand.comment] or nil
-    if not (correction and cand.text == correction.text) then
-        return nil
-    end
-    -- 只认占位符 `comment`，按“刀法”切分
-    local tpl = CR.style or "comment"
-    local left, right = tpl:match("^(.-)comment(.-)$")
-
-    if left then
-        return left .. correction.comment .. right
-    else
-        return correction.comment
-    end
+---@param env Env
+function corrector.fini(env)
+    env.super_comment_corrector_config = nil
+    env.super_comment_corrector_state = nil
 end
 
 -- ----------------------
 -- 部件组字返回的注释
 -- ----------------------
+---@param text string
+---@return string?
 local function get_charset_label(text)
-    if not text or text == "" then
+    if text == "" then
         return nil
     end
-    local cp = utf8.codepoint(text)
-    if not cp then
+
+    local code = utf8.codepoint(text)
+    if not code then
         return nil
     end
 
     -- 按照 Unicode 区块频率排序
-    if cp >= 0x4E00 and cp <= 0x9FFF then
+    if code >= 0x4E00 and code <= 0x9FFF then
         return "基本"
     end
-    if cp >= 0x3400 and cp <= 0x4DBF then
+    if code >= 0x3400 and code <= 0x4DBF then
         return "扩A"
     end
-    if cp >= 0x20000 and cp <= 0x2A6DF then
+    if code >= 0x20000 and code <= 0x2A6DF then
         return "扩B"
     end
-    if cp >= 0x2A700 and cp <= 0x2B73F then
+    if code >= 0x2A700 and code <= 0x2B73F then
         return "扩C"
     end
-    if cp >= 0x2B740 and cp <= 0x2B81F then
+    if code >= 0x2B740 and code <= 0x2B81F then
         return "扩D"
     end
-    if cp >= 0x2B820 and cp <= 0x2CEAF then
+    if code >= 0x2B820 and code <= 0x2CEAF then
         return "扩E"
     end
-    if cp >= 0x2CEB0 and cp <= 0x2EBEF then
+    if code >= 0x2CEB0 and code <= 0x2EBEF then
         return "扩F"
     end
-    if cp >= 0x2EBF0 and cp <= 0x2EE5F then
+    if code >= 0x2EBF0 and code <= 0x2EE5F then
         return "扩I"
     end
-    if cp >= 0x30000 and cp <= 0x3134F then
+    if code >= 0x30000 and code <= 0x3134F then
         return "扩G"
     end
-    if cp >= 0x31350 and cp <= 0x323AF then
+    if code >= 0x31350 and code <= 0x323AF then
         return "扩H"
     end
 
     -- 兼容区
-    if cp >= 0xF900 and cp <= 0xFAFF then
+    if code >= 0xF900 and code <= 0xFAFF then
         return "兼容"
     end
-    if cp >= 0x2F800 and cp <= 0x2FA1F then
+    if code >= 0x2F800 and code <= 0x2FA1F then
         return "兼容"
     end
 
     return nil
 end
 
-local function get_az_comment(cand, initial_comment)
+---@param cand Candidate
+---@param initial_comment string
+---@return string
+local function get_reverse_lookup_comment(cand, initial_comment)
     local inner_parts = {}
 
     -- 音形注释拆解逻辑
     if initial_comment and initial_comment ~= "" then
+        ---@type string[]
         local segments = {}
-        for segment in string.gmatch(initial_comment, "[^%s]+") do
+        for segment in initial_comment:gmatch("[^%s]+") do
             table.insert(segments, segment)
         end
 
         if #segments > 0 then
-            local semicolon_count = select(2, string.gsub(segments[1], ";", ""))
+            local semicolon_count = select(2, segments[1]:gsub(";", ""))
             local pinyins = {}
-            local fuzhu = nil
+            local aux = nil
 
             for _, segment in ipairs(segments) do
-                local pinyin = string.match(segment, "^[^;~]+")
-                local fz = nil
-
-                if semicolon_count == 1 then
-                    fz = string.match(segment, ";(.+)$")
-                end
-
+                local pinyin = segment:match("^[^;~]+")
                 if pinyin then
                     table.insert(pinyins, pinyin)
                 end
-                if not fuzhu and fz and fz ~= "" then
-                    fuzhu = fz
+
+                if not aux then
+                    local curr_aux = semicolon_count == 1 and segment:match(";(.+)$") or nil
+                    if curr_aux and curr_aux ~= "" then
+                        aux = curr_aux
+                    end
                 end
             end
 
             if #pinyins > 0 then
                 local pinyin_str = table.concat(pinyins, ",")
-                table.insert(inner_parts, string.format("音%s", pinyin_str))
+                table.insert(inner_parts, ("音%s"):format(pinyin_str))
 
-                if fuzhu then
-                    table.insert(inner_parts, string.format("辅%s", fuzhu))
+                if aux then
+                    table.insert(inner_parts, ("辅%s"):format(aux))
                 end
             end
         end
@@ -247,68 +323,82 @@ local function get_az_comment(cand, initial_comment)
     -- 使用间隔号连接
     return "〔" .. table.concat(inner_parts, "・") .. "〕"
 end
+
 -- ----------------------
 -- # 辅助码提示或带调全拼注释模块 (Fuzhu)
 -- ----------------------
-local function get_fz_comment(cand, env, initial_comment)
+---@param cand Candidate
+---@param initial_comment string
+---@param config SuperCommentConfig
+---@param ctx Context
+---@return string
+local function get_aux_comment(cand, initial_comment, config, ctx)
     local length = utf8.len(cand.text)
-    if length > env.settings.candidate_length then
+    if length > config.candidate_length then
         return ""
     end
-    local auto_delimiter = env.settings.auto_delimiter or " "
+
+    local auto_delimiter = config.auto_delimiter or " "
+
+    ---@type string[]
     local segments = {}
-    for segment in string.gmatch(initial_comment, "[^" .. auto_delimiter .. "]+") do
+    for segment in initial_comment:gmatch("[^" .. auto_delimiter .. "]+") do
         table.insert(segments, segment)
     end
 
     -- 根据 option 动态决定是否强制使用 tone
-    local use_tone = env.engine.context:get_option("tone_hint") or env.engine.context:get_option("toneless_hint")
-    local fuzhu_type = use_tone and "tone" or "fuzhu"
+    local use_tone = ctx:get_option("tone_hint") or ctx:get_option("toneless_hint")
+    local aux_type = use_tone and "tone" or "fuzhu"
 
     local first_segment = segments[1] or ""
     local semicolon_count = select(2, first_segment:gsub(";", ""))
-    local fuzhu_comments = {}
+
+    ---@type string[]
+    local aux_comments = {}
     -- 没有分号的情况
     if semicolon_count == 0 then
-        return initial_comment:gsub(auto_delimiter, " ")
+        return (initial_comment:gsub(auto_delimiter, " "))
     else
         -- 有分号：按类型提取
         for _, segment in ipairs(segments) do
-            if fuzhu_type == "tone" then
+            if aux_type == "tone" then
                 -- 取第一个分号“前”的内容
                 local before = segment:match("^(.-);")
                 if before and before ~= "" then
-                    table.insert(fuzhu_comments, before)
+                    table.insert(aux_comments, before)
                 end
             else -- "fuzhu"
                 -- 取第一个分号“后”的内容（到行尾）
                 local after = segment:match(";(.+)$")
                 if after and after ~= "" then
-                    table.insert(fuzhu_comments, after)
+                    table.insert(aux_comments, after)
                 end
             end
         end
     end
 
     -- 最终拼接输出，fuzhu用 `,`，tone用 /连接
-    if #fuzhu_comments > 0 then
-        if fuzhu_type == "tone" then
-            return table.concat(fuzhu_comments, " ")
+    if #aux_comments > 0 then
+        if aux_type == "tone" then
+            return table.concat(aux_comments, " ")
         else
-            return table.concat(fuzhu_comments, "/")
+            return table.concat(aux_comments, "/")
         end
     else
         return ""
     end
 end
 
-local SV = {}
+local store = {}
 
 -- 工具：取光标前的编码（安全处理 caret 越界）
+---@param ctx Context
+---@return string
 local function front_input(ctx)
     if not ctx then
         return ""
     end
+
     local raw_full = ctx.input or ""
     local caret = ctx.caret_pos or #raw_full
     if caret < 0 then
@@ -319,53 +409,11 @@ local function front_input(ctx)
     return raw_full:sub(1, caret)
 end
 
--- 这个模块主要用于将滤镜阶段未修改前的注释或者 preedit
--- 存到上下文变量里，按键处理阶段使用；update_notifier 保证一致性
-function SV.init(env)
-    env._sv_seq_sig = ""
-    env._sv_last_pre = "" -- 最近一次要写入的 preedit
-    env._saved_input_for_seq = "" -- 上次对应的 raw_in（光标前编码）
-
-    local ctx = env.engine.context
-
-    env._sv_ctx_conn = ctx.update_notifier:connect(function(c)
-        local raw_in = front_input(c)
-
-        local pre = env._sv_last_pre or ""
-        if pre == "" or raw_in == "" then
-            return
-        end
-
-        -- 不重写：光标前编码 + preedit
-        local sig = raw_in .. "\t" .. pre
-        if env._sv_seq_sig == sig then
-            return
-        end
-
-        c:set_property("sequence_preedit_key", raw_in)
-        c:set_property("sequence_preedit_val", pre)
-        env._sv_seq_sig = sig
-    end)
-end
-
--- 断开 notifier，清理状态
-function SV.fini(env)
-    if env._sv_ctx_conn then
-        env._sv_ctx_conn:disconnect()
-        env._sv_ctx_conn = nil
-    end
-    env._sv_seq_sig = nil
-    env._sv_last_pre = nil
-    env._saved_input_for_seq = nil
-end
-
 -- 限制更新范围：同一个 raw_in 只记第一次的 preedit
-function SV.update_preedit(env, preedit)
-    local ctx = env.engine.context
-    if not ctx then
-        return
-    end
-
+---@param preedit string
+---@param ctx Context
+---@param state SuperCommentStoreState
+function store.update_preedit(preedit, ctx, state)
     local raw_in = front_input(ctx)
     preedit = preedit or ""
 
@@ -373,62 +421,120 @@ function SV.update_preedit(env, preedit)
         return
     end
 
-    if env._saved_input_for_seq ~= raw_in then
-        env._saved_input_for_seq = raw_in
-        env._sv_last_pre = preedit
+    if state.saved_input_for_seq ~= raw_in then
+        state.saved_input_for_seq = raw_in
+        state.last_pre = preedit
     end
+end
+
+-- 这个模块主要用于将滤镜阶段修改前的注释或者 preedit
+-- 存到上下文变量里，按键处理阶段使用；update_notifier 保证一致性
+---@param env Env
+function store.init(env)
+    local ctx = env.engine.context
+
+    local ctx_conn = ctx.update_notifier:connect(function(c)
+        local raw_in = front_input(c)
+
+        local pre = env.super_comment_store_state.last_pre or ""
+        if pre == "" or raw_in == "" then
+            return
+        end
+
+        -- 不重写：光标前编码 + preedit
+        local sig = raw_in .. "\t" .. pre
+        if env.super_comment_store_state.seq_sig == sig then
+            return
+        end
+
+        c:set_property("sequence_preedit_key", raw_in)
+        c:set_property("sequence_preedit_val", pre)
+        env.super_comment_store_state.seq_sig = sig
+    end)
+
+    env.super_comment_store_state = {
+        seq_sig = "",
+        last_pre = "", -- 最近一次要写入的 preedit
+        saved_input_for_seq = "", -- 上次对应的 raw_in（光标前编码）
+        ctx_conn = ctx_conn,
+    }
+end
+
+-- 断开 notifier，清理状态
+---@param env Env
+function store.fini(env)
+    env.super_comment_store_state.ctx_conn:disconnect()
+    env.super_comment_store_state = nil
 end
 
 -- ----------------------
 -- 主函数：根据优先级处理候选词的注释和preedit
 -- ----------------------
-local ZH = {}
-function ZH.init(env)
+--
+local M = {}
+
+---@param env Env
+function M.init(env)
     local config = env.engine.schema.config
+
     local delimiter = config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
-    local manual_delimiter = delimiter:sub(2, 2)
-    env.settings = {
-        delimiter = delimiter,
-        auto_delimiter = auto_delimiter,
-        manual_delimiter = manual_delimiter,
-        corrector_enabled = config:get_bool("super_comment/corrector") or true,
-        corrector_type = config:get_string("super_comment/corrector_type") or "{comment}",
-        chaifen = config:get_string("super_comment/chaifen") or "〔chaifen〕",
-        candidate_length = tonumber(config:get_string("super_comment/candidate_length")) or 1,
-    }
-    -- 动态读取 cand_type 配置
-    env.cand_type_symbols = {}
-    local map = config:get_map("super_comment/cand_type")
 
-    if map then
+    env.super_comment_config = {
+        auto_delimiter = auto_delimiter,
+        candidate_length = config:get_int("super_comment/candidate_length") or 1,
+        cand_type_symbols = {},
+    }
+
+    local cand_type_map = config:get_map("super_comment/cand_type")
+
+    if cand_type_map then
         -- 直接遍历 map 的 keys
-        for _, key in ipairs(map:keys()) do
+        for _, key in ipairs(cand_type_map:keys()) do
             -- 拼接路径去取对应的值，比如 "super_comment/cand_type/user_phrase"
             local val = config:get_string("super_comment/cand_type/" .. key)
             if val and val ~= "" then
-                env.cand_type_symbols[key] = val
+                env.super_comment_config.cand_type_symbols[key] = val
             end
         end
     end
-    CR.init(env)
-    SV.init(env)
-    CF.init(env)
+
+    decompositor.init(env)
+    corrector.init(env)
+    store.init(env)
 end
-function ZH.fini(env)
-    -- 清理
-    CF.fini(env)
-    SV.fini(env)
+
+---@param env Env
+function M.fini(env)
+    decompositor.fini(env)
+    corrector.fini(env)
+    store.fini(env)
 end
-function ZH.func(input, env)
+
+---@param input Translation
+---@param env Env
+function M.func(input, env)
+    local config = env.super_comment_config
+    assert(config)
+    local decompositor_config = env.super_comment_decompositor_config
+    assert(decompositor_config)
+    local decompositor_state = env.super_comment_decompositor_state
+    assert(decompositor_state)
+    local corrector_config = env.super_comment_corrector_config
+    assert(corrector_config)
+    local corrector_state = env.super_comment_corrector_state
+    assert(corrector_state)
+    local store_state = env.super_comment_store_state
+    assert(store_state)
+
     local context = env.engine.context
     local input_str = context.input or ""
-    local is_radical_mode = wanxiang.is_in_radical_mode(env)
+    local is_reverse_lookup_mode = wanxiang.is_reverse_lookup_mode(env)
     local should_skip_candidate_comment = wanxiang.is_function_mode_active(context) or input_str == ""
     local is_tone_comment = env.engine.context:get_option("tone_hint")
     local is_toneless_comment = env.engine.context:get_option("toneless_hint")
     local is_comment_hint = env.engine.context:get_option("fuzhu_hint")
-    local is_chaifen_enabled = env.engine.context:get_option("chaifen_switch")
+    local is_decomp_enabled = env.engine.context:get_option("chaifen_switch")
     local index = 0
 
     for cand in input:iter() do
@@ -438,10 +544,10 @@ function ZH.func(input, env)
         local final_comment = initial_comment
         index = index + 1
 
-        SV.update_preedit(env, preedit) --储存到环境变量
+        store.update_preedit(preedit, context, store_state) --储存到环境变量
 
         -- preedit相关处理只跳过 preedit，不影响注释
-        if is_radical_mode then
+        if is_reverse_lookup_mode then
             goto after_preedit
         end
 
@@ -454,23 +560,23 @@ function ZH.func(input, env)
         -- 进入注释处理阶段
         -- ① 辅助码注释或者声调注释
         if is_comment_hint then
-            local fz_comment = get_fz_comment(cand, env, initial_comment)
-            if fz_comment then
-                final_comment = fz_comment
+            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
+            if aux_comment then
+                final_comment = aux_comment
             end
         elseif is_tone_comment then
-            local fz_comment = get_fz_comment(cand, env, initial_comment)
-            if fz_comment then
-                final_comment = fz_comment
+            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
+            if aux_comment then
+                final_comment = aux_comment
             end
         elseif is_toneless_comment then
-            local fz_comment = get_fz_comment(cand, env, initial_comment)
-            if fz_comment then
+            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
+            if aux_comment then
                 -- 获取到带调拼音后，调用 remove_pinyin_tone 去掉声调
-                final_comment = remove_pinyin_tone(fz_comment)
+                final_comment = remove_pinyin_tone(aux_comment)
             end
         else
-            if initial_comment and string.find(initial_comment, "~") then --保留尾部临时英文标记
+            if initial_comment and initial_comment:find("~") then --保留尾部临时英文标记
                 final_comment = initial_comment
             else
                 final_comment = ""
@@ -478,31 +584,31 @@ function ZH.func(input, env)
         end
 
         -- ② 拆分注释
-        if is_chaifen_enabled then
-            local cf_comment = CF.get_comment(cand, env)
-            if cf_comment and cf_comment ~= "" then --不为空很重要
-                final_comment = cf_comment
+        if is_decomp_enabled then
+            local decomp_comment = decompositor.get_comment(cand, decompositor_config, decompositor_state)
+            if decomp_comment and decomp_comment ~= "" then --不为空很重要
+                final_comment = decomp_comment
             end
         end
 
         -- ③ 错音错字提示
-        if env.settings.corrector_enabled then
-            local cr_comment = CR.get_comment(cand)
-            if cr_comment and cr_comment ~= "" then
-                final_comment = cr_comment
+        if env.super_comment_corrector_config.enabled then
+            local correction_comment = corrector.get_comment(cand, corrector_config, corrector_state)
+            if correction_comment and correction_comment ~= "" then
+                final_comment = correction_comment
             end
         end
 
         -- ④ 反查模式提示
-        if is_radical_mode then
-            local az_comment = get_az_comment(cand, initial_comment)
-            if az_comment and az_comment ~= "" then
-                final_comment = az_comment
+        if is_reverse_lookup_mode then
+            local reverse_lookup_comment = get_reverse_lookup_comment(cand, initial_comment)
+            if reverse_lookup_comment and reverse_lookup_comment ~= "" then
+                final_comment = reverse_lookup_comment
             end
         end
 
         -- ⑤ 候选词类型符号追加 (动态读取 cand_type 配置)
-        local symbol = env.cand_type_symbols[cand.type]
+        local symbol = env.super_comment_config.cand_type_symbols[cand.type]
         if symbol and final_comment ~= "~" then
             final_comment = (final_comment or "") .. symbol
         end
@@ -515,4 +621,5 @@ function ZH.func(input, env)
         ::continue::
     end
 end
-return ZH
+
+return M

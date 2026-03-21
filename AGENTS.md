@@ -44,8 +44,8 @@ Some simpler modules return a single function directly (`return translator`, `re
 
 ### Imports / Requires
 ```lua
-local wanxiang = require("wanxiang/wanxiang")  -- shared utilities
-local userdb = require("wanxiang/userdb")      -- database utilities
+local wanxiang = require("wanxiang.wanxiang")  -- shared utilities
+local userdb = require("wanxiang.userdb")      -- database utilities
 ```
 - The shared module `wanxiang.lua` provides utility functions, version constant, and device detection.
 

@@ -1,6 +1,7 @@
 local META_KEY_PREFIX = "\001" .. "/"
 
 -- UserDb 缓存，使用弱引用表，不阻止垃圾回收并能自动清理
+---@type table<string, UserDb>
 local db_pool = setmetatable({}, { __mode = "v" })
 
 ---@class WrappedUserDb: UserDb
@@ -14,32 +15,35 @@ local db_pool = setmetatable({}, { __mode = "v" })
 -- 用于存放包装器对象的自定义方法
 local extends = {}
 
---- @param key string
---- @return string|nil
+---@param key string
+---@return string|nil
 function extends:meta_fetch(key)
     return self._db:fetch(META_KEY_PREFIX .. key)
 end
 
---- @param key string
---- @param value string
---- @return boolean
+---@param key string
+---@param value string
+---@return boolean
 function extends:meta_update(key, value)
     return self._db:update(META_KEY_PREFIX .. key, value)
 end
 
---- @param key string
---- @return boolean
+---@param key string
+---@return boolean
 function extends:meta_erase(key)
     return self._db:erase(META_KEY_PREFIX .. key)
 end
 
---- @param prefix string
---- @return DbAccessor
+---@param prefix string
+---@return DbAccessor
 function extends:meta_query(prefix)
     return self._db:query(META_KEY_PREFIX .. prefix)
 end
 
+---@param prefix string
+---@param handler fun(key: string, value: string)
 function extends:query_with(prefix, handler)
+    ---@type DbAccessor|nil
     local da = self._db:query(prefix)
     if da then
         for key, value in da:iter() do
@@ -50,7 +54,7 @@ function extends:query_with(prefix, handler)
     collectgarbage()
 end
 
---- @param include_metafield boolean 是否也清理元数据。
+---@param include_metafield boolean 是否也清理元数据。
 function extends:empty(include_metafield)
     self:query_with("", function(key, _)
         local is_metafield = key:find(META_KEY_PREFIX, 1, true) == 1
@@ -81,12 +85,12 @@ local mt = {
     end,
 }
 
-local userdb = {}
+local M = {}
 
---- @param db_name string
---- @param db_class "userdb" | "plain_userdb" | nil
---- @return WrappedUserDb
-function userdb.UserDb(db_name, db_class)
+---@param db_name string
+---@param db_class "userdb" | "plain_userdb" | nil
+---@return WrappedUserDb
+function M.UserDb(db_name, db_class)
     db_class = db_class or "userdb"
     local key = db_name .. "." .. db_class
 
@@ -105,12 +109,16 @@ function userdb.UserDb(db_name, db_class)
     return setmetatable(wrapper, mt)
 end
 
-function userdb.LevelDb(db_name)
-    return userdb.UserDb(db_name, "userdb")
+---@param db_name string
+---@return WrappedUserDb
+function M.LevelDb(db_name)
+    return M.UserDb(db_name, "userdb")
 end
 
-function userdb.TableDb(db_name)
-    return userdb.UserDb(db_name, "plain_userdb")
+---@param db_name string
+---@return WrappedUserDb
+function M.TableDb(db_name)
+    return M.UserDb(db_name, "plain_userdb")
 end
 
-return userdb
+return M

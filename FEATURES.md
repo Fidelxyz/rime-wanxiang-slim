@@ -417,7 +417,7 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 |------|------|
 | `lua/wanxiang/wanxiang.lua` | 共享工具库：设备检测、正则解析、中文判断、UTF-8 工具 |
 | `lua/wanxiang/userdb.lua` | UserDb 封装库：元数据操作、弱引用池、迭代器 |
-| `lua/wanxiang/librime.lua` | Rime API 类型标注（仅用于 IDE 提示，非运行时代码） |
+| `lua/librime.lua` | Rime API 类型标注（仅用于 IDE 提示，非运行时代码） |
 | `default.yaml` | Rime 全局设置（方案列表、菜单、切换器） |
 | `weasel.yaml` | Windows 小狼毫前端配置 |
 

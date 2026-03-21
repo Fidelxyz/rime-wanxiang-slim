@@ -62,44 +62,63 @@ super_replacer:
           - lua/data/abbrev.txt # 格式：zm\t怎么|在吗
 ]]
 
-local M = {}
+---@class SuperReplacerConfig
+---@field split_pattern string
+---@field comment_format string
+---@field is_chain boolean
+---@field rules Rule[]
 
--- 性能优化：本地化常用库函数
-local insert = table.insert
-local concat = table.concat
-local s_match = string.match
-local s_gmatch = string.gmatch
-local s_format = string.format
-local s_byte = string.byte
-local s_sub = string.sub
-local s_gsub = string.gsub
-local s_upper = string.upper
-local open = io.open
-local type = type
-local tonumber = tonumber
-local fmm_cache = {}
-local replacer_instance = nil
+---@class SuperReplacerState
+---@field input_type string
+---@field fmm_cache table<string, string|false>
+---@field db UserDb?
 
--- 基础依赖
-local function safe_require(name)
-    local status, lib = pcall(require, name)
-    if status then
-        return lib
+---@class Env
+---@field super_replacer_config SuperReplacerConfig?
+---@field super_replacer_state SuperReplacerState?
+
+---@class Task
+---@field path string
+---@field prefix string
+
+---@class Rule
+---@field triggers (boolean|string)[]
+---@field tags string[]
+---@field prefix string
+---@field mode string
+---@field always_qty integer
+---@field always_idx integer
+---@field comment_mode string
+---@field fmm boolean
+---@field cand_type string?
+
+local userdb = require("wanxiang.userdb")
+local wanxiang = require("wanxiang.wanxiang")
+
+---@type WrappedUserDb?
+local db_instance = nil
+
+---@type { text: string, comment: string }[]
+local shared_pending = {}
+---@type string[]
+local shared_comments = {}
+
+---@param t table<integer, any>
+local function clear_list(t)
+    for i = 1, #t do
+        t[i] = nil
     end
-    return nil
 end
 
-local userdb = safe_require("wanxiang/userdb")
-local wanxiang = safe_require("wanxiang/wanxiang")
-
--- UTF-8 辅助
+---@param text string
+---@return number[]
 local function get_utf8_offsets(text)
     local offsets = {}
     local len = #text
     local i = 1
     while i <= len do
-        insert(offsets, i)
-        local b = s_byte(text, i)
+        table.insert(offsets, i)
+        local b = text:byte(i)
         if b < 128 then
             i = i + 1
         elseif b < 224 then
@@ -110,15 +129,16 @@ local function get_utf8_offsets(text)
             i = i + 4
         end
     end
-    insert(offsets, len + 1)
+    table.insert(offsets, len + 1)
     return offsets
 end
 
--- 光速文件特征采样
+---@param tasks Task[]
+---@return string
 local function generate_files_signature(tasks)
     local sig_parts = {}
     for _, task in ipairs(tasks) do
-        local f = open(task.path, "rb")
+        local f = io.open(task.path, "rb")
         if f then
             local size = f:seek("end")
             local head = ""
@@ -146,47 +166,33 @@ local function generate_files_signature(tasks)
             f:close()
 
             -- 将 前缀 + 大小 + 头中尾 拼接成该文件的唯一特征码
-            insert(sig_parts, task.prefix .. size .. head .. mid .. tail)
+            table.insert(sig_parts, task.prefix .. size .. head .. mid .. tail)
         end
     end
     -- 将所有文件的特征码合并
-    return concat(sig_parts, "||")
+    return table.concat(sig_parts, "||")
 end
 
 -- 重建数据库 (仅在 wanxiang 版本变更时运行)
+---@param tasks Task[]
+---@param db UserDb
+---@param delimiter string
+---@return boolean
 local function rebuild(tasks, db, delimiter)
-    if db.empty then
-        db:empty()
-    end
     for _, task in ipairs(tasks) do
         local txt_path = task.path
         local prefix = task.prefix
-        -- 获取转换表
-        local conversion = task.conversion
-        local p_delim = task.preedit_delim
 
-        local f = open(txt_path, "r")
+        local f = io.open(txt_path, "r")
         if f then
             for line in f:lines() do
-                if line ~= "" and not s_match(line, "^%s*#") then
-                    local k, v = s_match(line, "^(%S+)%s+(.+)")
+                if line ~= "" and not line:match("^%s*#") then
+                    ---@type string?, string?
+                    local k, v = line:match("^(%S+)%s+(.+)")
                     if k and v then
-                        local orig_k = k
-
-                        -- 如果有转换表，先进行按键转换
-                        -- 使用 gsub 配合 table 进行单字符映射，非常高效且不关注顺序
-                        if conversion then
-                            k = s_gsub(k, ".", conversion)
-                        end
-
                         -- 转换完成后，再和 prefix 组合
-                        v = s_match(v, "^%s*(.-)%s*$")
-
-                        if p_delim and p_delim ~= "" then
-                            if not string.find(v, p_delim, 1, true) then
-                                v = v .. p_delim .. orig_k
-                            end
-                        end
+                        ---@type string
+                        v = v:match("^%s*(.-)%s*$")
 
                         local db_key = prefix .. k
                         local existing_v = db:fetch(db_key)
@@ -205,16 +211,22 @@ local function rebuild(tasks, db, delimiter)
     return true
 end
 
--- 连接或重连数据库
-local function connect_db(db_name, current_version, delimiter, tasks, config_sig)
-    if replacer_instance then
+---@param db_name string
+---@param current_version string
+---@param delimiter string
+---@param tasks Task[]
+---@param config_sig string
+---@param state table
+---@return UserDb?
+local function connect_db(db_name, current_version, delimiter, tasks, config_sig, state)
+    if db_instance then
         local status, _ = pcall(function()
-            return replacer_instance:fetch("___test___")
+            return db_instance:fetch("___test___")
         end)
         if status then
-            return replacer_instance
+            return db_instance
         end
-        replacer_instance = nil
+        db_instance = nil
     end
 
     if not userdb then
@@ -225,7 +237,7 @@ local function connect_db(db_name, current_version, delimiter, tasks, config_sig
         return nil
     end
 
-    -- 1. 瞬间计算当前所有物理文件的特征码
+    -- 1. 计算当前所有物理文件的特征码
     local current_signature = generate_files_signature(tasks) .. "||" .. (config_sig or "")
 
     local needs_rebuild = false
@@ -245,29 +257,20 @@ local function connect_db(db_name, current_version, delimiter, tasks, config_sig
 
     if needs_rebuild then
         if db:open() then
-            -- 清空旧数据，防止体积无意义膨胀
-            if db.clear then
-                db:clear()
-            elseif db.empty then
-                db:empty()
-            end
-
             rebuild(tasks, db, delimiter)
-            fmm_cache = {} --只要词库重建，彻底清空旧缓存
+            state.fmm_cache = {} --只要词库重建，彻底清空旧缓存
             -- 更新最新的烙印
             db:meta_update("_wanxiang_ver", current_version)
             db:meta_update("_delim", delimiter)
             db:meta_update("_files_sig", current_signature) -- 记下当前的文件特征
 
-            if log and log.info then
-                log.info("super_replacer: 数据已重载，最新特征已记录")
-            end
+            log.info("super_replacer: 数据已重载")
             db:close()
         end
     end
 
     if db:open_read_only() then
-        replacer_instance = db
+        db_instance = db
         return db
     end
 
@@ -275,7 +278,13 @@ local function connect_db(db_name, current_version, delimiter, tasks, config_sig
 end
 
 -- FMM 分词转换算法
-local function segment_convert(text, db, prefix, split_pat)
+---@param text string
+---@param db UserDb?
+---@param prefix string
+---@param split_pat string
+---@param state SuperReplacerState
+---@return string
+local function segment_convert(text, db, prefix, split_pat, state)
     local offsets = get_utf8_offsets(text)
     local char_count = #offsets - 1
     local result_parts = {}
@@ -294,19 +303,19 @@ local function segment_convert(text, db, prefix, split_pat)
         -- 1. 长词 FMM 循环与缓存拦截
         for j = max_j, i + 2, -1 do
             local end_byte = offsets[j] - 1
-            local sub_text = s_sub(text, start_byte, end_byte)
+            local sub_text = text:sub(start_byte, end_byte)
             local cache_key = prefix .. sub_text
 
-            local val = fmm_cache[cache_key]
+            local val = state.fmm_cache[cache_key]
             if val == nil then
-                local db_res = db:fetch(cache_key)
-                fmm_cache[cache_key] = db_res or false
-                val = fmm_cache[cache_key]
+                local db_res = db and db:fetch(cache_key)
+                state.fmm_cache[cache_key] = db_res or false
+                val = state.fmm_cache[cache_key]
             end
 
             if val then
-                local first_val = s_match(val, split_pat)
-                insert(result_parts, first_val or sub_text)
+                local first_val = val:match(split_pat)
+                table.insert(result_parts, first_val or sub_text)
                 i = j - 1
                 matched = true
                 break
@@ -315,44 +324,46 @@ local function segment_convert(text, db, prefix, split_pat)
 
         -- 2. 单字/单字符兜底（带缓存）
         if not matched then
-            local single_char = s_sub(text, start_byte, offsets[i + 1] - 1)
+            local single_char = text:sub(start_byte, offsets[i + 1] - 1)
             local cache_key = prefix .. single_char
 
-            local val = fmm_cache[cache_key]
+            local val = state.fmm_cache[cache_key]
             if val == nil then
-                local db_res = db:fetch(cache_key)
-                fmm_cache[cache_key] = db_res or false
-                val = fmm_cache[cache_key]
+                local db_res = db and db:fetch(cache_key)
+                state.fmm_cache[cache_key] = db_res or false
+                val = state.fmm_cache[cache_key]
             end
 
             if val then
-                local first_val = s_match(val, split_pat)
-                insert(result_parts, first_val or single_char)
+                local first_val = val:match(split_pat)
+                table.insert(result_parts, first_val or single_char)
             else
-                insert(result_parts, single_char)
+                table.insert(result_parts, single_char)
             end
         end
 
         i = i + 1
     end
-    return concat(result_parts)
+    return table.concat(result_parts)
 end
 
--- 模块接口
+local M = {}
+
+---@param env Env
 function M.init(env)
-    local ns = env.name_space
-    ns = s_gsub(ns, "^%*", "")
-    ns = string.match(ns, "([^%.]+)$") or ns
-    local config = env.engine.schema.config
+    local namespace = env.name_space
+    namespace = namespace:gsub("^%*", "")
+    ---@type string
+    namespace = namespace:match("([^%.]+)$") or namespace
+
+    local rime_config = env.engine.schema.config
 
     local user_dir = rime_api.get_user_data_dir()
     local shared_dir = rime_api.get_shared_data_dir()
 
     -- 1. 基础配置
-    local db_name = config:get_string(ns .. "/db_name") or "lua/replacer"
-    local delim = config:get_string(ns .. "/delimiter") or "|"
-    env.delimiter = delim
-    env.comment_format = config:get_string(ns .. "/comment_format") or "〔%s〕"
+    local db_name = rime_config:get_string(namespace .. "/db_name") or "lua/replacer"
+    local delimiter = rime_config:get_string(namespace .. "/delimiter") or "|"
 
     -- 获取全局版本号
     local current_version = "v0.0.0"
@@ -360,38 +371,34 @@ function M.init(env)
         current_version = wanxiang.version
     end
 
-    env.input_type = "unknown"
+    local input_type = "unknown"
     if wanxiang and wanxiang.get_input_method_type then
-        env.input_type = wanxiang.get_input_method_type(env)
+        input_type = wanxiang.get_input_method_type(env)
     end
 
-    env.chain = config:get_bool(ns .. "/chain")
-    if env.chain == nil then
-        env.chain = false
-    end
-
-    if delim == " " then
-        env.split_pattern = "%S+"
+    ---@type string
+    local split_pattern
+    if delimiter == " " then
+        split_pattern = "%S+"
     else
-        local esc = s_gsub(delim, "[%-%.%+%[%]%(%)%$%^%%%?%*]", "%%%1")
-        env.split_pattern = "([^" .. esc .. "]+)"
+        local esc = delimiter:gsub("[%-%.%+%[%]%(%)%$%^%%%?%*]", "%%%1")
+        split_pattern = "([^" .. esc .. "]+)"
     end
 
-    env.rules = {}
-    local tasks = {}
-
+    ---@param relative string?
+    ---@return string?
     local function resolve_path(relative)
         if not relative then
             return nil
         end
         local user_path = user_dir .. "/" .. relative
-        local f = open(user_path, "r")
+        local f = io.open(user_path, "r")
         if f then
             f:close()
             return user_path
         end
         local shared_path = shared_dir .. "/" .. relative
-        f = open(shared_path, "r")
+        f = io.open(shared_path, "r")
         if f then
             f:close()
             return shared_path
@@ -399,8 +406,13 @@ function M.init(env)
         return user_path
     end
 
-    local rules_path = ns .. "/rules"
-    local rule_list = config:get_list(rules_path)
+    local rules_path = namespace .. "/rules"
+    local rule_list = rime_config:get_list(rules_path)
+
+    ---@type Task[]
+    local tasks = {}
+    ---@type Rule[]
+    local rules = {}
 
     if rule_list then
         for i = 0, rule_list.size - 1 do
@@ -411,44 +423,45 @@ function M.init(env)
             local opts_keys = { "option", "options" }
             for _, key in ipairs(opts_keys) do
                 local key_path = entry_path .. "/" .. key
-                local list = config:get_list(key_path)
+                local list = rime_config:get_list(key_path)
                 if list then
                     for k = 0, list.size - 1 do
-                        local val = config:get_string(key_path .. "/@" .. k)
+                        local val = rime_config:get_string(key_path .. "/@" .. k)
                         if val then
-                            insert(triggers, val)
+                            table.insert(triggers, val)
                         end
                     end
                 else
-                    if config:get_bool(key_path) == true then
-                        insert(triggers, true)
+                    if rime_config:get_bool(key_path) == true then
+                        table.insert(triggers, true)
                     else
-                        local val = config:get_string(key_path)
+                        local val = rime_config:get_string(key_path)
                         if val and val ~= "true" then
-                            insert(triggers, val)
+                            table.insert(triggers, val)
                         end
                     end
                 end
             end
 
             -- 解析 Tags
+            ---@type table<string, boolean>?
             local target_tags = nil
             local tag_keys = { "tag", "tags" }
             for _, key in ipairs(tag_keys) do
                 local key_path = entry_path .. "/" .. key
-                local list = config:get_list(key_path)
+                local list = rime_config:get_list(key_path)
                 if list then
                     if not target_tags then
                         target_tags = {}
                     end
                     for k = 0, list.size - 1 do
-                        local val = config:get_string(key_path .. "/@" .. k)
+                        local val = rime_config:get_string(key_path .. "/@" .. k)
                         if val then
                             target_tags[val] = true
                         end
                     end
                 else
-                    local val = config:get_string(key_path)
+                    local val = rime_config:get_string(key_path)
                     if val then
                         if not target_tags then
                             target_tags = {}
@@ -459,34 +472,25 @@ function M.init(env)
             end
 
             if #triggers > 0 then
-                local prefix = config:get_string(entry_path .. "/prefix") or ""
-                local mode = config:get_string(entry_path .. "/mode") or "append"
+                local prefix = rime_config:get_string(entry_path .. "/prefix") or ""
+                local mode = rime_config:get_string(entry_path .. "/mode") or "append"
 
-                -- 解析 编码转换conv
-                local conversion_map = nil
-
-                local comment_mode = config:get_string(entry_path .. "/comment_mode")
-                if not comment_mode then
-                    comment_mode = "comment"
-                end
-                local fmm = config:get_bool(entry_path .. "/sentence")
-                if fmm == nil then
-                    fmm = false
-                end
+                local comment_mode = rime_config:get_string(entry_path .. "/comment_mode") or "comment"
+                local fmm = rime_config:get_bool(entry_path .. "/sentence") or false
 
                 -- 解析 cand_type
-                local custom_cand_type = config:get_string(entry_path .. "/cand_type")
+                local custom_cand_type = rime_config:get_string(entry_path .. "/cand_type")
 
                 local always_qty = 1
                 local always_idx = 1
                 if mode == "abbrev" then
-                    local rule_str = config:get_string(entry_path .. "/abbrev_rule") or "1,1"
-                    local qty_str, idx_str = s_match(rule_str, "^(%d+)%s*,%s*(%d+)$")
+                    local rule_str = rime_config:get_string(entry_path .. "/abbrev_rule") or "1,1"
+                    local qty_str, idx_str = rule_str:match("^(%d+)%s*,%s*(%d+)$")
                     always_qty = tonumber(qty_str) or 1
                     always_idx = tonumber(idx_str) or 1
                 end
 
-                insert(env.rules, {
+                table.insert(rules, {
                     triggers = triggers,
                     tags = target_tags,
                     prefix = prefix,
@@ -502,20 +506,18 @@ function M.init(env)
                 local keys_to_check = { "files", "file" }
                 for _, key in ipairs(keys_to_check) do
                     local d_path = entry_path .. "/" .. key
-                    local list = config:get_list(d_path)
+                    local list = rime_config:get_list(d_path)
                     if list then
                         for j = 0, list.size - 1 do
-                            local p = resolve_path(config:get_string(d_path .. "/@" .. j))
-                            -- 将 conversion_map 传入任务列表
+                            local p = resolve_path(rime_config:get_string(d_path .. "/@" .. j))
                             if p then
-                                insert(tasks, { path = p, prefix = prefix, conversion = conversion_map })
+                                table.insert(tasks, { path = p, prefix = prefix })
                             end
                         end
                     else
-                        local p = resolve_path(config:get_string(d_path))
-                        -- 将 conversion_map 传入任务列表
+                        local p = resolve_path(rime_config:get_string(d_path))
                         if p then
-                            insert(tasks, { path = p, prefix = prefix, conversion = conversion_map })
+                            table.insert(tasks, { path = p, prefix = prefix })
                         end
                     end
                 end
@@ -524,40 +526,49 @@ function M.init(env)
     end
 
     local config_sig_parts = {}
-    for _, t in ipairs(env.rules) do
-        insert(config_sig_parts, (t.cand_type or ""))
+    for _, t in ipairs(rules) do
+        table.insert(config_sig_parts, (t.cand_type or ""))
     end
-    local config_sig = concat(config_sig_parts, "|")
+    local config_sig = table.concat(config_sig_parts, "|")
+
+    env.super_replacer_config = {
+        split_pattern = split_pattern,
+        comment_format = rime_config:get_string(namespace .. "/comment_format") or "〔%s〕",
+        is_chain = rime_config:get_bool(namespace .. "/chain") or false,
+        rules = rules,
+    }
+
+    env.super_replacer_state = {
+        input_type = input_type,
+        fmm_cache = {},
+        db = nil,
+    }
 
     -- 3. DB 初始化 (使用单例连接)
-    env.db = connect_db(db_name, current_version, env.delimiter, tasks, config_sig)
+    env.super_replacer_state.db =
+        connect_db(db_name, current_version, delimiter, tasks, config_sig, env.super_replacer_state)
 end
 
+---@param env Env
 function M.fini(env)
-    -- 我们只是断开当前 env 对全局 db 的引用
-    env.db = nil
+    env.super_replacer_config = nil
+    env.super_replacer_state = nil
 end
 
-local shared_pending = {}
-local shared_comments = {}
-local function clear_table(t)
-    for i = 1, #t do
-        t[i] = nil
-    end
-end
-
--- [Core Function] 核心逻辑
+---@param input Translation
+---@param env Env
 function M.func(input, env)
+    local config = env.super_replacer_config
+    assert(config)
+    local state = env.super_replacer_state
+    assert(state)
+
     local ctx = env.engine.context
+
     local input_code = ctx.input
-    local db = env.db
-    local rules = env.rules
-    local split_pat = env.split_pattern
-    local comment_fmt = env.comment_format
-    local is_chain = env.chain
 
     if not ctx:is_composing() or ctx.input == "" then
-        fmm_cache = {}
+        state.fmm_cache = {}
         collectgarbage("step", 200)
         for cand in input:iter() do
             yield(cand)
@@ -565,7 +576,7 @@ function M.func(input, env)
         return
     end
 
-    if not env.rules or #env.rules == 0 or not env.db then
+    if #config.rules == 0 or not state.db then
         for cand in input:iter() do
             yield(cand)
         end
@@ -576,24 +587,27 @@ function M.func(input, env)
     local current_seg_tags = seg and seg.tags or {}
 
     if seg then
-        input_code = string.sub(ctx.input, seg.start + 1, seg._end)
+        input_code = ctx.input:sub(seg.start + 1, seg._end)
     end
 
     -- [Helper] 通用处理函数
+    ---@param cand Candidate
+    ---@return Candidate[]
     local function process_rules(cand)
+        ---@type Candidate[]
         local results = {}
         local current_text = cand.text
         local show_main = true
         local current_main_comment = cand.comment
         local matched_cand_type = nil
 
-        clear_table(shared_pending)
-        clear_table(shared_comments)
+        clear_list(shared_pending)
+        clear_list(shared_comments)
 
-        for _, t in ipairs(rules) do
-            if t.mode ~= "abbrev" then
+        for _, rule in ipairs(config.rules) do
+            if rule.mode ~= "abbrev" then
                 local is_active = false
-                for _, trigger in ipairs(t.triggers) do
+                for _, trigger in ipairs(rule.triggers) do
                     if trigger == true then
                         is_active = true
                         break
@@ -604,9 +618,9 @@ function M.func(input, env)
                 end
 
                 local is_tag_match = true
-                if t.tags then
+                if rule.tags then
                     is_tag_match = false
-                    for req_tag, _ in pairs(t.tags) do
+                    for req_tag, _ in pairs(rule.tags) do
                         if current_seg_tags[req_tag] then
                             is_tag_match = true
                             break
@@ -615,59 +629,61 @@ function M.func(input, env)
                 end
 
                 if is_active and is_tag_match then
-                    local query_text = is_chain and current_text or cand.text
-                    local key = t.prefix .. query_text
-                    local val = db:fetch(key)
+                    local query_text = config.is_chain and current_text or cand.text
+                    local key = rule.prefix .. query_text
+                    local val = state.db and state.db:fetch(key)
 
-                    if not val and t.fmm then
-                        local seg_result = segment_convert(query_text, db, t.prefix, split_pat)
+                    if not val and rule.fmm then
+                        local seg_result =
+                            segment_convert(query_text, state.db, rule.prefix, config.split_pattern, state)
                         if seg_result ~= query_text then
                             val = seg_result
                         end
                     end
 
                     if val then
-                        matched_cand_type = t.cand_type or matched_cand_type
+                        matched_cand_type = rule.cand_type or matched_cand_type
 
-                        local mode = t.mode
+                        local mode = rule.mode
                         local rule_comment = ""
-                        if t.comment_mode == "text" then
+                        if rule.comment_mode == "text" then
                             rule_comment = cand.text
-                        elseif t.comment_mode == "comment" then
+                        elseif rule.comment_mode == "comment" then
                             rule_comment = cand.comment
                         end
 
                         if mode == "comment" then
+                            ---@type string[]
                             local parts = {}
-                            for p in s_gmatch(val, split_pat) do
-                                insert(parts, p)
+                            for p in val:gmatch(config.split_pattern) do
+                                table.insert(parts, p)
                             end
-                            insert(shared_comments, concat(parts, " "))
+                            table.insert(shared_comments, table.concat(parts, " "))
                         elseif mode == "replace" then
-                            if is_chain then
+                            if config.is_chain then
                                 local first = true
-                                for p in s_gmatch(val, split_pat) do
+                                for p in val:gmatch(config.split_pattern) do
                                     if first then
                                         current_text = p
-                                        if t.comment_mode == "none" then
+                                        if rule.comment_mode == "none" then
                                             current_main_comment = ""
-                                        elseif t.comment_mode == "text" then
+                                        elseif rule.comment_mode == "text" then
                                             current_main_comment = cand.text
                                         end
                                         first = false
                                     else
-                                        insert(shared_pending, { text = p, comment = rule_comment })
+                                        table.insert(shared_pending, { text = p, comment = rule_comment })
                                     end
                                 end
                             else
                                 show_main = false
-                                for p in s_gmatch(val, split_pat) do
-                                    insert(shared_pending, { text = p, comment = rule_comment })
+                                for p in val:gmatch(config.split_pattern) do
+                                    table.insert(shared_pending, { text = p, comment = rule_comment })
                                 end
                             end
                         elseif mode == "append" then
-                            for p in s_gmatch(val, split_pat) do
-                                insert(shared_pending, { text = p, comment = rule_comment })
+                            for p in val:gmatch(config.split_pattern) do
+                                table.insert(shared_pending, { text = p, comment = rule_comment })
                             end
                         end
                     end
@@ -676,8 +692,8 @@ function M.func(input, env)
         end
 
         if #shared_comments > 0 then
-            local comment_str = concat(shared_comments, " ")
-            local fmt = s_format(comment_fmt, comment_str)
+            local comment_str = table.concat(shared_comments, " ")
+            local fmt = config.comment_format:format(comment_str)
             if current_main_comment and current_main_comment ~= "" then
                 current_main_comment = current_main_comment .. fmt
             else
@@ -686,25 +702,25 @@ function M.func(input, env)
         end
 
         if show_main then
-            if is_chain and current_text ~= cand.text then
+            if config.is_chain and current_text ~= cand.text then
                 local final_type = matched_cand_type or cand.type or "kv"
-                local nc = Candidate(final_type, cand.start, cand._end, current_text, current_main_comment)
-                nc.preedit = cand.preedit
-                nc.quality = cand.quality
-                insert(results, nc)
+                local new_cand = Candidate(final_type, cand.start, cand._end, current_text, current_main_comment)
+                new_cand.preedit = cand.preedit
+                new_cand.quality = cand.quality
+                table.insert(results, new_cand)
             else
                 cand.comment = current_main_comment
-                insert(results, cand)
+                table.insert(results, cand)
             end
         end
 
         for _, item in ipairs(shared_pending) do
             if not (show_main and item.text == current_text) then
                 local final_type = matched_cand_type or "derived"
-                local nc = Candidate(final_type, cand.start, cand._end, item.text, item.comment)
-                nc.preedit = cand.preedit
-                nc.quality = cand.quality
-                insert(results, nc)
+                local new_cand = Candidate(final_type, cand.start, cand._end, item.text, item.comment)
+                new_cand.preedit = cand.preedit
+                new_cand.quality = cand.quality
+                table.insert(results, new_cand)
             end
         end
         return results
@@ -714,14 +730,19 @@ function M.func(input, env)
     local yield_count = 0
     local quality_dropped = false
     local has_exact_phrase = false
+    ---@type table<string, boolean>
     local seen_texts = {}
+    ---@type table<string, boolean>
     local global_yielded = {}
+    ---@type { cand: Candidate, index: integer }[]
     local always_cands = {}
+    ---@type Candidate[]
     local lazy_cands = {}
+    ---@type Candidate[]
     local top_buffer = {}
 
     -- 第一步：提前提取简码候选，分配阵营
-    for _, t in ipairs(rules) do
+    for _, t in ipairs(config.rules) do
         if t.mode == "abbrev" then
             local is_active = false
             for _, trigger in ipairs(t.triggers) do
@@ -747,12 +768,12 @@ function M.func(input, env)
 
             if is_active and is_tag_match and input_code ~= "" then -- 加上输入非空保护
                 local key = t.prefix .. input_code
-                local val = db:fetch(key)
-                    or (not s_match(input_code, "[A-Z]") and db:fetch(t.prefix .. s_upper(input_code)))
+                local val = state.db:fetch(key)
+                    or (not input_code:match("[A-Z]") and state.db:fetch(t.prefix .. input_code:upper()))
 
                 if val then
                     local count = 0
-                    for p in s_gmatch(val, split_pat) do
+                    for p in val:gmatch(config.split_pattern) do
                         if not seen_texts[p] then
                             seen_texts[p] = true
 
@@ -765,10 +786,10 @@ function M.func(input, env)
 
                             if count <= t.always_qty then
                                 abbrev_cand.quality = 999
-                                insert(always_cands, { cand = abbrev_cand, index = t.always_idx + (count - 1) })
+                                table.insert(always_cands, { cand = abbrev_cand, index = t.always_idx + (count - 1) })
                             else
                                 abbrev_cand.quality = 98
-                                insert(lazy_cands, abbrev_cand)
+                                table.insert(lazy_cands, abbrev_cand)
                             end
                         end
                     end
@@ -782,6 +803,7 @@ function M.func(input, env)
     end)
 
     -- 标准吐词函数（含精准定位插队）
+    ---@param cand Candidate
     local function output_cand(cand)
         local processed_cands = process_rules(cand)
         for _, pc in ipairs(processed_cands) do
@@ -862,7 +884,7 @@ function M.func(input, env)
 
         if not quality_dropped then
             if q >= 99 then
-                insert(top_buffer, cand)
+                table.insert(top_buffer, cand)
             else
                 quality_dropped = true
                 flush_buffer()
@@ -891,4 +913,5 @@ function M.func(input, env)
         end
     end
 end
+
 return M

@@ -5,25 +5,33 @@
 -- 2. 单字如果不符合字符集，直接丢弃（删除），不进行兜底。
 -- 3. 词组如果包含生僻字，尝试从历史记录寻找同长度拼音的词组进行兜底。
 
-local wanxiang = require("wanxiang/wanxiang")
-local M = {}
+---@class Filter
+---@field options string[]
+---@field base_set table<string, boolean>
+---@field add table<integer, boolean>
+---@field ban table<integer, boolean>
 
--- 性能优化：本地化函数
-local sub = string.sub
-local utf8_codes = utf8.codes
-local utf8_len = utf8.len
+---@class CharsetFilterConfig
+---@field filters Filter[]
 
--- ==========================================
--- 内部辅助函数
--- ==========================================
+---@class CharsetFilterState
+---@field charset_db ReverseDb
+---@field db_memo table<string, string>
+---@field phrase_history_dict table<integer, string>
+
+---@class Env
+---@field charset_filter_config CharsetFilterConfig?
+---@field charset_Filter_state CharsetFilterState?
+
+local wanxiang = require("wanxiang.wanxiang")
 
 -- 检查交集
+---@param db_attr string
+---@param config_base_set table<string, boolean>
+---@return boolean
 local function check_intersection(db_attr, config_base_set)
-    if not db_attr or db_attr == "" then
-        return false
-    end
     for i = 1, #db_attr do
-        local c = sub(db_attr, i, i)
+        local c = db_attr:sub(i, i)
         if config_base_set[c] then
             return true
         end
@@ -32,21 +40,18 @@ local function check_intersection(db_attr, config_base_set)
 end
 
 -- 核心判定逻辑：检查单个 codepoint 是否在允许的字符集中（支持多开关并集）
-local function codepoint_in_charset(env, ctx, codepoint, text)
-    if not env.charset_db then
-        return true
-    end
-
-    local filters = env.filters
-    if not filters or #filters == 0 then
-        return true
-    end
-
+---@param codepoint integer
+---@param text string
+---@param config CharsetFilterConfig
+---@param state CharsetFilterState
+---@param ctx Context
+---@return boolean
+local function codepoint_in_charset(codepoint, text, config, state, ctx)
     local active_options_count = 0
     local is_allowed = false
     local is_blacklisted = false
 
-    for _, rule in ipairs(filters) do
+    for _, rule in ipairs(config.filters) do
         -- 检查当前规则开关是否开启
         local is_rule_active = false
         for _, opt_name in ipairs(rule.options) do
@@ -70,10 +75,10 @@ local function codepoint_in_charset(env, ctx, codepoint, text)
                 if rule.add[codepoint] then
                     is_allowed = true
                 else
-                    local attr = env.db_memo[text]
+                    local attr = state.db_memo[text]
                     if attr == nil then
-                        attr = env.charset_db:lookup(text) or ""
-                        env.db_memo[text] = attr
+                        attr = state.charset_db:lookup(text) or ""
+                        state.db_memo[text] = attr
                     end
 
                     if check_intersection(attr, rule.base_set) then
@@ -97,192 +102,212 @@ local function codepoint_in_charset(env, ctx, codepoint, text)
     return is_allowed
 end
 
--- 检查单字/全词是否符合字符集（供单字快速判定用）
-local function in_charset(env, ctx, text)
-    if not text or text == "" then
-        return true
-    end
+---@param text string
+---@return boolean
+local function is_chinese_character(text)
+    local codepoint = utf8.codepoint(text)
+    return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) -- Basic
+        or (codepoint >= 0x3400 and codepoint <= 0x4DBF) -- Ext A
+        or (codepoint >= 0x20000 and codepoint <= 0x2A6DF) -- Ext B
+        or (codepoint >= 0x2A700 and codepoint <= 0x2B73F) -- Ext C
+        or (codepoint >= 0x2B740 and codepoint <= 0x2B81F) -- Ext D
+        or (codepoint >= 0x2B820 and codepoint <= 0x2CEAF) -- Ext E
+        or (codepoint >= 0x2CEB0 and codepoint <= 0x2EBEF) -- Ext F
+        or (codepoint >= 0x30000 and codepoint <= 0x3134F) -- Ext G
+        or (codepoint >= 0x31350 and codepoint <= 0x323AF) -- Ext H
+        or (codepoint >= 0x2EBF0 and codepoint <= 0x2EE5F) -- Ext I
+        or (codepoint >= 0xF900 and codepoint <= 0xFAFF) -- Compatibility
+        or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compatibility Supplement
+        or (codepoint >= 0x2E80 and codepoint <= 0x2EFF) -- Radicals Supplement
+        or (codepoint >= 0x2F00 and codepoint <= 0x2FDF) -- Kangxi Radicals
+end
 
-    local cp_count = 0
-    local target_cp = nil
-    for _, cp in utf8_codes(text) do
-        cp_count = cp_count + 1
-        if cp_count > 1 then
+---检查单字/全词是否符合字符集（供单字快速判定用）
+---@param text string
+---@param config CharsetFilterConfig
+---@param state CharsetFilterState
+---@param ctx Context
+---@return boolean
+local function in_charset(text, config, state, ctx)
+    local codepoint_count = 0
+    local target_codepoint = nil
+    for _, cp in utf8.codes(text) do
+        codepoint_count = codepoint_count + 1
+        if codepoint_count > 1 then
             return true
         end -- 大于一个字交由词组专用逻辑处理
-        target_cp = cp
+        target_codepoint = cp
     end
 
-    if cp_count == 0 or not target_cp then
-        return true
-    end
-    local char = utf8.char(target_cp)
-
-    if not wanxiang.IsChineseCharacter(char) then
+    if codepoint_count == 0 or not target_codepoint then
         return true
     end
 
-    return codepoint_in_charset(env, ctx, target_cp, char)
+    local char = utf8.char(target_codepoint)
+    if not is_chinese_character(char) then
+        return true
+    end
+
+    return codepoint_in_charset(target_codepoint, char, config, state, ctx)
 end
 
 -- 精准探测：检查词组中是否包含生僻字
-local function check_text_has_rare_char(env, ctx, text)
-    if not text or text == "" then
-        return false
-    end
-    for _, codepoint in utf8_codes(text) do
-        local character = utf8.char(codepoint)
-        if wanxiang.IsChineseCharacter(character) then
-            if not codepoint_in_charset(env, ctx, codepoint, character) then
-                return true
-            end
+---@param text string
+---@param config CharsetFilterConfig
+---@param state CharsetFilterState
+---@param ctx Context
+---@return boolean
+local function has_rare_char(text, config, state, ctx)
+    for _, codepoint in utf8.codes(text) do
+        local char = utf8.char(codepoint)
+        if is_chinese_character(char) and not codepoint_in_charset(codepoint, char, config, state, ctx) then
+            return true
         end
     end
     return false
 end
 
--- ==========================================
--- 生命周期管理
--- ==========================================
+local M = {}
 
+---@param env Env
 function M.init(env)
-    local cfg = env.engine and env.engine.schema and env.engine.schema.config
+    local rime_config = env.engine.schema.config
 
-    local dist = (rime_api and rime_api.get_distribution_code_name and rime_api.get_distribution_code_name() or ""):lower()
-    local charsetFile
-    if dist == "weasel" then
-        charsetFile = "lua/data/charset.reverse.bin"
-    else
-        charsetFile = wanxiang.get_filename_with_fallback("lua/data/charset.reverse.bin")
-            or "lua/data/charset.reverse.bin"
-    end
+    local charsetFile = rime_api.get_distribution_code_name():lower() ~= "weasel"
+            and wanxiang.get_filename_with_fallback("lua/data/charset.reverse.bin")
+        or "lua/data/charset.reverse.bin"
 
-    env.charset_db = nil
-    if ReverseDb then
-        local ok, db = pcall(function()
-            return ReverseDb(charsetFile)
-        end)
-        if ok and db then
-            env.charset_db = db
-        end
-    end
+    local config_root = "charset"
+    local config_list = rime_config:get_list(config_root)
 
-    env.db_memo = {}
-    env.filters = {}
-    env.phrase_history_dict = {}
+    ---@type Filter[]
+    local filters = {}
+    if config_list then
+        for i = 0, config_list.size - 1 do
+            local entry_path = config_root .. "/@" .. i
+            ---@type string[]
+            local triggers = {}
+            local opts_keys = { "option", "options" }
 
-    if not cfg then
-        return
-    end
-
-    local root_path = "charset"
-    local list = cfg:get_list(root_path)
-    if not list then
-        return
-    end
-
-    for i = 0, list.size - 1 do
-        local entry_path = root_path .. "/@" .. i
-        local triggers = {}
-        local opts_keys = { "option", "options" }
-
-        for _, key in ipairs(opts_keys) do
-            local key_path = entry_path .. "/" .. key
-            local sub_list = cfg:get_list(key_path)
-            if sub_list then
-                for k = 0, sub_list.size - 1 do
-                    local val = cfg:get_string(key_path .. "/@" .. k)
-                    if val and val ~= "" then
-                        table.insert(triggers, val)
-                    end
-                end
-            else
-                if cfg:get_bool(key_path) == true then
-                    table.insert(triggers, "true")
-                else
-                    local val = cfg:get_string(key_path)
-                    if val and val ~= "" and val ~= "true" then
-                        table.insert(triggers, val)
-                    end
-                end
-            end
-        end
-
-        if #triggers > 0 then
-            local rule_base_set = {}
-            local rule_add = {}
-            local rule_ban = {}
-
-            local base_str = cfg:get_string(entry_path .. "/base")
-            if base_str and #base_str > 0 then
-                for j = 1, #base_str do
-                    rule_base_set[sub(base_str, j, j)] = true
-                end
-            end
-
-            local function load_list_to_map(list_name, map)
-                local lp = entry_path .. "/" .. list_name
-                local sl = cfg:get_list(lp)
-                if sl then
-                    for k = 0, sl.size - 1 do
-                        local val = cfg:get_string(lp .. "/@" .. k)
+            for _, key in ipairs(opts_keys) do
+                local key_path = entry_path .. "/" .. key
+                local sub_list = rime_config:get_list(key_path)
+                if sub_list then
+                    for k = 0, sub_list.size - 1 do
+                        local val = rime_config:get_string(key_path .. "/@" .. k)
                         if val and val ~= "" then
-                            for _, cp in utf8_codes(val) do
-                                map[cp] = true
-                            end
+                            table.insert(triggers, val)
+                        end
+                    end
+                else
+                    if rime_config:get_bool(key_path) == true then
+                        table.insert(triggers, "true")
+                    else
+                        local val = rime_config:get_string(key_path)
+                        if val and val ~= "" and val ~= "true" then
+                            table.insert(triggers, val)
                         end
                     end
                 end
             end
 
-            load_list_to_map("addlist", rule_add)
-            load_list_to_map("blacklist", rule_ban)
+            if #triggers > 0 then
+                ---@type table<string, boolean>
+                local rule_base_set = {}
+                ---@type table<integer, boolean>
+                local rule_add = {}
+                ---@type table<integer, boolean>
+                local rule_ban = {}
 
-            table.insert(env.filters, {
-                options = triggers,
-                base_set = rule_base_set,
-                add = rule_add,
-                ban = rule_ban,
-            })
+                local base_str = rime_config:get_string(entry_path .. "/base")
+                if base_str and #base_str > 0 then
+                    for j = 1, #base_str do
+                        rule_base_set[base_str:sub(j, j)] = true
+                    end
+                end
+
+                ---@param list_name string
+                ---@param map table<integer, boolean>
+                local function load_list_to_map(list_name, map)
+                    local lp = entry_path .. "/" .. list_name
+                    local sl = rime_config:get_list(lp)
+                    if sl then
+                        for k = 0, sl.size - 1 do
+                            local val = rime_config:get_string(lp .. "/@" .. k)
+                            if val and val ~= "" then
+                                for _, cp in utf8.codes(val) do
+                                    map[cp] = true
+                                end
+                            end
+                        end
+                    end
+                end
+
+                load_list_to_map("addlist", rule_add)
+                load_list_to_map("blacklist", rule_ban)
+
+                table.insert(filters, {
+                    options = triggers,
+                    base_set = rule_base_set,
+                    add = rule_add,
+                    ban = rule_ban,
+                })
+            end
         end
     end
+
+    env.charset_filter_config = {
+        filters = filters,
+    }
+
+    env.charset_Filter_state = {
+        charset_db = ReverseDb(charsetFile),
+        db_memo = {},
+        phrase_history_dict = {},
+    }
 end
 
+---@param env Env
 function M.fini(env)
-    env.charset_db = nil
-    env.db_memo = nil
-    env.filters = nil
-    env.phrase_history_dict = nil
+    env.charset_filter_config = nil
+    env.charset_Filter_state = nil
 end
 
 -- ==========================================
 -- 核心过滤流水线
 -- ==========================================
 
+---@param input Translation
+---@param env Env
 function M.func(input, env)
-    local ctx = env.engine.context
-    local code = ctx.input or ""
-    local comp = ctx.composition
+    local config = env.charset_filter_config
+    assert(config)
+    local state = env.charset_Filter_state
+    assert(state)
+
+    local context = env.engine.context
+    local code = context.input
+    local comp = context.composition
 
     -- 1. 维护历史输入字典
-    if not code or code == "" or (comp and comp:empty()) then
-        env.phrase_history_dict = {}
+    if code == "" or comp:empty() then
+        state.phrase_history_dict = {}
     else
         local current_code_length = #code
-        for key_length in pairs(env.phrase_history_dict) do
+        for key_length in pairs(state.phrase_history_dict) do
             if key_length > current_code_length then
-                env.phrase_history_dict[key_length] = nil
+                state.phrase_history_dict[key_length] = nil
             end
         end
     end
 
     -- 2. 判断当前是否需要开启字符集过滤
     local is_functional = false
-    if wanxiang and wanxiang.s2t_conversion then
-        is_functional = wanxiang.s2t_conversion(ctx)
+    if wanxiang.s2t_conversion then
+        is_functional = wanxiang.s2t_conversion(context)
     end
 
-    local charset_active = (env.filters and #env.filters > 0) and not is_functional
+    local charset_active = #config.filters > 0 and not is_functional
 
     if #code == 5 and code:sub(-1):find("[^%w]") then
         charset_active = false
@@ -293,8 +318,8 @@ function M.func(input, env)
 
     -- 内部帮助函数：记录历史并推入管道
     local function yield_and_record(cand, text)
-        if not has_recorded_history and text and text ~= "" and (utf8_len(text) or 0) >= 1 then
-            env.phrase_history_dict[#code] = text
+        if not has_recorded_history and text and text ~= "" and (utf8.len(text) or 0) >= 1 then
+            state.phrase_history_dict[#code] = text
             has_recorded_history = true
         end
         yield(cand)
@@ -306,51 +331,55 @@ function M.func(input, env)
         -- 如果未开启过滤，直接放行并记录历史
         if not charset_active or text == "" then
             yield_and_record(cand, text)
-        else
-            local text_length = utf8_len(text)
+            goto continue
+        end
 
-            if text_length < 2 then
-                -- 单字过滤：如果不符合就直接丢弃，不执行兜底，也不执行记录
-                if in_charset(env, ctx, text) then
-                    yield_and_record(cand, text)
-                end
-            else
-                -- 词组过滤
-                local has_rare_character = check_text_has_rare_char(env, ctx, text)
+        local text_length = utf8.len(text)
+        if text_length < 2 then
+            -- 单字过滤：如果不符合就直接丢弃，不执行兜底，也不执行记录
 
-                if not has_rare_character then
-                    -- 不含生僻字，直接放行
-                    yield_and_record(cand, text)
-                else
-                    -- 含有生僻字，开始词组兜底
-                    local fallback_text = nil
-                    local current_code_length = #code
-                    for history_length = current_code_length - 1, 1, -1 do
-                        local history_text = env.phrase_history_dict[history_length]
-                        if history_text and utf8_len(history_text) == text_length then
-                            fallback_text = history_text
-                            break
-                        end
-                    end
+            if in_charset(text, config, state, context) then
+                yield_and_record(cand, text)
+            end
+            goto continue
+        end
 
-                    if fallback_text then
-                        -- 构造兜底候选
-                        local preedit_text = cand.preedit or code
-                        if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
-                            preedit_text = sub(preedit_text, 1, -2) .. " " .. sub(preedit_text, -1)
-                        end
+        -- 词组过滤
+        if not has_rare_char(text, config, state, context) then
+            -- 不含生僻字，直接放行
+            yield_and_record(cand, text)
+            goto continue
+        end
 
-                        local nc = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment or "")
-                        nc.preedit = preedit_text
-
-                        -- 验证兜底词自身不是生僻词
-                        if in_charset(env, ctx, nc.text) then
-                            yield_and_record(nc, nc.text)
-                        end
-                    end
-                end
+        -- 含有生僻字，开始词组兜底
+        local fallback_text = nil
+        local current_code_length = #code
+        for history_length = current_code_length - 1, 1, -1 do
+            local history_text = state.phrase_history_dict[history_length]
+            if history_text and utf8.len(history_text) == text_length then
+                fallback_text = history_text
+                break
             end
         end
+        if not fallback_text then
+            goto continue
+        end
+
+        -- 构造兜底候选
+        local preedit_text = cand.preedit or code
+        if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
+            preedit_text = preedit_text:sub(1, -2) .. " " .. preedit_text:sub(-1)
+        end
+
+        local new_cand = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment or "")
+        new_cand.preedit = preedit_text
+
+        -- 验证兜底词自身不是生僻词
+        if in_charset(new_cand.text, config, state, context) then
+            yield_and_record(new_cand, new_cand.text)
+        end
+
+        ::continue::
     end
 end
 

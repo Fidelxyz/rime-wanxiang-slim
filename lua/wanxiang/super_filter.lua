@@ -10,20 +10,30 @@
 --      因此在首选已经是英文的时候，且type=completion且大于等于4个字符，这个时候后面如果有type=sentence的派生词则直接干掉，这个还要依赖，表翻译器
 --      权重设置与主翻译器不可相差太大
 
-local M = {}
+---@class SuperFilterConfig
+---@field enable_taichi_filter boolean
 
---全局通信通道
-_G.WanxiangSharedState = _G.WanxiangSharedState
-    or {
-        sorter_active = false, -- 标记排序脚本是否存活
-        last_input = "", -- 记录上一次未打斜杠的拼音
-        page_cache = {}, -- 存放排序后的终极缓存
-    }
--- 性能优化：本地化字符串函数
-local byte = string.byte
-local find = string.find
-local utf8_len = utf8.len
+---@class SuperFilterState
+---@field last_2code_char string?
 
+---@class Env
+---@field super_filter_config SuperFilterConfig?
+---@field super_filter_state SuperFilterState?
+
+---@class Wrapper
+---@field cand Candidate
+---@field text string
+---@field is_table boolean
+---@field has_eng boolean
+
+---@class EmitContext
+---@field suppress_set table<string, boolean>?
+---@field unify_tail_span fun(c: Candidate): Candidate
+---@field enable_taichi_filter boolean
+---@field drop_sentence_after_completion boolean
+
+---@param c Candidate
+---@return string
 local function fast_type(c)
     local t = c.type
     if t then
@@ -33,15 +43,19 @@ local function fast_type(c)
     return (g and g.type) or ""
 end
 
+---@param c Candidate
+---@return boolean
 local function is_table_type(c)
     local t = fast_type(c)
     return t == "table" or t == "user_table" or t == "fixed"
 end
 
+---@param s string
+---@return boolean
 local function has_english_token_fast(s)
     local len = #s
     for i = 1, len do
-        local b = byte(s, i)
+        local b = s:byte(i)
         if b < 0x80 then
             -- A-Z (0x41-0x5A) or a-z (0x61-0x7A)
             if (b >= 0x41 and b <= 0x5A) or (b >= 0x61 and b <= 0x7A) then
@@ -61,13 +75,16 @@ local escape_map = {
 }
 
 -- 主入口：全局保护 [[]] 并执行所有转义逻辑
+---@param text string
+---@return string result, boolean changed
 local function apply_escape_fast(text)
     -- 性能护航：不含反斜杠直接返回
-    if not text or not string.find(text, "\\", 1, true) then
+    if not text or not text:find("\\", 1, true) then
         return text, false
     end
 
     -- 第一步：保护 [[...]]
+    ---@type string[]
     local blocks = {}
     local s = text:gsub("%[%[(.-)%]%]", function(txt)
         blocks[#blocks + 1] = txt
@@ -85,61 +102,35 @@ local function apply_escape_fast(text)
     return s, s ~= text
 end
 
+---@param cand Candidate
+---@return Candidate
 local function format_and_autocap(cand)
     local text = cand.text
     if not text or text == "" then
         return cand
     end
+
     local t2, changed = apply_escape_fast(text)
     if not changed then
         return cand
     end
-    local nc = Candidate(cand.type, cand.start, cand._end, t2, cand.comment)
-    nc.preedit = cand.preedit
-    return nc
-end
 
-local function clone_candidate(c)
-    local nc = Candidate(c.type, c.start, c._end, c.text, c.comment or "")
-    nc.preedit = c.preedit
-    return nc
-end
-
-function M.init(env)
-    local cfg = env.engine and env.engine.schema and env.engine.schema.config
-
-    env.locked = false
-    -- PageSize & TablePosition
-    env.page_size = (cfg and cfg:get_int("menu/page_size"))
-
-    env.table_idx = env.page_size
-    if cfg then
-        local tp = cfg:get_int("idiom_preposition")
-        if tp and tp >= 0 and tp <= env.page_size then
-            env.table_idx = tp
-        end
-    end
-
-    local schema_id = env.engine.schema.schema_id
-    env.enable_taichi_filter = (schema_id == "wanxiang" or schema_id == "wanxiang_pro")
-    env.page_cache = {}
-
-    -- 【新增】用于2码记录、3码单字兜底的轻量级状态
-    env.last_2code_char = nil
-end
-
-function M.fini(env)
-    env.last_2code_char = nil
+    local new_cand = Candidate(cand.type, cand.start, cand._end, t2, cand.comment)
+    new_cand.preedit = cand.preedit
+    return new_cand
 end
 
 -- 上屏管道：负责去重、格式化、修饰
+---@param wrapper Wrapper
+---@param ctxs EmitContext
+---@return boolean
 local function emit_with_pipeline(wrapper, ctxs)
     local cand = wrapper.cand
     local text = wrapper.text
 
     -- 2. 太极/句子过滤 (使用缓存的属性)
     if ctxs.enable_taichi_filter and wrapper.has_eng then
-        if cand.comment and find(cand.comment, "\226\152\175") then
+        if cand.comment and cand.comment:find("\226\152\175") then
             return false
         end
     end
@@ -161,23 +152,52 @@ local function emit_with_pipeline(wrapper, ctxs)
     cand = ctxs.unify_tail_span(cand)
 
     yield(cand)
-    if #ctxs.env.page_cache < ctxs.cache_limit then
-        if not _G.WanxiangSharedState.sorter_active then
-            table.insert(ctxs.env.page_cache, clone_candidate(cand))
-        end
-    end
     return true
 end
 
+local M = {}
+
+---@param env Env
+function M.init(env)
+    local config = env.engine.schema.config
+
+    -- PageSize & TablePosition
+    env.page_size = config and config:get_int("menu/page_size")
+
+    local schema_id = env.engine.schema.schema_id
+    local enable_taichi_filter = schema_id == "wanxiang" or schema_id == "wanxiang_pro"
+
+    env.super_filter_config = {
+        enable_taichi_filter = enable_taichi_filter,
+    }
+
+    env.super_filter_state = {
+        last_2code_char = nil,
+    }
+end
+
+---@param env Env
+function M.fini(env)
+    env.super_filter_config = nil
+    env.super_filter_state = nil
+end
+
+---@param input Translation
+---@param env Env
 function M.func(input, env)
-    local ctx = env and env.engine and env.engine.context or nil
-    local code = ctx and (ctx.input or "") or ""
-    local comp = ctx and ctx.composition or nil
+    local context = env.engine.context
+
+    local config = env.super_filter_config
+    assert(config)
+    local state = env.super_filter_state
+    assert(state)
+
+    local code = context and (context.input or "") or ""
+    local comp = context and context.composition or nil
 
     -- 1. 空环境清理
     if not code or code == "" or (comp and comp:empty()) then
-        env.last_2code_char = nil
-        env.page_cache = {}
+        state.last_2code_char = nil
         for cand in input:iter() do
             yield(cand)
         end
@@ -188,46 +208,44 @@ function M.func(input, env)
     local last_seg = comp and comp:back()
     local code_len = #code
     local seg_len = last_seg and (last_seg._end - last_seg.start) or code_len
-    local enable_taichi = env.enable_taichi_filter
 
     -- 及时清理兜底数据
     if seg_len < 2 or seg_len > 3 then
-        env.last_2code_char = nil
+        state.last_2code_char = nil
     end
 
     -- 3. 成对符号包裹功能已移除
-    env.page_cache = {}
     local fully_consumed = false
-    env.locked = false
 
-    local do_group = (env.table_idx > 0) and (code_len >= 2 and code_len <= 6)
+    local do_group = code_len >= 2 and code_len <= 6
 
     -- 闭包上下文 (Context)
+    ---@param c Candidate
+    ---@return Candidate
     local function unify_tail_span(c)
         if fully_consumed and last_seg and c and c._end ~= last_seg._end then
-            local nc = Candidate(c.type, c.start, last_seg._end, c.text, c.comment)
-            nc.preedit = c.preedit
-            return nc
+            local new_cand = Candidate(c.type, c.start, last_seg._end, c.text, c.comment)
+            new_cand.preedit = c.preedit
+            return new_cand
         end
         return c
     end
 
+    ---@type EmitContext
     local emit_ctx = {
-        env = env,
-        ctx = ctx,
         suppress_set = nil,
         unify_tail_span = unify_tail_span,
-        enable_taichi_filter = enable_taichi,
+        enable_taichi_filter = config.enable_taichi_filter,
         drop_sentence_after_completion = false, -- 初始化为 false
-        cache_limit = (env.page_size or 5) * 2,
     }
 
     local page_size = env.page_size
-    local target_idx = env.table_idx
     local sort_window = 30
     local visual_idx = 0
 
     -- 通用候选处理 (Wrap -> Emit)
+    ---@param wrapper Wrapper
+    ---@return boolean
     local function try_process_wrapper(wrapper)
         if emit_with_pipeline(wrapper, emit_ctx) then
             visual_idx = visual_idx + 1
@@ -239,22 +257,22 @@ function M.func(input, env)
     -- 三码空候选轻量兜底执行函数
     local function check_and_yield_fallback()
         if visual_idx == 0 and seg_len == 3 then
-            local fallback_text = env.last_2code_char
+            local fallback_text = state.last_2code_char
             if fallback_text then
                 local start_pos = last_seg and last_seg.start or (#code - 3)
                 if start_pos < 0 then
                     start_pos = 0
                 end
                 local end_pos = last_seg and last_seg._end or #code
-                local nc = Candidate("fallback", start_pos, end_pos, fallback_text, "")
+                local new_cand = Candidate("fallback", start_pos, end_pos, fallback_text, "")
                 -- 分割预编辑区，例如输入 "abc" -> 显示 "ab c"
-                local seg_str = string.sub(code, start_pos + 1, end_pos)
+                local seg_str = code:sub(start_pos + 1, end_pos)
                 if #seg_str >= 3 then
-                    nc.preedit = string.sub(seg_str, 1, 2) .. " " .. string.sub(seg_str, 3)
+                    new_cand.preedit = seg_str:sub(1, 2) .. " " .. seg_str:sub(3)
                 else
-                    nc.preedit = seg_str
+                    new_cand.preedit = seg_str
                 end
-                yield(nc)
+                yield(new_cand)
             end
         end
     end
@@ -275,8 +293,8 @@ function M.func(input, env)
 
             if idx == 1 then
                 -- 为3码兜底做准备
-                if seg_len == 2 and (utf8_len(txt) or 0) == 1 and not w.has_eng then
-                    env.last_2code_char = txt
+                if seg_len == 2 and (utf8.len(txt) or 0) == 1 and not w.has_eng then
+                    state.last_2code_char = txt
                 end
 
                 -- 英文长句过滤触发器
@@ -299,13 +317,14 @@ function M.func(input, env)
     local normal_buf = {} -- 存 Normal
     local special_buf = {} -- 存 Table/UserTable
 
+    ---@param force_all boolean
     local function try_flush_page_sort(force_all)
         while true do
             local next_pos = visual_idx + 1
             local current_idx_in_page = ((next_pos - 1) % page_size) + 1
             local is_second_page = (visual_idx >= page_size)
 
-            local allow_special = is_second_page or (current_idx_in_page >= target_idx)
+            local allow_special = is_second_page or (current_idx_in_page >= page_size)
 
             local w_to_emit = nil
             if force_all then
@@ -357,6 +376,7 @@ function M.func(input, env)
     for cand in input:iter() do
         idx2 = idx2 + 1
         local txt = cand.text
+        ---@type Wrapper
         local w = {
             cand = cand,
             text = txt,
@@ -366,8 +386,8 @@ function M.func(input, env)
 
         if idx2 == 1 then
             -- 为3码兜底做准备
-            if seg_len == 2 and (utf8_len(txt) or 0) == 1 and not w.has_eng then
-                env.last_2code_char = txt
+            if seg_len == 2 and (utf8.len(txt) or 0) == 1 and not w.has_eng then
+                state.last_2code_char = txt
             end
 
             if w.is_table and #txt >= 4 and w.has_eng then
@@ -418,4 +438,5 @@ function M.func(input, env)
     -- 单字无候选时兜底
     check_and_yield_fallback()
 end
+
 return M

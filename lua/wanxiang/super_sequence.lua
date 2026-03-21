@@ -11,78 +11,86 @@
 -- 清单有什么文件就会读取什么文件
 -- 仅使用 installation.yaml 的 sync_dir；读不到就回退到 user_dir/sync
 
--- ✨是给上一层滤镜传递排序上下文信息的代码，不用时便于删除
-local wanxiang = require("wanxiang/wanxiang")
-local userdb = require("wanxiang/userdb")
+local wanxiang = require("wanxiang.wanxiang")
+local userdb = require("wanxiang.userdb")
+
+---@class SuperSequenceConfig
+---@field seq_keys SeqKeys
+
+---@class Env
+---@field super_sequence_config SuperSequenceConfig?
+
+---@class SeqKeys
+---@field up string
+---@field down string
+---@field reset string
+---@field pin string
 
 ------------------------------------------------------------
--- 一、常量与键位
+-- 一、常量
 ------------------------------------------------------------
-local DEFAULT_SEQ_KEY = { up = "Control+j", down = "Control+k", reset = "Control+l", pin = "Control+p" }
 local SYNC_FILE_PREFIX, SYNC_FILE_SUFFIX = "sequence", ".txt"
 local RUNTIME_EXPORT = false
+local MANIFEST_FILE = "sequence_device_list.txt"
 
-local _normalize_path, _is_abs_path, _path_join, _manifest_path
-
--- ✨ 全局通信通道
-_G.WanxiangSharedState = _G.WanxiangSharedState or {
-    sorter_active = false,
-    last_input = "",
-    page_cache = {},
-}
-
--- ✨ 防崩溃的候选词克隆函数
-local function clone_candidate(c)
-    local nc = Candidate(c.type, c.start, c._end, c.text, c.comment or "")
-    nc.preedit = c.preedit
-    return nc
-end
 ------------------------------------------------------------
 -- 二、通用工具（路径处理）
 ------------------------------------------------------------
-_normalize_path = function(p)
-    if not p or p == "" then
+---@param p string
+---@return string
+local function normalize_path(p)
+    if p == "" then
         return ""
     end
+
     if p:sub(1, 2) == "\\\\" then
         return "//" .. p:sub(3):gsub("\\", "/"):gsub("/+", "/")
     else
-        return p:gsub("\\", "/"):gsub("/+", "/")
+        return (p:gsub("\\", "/"):gsub("/+", "/"))
     end
 end
 
-_is_abs_path = function(p)
-    p = _normalize_path(p)
+---@param p string
+---@return boolean
+local function is_absolute_path(p)
+    p = normalize_path(p)
     return p:sub(1, 2) == "//" or p:match("^[A-Za-z]:/")
 end
 
-_path_join = function(a, b)
-    a = _normalize_path(a)
-    b = _normalize_path(b)
-    if not a or a == "" then
+---@param a string
+---@param b string
+---@return string
+local function path_join(a, b)
+    a = normalize_path(a)
+    b = normalize_path(b)
+
+    if a == "" then
         return b
     end
-    if not b or b == "" then
+    if b == "" then
         return a
     end
-    if _is_abs_path(b) then
+    if is_absolute_path(b) then
         return b
     end
+
     if a:sub(-1) ~= "/" then
         a = a .. "/"
     end
+
     return a .. b
 end
 
-_manifest_path = function(dir)
-    return _path_join(dir, "sequence_device_list.txt")
-end
-
-local function _read_lines(path)
-    local t, f = {}, io.open(path, "r")
+---@param path string
+---@return string[]
+local function read_lines(path)
+    local f = io.open(path, "r")
     if not f then
-        return t
+        return {}
     end
+
+    ---@type string[]
+    local t = {}
     for line in f:lines() do
         t[#t + 1] = line
     end
@@ -90,49 +98,56 @@ local function _read_lines(path)
     return t
 end
 
-local function _write_lines(path, lines)
+---@param path string
+---@param lines string[]
+local function write_lines(path, lines)
     local f = io.open(path, "w")
     if not f then
-        return false
+        return
     end
+
     for _, line in ipairs(lines) do
         f:write(line, "\n")
     end
     f:close()
-    return true
 end
 
-local function _trim(s)
+---@param s string
+---@return string
+local function trim(s)
     return (s:gsub("^%s+", ""):gsub("%s+$", ""))
 end
-local function _file_exists(path)
-    if not path or path == "" then
-        return false
-    end
-    local f = io.open(path, "r")
-    if f then
-        f:close()
-        return true
-    end
-    return false
+
+---@param s string?
+---@return boolean
+local function is_single_lowercase_letter(s)
+    return s ~= nil and #s == 1 and s:match("^[a-z]$") ~= nil
 end
 
 ------------------------------------------------------------
 -- 三、安装信息 & 同步目录
 ------------------------------------------------------------
-local function _read_installation_yaml()
+---@return string? installation_id
+---@return string? sync_dir
+local function read_installation_yaml()
     local user_dir = rime_api.get_user_data_dir()
-    if not user_dir or user_dir == "" then
+    if user_dir == "" then
         return nil, nil
     end
-    local path = _path_join(user_dir, "installation.yaml")
-    local f = io.open(path, "r")
+
+    local f = io.open(path_join(user_dir, "installation.yaml"), "r")
     if not f then
         return nil, nil
     end
-    local installation_id, sync_dir
+
+    ---@type string?
+    local installation_id = nil
+    ---@type string?
+    local sync_dir = nil
+    ---@type string
     for line in f:lines() do
         line = line:gsub("%s+#.*$", "")
+        ---@type string?, string?
         local key, val = line:match("^%s*([%w_]+)%s*:%s*(.+)$")
         if key and val then
             val = val:gsub('^%s*"(.*)"%s*$', "%1"):gsub("^%s*'(.*)'%s*$", "%1")
@@ -140,7 +155,7 @@ local function _read_installation_yaml()
             if key == "installation_id" then
                 installation_id = val
             elseif key == "sync_dir" then
-                sync_dir = _normalize_path(val)
+                sync_dir = normalize_path(val)
             end
         end
     end
@@ -148,65 +163,75 @@ local function _read_installation_yaml()
     return installation_id, sync_dir
 end
 
-local function _sync_dir()
+---@return string
+local function sync_dir()
     local user_dir = rime_api.get_user_data_dir() or ""
-    local _, ysync = _read_installation_yaml()
+    local _, ysync = read_installation_yaml()
+
+    ---@param x string
+    ---@return string
     local function fix(x)
-        if not x or x == "" then
+        if x == "" then
             return ""
         end
         if x == "sync" then
-            return (user_dir ~= "" and _path_join(user_dir, "sync")) or "sync"
+            return (user_dir ~= "" and path_join(user_dir, "sync")) or "sync"
         end
-        return _normalize_path(x)
+        return normalize_path(x)
     end
+
     if ysync and ysync ~= "" then
         return fix(ysync)
     end
-    return _path_join(user_dir, "sync")
+
+    return path_join(user_dir, "sync")
 end
 
-local function _sync_ready()
-    local install_id, ysync = _read_installation_yaml()
+---@return boolean, string, string?
+local function sync_ready()
+    local install_id, ysync = read_installation_yaml()
     local user_dir = rime_api.get_user_data_dir() or ""
+
+    ---@type string
     local dir
     if ysync and ysync ~= "" then
-        dir = _normalize_path(ysync)
+        dir = normalize_path(ysync)
         if dir == "sync" then
-            dir = _path_join(user_dir, "sync")
+            dir = path_join(user_dir, "sync")
         end
     else
-        dir = _path_join(user_dir, "sync")
+        dir = path_join(user_dir, "sync")
     end
-    local ok = (install_id and install_id ~= "") and (dir and dir ~= "")
+
+    local ok = (install_id and install_id ~= "") and dir ~= "" or false
     return ok, dir, install_id
 end
 
-local function _detect_device_name()
-    local installation_id = select(1, _read_installation_yaml())
-    local function _san(s)
-        return tostring(s):gsub('[%s/\\:%*%?"<>|]', "_")
+---@return string
+local function detect_device_name()
+    local installation_id = select(1, read_installation_yaml())
+
+    ---Sanitize the installation_id to be safe for filenames
+    ---@param s string
+    ---@return string
+    local function san(s)
+        return (tostring(s):gsub('[%s/\\:%*%?"<>|]', "_"))
     end
+
     if installation_id and installation_id ~= "" then
-        return _san(installation_id)
+        return san(installation_id)
     end
-    local dir = _sync_dir()
-    for _, raw in ipairs(_read_lines(_manifest_path(dir))) do
-        local name = _trim(raw or "")
+
+    local dir = sync_dir()
+    for _, raw in ipairs(read_lines(path_join(dir, MANIFEST_FILE))) do
+        local name = trim(raw or "")
         local m = name:match("^sequence_(.+)%.txt$")
-        if m and not _is_abs_path(name) then
-            return _san(m)
+        if m and not is_absolute_path(name) then
+            return san(m)
         end
     end
-    return "device"
-end
 
-------------------------------------------------------------
--- 四、时间
-------------------------------------------------------------
-local function get_timestamp()
-    local ms = type(rime_api.get_time_ms) == "function" and tonumber(rime_api.get_time_ms()) or nil
-    return ms and (os.time() + ms / 1000.0) or os.time()
+    return "device"
 end
 
 ------------------------------------------------------------
@@ -214,10 +239,17 @@ end
 ------------------------------------------------------------
 local seq_db = userdb.LevelDb("lua/sequence")
 
+---@class SeqProperty
+---@field ADJUST_KEY string
 local seq_property = { ADJUST_KEY = "sequence_adjustment_code" }
+
+---@param context Context
+---@return string?
 function seq_property.get(context)
     return context:get_property(seq_property.ADJUST_KEY)
 end
+
+---@param context Context
 function seq_property.reset(context)
     local code = seq_property.get(context)
     if code ~= nil and code ~= "" then
@@ -225,72 +257,71 @@ function seq_property.reset(context)
     end
 end
 
-local curr_state = {}
-curr_state.ADJUST_MODE = { None = -1, Reset = 0, Pin = 1, Adjust = 2 }
-curr_state.default = {
+---@class AdjState
+---@field selected_phrase string?
+---@field offset integer?
+---@field mode ADJUST_MODE
+---@field highlight_index integer?
+---@field adjust_code string?
+---@field adjust_key string?
+---@field dirty boolean
+---@field last_dirty_ts number
+local adj_state = {}
+
+---@enum ADJUST_MODE
+adj_state.ADJUST_MODE = { None = -1, Reset = 0, Pin = 1, Adjust = 2 }
+
+---@type AdjState
+adj_state.DEFAULT = {
     selected_phrase = nil,
     offset = 0,
-    mode = curr_state.ADJUST_MODE.None,
+    mode = adj_state.ADJUST_MODE.None,
     highlight_index = nil,
     adjust_code = nil,
     adjust_key = nil,
     dirty = false,
     last_dirty_ts = 0,
 }
-function curr_state.reset()
-    if curr_state.mode == curr_state.ADJUST_MODE.None then
+
+function adj_state.reset()
+    if adj_state.mode == adj_state.ADJUST_MODE.None then
         return
     end
-    for k, v in pairs(curr_state.default) do
-        curr_state[k] = v
+    for k, v in pairs(adj_state.DEFAULT) do
+        ---@type any
+        self[k] = v
     end
-end
-function curr_state.is_pin_mode()
-    return curr_state.mode == curr_state.ADJUST_MODE.Pin
-end
-function curr_state.is_reset_mode()
-    return curr_state.mode == curr_state.ADJUST_MODE.Reset
-end
-function curr_state.is_adjust_mode()
-    return curr_state.mode == curr_state.ADJUST_MODE.Adjust
-end
-function curr_state.has_adjustment()
-    return curr_state.mode ~= curr_state.ADJUST_MODE.None
 end
 
-------------------------------------------------------------
--- 六、记录解析
-------------------------------------------------------------
-local function parse_adjustment_value_item(value_item)
-    local item, p, o, t = value_item:match("i=(.+) p=(%S+) o=(%S*) t=(%S+)")
-    if not item then
-        return nil, nil
-    end
-    return item, { fixed_position = tonumber(p) or 0, offset = tonumber(o) or 0, updated_at = tonumber(t) }
+---@return boolean
+function adj_state.is_pin_mode()
+    return adj_state.mode == adj_state.ADJUST_MODE.Pin
 end
 
-local function parse_adjustment_values(values_str)
-    local mp = {}
-    for seg in values_str:gmatch("[^\t]+") do
-        local item, adj = parse_adjustment_value_item(seg)
-        if item then
-            mp[item] = adj
-        end
-    end
-    return next(mp) and mp or nil
+---@return boolean
+function adj_state.is_reset_mode()
+    return adj_state.mode == adj_state.ADJUST_MODE.Reset
 end
 
-local function get_input_adjustments(input)
-    if not input or input == "" then
-        return nil
-    end
-    local value_str = seq_db:fetch(input)
-    return value_str and parse_adjustment_values(value_str) or nil
+---@return boolean
+function adj_state.is_adjust_mode()
+    return adj_state.mode == adj_state.ADJUST_MODE.Adjust
+end
+
+---@return boolean
+function adj_state.has_adjustment()
+    return adj_state.mode ~= adj_state.ADJUST_MODE.None
 end
 
 ------------------------------------------------------------
 -- 七、导出缓冲
 ------------------------------------------------------------
+---@class SeqData
+---@field status string
+---@field device_name string
+---@field last_export_ts number
+---@field export_interval number
+---@field pending_map table<string, string>
 local seq_data = {
     status = "pending",
     device_name = "device",
@@ -298,7 +329,9 @@ local seq_data = {
     export_interval = 1.2,
     pending_map = {},
 }
-local function _pending_count()
+
+---@return integer
+function seq_data.pending_count()
     local n = 0
     for _ in pairs(seq_data.pending_map) do
         n = n + 1
@@ -306,29 +339,34 @@ local function _pending_count()
     return n
 end
 
-function seq_data._current_paths()
-    local dir = _sync_dir()
+---@return string export_name
+---@return string export_path
+---@return string manifest_path
+function seq_data.current_paths()
+    local dir = sync_dir()
     local device_name = seq_data.device_name or "device"
-    local export_name = string.format("%s_%s%s", SYNC_FILE_PREFIX, device_name, SYNC_FILE_SUFFIX)
-    local export_path = _path_join(dir, export_name)
-    local manifest = _manifest_path(dir)
-    return dir, device_name, export_name, export_path, manifest
+    local export_name = ("%s_%s%s"):format(SYNC_FILE_PREFIX, device_name, SYNC_FILE_SUFFIX)
+    local export_path = path_join(dir, export_name)
+    local manifest_path = path_join(dir, MANIFEST_FILE)
+    return export_name, export_path, manifest_path
 end
 
-function seq_data._ensure_export_file()
-    local ok = _sync_ready()
+---@return boolean
+function seq_data.ensure_export_file()
+    local ok = sync_ready()
     if not ok then
         return false
     end
-    local _, _, export_name, export_path, manifest = seq_data._current_paths()
-    if not _file_exists(manifest) then
+
+    local export_name, export_path, manifest = seq_data.current_paths()
+    if not wanxiang.file_exists(manifest) then
         local mf = io.open(manifest, "w")
         if not mf then
             return false
         end
         mf:close()
     end
-    if not _file_exists(export_path) then
+    if not wanxiang.file_exists(export_path) then
         local f = io.open(export_path, "w")
         if not f then
             return false
@@ -340,22 +378,29 @@ function seq_data._ensure_export_file()
         f:write("\001/device_name\t", seq_data.device_name or "device", "\n")
         f:close()
     end
-    local names = _read_lines(manifest)
+
+    local names = read_lines(manifest)
+
+    ---@type table<string, boolean>
     local seen = {}
     for _, n in ipairs(names) do
-        seen[_trim(n)] = true
+        seen[trim(n)] = true
     end
+
     if not seen[export_name] then
         names[#names + 1] = export_name
-        _write_lines(manifest, names)
+        write_lines(manifest, names)
     end
+
     return true
 end
 
-local function _enqueue_export(input, item, adj)
+---@param input string
+---@param item string
+---@param adj Adjustment
+function seq_data.enqueue_export(input, item, adj)
     local k = input .. "\t" .. item
-    seq_data.pending_map[k] = string.format(
-        "%s\ti=%s p=%s o=%s t=%s\n",
+    seq_data.pending_map[k] = ("%s\ti=%s p=%s o=%s t=%s\n"):format(
         input,
         item,
         adj.fixed_position or 0,
@@ -364,18 +409,22 @@ local function _enqueue_export(input, item, adj)
     )
 end
 
+---@param max_lines? integer
 function seq_data.flush_pending(max_lines)
-    if _pending_count() == 0 then
+    if seq_data.pending_count() == 0 then
         return
     end
-    if not seq_data._ensure_export_file() then
+
+    if not seq_data.ensure_export_file() then
         return
     end
-    local _, _, _, export_path = seq_data._current_paths()
+
+    local _, export_path, _ = seq_data.current_paths()
     local f = io.open(export_path, "a")
     if not f then
         return
     end
+
     local wrote = 0
     for _, line in pairs(seq_data.pending_map) do
         if max_lines and wrote >= max_lines then
@@ -385,51 +434,107 @@ function seq_data.flush_pending(max_lines)
         wrote = wrote + 1
     end
     f:close()
+
     seq_data.pending_map = {}
 end
 
-function seq_data.maybe_export(force)
+---@param force? boolean
+function seq_data.try_export(force)
     if force then
         seq_data.flush_pending(nil)
-        seq_data.last_export_ts = get_timestamp()
+        seq_data.last_export_ts = wanxiang.now()
         return
     end
-    if _pending_count() == 0 then
+
+    if seq_data.pending_count() == 0 then
         return
     end
-    local now = get_timestamp()
+
+    local now = wanxiang.now()
     if now - (seq_data.last_export_ts or 0) < (seq_data.export_interval or 1.2) then
         return
     end
+
     seq_data.flush_pending(200)
     seq_data.last_export_ts = now
 end
 
 ------------------------------------------------------------
+-- 六、记录解析
+------------------------------------------------------------
+
+---@class Adjustment: { fixed_position: integer, offset: integer, updated_at: number, raw_position?: integer, final_position?: integer }
+
+---@param value_item string
+---@return string?, Adjustment?
+local function parse_adjustment_value_item(value_item)
+    local item, p, o, t = value_item:match("i=(.+) p=(%S+) o=(%S*) t=(%S+)")
+    if not item then
+        return nil, nil
+    end
+    return item, { fixed_position = tonumber(p) or 0, offset = tonumber(o) or 0, updated_at = tonumber(t) }
+end
+
+---@param values_str string
+---@return table<string, Adjustment>?
+local function parse_adjustment_values(values_str)
+    ---@type table<string, Adjustment>
+    local mp = {}
+    for seg in values_str:gmatch("[^\t]+") do
+        local item, adj = parse_adjustment_value_item(seg)
+        if item then
+            mp[item] = adj
+        end
+    end
+    return next(mp) and mp or nil
+end
+
+---@param input string
+---@return table<string, Adjustment>?
+local function get_input_adjustments(input)
+    if not input or input == "" then
+        return nil
+    end
+    local value_str = seq_db:fetch(input)
+    return value_str and parse_adjustment_values(value_str) or nil
+end
+
+------------------------------------------------------------
 -- 八、保存与合并 (Save & Merge)
 ------------------------------------------------------------
+---@param input string
+---@param item string
+---@param adjustment Adjustment
+---@param no_export boolean
 local function save_adjustment(input, item, adjustment, no_export)
-    if not input or input == "" or not item or item == "" then
+    if input == "" or item == "" then
         return
     end
-    local p = tonumber(adjustment.fixed_position) or 0
-    local o = tonumber(adjustment.offset) or 0
-    local t = adjustment.updated_at
-    local mp = get_input_adjustments(input) or {}
-    mp[item] = { fixed_position = p > 0 and p or 0, offset = o, updated_at = t }
 
+    local adj_map = get_input_adjustments(input) or {}
+
+    local position = adjustment.fixed_position
+    local offset = adjustment.offset
+    local time = adjustment.updated_at
+    adj_map[item] = { fixed_position = position > 0 and position or 0, offset = offset, updated_at = time }
+
+    ---@type string[]
     local arr = {}
-    for it, a in pairs(mp) do
-        arr[#arr + 1] = string.format("i=%s p=%s o=%s t=%s", it, a.fixed_position, a.offset or 0, a.updated_at or "")
+    for it, a in pairs(adj_map) do
+        arr[#arr + 1] = ("i=%s p=%s o=%s t=%s"):format(it, a.fixed_position, a.offset or 0, a.updated_at or "")
     end
     seq_db:update(input, table.concat(arr, "\t"))
 
-    if (not no_export) and RUNTIME_EXPORT then
-        _enqueue_export(input, item, { fixed_position = p, offset = o, updated_at = t })
+    if not no_export and RUNTIME_EXPORT then
+        seq_data.enqueue_export(input, item, { fixed_position = position, offset = offset, updated_at = time })
     end
 end
 
-local function _keep_latest(latest, input, item, adj)
+---@param latest table<string, table<string, Adjustment>>
+---@param input string
+---@param item string
+---@param adj Adjustment
+local function keep_latest(latest, input, item, adj)
     latest[input] = latest[input] or {}
     local prev = latest[input][item]
     if (not prev) or ((adj.updated_at or 0) > (prev.updated_at or 0)) then
@@ -441,84 +546,100 @@ local function _keep_latest(latest, input, item, adj)
     end
 end
 
+---@return table<string, table<string, Adjustment>>
 local function collect_latest_from_all_sources()
+    ---@type table<string, table<string, Adjustment>>
     local latest = {}
     seq_db:query_with("", function(key, value)
-        local mp = parse_adjustment_values(value)
-        if mp then
-            for item, a in pairs(mp) do
-                _keep_latest(latest, key, item, a)
+        local adj_map = parse_adjustment_values(value)
+        if adj_map then
+            for item, adj in pairs(adj_map) do
+                keep_latest(latest, key, item, adj)
             end
         end
     end)
-    local dir = _sync_dir()
-    local names = _read_lines(_manifest_path(dir))
+
+    local dir = sync_dir()
+    local names = read_lines(path_join(dir, MANIFEST_FILE))
     for _, raw in ipairs(names) do
-        local name = _trim(raw or "")
-        if name ~= "" and name:sub(1, 1) ~= "#" then
-            if
-                name:sub(1, #SYNC_FILE_PREFIX) == SYNC_FILE_PREFIX
-                and name:sub(-#SYNC_FILE_SUFFIX) == SYNC_FILE_SUFFIX
-            then
-                local path = _is_abs_path(name) and name or _path_join(dir, name)
-                local f = io.open(path, "r")
-                if f then
-                    for line in f:lines() do
-                        if line ~= "" and line:sub(1, 2) ~= "\001" .. "/" then
-                            local key, value = line:match("^(%S+)\t(.+)$")
-                            if key and value then
-                                local item, adj1 = parse_adjustment_value_item(value)
-                                if item then
-                                    _keep_latest(latest, key, item, adj1)
-                                else
-                                    local mp = parse_adjustment_values(value)
-                                    if mp then
-                                        for it, a in pairs(mp) do
-                                            _keep_latest(latest, key, it, a)
-                                        end
-                                    end
-                                end
-                            end
-                        end
+        local name = trim(raw or "")
+        if name == "" or name:sub(1, 1) == "#" then
+            goto continue
+        end
+
+        if name:sub(1, #SYNC_FILE_PREFIX) ~= SYNC_FILE_PREFIX or name:sub(-#SYNC_FILE_SUFFIX) ~= SYNC_FILE_SUFFIX then
+            goto continue
+        end
+
+        local path = is_absolute_path(name) and name or path_join(dir, name)
+        local f = io.open(path, "r")
+        if not f then
+            goto continue
+        end
+
+        for line in f:lines() do
+            if line == "" or line:sub(1, 2) == "\001" .. "/" then
+                goto continue_line
+            end
+
+            ---@type string?, string?
+            local key, value = line:match("^(%S+)\t(.+)$")
+            if not key or not value then
+                goto continue_line
+            end
+
+            local item, adj1 = parse_adjustment_value_item(value)
+            if item and adj1 then
+                keep_latest(latest, key, item, adj1)
+            else
+                local mp = parse_adjustment_values(value)
+                if mp then
+                    for it, a in pairs(mp) do
+                        keep_latest(latest, key, it, a)
                     end
-                    f:close()
                 end
             end
+
+            ::continue_line::
         end
+        f:close()
+
+        ::continue::
     end
     return latest
 end
 
+---@param latest table<string, table<string, Adjustment>>
 local function rewrite_export_from_latest(latest)
-    local ok = _sync_ready()
+    local ok = sync_ready()
     if not ok then
         return
     end
-    local dir = _sync_dir()
-    local installation_id = select(1, _read_installation_yaml())
+    local dir = sync_dir()
+    local installation_id = select(1, read_installation_yaml())
     local device_name = (installation_id and installation_id ~= "")
             and tostring(installation_id):gsub('[%s/\\:%*%?"<>|]', "_")
         or "device"
-    local export_name = string.format("%s_%s%s", SYNC_FILE_PREFIX, device_name, SYNC_FILE_SUFFIX)
-    local export_path = _path_join(dir, export_name)
-    local manifest = _manifest_path(dir)
+    local export_name = ("%s_%s%s"):format(SYNC_FILE_PREFIX, device_name, SYNC_FILE_SUFFIX)
+    local export_path = path_join(dir, export_name)
+    local manifest = path_join(dir, MANIFEST_FILE)
 
-    if not _file_exists(manifest) then
+    if not wanxiang.file_exists(manifest) then
         local mf = io.open(manifest, "w")
         if mf then
             mf:close()
         end
     end
-    do
-        local names = _read_lines(manifest)
-        local seen = {}
-        for _, n in ipairs(names) do
-            seen[_trim(n)] = true
-        end
-        if not seen[export_name] then
-            names[#names + 1] = export_name
-            _write_lines(manifest, names)
-        end
+
+    local names = read_lines(manifest)
+    ---@type table<string, boolean>
+    local seen = {}
+    for _, n in ipairs(names) do
+        seen[trim(n)] = true
+    end
+    if not seen[export_name] then
+        names[#names + 1] = export_name
+        write_lines(manifest, names)
     end
 
     local buffer = {}
@@ -528,23 +649,28 @@ local function rewrite_export_from_latest(latest)
     end
     table.insert(buffer, "\001/device_name\t" .. device_name)
 
+    ---@type string[]
     local inputs = {}
     for input, _ in pairs(latest) do
         inputs[#inputs + 1] = input
     end
     table.sort(inputs)
+
     for _, input in ipairs(inputs) do
-        local items, keys = latest[input], {}
+        local items = latest[input]
+
+        ---@type string[]
+        local keys = {}
         for item, _ in pairs(items) do
             keys[#keys + 1] = item
         end
         table.sort(keys)
+
         for _, item in ipairs(keys) do
             local a = items[item]
             table.insert(
                 buffer,
-                string.format(
-                    "%s\ti=%s p=%s o=%s t=%s",
+                ("%s\ti=%s p=%s o=%s t=%s"):format(
                     input,
                     item,
                     a.fixed_position or 0,
@@ -554,6 +680,7 @@ local function rewrite_export_from_latest(latest)
             )
         end
     end
+
     local new_content = table.concat(buffer, "\n") .. "\n"
     local f_read = io.open(export_path, "r")
     local old_content = f_read and f_read:read("*a")
@@ -570,59 +697,90 @@ local function rewrite_export_from_latest(latest)
     end
 end
 
+---@param latest table<string, table<string, Adjustment>>
 local function apply_latest_to_db(latest)
     for input, kv in pairs(latest) do
+        ---@type table<string, Adjustment>
         local keep = {}
         for item, a in pairs(kv) do
             if (tonumber(a.fixed_position) or 0) > 0 then
                 keep[item] = { fixed_position = a.fixed_position, offset = a.offset or 0, updated_at = a.updated_at }
             end
         end
+
         if next(keep) == nil then
             seq_db:erase(input)
-        else
-            local arr = {}
-            for item, a in pairs(keep) do
-                arr[#arr + 1] =
-                    string.format("i=%s p=%s o=%s t=%s", item, a.fixed_position, a.offset or 0, a.updated_at or "")
-            end
-            seq_db:update(input, table.concat(arr, "\t"))
+            goto continue
         end
-    end
-end
 
-local function init_once()
-    seq_data._ensure_export_file()
-    seq_data.maybe_export(true)
-    local latest = collect_latest_from_all_sources()
-    rewrite_export_from_latest(latest)
-    apply_latest_to_db(latest)
+        ---@type string[]
+        local arr = {}
+        for item, a in pairs(keep) do
+            arr[#arr + 1] = ("i=%s p=%s o=%s t=%s"):format(item, a.fixed_position, a.offset or 0, a.updated_at or "")
+        end
+        seq_db:update(input, table.concat(arr, "\t"))
+
+        ::continue::
+    end
 end
 
 ------------------------------------------------------------
 -- 九、Processor (含 Ctrl 监听)
 ------------------------------------------------------------
-local P = {}
-function P.init(env)
-    seq_db:open()
-    seq_data.device_name = _detect_device_name()
-    init_once()
-end
 
+---@param context Context
 local function process_adjustment(context)
     local c = context:get_selected_candidate()
-    curr_state.selected_phrase = c and c.text or nil
+    adj_state.selected_phrase = c and c.text or nil
     context:refresh_non_confirmed_composition()
-    if context.highlight and curr_state.highlight_index and curr_state.highlight_index > 0 then
-        context:highlight(curr_state.highlight_index)
+    if context.highlight and adj_state.highlight_index and adj_state.highlight_index > 0 then
+        context:highlight(adj_state.highlight_index)
     end
 end
 
-local function _is_single_lowercase_letter(s)
-    return type(s) == "string" and #s == 1 and s:match("^[a-z]$") ~= nil
+---@class Processor
+local P = {}
+
+---@param env Env
+function P.init(env)
+    local rime_config = env.engine.schema.config
+
+    local key_namespace = "key_binder/sequence/"
+    ---@type SeqKeys
+    local seq_keys = {
+        up = rime_config:get_string(key_namespace .. "up") or "Control+j",
+        down = rime_config:get_string(key_namespace .. "down") or "Control+k",
+        reset = rime_config:get_string(key_namespace .. "reset") or "Control+l",
+        pin = rime_config:get_string(key_namespace .. "pin") or "Control+p",
+    }
+
+    seq_data.device_name = detect_device_name()
+    seq_data.ensure_export_file()
+    seq_data.try_export(true)
+
+    seq_db:open()
+    local latest = collect_latest_from_all_sources()
+    rewrite_export_from_latest(latest)
+    apply_latest_to_db(latest)
+
+    env.super_sequence_config = { seq_keys = seq_keys }
 end
 
+---@param env Env
+function P.fini(env)
+    if RUNTIME_EXPORT then
+        seq_data.try_export(true)
+    end
+    env.super_sequence_config = nil
+end
+
+---@param key_event KeyEvent
+---@param env Env
+---@return integer
 function P.func(key_event, env)
+    local config = env.super_sequence_config
+    assert(config)
+
     local context = env.engine.context
     local code = key_event.keycode
 
@@ -639,7 +797,7 @@ function P.func(key_event, env)
         if current ~= target then
             -- 获取当前光标位置，并存入全局状态 highlight_index
             local segment = context.composition:back()
-            curr_state.highlight_index = segment.selected_index
+            adj_state.highlight_index = segment.selected_index
             -- 切换开关
             context:set_option("_seq_show_markers", target)
             -- 恢复高亮
@@ -649,7 +807,7 @@ function P.func(key_event, env)
     end
 
     -- 重置状态
-    curr_state.reset()
+    adj_state.reset()
 
     local selected_cand = context:get_selected_candidate()
     if not context:has_menu() or not selected_cand or not selected_cand.text then
@@ -671,27 +829,24 @@ function P.func(key_event, env)
     end
     local adjust_code = get_adjust_code()
 
-    if (not wanxiang.is_function_mode_active(context)) and _is_single_lowercase_letter(adjust_code) then
+    if (not wanxiang.is_function_mode_active(context)) and is_single_lowercase_letter(adjust_code) then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
     local key_repr = key_event:repr()
-    local function get_seq_key(type)
-        return env.engine.schema.config:get_string("key_binder/sequence/" .. type) or DEFAULT_SEQ_KEY[type]
-    end
 
-    if key_repr == get_seq_key("up") then
-        curr_state.offset = -1
-        curr_state.mode = curr_state.ADJUST_MODE.Adjust
-    elseif key_repr == get_seq_key("down") then
-        curr_state.offset = 1
-        curr_state.mode = curr_state.ADJUST_MODE.Adjust
-    elseif key_repr == get_seq_key("reset") then
-        curr_state.offset = nil
-        curr_state.mode = curr_state.ADJUST_MODE.Reset
-    elseif key_repr == get_seq_key("pin") then
-        curr_state.offset = nil
-        curr_state.mode = curr_state.ADJUST_MODE.Pin
+    if key_repr == config.seq_keys.up then
+        adj_state.offset = -1
+        adj_state.mode = adj_state.ADJUST_MODE.Adjust
+    elseif key_repr == config.seq_keys.down then
+        adj_state.offset = 1
+        adj_state.mode = adj_state.ADJUST_MODE.Adjust
+    elseif key_repr == config.seq_keys.reset then
+        adj_state.offset = nil
+        adj_state.mode = adj_state.ADJUST_MODE.Reset
+    elseif key_repr == config.seq_keys.pin then
+        adj_state.offset = nil
+        adj_state.mode = adj_state.ADJUST_MODE.Pin
     else
         if context:get_option("_seq_show_markers") then
             context:set_option("_seq_show_markers", false)
@@ -702,24 +857,18 @@ function P.func(key_event, env)
     process_adjustment(context)
     return wanxiang.RIME_PROCESS_RESULTS.kAccepted
 end
+
 ------------------------------------------------------------
 -- 十、Filter (含标记可视化)
 ------------------------------------------------------------
-local F = {}
-function F.init(env)
-    local cfg = env.engine.schema.config
-    env.page_size = cfg and cfg:get_int("menu/page_size") or 5
-end
-function F.fini()
-    if RUNTIME_EXPORT then
-        seq_data.maybe_export(true)
-    end
-end
-
+---@param cands Candidate[]
+---@param prev table<string, Adjustment>
 local function apply_prev_adjustment(cands, prev)
+    ---@type (Adjustment|{from_position: integer?})[]
     local list = {}
     for _, info in pairs(prev or {}) do
         if info.raw_position then
+            ---@cast info Adjustment|{from_position: integer}
             info.from_position = info.raw_position
             table.insert(list, info)
         end
@@ -730,40 +879,52 @@ local function apply_prev_adjustment(cands, prev)
 
     local n = #cands
     for i, record in ipairs(list) do
-        local fromp = record.from_position
-        if fromp and (record.fixed_position or 0) > 0 then
-            local top = (record.offset == 0) and record.fixed_position or (record.raw_position + record.offset)
-            if top < 1 then
-                top = 1
-            elseif top > n then
-                top = n
-            end
+        local from_pos = record.from_position
+        if not from_pos then
+            goto continue
+        end
 
-            -- 记录初步的最终位置
-            record.final_position = top
+        if (record.fixed_position or 0) <= 0 then
+            goto continue
+        end
 
-            if fromp ~= top then
-                local cand = table.remove(cands, fromp)
-                table.insert(cands, top, cand)
-                local lo, hi = math.min(fromp, top), math.max(fromp, top)
-                for j = i, #list do
-                    local r = list[j]
-                    if lo <= r.from_position and r.from_position <= hi then
-                        r.from_position = r.from_position + ((top < fromp) and 1 or -1)
-                    end
+        local top = (record.offset == 0) and record.fixed_position or (record.raw_position + record.offset)
+        if top < 1 then
+            top = 1
+        elseif top > n then
+            top = n
+        end
+
+        -- 记录初步的最终位置
+        record.final_position = top
+
+        if from_pos ~= top then
+            local cand = table.remove(cands, from_pos)
+            table.insert(cands, top, cand)
+            local lo, hi = math.min(from_pos, top), math.max(from_pos, top)
+            for j = i, #list do
+                local r = list[j]
+                if lo <= r.from_position and r.from_position <= hi then
+                    r.from_position = r.from_position + ((top < from_pos) and 1 or -1)
                 end
             end
         end
+
+        ::continue::
     end
 end
 
+---@param candidates Candidate[]
+---@param curr_adjustment Adjustment?
 local function apply_curr_adjustment(candidates, curr_adjustment)
     if curr_adjustment == nil then
         return
     end
+
+    ---@type integer?
     local from_position = nil
     for position, cand in ipairs(candidates) do
-        if cand.text == curr_state.selected_phrase then
+        if cand.text == adj_state.selected_phrase then
             from_position = position
             break
         end
@@ -773,8 +934,8 @@ local function apply_curr_adjustment(candidates, curr_adjustment)
     end
 
     local to_position = from_position
-    if curr_state.is_adjust_mode() then
-        to_position = from_position + curr_state.offset
+    if adj_state.is_adjust_mode() then
+        to_position = from_position + adj_state.offset
         curr_adjustment.offset = to_position - curr_adjustment.raw_position
         curr_adjustment.fixed_position = to_position
 
@@ -791,15 +952,17 @@ local function apply_curr_adjustment(candidates, curr_adjustment)
 
             local candidate = table.remove(candidates, from_position)
             table.insert(candidates, to_position, candidate)
-            save_adjustment(curr_state.adjust_code, curr_state.adjust_key, curr_adjustment, true)
+            save_adjustment(adj_state.adjust_code, adj_state.adjust_key, curr_adjustment, true)
         end
     else
         -- 如果不是移动模式（比如点了一下），当前位置也是最终位置
         curr_adjustment.final_position = from_position
     end
-    curr_state.highlight_index = to_position - 1
+    adj_state.highlight_index = to_position - 1
 end
 
+---@param context Context
+---@return string?
 local function extract_adjustment_code(context)
     if wanxiang.is_function_mode_active(context) then
         local code = seq_property.get(context)
@@ -811,46 +974,50 @@ local function extract_adjustment_code(context)
     return context.input:sub(1, context.caret_pos)
 end
 
+---@class Filter
+local F = {}
+
+function F.init(_) end
+
+function F.fini(_) end
+
+---@param input Translation
+---@param env Env
 function F.func(input, env)
-    -- ✨ 宣告：排序脚本活着，包裹脚本你别自己干活了，交给我！
-    _G.WanxiangSharedState.sorter_active = true
     local context = env.engine.context
-    _G.WanxiangSharedState.last_input = context.input
-    _G.WanxiangSharedState.page_cache = {}
 
-    local cache_limit = (env.page_size or 5) * 2
-
-    -- ✨ 没有任何排序记录时，原样输出并缓存
+    -- 没有任何排序记录时，原样输出并缓存
     local function original_list()
-        local top_count = 0
         for cand in input:iter() do
-            if top_count < cache_limit then
-                table.insert(_G.WanxiangSharedState.page_cache, clone_candidate(cand))
-                top_count = top_count + 1
-            end
             yield(cand)
         end
-    end -- ✨
+    end
 
     local adjustment_allowed = not (wanxiang.is_function_mode_active(context) and seq_property.get(context) == nil)
     if not adjustment_allowed then
-        return original_list()
+        original_list()
+        return
     end
 
     local adjust_code = extract_adjustment_code(context)
     if not adjust_code then
-        return original_list()
+        original_list()
+        return
     end
 
     local prev_adjustments = get_input_adjustments(adjust_code)
-    local curr_adjustment = curr_state.has_adjustment()
-            and { fixed_position = 0, offset = 0, updated_at = get_timestamp() }
+    local curr_adjustment = adj_state.has_adjustment()
+            and { fixed_position = 0, offset = 0, updated_at = wanxiang.now() }
         or nil
-    if (not curr_adjustment) and not prev_adjustments then
-        return original_list()
+    if not curr_adjustment and not prev_adjustments then
+        original_list()
+        return
     end
 
-    local cands, seen = {}, {}
+    ---@type Candidate[]
+    local cands = {}
+    ---@type table<string, boolean>
+    local seen = {}
     local is_fun_mode = wanxiang.is_function_mode_active(context)
     local show_markers = context:get_option("_seq_show_markers")
 
@@ -863,9 +1030,9 @@ function F.func(input, env)
             table.insert(cands, candidate)
             local curr_key = is_fun_mode and tostring(pos - 1) or phrase
 
-            if curr_adjustment and curr_state.selected_phrase == phrase then
-                curr_state.adjust_code = adjust_code
-                curr_state.adjust_key = curr_key
+            if curr_adjustment and adj_state.selected_phrase == phrase then
+                adj_state.adjust_code = adjust_code
+                adj_state.adjust_key = curr_key
                 curr_adjustment.raw_position = pos
             end
 
@@ -877,18 +1044,18 @@ function F.func(input, env)
     prev_adjustments = prev_adjustments or {}
 
     -- 非位移模式（Reset/Pin）立即存 DB
-    if curr_adjustment and not curr_state.is_adjust_mode() then
+    if curr_adjustment and not adj_state.is_adjust_mode() then
         curr_adjustment.offset = 0
-        local key = tostring(curr_state.adjust_key)
-        if curr_state.is_reset_mode() then
+        local key = tostring(adj_state.adjust_key)
+        if adj_state.is_reset_mode() then
             curr_adjustment.fixed_position = 0
             prev_adjustments[key] = nil
-            save_adjustment(curr_state.adjust_code, curr_state.adjust_key, curr_adjustment, true)
-        elseif curr_state.is_pin_mode() then
+            save_adjustment(adj_state.adjust_code, adj_state.adjust_key, curr_adjustment, true)
+        elseif adj_state.is_pin_mode() then
             curr_adjustment.fixed_position = 1
             curr_adjustment.final_position = 1 -- 置顶的最终位置肯定是1
             prev_adjustments[key] = curr_adjustment
-            save_adjustment(curr_state.adjust_code, curr_state.adjust_key, curr_adjustment, true)
+            save_adjustment(adj_state.adjust_code, adj_state.adjust_key, curr_adjustment, true)
         end
     end
 
@@ -896,8 +1063,8 @@ function F.func(input, env)
     apply_curr_adjustment(cands, curr_adjustment)
 
     -- 将当前的实时操作同步到历史记录表中，确保标记逻辑能读到最新状态
-    if curr_adjustment and curr_state.adjust_key then
-        local key = tostring(curr_state.adjust_key)
+    if curr_adjustment and adj_state.adjust_key then
+        local key = tostring(adj_state.adjust_key)
         -- 确保 raw_position 不丢失（如果之前没记录，用当前的）
         if not curr_adjustment.raw_position and prev_adjustments[key] then
             curr_adjustment.raw_position = prev_adjustments[key].raw_position
@@ -906,7 +1073,6 @@ function F.func(input, env)
         prev_adjustments[key] = curr_adjustment
     end
 
-    local bottom_count = 0
     for _, cand in ipairs(cands) do
         if show_markers and prev_adjustments then
             local key = is_fun_mode and tostring(cand.text) or cand.text
@@ -931,16 +1097,12 @@ function F.func(input, env)
             end
         end
 
-        -- ✨ 把带好标记、排好序的终极状态，克隆进全局缓存，等包裹脚本来取！
-        if bottom_count < cache_limit then
-            table.insert(_G.WanxiangSharedState.page_cache, clone_candidate(cand))
-            bottom_count = bottom_count + 1
-        end -- ✨
         yield(cand)
     end
 
-    if RUNTIME_EXPORT and (not curr_state.is_reset_mode()) then
-        seq_data.maybe_export(false)
+    if RUNTIME_EXPORT and (not adj_state.is_reset_mode()) then
+        seq_data.try_export(false)
     end
 end
+
 return { P = P, F = F }

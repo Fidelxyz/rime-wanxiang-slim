@@ -1,0 +1,27 @@
+{
+    "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+    "workspace": {
+        "library": [
+            "lua",
+            "lua/librime.lua"
+        ]
+    },
+    "runtime": {
+        "version": "Lua 5.4"
+    },
+    "diagnostics": {
+        "groupFileStatus": {
+            "ambiguity": "Any",
+            "await": "Any",
+            "duplicate": "Any",
+            "global": "Any",
+            "luadoc": "Any",
+            "redefined": "Any",
+            "strict": "Any",
+            "strong": "Any",
+            "type-check": "Any",
+            "unbalanced": "Any",
+            "unused": "Any"
+        }
+    }
+}

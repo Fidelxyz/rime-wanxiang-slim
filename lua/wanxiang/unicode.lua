@@ -1,48 +1,51 @@
--- Unicode
--- 示例：输入 U62fc 得到「拼」
--- 触发前缀默认为 recognizer/patterns/unicode 的第 2 个字符，即 U
+--- Unicode translator
+--- Translate `U` + `<unicode>` to the corresponding Unicode character
+--- @param input string
+--- @param seg Segment
+--- @param env Env
 local function unicode(input, seg, env)
-    -- 获取 recognizer/patterns/unicode 的第 2 个字符作为触发前缀
-    env.unicode_keyword = env.unicode_keyword
+    -- Extract the second character of the configured trigger as the trigger key.
+    env.unicode_trigger = env.unicode_trigger
         or env.engine.schema.config:get_string("recognizer/patterns/unicode"):sub(2, 2)
 
-    if (not seg:has_tag("unicode")) or env.unicode_keyword == "" or input:sub(1, 1) ~= env.unicode_keyword then
+    if (not seg:has_tag("unicode")) or env.unicode_trigger == "" or input:sub(1, 1) ~= env.unicode_trigger then
         return
     end
 
-    local ucodestr = input:match(env.unicode_keyword .. "(%x+)")
+    local ucodestr = input:match(env.unicode_trigger .. "(%x+)")
     if not ucodestr or #ucodestr <= 1 then
         return
     end
 
     local segment = env.engine.context.composition:back()
-    segment.tags = segment.tags + Set({ "unicode" }) -- 设置标签
+    segment.tags = segment.tags + Set({ "unicode" })
 
     local code = tonumber(ucodestr, 16)
+
+    -- Out of Unicode range
     if code > 0x10FFFF then
-        yield(Candidate("unicode", seg.start, seg._end, "数值超限！", ""))
         return
     end
 
+    -- Skip surrogate code points (U+D800 to U+DFFF)
     if code >= 0xD800 and code <= 0xDFFF then
-        yield(Candidate("unicode", seg.start, seg._end, "代理区字符无效！", ""))
         return
     end
 
     local text = utf8.char(code)
-    yield(Candidate("unicode", seg.start, seg._end, text, string.format("U%x", code)))
+    yield(Candidate("unicode", seg.start, seg._end, text, ("U%x"):format(code)))
 
     if code < 0x10000 then
         for i = 0, 15 do
             local new_code = code * 16 + i
 
-            -- 跳过代理区码点，避免生成无效字符
+            -- Skip surrogate code points (U+D800 to U+DFFF)
             if new_code >= 0xD800 and new_code <= 0xDFFF then
                 goto continue
             end
 
             text = utf8.char(new_code)
-            yield(Candidate("unicode", seg.start, seg._end, text, string.format("U%x~%x", code, i)))
+            yield(Candidate("unicode", seg.start, seg._end, text, ("U%x~%x"):format(code, i)))
         end
         ::continue::
     end
