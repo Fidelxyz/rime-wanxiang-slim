@@ -237,7 +237,7 @@ end
 ------------------------------------------------------------
 -- 五、DB 与状态
 ------------------------------------------------------------
----@type LevelDb?
+---@type WrappedUserDb?
 local seq_db = nil
 
 ---@param env Env
@@ -313,7 +313,7 @@ function adj_state.reset()
     end
     for k, v in pairs(adj_state.DEFAULT) do
         ---@type any
-        self[k] = v
+        adj_state[k] = v
     end
 end
 
@@ -545,12 +545,14 @@ local function save_adjustment(input, item, adjustment, no_export)
     local time = adjustment.updated_at
     adj_map[item] = { fixed_position = position > 0 and position or 0, offset = offset, updated_at = time }
 
-    ---@type string[]
-    local arr = {}
-    for it, a in pairs(adj_map) do
-        arr[#arr + 1] = ("i=%s p=%s o=%s t=%s"):format(it, a.fixed_position, a.offset or 0, a.updated_at or "")
+    if seq_db then
+        ---@type string[]
+        local arr = {}
+        for it, a in pairs(adj_map) do
+            arr[#arr + 1] = ("i=%s p=%s o=%s t=%s"):format(it, a.fixed_position, a.offset or 0, a.updated_at or "")
+        end
+        seq_db:update(input, table.concat(arr, "\t"))
     end
-    seq_db:update(input, table.concat(arr, "\t"))
 
     if not no_export and RUNTIME_EXPORT then
         seq_data.enqueue_export(input, item, { fixed_position = position, offset = offset, updated_at = time })
@@ -575,6 +577,10 @@ end
 
 ---@return table<string, table<string, Adjustment>>
 local function collect_latest_from_all_sources()
+    if not seq_db then
+        return {}
+    end
+
     ---@type table<string, table<string, Adjustment>>
     local latest = {}
     seq_db:query_with("", function(key, value)
@@ -726,6 +732,10 @@ end
 
 ---@param latest table<string, table<string, Adjustment>>
 local function apply_latest_to_db(latest)
+    if not seq_db then
+        return
+    end
+
     for input, kv in pairs(latest) do
         ---@type table<string, Adjustment>
         local keep = {}
@@ -758,9 +768,9 @@ end
 ---@param context Context
 local function process_adjustment(context)
     local c = context:get_selected_candidate()
-    adj_state.selected_phrase = c and c.text or nil
+    adj_state.selected_phrase = c.text
     context:refresh_non_confirmed_composition()
-    if context.highlight and adj_state.highlight_index and adj_state.highlight_index > 0 then
+    if adj_state.highlight_index and adj_state.highlight_index > 0 then
         context:highlight(adj_state.highlight_index)
     end
 end
@@ -803,7 +813,7 @@ end
 
 ---@param key_event KeyEvent
 ---@param env Env
----@return integer
+---@return ProcessResult
 function P.func(key_event, env)
     local config = env.super_sequence_config
     assert(config)
@@ -856,7 +866,7 @@ function P.func(key_event, env)
     end
     local adjust_code = get_adjust_code()
 
-    if (not wanxiang.is_function_mode_active(context)) and is_single_lowercase_letter(adjust_code) then
+    if not wanxiang.is_function_mode_active(context) and is_single_lowercase_letter(adjust_code) then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
