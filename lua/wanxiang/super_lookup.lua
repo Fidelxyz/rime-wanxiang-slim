@@ -238,18 +238,20 @@ local function build_reverse_group(main_projection, xlit_projection, db_table, t
     return group_main, group_xlit
 end
 
----@param group string[]
----@param fuma string
+---@param list string[]
+---@param prefix string
 ---@return boolean
-local function group_match(group, fuma)
-    if not group then
+local function any_starts_with(list, prefix)
+    if not list then
         return false
     end
-    for i = 1, #group do
-        if group[i]:sub(1, #fuma) == fuma then
+
+    for i = 1, #list do
+        if string.find(list[i], prefix, 1, true) == 1 then
             return true
         end
     end
+
     return false
 end
 
@@ -318,7 +320,7 @@ end
 ---@param key string
 ---@param bypass_prefix string?
 ---@return string? code
----@return string? fuma
+---@return string? aux_code
 ---@return integer? key_start
 ---@return integer? key_end
 local function split_lookup_input(input, key, bypass_prefix)
@@ -348,8 +350,8 @@ local function split_lookup_input(input, key, bypass_prefix)
     end
 
     local code = input:sub(1, s_start - 1)
-    local fuma = input:sub(s_end + 1)
-    return code, fuma, s_start, s_end
+    local aux_code = input:sub(s_end + 1)
+    return code, aux_code, s_start, s_end
 end
 
 ---@param comment string
@@ -398,10 +400,22 @@ local function parse_comment_codes(comment, pattern, target_len)
     return result
 end
 
-local M = {}
+---@param seg Segment
+---@param config SuperLookupConfig
+---@return boolean
+local function matches_tags(seg, config)
+    for _, v in ipairs(config.tags) do
+        if seg.tags[v] then
+            return true
+        end
+    end
+    return false
+end
+
+local F = {}
 
 ---@param env Env
-function M.init(env)
+function F.init(env)
     local rime_config = env.engine.schema.config
 
     -- 1. 读取数据源
@@ -529,7 +543,7 @@ end
 
 ---@param input Translation
 ---@param env Env
-function M.func(input, env)
+function F.func(input, env)
     local context = env.engine.context
 
     local config = env.super_lookup_config
@@ -538,13 +552,13 @@ function M.func(input, env)
     assert(state)
 
     local seg = context.composition:back()
-
-    if not seg or not M.tags_match(seg, config) then
+    if not seg or not matches_tags(seg, config) then
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
+
     if #config.data_sources == 0 then
         for cand in input:iter() do
             yield(cand)
@@ -554,14 +568,14 @@ function M.func(input, env)
 
     local ctx_input = env.engine.context.input
     -- 传入 env.bypass_prefix
-    local _, fuma, s_start, _ = split_lookup_input(ctx_input, config.search_key_str, config.bypass_prefix)
+    local _, aux_code, s_start, _ = split_lookup_input(ctx_input, config.search_key_str, config.bypass_prefix)
     if not s_start then
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
-    if not fuma or fuma == "" then
+    if not aux_code or aux_code == "" then
         for cand in input:iter() do
             yield(cand)
         end
@@ -666,23 +680,23 @@ function M.func(input, env)
                 local is_match = false
                 if source_type == "aux" then
                     if cand_len == 1 then
-                        if group_match(codes_seq[1], fuma) then
+                        if any_starts_with(codes_seq[1], aux_code) then
                             is_match = true
                         end
                     else
                         local memo = {}
-                        if match_fuzzy_recursive(codes_seq, 1, fuma, 1, memo, false) then
+                        if match_fuzzy_recursive(codes_seq, 1, aux_code, 1, memo, false) then
                             is_match = true
                         end
                     end
                 elseif source_type == "db" then
                     if cand_len == 1 then
-                        if group_match(codes_seq[1], fuma) then
+                        if any_starts_with(codes_seq[1], aux_code) then
                             is_match = true
                         end
                     else
                         local memo = {}
-                        if match_fuzzy_recursive(codes_seq, 1, fuma, 1, memo, true) then
+                        if match_fuzzy_recursive(codes_seq, 1, aux_code, 1, memo, true) then
                             is_match = true
                         end
                     end
@@ -745,23 +759,11 @@ function M.func(input, env)
     end
 end
 
----@param seg Segment
----@param config SuperLookupConfig
----@return boolean
-function M.tags_match(seg, config)
-    for _, v in ipairs(config.tags) do
-        if seg.tags[v] then
-            return true
-        end
-    end
-    return false
-end
-
 ---@param env Env
-function M.fini(env)
+function F.fini(env)
     env.super_lookup_state.notifier:disconnect()
     env.super_lookup_config = nil
     env.super_lookup_state = nil
 end
 
-return M
+return F

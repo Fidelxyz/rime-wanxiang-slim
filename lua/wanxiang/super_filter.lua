@@ -33,21 +33,10 @@
 ---@field enable_taichi_filter boolean
 ---@field drop_sentence_after_completion boolean
 
----@param c Candidate
----@return string
-local function fast_type(c)
-    local t = c.type
-    if t then
-        return t
-    end
-    local g = c.get_genuine and c:get_genuine() or nil
-    return (g and g.type) or ""
-end
-
----@param c Candidate
+---@param cand Candidate
 ---@return boolean
-local function is_table_type(c)
-    local t = fast_type(c)
+local function is_table_type(cand)
+    local t = cand.type
     return t == "table" or t == "user_table" or t == "fixed"
 end
 
@@ -108,7 +97,7 @@ end
 ---@return Candidate
 local function format_and_autocap(cand, config)
     local text = cand.text
-    if not text or text == "" then
+    if text == "" then
         return cand
     end
 
@@ -117,8 +106,8 @@ local function format_and_autocap(cand, config)
 
     -- 2. 处理尾巴符号追加
     local genuine = cand:get_genuine()
-    local current_comment = genuine.comment or ""
-    local symbol = config.cand_type_symbols[fast_type(cand)]
+    local current_comment = genuine.comment
+    local symbol = config.cand_type_symbols[cand.type]
     local comment_changed = false
 
     if symbol and symbol ~= "" and current_comment ~= "~" then
@@ -229,11 +218,11 @@ function M.func(input, env)
     local state = env.super_filter_state
     assert(state)
 
-    local code = context and (context.input or "") or ""
-    local comp = context and context.composition or nil
+    local code = context.input
+    local comp = context.composition
 
     -- 1. 空环境清理
-    if not code or code == "" or (comp and comp:empty()) then
+    if not code or code == "" or comp:empty() then
         state.last_2code_char = nil
         for cand in input:iter() do
             yield(cand)
@@ -242,7 +231,7 @@ function M.func(input, env)
     end
 
     -- 计算当前拼音片段长度，用于精确判定2码和3码
-    local last_seg = comp and comp:back()
+    local last_seg = comp:back()
     local code_len = #code
     local seg_len = last_seg and (last_seg._end - last_seg.start) or code_len
 

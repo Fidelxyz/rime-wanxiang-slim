@@ -16,51 +16,29 @@
 ---@field auto_phrase_config AutoPhraseConfig?
 ---@field auto_phrase_state AutoPhraseState?
 
----Test if the text is a non-empty ASCII word
+local wanxiang = require("wanxiang.wanxiang")
+
+---Return if the text is a non-empty ASCII word.
 ---@param text string
 ---@return boolean
-local function is_ascii_word(text)
-    if text == "" then
-        return false
-    end
-
-    local has_alpha = false
-    for i = 1, #text do
-        local b = text:byte(i)
-        if b > 127 then
-            return false
-        end
-        if (b >= 65 and b <= 90) or (b >= 97 and b <= 122) then
-            has_alpha = true
-        end
-    end
-    return has_alpha
+local function is_english_phrase(text)
+    -- consists of ASCII characters & contains at least one letter
+    return text:match("^[%z\1-\127]+$") and text:match("[A-Za-z]") ~= nil
 end
 
-local M = {}
-
----判断字符是否为汉字
 ---@param text string
 ---@return boolean
-local function is_chinese_only(text)
+local function is_chinese_phrase(text)
     if text == "" then
-        return false
-    end
-
-    -- Check for presence of any ASCII letters or punctuation
-    if text:match("[%w%p]") then
         return false
     end
 
     for _, cp in utf8.codes(text) do
-        -- 常用汉字区 + 扩展 A/B/C/D/E/F/G
-        if
-            not (
-                (cp >= 0x4E00 and cp <= 0x9FFF) -- CJK Unified Ideographs
-                or (cp >= 0x3400 and cp <= 0x4DBF) -- CJK Ext-A
-                or (cp >= 0x20000 and cp <= 0x2EBEF) -- CJK Ext-B~G
-            )
-        then
+        -- Reject ASCII (covers letters, digits, punctuation)
+        if cp <= 127 then
+            return false
+        end
+        if not wanxiang.is_chinese_codepoint(cp) then
             return false
         end
     end
@@ -80,90 +58,10 @@ local function save_comment_cache(cand, genuine, state)
     end
 end
 
----@param env Env
-function M.init(env)
-    local config = env.engine.schema.config
-    local ctx = env.engine.context
-
-    local delimiter = config:get_string("speller/delimiter") or " '"
-    local escaped_delimiter = utf8.char(utf8.codepoint(delimiter)):gsub("(%W)", "%%%1")
-
-    -- 中文自动造词的开关（只控制 add_user_dict）
-    local enable_auto_phrase = config:get_bool("add_user_dict/enable_auto_phrase") or false
-    local enable_user_dict = config:get_bool("add_user_dict/enable_user_dict") or false
-
-    -- 中文：add_user_dict（受 add_* 开关影响）
-    local zh_memory = (enable_auto_phrase and enable_user_dict)
-            and Memory(env.engine, env.engine.schema, "add_user_dict")
-        or nil
-
-    -- 英文：enuser（不受 add_* 开关影响，始终尝试启用）
-    local en_memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
-
-    ---@type Connection?
-    local commit_conn = nil
-    ---@type Connection?
-    local delete_conn = nil
-    if zh_memory or en_memory then
-        -- 只要有一边需要，就挂上 commit/delete 通知
-        commit_conn = ctx.commit_notifier:connect(function(c)
-            M.commit_handler(c, env)
-        end)
-        delete_conn = ctx.delete_notifier:connect(function(_)
-            local state = env.auto_phrase_state
-            assert(state)
-
-            state.comment_cache = {}
-        end)
-    end
-
-    env.auto_phrase_config = {
-        escaped_delimiter = escaped_delimiter,
-    }
-
-    env.auto_phrase_state = {
-        zh_memory = zh_memory,
-        en_memory = en_memory,
-        comment_cache = {},
-        commit_conn = commit_conn,
-        delete_conn = delete_conn,
-    }
-end
-
----@param env Env
-function M.fini(env)
-    if env.auto_phrase_state.commit_conn then
-        env.auto_phrase_state.commit_conn:disconnect()
-    end
-    if env.auto_phrase_state.delete_conn then
-        env.auto_phrase_state.delete_conn:disconnect()
-    end
-    env.auto_phrase_state = nil
-end
-
----@param input Translation
----@param env Env
-function M.func(input, env)
-    local state = env.auto_phrase_state
-    assert(state)
-
-    local use_comment_cache = state.zh_memory ~= nil -- 只有中文造词才需要缓存注释
-
-    for cand in input:iter() do
-        local genuine_cand = cand:get_genuine()
-
-        if use_comment_cache then
-            save_comment_cache(cand, genuine_cand, state)
-        end
-
-        yield(cand)
-    end
-end
-
 -- 造词
 ---@param ctx Context
 ---@param env Env
-function M.commit_handler(ctx, env)
+local function commit_handler(ctx, env)
     local config = env.auto_phrase_config
     assert(config)
     local state = env.auto_phrase_state
@@ -171,13 +69,13 @@ function M.commit_handler(ctx, env)
 
     local segments = ctx.composition:toSegmentation():get_segments()
     local segments_count = #segments
-    local commit_text = ctx:get_commit_text() or ""
-    local raw_input = ctx.input or ""
+    local commit_text = ctx:get_commit_text()
+    local raw_input = ctx.input
 
     ---------------------------------------------------
     -- ① 英文造词（保持原样，仍用硬编码 "\"）
     ---------------------------------------------------
-    if raw_input ~= "" and raw_input:sub(-1) == "\\" and is_ascii_word(commit_text) then
+    if raw_input ~= "" and raw_input:sub(-1) == "\\" and is_english_phrase(commit_text) then
         local code_body = raw_input:gsub("\\+$", "")
         code_body = code_body:gsub("%s+$", "")
 
@@ -214,7 +112,7 @@ function M.commit_handler(ctx, env)
         state.comment_cache = {}
         return
     end
-    if not is_chinese_only(commit_text) or state.comment_cache[commit_text] then
+    if not is_chinese_phrase(commit_text) or state.comment_cache[commit_text] then
         state.comment_cache = {}
         return
     end
@@ -241,7 +139,7 @@ function M.commit_handler(ctx, env)
         local comment = state.comment_cache[cand.text]
 
         -- 有候选但无编码
-        if not comment or comment == "" then
+        if not comment then
             if i == segments_count then
                 -- 最后一个 segment 无编码，允许跳过
                 goto continue
@@ -283,4 +181,87 @@ function M.commit_handler(ctx, env)
     end
 end
 
-return M
+local F = {}
+
+---@param env Env
+function F.init(env)
+    local rime_config = env.engine.schema.config
+    local context = env.engine.context
+
+    local delimiter = rime_config:get_string("speller/delimiter") or " '"
+    local escaped_delimiter = utf8.char(utf8.codepoint(delimiter)):gsub("(%W)", "%%%1")
+
+    -- 中文自动造词的开关（只控制 add_user_dict）
+    local auto_phrase_enabled = rime_config:get_bool("add_user_dict/enable_auto_phrase") or false
+    local user_dict_enabled = rime_config:get_bool("add_user_dict/enable_user_dict") or false
+
+    -- 中文：add_user_dict（受 add_* 开关影响）
+    local zh_memory = (auto_phrase_enabled and user_dict_enabled)
+            and Memory(env.engine, env.engine.schema, "add_user_dict")
+        or nil
+
+    -- 英文：enuser（不受 add_* 开关影响，始终尝试启用）
+    local en_memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
+
+    ---@type Connection?
+    local commit_conn = nil
+    ---@type Connection?
+    local delete_conn = nil
+    if zh_memory or en_memory then
+        -- 只要有一边需要，就挂上 commit/delete 通知
+        commit_conn = context.commit_notifier:connect(function(ctx)
+            commit_handler(ctx, env)
+        end)
+        delete_conn = context.delete_notifier:connect(function(_)
+            local state = env.auto_phrase_state
+            assert(state)
+
+            state.comment_cache = {}
+        end)
+    end
+
+    env.auto_phrase_config = {
+        escaped_delimiter = escaped_delimiter,
+    }
+
+    env.auto_phrase_state = {
+        zh_memory = zh_memory,
+        en_memory = en_memory,
+        comment_cache = {},
+        commit_conn = commit_conn,
+        delete_conn = delete_conn,
+    }
+end
+
+---@param env Env
+function F.fini(env)
+    if env.auto_phrase_state.commit_conn then
+        env.auto_phrase_state.commit_conn:disconnect()
+    end
+    if env.auto_phrase_state.delete_conn then
+        env.auto_phrase_state.delete_conn:disconnect()
+    end
+    env.auto_phrase_config = nil
+    env.auto_phrase_state = nil
+end
+
+---@param input Translation
+---@param env Env
+function F.func(input, env)
+    local state = env.auto_phrase_state
+    assert(state)
+
+    local use_comment_cache = state.zh_memory ~= nil -- 只有中文造词才需要缓存注释
+
+    for cand in input:iter() do
+        local genuine_cand = cand:get_genuine()
+
+        if use_comment_cache then
+            save_comment_cache(cand, genuine_cand, state)
+        end
+
+        yield(cand)
+    end
+end
+
+return F

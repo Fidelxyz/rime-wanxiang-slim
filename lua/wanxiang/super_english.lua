@@ -86,7 +86,7 @@ local allowed_ascii_symbols = {
 -- 必须包含至少一个英文字母，否则纯数字/符号直接返回 false
 ---@param s string
 ---@return boolean
-local function is_ascii_phrase_fast(s)
+local function is_english_phrase(s)
     if s == "" then
         return false
     end
@@ -94,10 +94,7 @@ local function is_ascii_phrase_fast(s)
     local has_alpha = false
     for i = 1, #s do
         local b = s:byte(i)
-        local is_upper = (b >= 65 and b <= 90)
-        local is_lower = (b >= 97 and b <= 122)
-
-        if is_upper or is_lower then
+        if (b >= 65 and b <= 90) or (b >= 97 and b <= 122) then
             has_alpha = true
         elseif not allowed_ascii_symbols[b] then
             return false
@@ -118,10 +115,7 @@ end
 ---@return integer?
 ---@return integer?
 local function find_target_in_text(text, start_pos, target_fp)
-    local text_len = #text
-    local target_len = #target_fp
-
-    if target_len == 0 then
+    if target_fp == "" then
         return nil, nil
     end
 
@@ -129,11 +123,16 @@ local function find_target_in_text(text, start_pos, target_fp)
     local target_idx = 1
     local scan_pos = start_pos
 
-    while scan_pos <= text_len and target_idx <= target_len do
-        local text_char = text:sub(scan_pos, scan_pos)
-        local target_char = target_fp:sub(target_idx, target_idx)
+    while scan_pos <= #text and target_idx <= #target_fp do
+        local text_byte = text:byte(scan_pos)
+        local target_byte = target_fp:byte(target_idx)
 
-        if text_char:lower() == target_char then
+        -- ASCII lowercase normalization (only for A-Z)
+        if target_byte >= 65 and target_byte <= 90 then
+            target_byte = target_byte + 32
+        end
+
+        if text_byte == target_byte then
             if target_idx == 1 then
                 match_start = scan_pos -- Record where the match begins
             end
@@ -143,8 +142,7 @@ local function find_target_in_text(text, start_pos, target_fp)
         scan_pos = scan_pos + 1
     end
 
-    local matched_all = target_idx > target_len
-    if matched_all then
+    if target_idx > #target_fp then -- Matched all
         return match_start, scan_pos - 1
     end
 
@@ -281,7 +279,7 @@ local function apply_formatting(cand, code_ctx)
         changed = true
     end
 
-    if is_ascii_phrase_fast(text) then
+    if is_english_phrase(text) then
         if code_ctx.raw_input then
             local new_text = apply_segment_formatting(text, code_ctx.raw_input)
             if new_text ~= text then
@@ -375,7 +373,7 @@ function M.init(env)
 
         local commit_text = ctx:get_commit_text()
         local text_no_space = commit_text:gsub("%s", "")
-        local is_eng = is_ascii_phrase_fast(text_no_space)
+        local is_eng = is_english_phrase(text_no_space)
 
         if text_no_space:find("[/\\\\]$") then
             state.sticky_countdown = STICKY_BUFFER_SIZE
@@ -455,7 +453,7 @@ function M.func(input, env)
     -- [Feature] 强制英文造词
     if code_len > 2 and curr_input:sub(-2) == config.phrase_trigger .. config.phrase_trigger then
         local raw_text = curr_input:sub(1, code_len - 2)
-        if is_ascii_phrase_fast(raw_text) then
+        if is_english_phrase(raw_text) then
             if context.composition and not context.composition:empty() then
                 context.composition:back().prompt = "〔英文造词〕"
             end
@@ -527,7 +525,7 @@ function M.func(input, env)
         end
 
         local skip_cand = false
-        local is_ascii = is_ascii_phrase_fast(raw_text)
+        local is_ascii = is_english_phrase(raw_text)
 
         -- [前置判断]
         if is_ascii then
@@ -653,7 +651,7 @@ function M.func(input, env)
                     cand.preedit = output_preedit
                     cand.quality = 999
                     yield(cand)
-                elseif is_ascii_phrase_fast(anchor.text) then
+                elseif is_english_phrase(anchor.text) then
                     -- 纯英文模式（含逗号等）
                     local has_spacing = anchor.text:find(" ")
                     local last_word = anchor.text:match("(%S+)%s*$") or ""

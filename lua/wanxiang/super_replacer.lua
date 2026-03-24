@@ -71,7 +71,7 @@ super_replacer:
 ---@class SuperReplacerState
 ---@field input_type string
 ---@field fmm_cache table<string, string|false>
----@field db UserDb?
+---@field db WrappedUserDb?
 
 ---@class Env
 ---@field super_replacer_config SuperReplacerConfig?
@@ -111,25 +111,14 @@ local function clear_list(t)
 end
 
 ---@param text string
----@return number[]
-local function get_utf8_offsets(text)
+---@return integer[]
+local function utf8_offsets(text)
+    ---@type integer[]
     local offsets = {}
-    local len = #text
-    local i = 1
-    while i <= len do
-        table.insert(offsets, i)
-        local b = text:byte(i)
-        if b < 128 then
-            i = i + 1
-        elseif b < 224 then
-            i = i + 2
-        elseif b < 240 then
-            i = i + 3
-        else
-            i = i + 4
-        end
+    for pos in utf8.codes(text) do
+        offsets[#offsets + 1] = pos
     end
-    table.insert(offsets, len + 1)
+    offsets[#offsets + 1] = #text + 1
     return offsets
 end
 
@@ -175,7 +164,7 @@ end
 
 -- 重建数据库 (仅在 wanxiang 版本变更时运行)
 ---@param tasks Task[]
----@param db UserDb
+---@param db WrappedUserDb
 ---@param delimiter string
 ---@return boolean
 local function rebuild(tasks, db, delimiter)
@@ -184,29 +173,37 @@ local function rebuild(tasks, db, delimiter)
         local prefix = task.prefix
 
         local f = io.open(txt_path, "r")
-        if f then
-            for line in f:lines() do
-                if line ~= "" and not line:match("^%s*#") then
-                    ---@type string?, string?
-                    local k, v = line:match("^(%S+)%s+(.+)")
-                    if k and v then
-                        -- 转换完成后，再和 prefix 组合
-                        ---@type string
-                        v = v:match("^%s*(.-)%s*$")
-
-                        local db_key = prefix .. k
-                        local existing_v = db:fetch(db_key)
-
-                        if existing_v and existing_v ~= "" then
-                            v = existing_v .. delimiter .. v
-                        end
-
-                        db:update(db_key, v)
-                    end
-                end
-            end
-            f:close()
+        if not f then
+            goto continue
         end
+
+        for line in f:lines() do
+            if line == "" or line:match("^%s*#") then
+                goto continue_line
+            end
+
+            ---@type string?, string?
+            local k, v = line:match("^(%S+)%s+(.+)")
+            if not k or not v then
+                goto continue_line
+            end
+
+            -- 转换完成后，再和 prefix 组合
+            ---@type string
+            v = v:match("^%s*(.-)%s*$")
+
+            local db_key = prefix .. k
+            local existing_v = db:fetch(db_key)
+            if existing_v and existing_v ~= "" then
+                v = existing_v .. delimiter .. v
+            end
+            db:update(db_key, v)
+
+            ::continue_line::
+        end
+        f:close()
+
+        ::continue::
     end
     return true
 end
@@ -217,21 +214,12 @@ end
 ---@param tasks Task[]
 ---@param config_sig string
 ---@param state table
----@return UserDb?
+---@return WrappedUserDb?
 local function connect_db(db_name, current_version, delimiter, tasks, config_sig, state)
     if db_instance then
-        local status, _ = pcall(function()
-            return db_instance:fetch("___test___")
-        end)
-        if status then
-            return db_instance
-        end
-        db_instance = nil
+        return db_instance
     end
 
-    if not userdb then
-        return nil
-    end
     local db = userdb.LevelDb(db_name)
     if not db then
         return nil
@@ -279,13 +267,13 @@ end
 
 -- FMM 分词转换算法
 ---@param text string
----@param db UserDb?
+---@param db WrappedUserDb?
 ---@param prefix string
 ---@param split_pat string
 ---@param state SuperReplacerState
 ---@return string
 local function segment_convert(text, db, prefix, split_pat, state)
-    local offsets = get_utf8_offsets(text)
+    local offsets = utf8_offsets(text)
     local char_count = #offsets - 1
     local result_parts = {}
     local i = 1

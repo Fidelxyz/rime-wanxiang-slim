@@ -103,10 +103,10 @@ function M.is_reverse_lookup_mode(env)
 end
 
 ---判断是否在命令模式
----@param context Context | nil
+---@param context Context
 ---@return boolean
 function M.is_function_mode_active(context)
-    if not context or not context.composition or context.composition:empty() then
+    if context.composition:empty() then
         return false
     end
 
@@ -118,27 +118,9 @@ function M.is_function_mode_active(context)
     return seg:has_tag("unicode") -- unicode.lua 输出 Unicode 字符 U+小写字母或数字
 end
 
----@param context Context | nil
+---@param codepoint integer
 ---@return boolean
-function M.s2t_conversion(context)
-    if not context or not context.composition or context.composition:empty() then
-        return false
-    end
-
-    local seg = context.composition:back()
-    if not seg then
-        return false
-    end
-
-    return seg:has_tag("unicode") -- unicode.lua 输出 Unicode 字符 U+小写字母或数字
-        or seg:has_tag("punct") -- 标点符号 全角半角提示
-        or seg:has_tag("wanxiang_reverse")
-end
-
----@param char string
----@return boolean
-function M.is_chinese_char(char)
-    local codepoint = utf8.codepoint(char)
+function M.is_chinese_codepoint(codepoint)
     return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) -- Basic
         or (codepoint >= 0x3400 and codepoint <= 0x4DBF) -- Ext A
         or (codepoint >= 0x20000 and codepoint <= 0x2A6DF) -- Ext B
@@ -153,6 +135,12 @@ function M.is_chinese_char(char)
         or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compatibility Supplement
         or (codepoint >= 0x2E80 and codepoint <= 0x2EFF) -- Radicals Supplement
         or (codepoint >= 0x2F00 and codepoint <= 0x2FDF) -- Kangxi Radicals
+end
+
+---@param char string
+---@return boolean
+function M.is_chinese_char(char)
+    return M.is_chinese_codepoint(utf8.codepoint(char))
 end
 
 ---@return number

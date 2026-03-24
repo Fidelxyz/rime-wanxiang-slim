@@ -38,14 +38,14 @@
 ---
 ---@field commit_conn Connection
 ---@field update_conn Connection
----@field db LevelDb
+---@field db WrappedUserDb?
 
 ---@class UserPredictTranslatorState
----@field db LevelDb
+---@field db WrappedUserDb?
 
 ---@class UserPredictFilterState
 ---@field reorder_map table<string, integer>
----@field db LevelDb
+---@field db WrappedUserDb?
 
 ---@class Env
 ---@field user_predict_config UserPredictConfig?
@@ -59,6 +59,7 @@
 ---@field db_key string
 
 local wanxiang = require("wanxiang.wanxiang")
+local userdb = require("wanxiang.userdb")
 
 -- 语气助词白名单与高频句末白名单
 local PARTICLE_WHITELIST = {
@@ -245,7 +246,7 @@ end
 
 --全局过期数据回收
 local _last_sweep_memory = 0
----@param db LevelDb
+---@param db WrappedUserDb
 ---@param config UserPredictConfig
 local function sweep_expired_data(db, config)
     local now = wanxiang.now()
@@ -280,13 +281,15 @@ local function sweep_expired_data(db, config)
         end
     end
 
+    collectgarbage() -- Release DbAccessor
+
     db:update("\0_last_sweep", tostring(now))
     _last_sweep_memory = now
 end
 
 -- 读取层预测核心
 ---@param prev_commit string
----@param db LevelDb
+---@param db WrappedUserDb
 ---@param config UserPredictConfig
 ---@return Prediction[]?
 local function get_predictions(prev_commit, db, config)
@@ -356,6 +359,9 @@ local function get_predictions(prev_commit, db, config)
                 end
             end
         end
+
+        da = nil ---@diagnostic disable-line: cast-local-type
+        collectgarbage() -- Release DbAccessor
     end
 
     -- S先读
@@ -418,9 +424,11 @@ function P.init(env)
     local config = env.user_predict_config
     assert(config)
 
-    local db = LevelDb(config.db_name)
-    db:open()
-    sweep_expired_data(db, config)
+    local db = userdb.LevelDb(config.db_name)
+    if db then
+        db:open()
+        sweep_expired_data(db, config)
+    end
 
     local commit_conn = env.engine.context.commit_notifier:connect(function(ctx)
         local config = env.user_predict_config
@@ -458,9 +466,14 @@ function P.init(env)
         end
 
         state.last_written_keys = {}
+
         ---@param key string
         ---@param is_tone boolean
         local function update_memory(key, is_tone)
+            if not db then
+                return
+            end
+
             local val = db:fetch(key)
             local now = wanxiang.now()
             state.last_written_keys[key] = val or ""
@@ -528,7 +541,7 @@ function P.init(env)
         end
 
         -- 核心录入逻辑区
-        if should_record then
+        if db and should_record then
             local text_is_tone = is_tone_symbol(text)
 
             -- 常规上文级联录入
@@ -583,6 +596,8 @@ function P.init(env)
                         break
                     end
                 end
+                collectgarbage() -- Release DbAccessor
+
                 if is_known_prefix then
                     update_memory("1\t" .. part1 .. "\t" .. part2, false)
                 end
@@ -617,7 +632,8 @@ function P.init(env)
 
         -- 如果两个开关都没开，绝对不去查库！绝对不建缓存
         if
-            shared_state.predict_count <= config.max_predictions
+            db
+            and shared_state.predict_count <= config.max_predictions
             and ctx:get_option("prediction")
             and (config.enable_post_predict or config.enable_context_reorder)
         then
@@ -636,6 +652,10 @@ function P.init(env)
     end)
 
     local update_conn = env.engine.context.update_notifier:connect(function(ctx)
+        if not db then
+            return
+        end
+
         local state = env.user_predict_processor_state
         assert(state)
 
@@ -651,6 +671,7 @@ function P.init(env)
                         f:write(k .. "\t" .. v .. "\n")
                     end
                 end
+                collectgarbage() -- Release DbAccessor
                 f:close()
             end
             reset_memory_chain(state) -- 导出结束
@@ -736,7 +757,6 @@ end
 function P.fini(env)
     env.user_predict_processor_state.commit_conn:disconnect()
     env.user_predict_processor_state.update_conn:disconnect()
-    env.user_predict_processor_state.db:close()
     env.user_predict_config = nil
     env.user_predict_processor_state = nil
 end
@@ -779,11 +799,13 @@ function P.func(key, env)
                 ---@type table<string, string>
                 local keys_to_undo = table.remove(state.undo_stack)
                 local db = state.db
-                for k, v in pairs(keys_to_undo) do
-                    if v == "" then
-                        db:erase(k)
-                    else
-                        db:update(k, v)
+                if db then
+                    for k, v in pairs(keys_to_undo) do
+                        if v == "" then
+                            db:erase(k)
+                        else
+                            db:update(k, v)
+                        end
                     end
                 end
                 state.last_action_time = current_time
@@ -866,16 +888,18 @@ function P.func(key, env)
                     end
                 end
             end
-
-            if exact_key then
+            if db and exact_key then
                 db:erase(exact_key)
             end
+
             local chars = get_utf8_chars(shared_state.last_commit)
             local lengths = get_suffix_lengths(#chars)
-            for _, l in ipairs(lengths) do
-                local p_key = "P\t" .. table.concat(chars, "", #chars - l + 1, #chars) .. "\t" .. word
-                db:erase(p_key)
+            if db then
+                for _, l in ipairs(lengths) do
+                    db:erase("P\t" .. table.concat(chars, "", #chars - l + 1, #chars) .. "\t" .. word)
+                end
             end
+
             context:clear()
             reset_memory_chain(state) -- 物理销毁词条
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
@@ -892,8 +916,10 @@ function T.init(env)
     local config = env.user_predict_config
     assert(config)
 
-    local db = LevelDb(config.db_name)
-    db:open()
+    local db = userdb.LevelDb(config.db_name)
+    if db then
+        db:open()
+    end
 
     env.user_predict_translator_state = {
         db = db,
@@ -902,7 +928,6 @@ end
 
 ---@param env Env
 function T.fini(env)
-    env.user_predict_translator_state.db:close()
     env.user_predict_translator_state = nil
     env.user_predict_config = nil
 end
@@ -941,8 +966,10 @@ function F.init(env)
     local config = env.user_predict_config
     assert(config)
 
-    local db = LevelDb(config.db_name)
-    db:open()
+    local db = userdb.LevelDb(config.db_name)
+    if db then
+        db:open()
+    end
 
     env.user_predict_filter_state = {
         last_commit = "",
@@ -954,7 +981,6 @@ end
 ---@param env Env
 function F.fini(env)
     env.user_predict_config = nil
-    env.user_predict_filter_state.db:close()
     env.user_predict_filter_state = nil
 end
 

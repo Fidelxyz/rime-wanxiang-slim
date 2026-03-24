@@ -24,13 +24,13 @@ local wanxiang = require("wanxiang.wanxiang")
 ---@return Binding?
 local function parse_binding(value)
     local match_val = value:get_value("match")
-    local match = match_val and match_val:get_string() or nil
+    local match = match_val and match_val:get_string()
     if not match then
         return nil
     end
 
     local accept_val = value:get_value("accept")
-    local accept = accept_val and accept_val:get_string() or nil
+    local accept = accept_val and accept_val:get_string()
     if not accept then
         return nil
     end

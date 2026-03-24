@@ -120,7 +120,7 @@ function Set(values) end
 ---@field get_preedit fun(self: self): Preedit
 ---@field is_composing fun(self: self): boolean
 ---@field has_menu fun(self: self): boolean
----@field get_selected_candidate fun(self: self): Candidate
+---@field get_selected_candidate fun(self: self): Candidate?
 ---@field push_input fun(self: self, text: string)
 ---@field pop_input fun(self: self, len: integer): boolean
 ---@field delete_input fun(self: self, len: integer): boolean
@@ -149,7 +149,7 @@ function Set(values) end
 
 ---@class Composition
 ---@field empty fun(self: self): boolean
----@field back fun(self: self): Segment
+---@field back fun(self: self): Segment?
 ---@field pop_back fun(self: self)
 ---@field push_back fun(self: self)
 ---@field has_finished_composition fun(self: self): boolean
@@ -173,7 +173,7 @@ function Set(values) end
 ---@field get_current_segment_length fun(self: self): integer
 ---@field get_confirmed_position fun(self: self): integer
 ---@field get_segments fun(self: self): Segment[]
----@field get_at fun(self: self, index: integer): Segment
+---@field get_at fun(self: self, index: integer): Segment?
 
 ---@class Segment
 ---@field status SegmentType
@@ -516,6 +516,7 @@ function Code() end
 ---@field exhausted boolean
 ---@field iter fun(self: self): fun(): Candidate|nil
 
+---@return Translation
 function Translation() end
 
 ---@class Memory
@@ -706,17 +707,17 @@ function Switcher(engine) end
 
 ---@param db_name string
 ---@param db_class string
----@return UserDb
+---@return UserDb?
 function UserDb(db_name, db_class) end
 
 ---@class LevelDb: UserDb
 
 ---@param db_name string
----@return LevelDb
+---@return LevelDb?
 function LevelDb(db_name) end
 
 ---@class TableDb: UserDb
 
 ---@param db_name string
----@return TableDb
+---@return TableDb?
 function TableDb(db_name) end

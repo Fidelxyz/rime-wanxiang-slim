@@ -18,7 +18,9 @@ local function unicode(input, seg, env)
     end
 
     local segment = env.engine.context.composition:back()
-    segment.tags = segment.tags + Set({ "unicode" })
+    if segment then
+        segment.tags = segment.tags + Set({ "unicode" })
+    end
 
     local code = tonumber(ucodestr, 16)
 

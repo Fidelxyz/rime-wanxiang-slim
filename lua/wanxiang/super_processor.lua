@@ -1,9 +1,9 @@
--- lua/super_processor.lua
--- @amzxyz
--- https://github.com/amzxyz/rime_wanxiang
--- 全能按键处理器：整合 KP小键盘、字母选词、超强分词、重复限制、退格限制、以词定字
---
--- 用法: 在 schema.yaml 中 engine/processors 列表添加 - lua_processor@*super_processor
+-- Features:
+-- LimitRepeated: 重复限制
+-- KpNumber: 小键盘
+-- SuperSegmentation: 超强分词
+-- BackspaceLimit: 退格限制
+-- SelectCharacter: 以词定字
 
 ---@class SuperProcessorConfig
 ---
@@ -38,9 +38,6 @@
 ---@field kp_is_composing boolean
 ---@field kp_has_menu boolean
 ---
----Config for LetterSelector
----@field letter_selector_active boolean
----
 ---States for SuperSegmentation
 ---@field seg_core string?
 ---@field seg_start_idx integer?
@@ -73,20 +70,6 @@ local KP_MAP = {
     [0xFFB8] = 8,
     [0xFFB9] = 9,
     [0xFFB0] = 0,
-}
-
--- [LetterSelector] 字母选词键码映射 (qwert...)
-local LETTER_SEL_MAP = {
-    [0x71] = 1,
-    [0x77] = 2,
-    [0x65] = 3,
-    [0x72] = 4,
-    [0x74] = 5,
-    [0x79] = 6,
-    [0x75] = 7,
-    [0x69] = 8,
-    [0x6F] = 9,
-    [0x70] = 10,
 }
 
 -- [LimitRepeated] 重复限制默认配置 (现已支持配置覆盖)
@@ -123,10 +106,10 @@ local function sum(a)
 end
 
 ---表键生成
----@param a any[]
+---@param list any[]
 ---@return string
-local function key_of(a)
-    return table.concat(a, ",")
+local function key_of(list)
+    return table.concat(list, ",")
 end
 
 ---列表查找索引
@@ -171,10 +154,10 @@ end
 ---@param ad string
 ---@return string
 local function strip_delims(s, md, ad)
-    if md and md ~= "" then
+    if md ~= "" then
         s = s:gsub(escp(md), "")
     end
-    if ad and ad ~= "" then
+    if ad ~= "" then
         s = s:gsub(escp(ad), "")
     end
     return s
@@ -204,12 +187,12 @@ local function build_by_groups(core, ch_manual, groups)
 end
 
 ---从字符串解析分段长度
----@param s string
+---@param s string?
 ---@param md string
 ---@param ad string
 ---@return number[]
 local function lens_from_string(s, md, ad)
-    if s == "" then
+    if not s or s == "" then
         return {}
     end
 
@@ -263,31 +246,15 @@ local function get_cached_lens(md, ad, state, ctx)
         return lens
     end
     local seg = ctx.composition:back()
-    local cand = seg and seg:get_selected_candidate() or nil
-    return lens_from_string(cand and cand.preedit or nil, md, ad)
+    local cand = seg and seg:get_selected_candidate()
+    return lens_from_string(cand and cand.preedit, md, ad)
 end
 
 ---增强版 UTF-8 长度计算 (Super Segmentation 使用)
 ---@param s string
 ---@return number
-local function ulen(s)
-    if not s or s == "" then
-        return 0
-    end
-    if utf8 and utf8.len then
-        local ok, n = pcall(utf8.len, s)
-        if ok and n then
-            return n
-        end
-    end
-    local n = 0
-    if utf8 and utf8.codes then
-        for _ in utf8.codes(s) do
-            n = n + 1
-        end
-        return n
-    end
-    return #s
+local function utf8_len(s)
+    return utf8.len(s) or #s
 end
 
 ---检查数字后是否紧跟功能编码 (KpNumber 使用)
@@ -296,17 +263,12 @@ end
 ---@param ctx Context
 ---@return boolean
 local function is_function_code_after_digit(digit_char, config, ctx)
-    if not ctx or not digit_char or digit_char == "" then
+    if digit_char == "" then
         return false
     end
-    local code = ctx.input or ""
-    local s = code .. digit_char
-    local patterns = config.kp_func_patterns
-    if not patterns then
-        return false
-    end
-    for _, pat in ipairs(patterns) do
-        if s:match(pat) then
+    local s = ctx.input .. digit_char
+    for _, pattern in ipairs(config.kp_func_patterns) do
+        if s:match(pattern) then
             return true
         end
     end
@@ -333,7 +295,7 @@ end
 ---@param msg string
 local function prompt(ctx, msg)
     local comp = ctx.composition
-    if comp and not comp:empty() then
+    if not comp:empty() then
         comp:back().prompt = msg
     end
 end
@@ -378,7 +340,7 @@ local function handle_segmentation(key, config, state, ctx)
 
     local last_input = state.seg_last_input_caret or ctx.input or ""
     local last_caret = state.seg_last_caret_pos
-    if not last_caret or last_caret ~= ulen(last_input) then
+    if not last_caret or last_caret ~= utf8_len(last_input) then
         state.seg_core, state.seg_start_idx, state.seg_n, state.seg_base = nil, nil, nil, nil
         return false
     end
@@ -553,40 +515,6 @@ local function handle_limit_repeat(key, config, ctx)
     return false
 end
 
--- [Letter Selector] 字母选词
----@param key KeyEvent
----@param state SuperProcessorState
----@param ctx Context
----@return boolean
-local function handle_letter_select(key, state, ctx)
-    if not state.letter_selector_active then
-        return false
-    end
-    if key:ctrl() or key:alt() or key:super() then
-        return false
-    end
-    local idx = LETTER_SEL_MAP[key.keycode]
-    if not idx then
-        return false
-    end
-
-    if ctx.composition:empty() then
-        return false
-    end
-    local seg = ctx.composition:back()
-    if not seg or not seg.menu then
-        return false
-    end
-
-    local count = seg.menu:prepare(9)
-    if idx < 1 or idx > count then
-        return false
-    end
-
-    ctx:select(idx - 1)
-    return true
-end
-
 -- [Select Character] 以词定字逻辑
 ---@param key KeyEvent
 ---@param config SuperProcessorConfig
@@ -638,6 +566,7 @@ local function handle_select_character(key, config, env, ctx)
             return true -- Accepted
         end
     end
+
     return false
 end
 
@@ -648,13 +577,12 @@ end
 ---@param ctx Context
 ---@return boolean
 local function handle_number_logic(key, config, state, ctx)
-    local kc = key.keycode
-    local input = ctx.input or ""
+    local input = ctx.input
+    local kp_num = KP_MAP[key.keycode]
 
     -- A. 小键盘处理 (KpNumber)
     -- 桌面端专属：小键盘不上屏处理 (移动端直接跳过此区)
-    local kp_num = KP_MAP[kc]
-    if kp_num ~= nil and not wanxiang.is_mobile_device() then
+    if kp_num and not wanxiang.is_mobile_device() then
         if key:ctrl() or key:alt() or key:super() or key:shift() then
             return false
         end
@@ -670,6 +598,7 @@ local function handle_number_logic(key, config, state, ctx)
             end
             return true
         end
+
         -- 2. 模式处理
         if config.kp_mode == "auto" then
             if state.kp_is_composing then
@@ -688,6 +617,7 @@ local function handle_number_logic(key, config, state, ctx)
                 ctx.input = input .. ch
             end
         end
+
         return true
     end
 
@@ -696,59 +626,67 @@ local function handle_number_logic(key, config, state, ctx)
     local r = key:repr()
     if r:match("^[0-9]$") then
         digit_str = r
-    elseif kp_num ~= nil and wanxiang.is_mobile_device() then
+    elseif kp_num and wanxiang.is_mobile_device() then
         digit_str = tostring(kp_num) -- 移动端小键盘视为标准数字
     end
-
-    if digit_str then
-        if key:ctrl() or key:alt() or key:super() then
-            return false
-        end
-
-        -- 正则拦截
-        if is_function_code_after_digit(digit_str, config, ctx) then
-            if ctx.push_input then
-                ctx:push_input(digit_str)
-            else
-                ctx.input = input .. digit_str
-            end
-            return true
-        end
-
-        -- 候选选词
-        if state.kp_has_menu then
-            local d = tonumber(digit_str)
-            if d == 0 then
-                d = 10
-            end
-            if d and d >= 1 and d <= config.kp_page_size then
-                local comp = ctx.composition
-                if comp and not comp:empty() then
-                    local seg = comp:back()
-                    local menu = seg and seg.menu
-                    if menu and not menu:empty() then
-                        local sel_index = seg.selected_index or 0
-                        local page_start = math.floor(sel_index / config.kp_page_size) * config.kp_page_size
-                        local index = page_start + (d - 1)
-                        if index < menu:candidate_count() then
-                            -- 这里执行纯净的 ctx:select，不干涉物理按键事件
-                            if ctx:select(index) then
-                                return true
-                            end
-                        end
-                    end
-                end
-            end
-            return false
-        end
+    if not digit_str then
+        return false
     end
-    return false
+
+    if key:ctrl() or key:alt() or key:super() then
+        return false
+    end
+
+    -- 正则拦截
+    if is_function_code_after_digit(digit_str, config, ctx) then
+        if ctx.push_input then
+            ctx:push_input(digit_str)
+        else
+            ctx.input = input .. digit_str
+        end
+        return true
+    end
+
+    -- 候选选词
+    if not state.kp_has_menu then
+        return false
+    end
+
+    local d = tonumber(digit_str)
+    if d == 0 then
+        d = 10
+    end
+
+    if d > config.kp_page_size then
+        return false
+    end
+
+    local comp = ctx.composition
+    if comp:empty() then
+        return false
+    end
+
+    local seg = comp:back()
+    local menu = seg and seg.menu
+    if not menu or menu:empty() then
+        return false
+    end
+
+    local selected_index = seg and seg.selected_index or 0
+    local page_start = math.floor(selected_index / config.kp_page_size) * config.kp_page_size
+    local index = page_start + (d - 1)
+    if index >= menu:candidate_count() then
+        return false
+    end
+
+    -- 这里执行纯净的 ctx:select，不干涉物理按键事件
+    return ctx:select(index)
 end
 
-local M = {}
+local P = {}
 
 ---@param env Env
-function M.init(env)
+function P.init(env)
     local engine = env.engine
     local rime_config = engine.schema.config
     local context = engine.context
@@ -881,20 +819,11 @@ function M.init(env)
 
         -- A. [SuperSegmentation] 缓存数据
         local seg = ctx.composition:back()
-        local cand = seg and seg:get_selected_candidate() or nil
-        local pre = cand and cand.preedit or nil
+        local cand = seg and seg:get_selected_candidate()
+        local pre = cand and cand.preedit
         state.seg_last_preedit_lens = lens_from_string(pre, config.seg_manual_delim, config.seg_auto_delim)
         state.seg_last_input_caret = input
         state.seg_last_caret_pos = ctx.caret_pos
-
-        -- B. [LetterSelector] 缓存激活状态
-        state.letter_selector_active = false
-        if not ctx.composition:empty() then
-            local s = ctx.composition:back()
-            if s and (s:has_tag("number") or s:has_tag("Ndate")) then
-                state.letter_selector_active = true
-            end
-        end
 
         -- C. [KpNumber] 缓存状态
         state.kp_is_composing = ctx:is_composing()
@@ -906,7 +835,6 @@ function M.init(env)
         backspace_limit_enabled = backspace_limit_enabled,
         seg_loop_enabled = seg_loop_enabled,
         predict_space_enabled = predict_space_enabled,
-        enable_limit_repeated = limit_repeated_enabled,
         max_repeat = max_repeat,
         max_segments = max_segments,
         sc_first_key = sc_first_key,
@@ -930,14 +858,13 @@ function M.init(env)
         seg_last_preedit_lens = {},
         seg_last_input_caret = nil,
         seg_last_caret_pos = nil,
-        letter_selector_active = false,
         pending_predict_space = false,
         conn_update = conn_update,
     }
 end
 
 ---@param env Env
-function M.fini(env)
+function P.fini(env)
     env.super_processor_state.conn_update:disconnect()
     env.super_processor_config = nil
     env.super_processor_state = nil
@@ -946,7 +873,7 @@ end
 ---@param key KeyEvent
 ---@param env Env
 ---@return integer
-function M.func(key, env)
+function P.func(key, env)
     local context = env.engine.context
 
     local config = env.super_processor_config
@@ -1006,13 +933,6 @@ function M.func(key, env)
         end
     end
 
-    -- 6. (q-o + 特定 Tag)[Letter Selector] 字母选词
-    if state.letter_selector_active and (LETTER_SEL_MAP[kc] ~= nil) then
-        if handle_letter_select(key, state, context) then
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-        end
-    end
-
     -- 7. 数字键 (小键盘 + 选词)[KpNumber] 数字键综合逻辑
     if (kc >= 0xFFB0 and kc <= 0xFFB9) or (kc >= 0x30 and kc <= 0x39) then
         if handle_number_logic(key, config, state, context) then
@@ -1023,4 +943,4 @@ function M.func(key, env)
     return wanxiang.RIME_PROCESS_RESULTS.kNoop
 end
 
-return M
+return P

@@ -59,7 +59,7 @@ local function get_utf8_char(str, index)
         return nil
     end
     local end_byte = utf8.offset(str, index + 1)
-    return str:sub(start_byte, (end_byte and end_byte - 1) or nil)
+    return str:sub(start_byte, end_byte and end_byte - 1)
 end
 
 -- 取候选前 n 个字符
@@ -130,18 +130,18 @@ function M.init(env)
             return wanxiang.RIME_PROCESS_RESULTS.kNoop
         end
 
-        local context = env.engine.context
-        if not context:is_composing() then
+        local ctx = env.engine.context
+        if not ctx:is_composing() then
             return wanxiang.RIME_PROCESS_RESULTS.kNoop
         end
 
-        local cand = context:get_selected_candidate()
-        if #cand.text == 0 then
+        local cand = ctx:get_selected_candidate()
+        if not cand or #cand.text == 0 then
             return wanxiang.RIME_PROCESS_RESULTS.kNoop
         end
 
         -- 直接调用底层 spans 获取物理切分坐标
-        local spans = context.composition:spans()
+        local spans = ctx.composition:spans()
         if spans.count == 0 or #spans.vertices < 2 then
             return wanxiang.RIME_PROCESS_RESULTS.kNoop
         end
@@ -159,7 +159,7 @@ function M.init(env)
         -- 利用 vertices 拿到第 n 个音节的精确字节偏移量
         local cut_byte = spans.vertices[n + 1]
         -- 截取剩余的 raw_input
-        local rest = context.input:sub(cut_byte + 1)
+        local rest = ctx.input:sub(cut_byte + 1)
         -- 如果剩余输入首字符是手动输入的分隔符（比如 ' ），顺手切掉保证清爽
         if rest:sub(1, 1) == "'" or rest:sub(1, 1) == " " then
             rest = rest:sub(2)
@@ -169,7 +169,7 @@ function M.init(env)
         env.engine:commit_text(head)
         -- 挂起剩余拼音，触发 update_notifier 恢复
         set_pending(rest, state)
-        context:refresh_non_confirmed_composition()
+        ctx:refresh_non_confirmed_composition()
 
         return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
