@@ -1,5 +1,33 @@
 # Changelog
 
+## [15.3.6](https://github.com/Fidelxyz/rime_wanxiang/compare/v15.2.0...v15.3.6) (2026-03-24)
+
+
+### 🐛 Bug 修复
+
+* fix super_sequence error ([d22106d](https://github.com/Fidelxyz/rime_wanxiang/commit/d22106db08f204032ec09dcb0c55ce13cfddafb2))
+
+
+### 💅 重构
+
+* add type annotations and cleanup codes ([873e285](https://github.com/Fidelxyz/rime_wanxiang/commit/873e285ccfb2d3bf816cf792c2ba778459ffaaa3))
+
+
+### 📖 文档
+
+* update README and release note ([6de5544](https://github.com/Fidelxyz/rime_wanxiang/commit/6de5544ae5186349df131829a044697446086fe9))
+
+
+### 🏡 杂项
+
+* merge v15.3.6 from upstream ([4dea759](https://github.com/Fidelxyz/rime_wanxiang/commit/4dea759d7f7b8612d489e70a903ccaf8c06900d7))
+
+
+### 🤖 持续集成
+
+* update exclude files list and cleanup scripts ([e2c2711](https://github.com/Fidelxyz/rime_wanxiang/commit/e2c271190399aae99cdbc6c5a8f39341d06571b7))
+* update release note ([e65afaf](https://github.com/Fidelxyz/rime_wanxiang/commit/e65afaf9406d095034ebf5233de05e0ec08ce764))
+
 ## 15.2.0 (2026-03-19)
 
 
