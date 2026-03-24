@@ -16,6 +16,7 @@ Si	Si
 Cl	Cl
 Ar	Ar
 Ca	Ca
+BD	BD
 Sc	Sc
 Ti	Ti
 Cr	Cr
@@ -4941,7 +4942,7 @@ avant-garde	avant-garde
 avarice	avarice
 avaricious	avaricious
 avariciously	avariciously
-AVAST!	AVAST!
+Avast	Avast
 avatar	avatar
 avatars	avatars
 avaya	avaya
@@ -7222,7 +7223,7 @@ bitch	bitch
 bitches	bitches
 bitcoin	bitcoin
 BitComet	BitComet
-bitdefender	bitdefender
+BitDefender	BitDefender
 bite	bite
 biter	biter
 biters	biters
@@ -14822,6 +14823,7 @@ coriaceous	coriaceous
 coriander	coriander
 coring	coring
 Corinth	Corinth
+Coriolis	Coriolis
 Corinthian	Corinthian
 Corinthianize	Corinthianize
 Corinthianizes	Corinthianizes
@@ -22432,6 +22434,7 @@ erythema	erythema
 erythrocyte	erythrocyte
 erythromycin	erythromycin
 eSATA	ESATA
+ESET	ESET
 esau	esau
 esbuild	esbuild
 esc	esc
@@ -34061,6 +34064,7 @@ IPO	IPO
 Initial Public Offerings	IPO
 iPod	IPod
 IPoE	IPoE
+iPod Classic	iPodClassic
 Internet Protocol over Ethernet	IPoE
 IPS	IPS
 IPSec	IPSec
@@ -35164,6 +35168,7 @@ kart	kart
 kasbah	kasbah
 Kashmir	Kashmir
 Kaskaskia	Kaskaskia
+Kaspersky	Kaspersky
 kat	kat
 katabatic	katabatic
 Kate	Kate
@@ -47599,6 +47604,7 @@ piker	piker
 pikes	pikes
 pikestaff	pikestaff
 PikPak	PikPak
+pilaf	pilaf
 pilaster	pilaster
 Pilate	Pilate
 pilates	pilates
@@ -63663,7 +63669,7 @@ tenacity	tenacity
 tenancy	tenancy
 tenant	tenant
 tenants	tenants
-tencent	tencent
+Tencent	Tencent
 tench	tench
 tend	tend
 tended	tended
@@ -71516,6 +71522,9 @@ zymase	zymase
 zymogenic	zymogenic
 zymology	zymology
 zymosis	zymosis
+Tampermonkey	Tampermonkey
+Violentmonkey	Violentmonkey
+Greasemonkey	Greasemonkey
 ZZZ	ZZZ
 'tis	'tis
 'twas	'twas

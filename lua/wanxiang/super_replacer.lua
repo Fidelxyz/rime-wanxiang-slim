@@ -656,9 +656,15 @@ function M.func(input, env)
                             ---@type string[]
                             local parts = {}
                             for p in val:gmatch(config.split_pattern) do
-                                table.insert(parts, p)
+                                -- 如果词库提示的简码，刚好等于用户当前已经敲下的编码，则不显示提示
+                                if p ~= input_code then
+                                    table.insert(parts, p)
+                                end
                             end
-                            table.insert(shared_comments, table.concat(parts, " "))
+                            -- 只有当 parts 里有剩余有效提示时，才追加到注释数组里
+                            if #parts > 0 then
+                                table.insert(shared_comments, table.concat(parts, " "))
+                            end
                         elseif mode == "replace" then
                             if config.is_chain then
                                 local first = true
@@ -777,7 +783,7 @@ function M.func(input, env)
                         if not seen_texts[p] then
                             seen_texts[p] = true
 
-                            --简码也支持强制注入 type
+                            -- 简码也支持强制注入 type
                             local final_type = t.cand_type or "abbrev"
                             local abbrev_cand =
                                 Candidate(final_type, seg and seg.start or 0, seg and seg._end or #input_code, p, "")

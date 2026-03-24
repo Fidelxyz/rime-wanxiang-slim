@@ -209,7 +209,7 @@ end
 ---@param ad string
 ---@return number[]
 local function lens_from_string(s, md, ad)
-    if not s or s == "" then
+    if s == "" then
         return {}
     end
 
@@ -652,8 +652,9 @@ local function handle_number_logic(key, config, state, ctx)
     local input = ctx.input or ""
 
     -- A. 小键盘处理 (KpNumber)
+    -- 桌面端专属：小键盘不上屏处理 (移动端直接跳过此区)
     local kp_num = KP_MAP[kc]
-    if kp_num ~= nil then
+    if kp_num ~= nil and not wanxiang.is_mobile_device() then
         if key:ctrl() or key:alt() or key:super() or key:shift() then
             return false
         end
@@ -691,25 +692,32 @@ local function handle_number_logic(key, config, state, ctx)
     end
 
     -- B. 主键盘数字
-    local r = key:repr() or ""
+    local digit_str = nil
+    local r = key:repr()
     if r:match("^[0-9]$") then
+        digit_str = r
+    elseif kp_num ~= nil and wanxiang.is_mobile_device() then
+        digit_str = tostring(kp_num) -- 移动端小键盘视为标准数字
+    end
+
+    if digit_str then
         if key:ctrl() or key:alt() or key:super() then
             return false
         end
 
         -- 正则拦截
-        if is_function_code_after_digit(r, config, ctx) then
+        if is_function_code_after_digit(digit_str, config, ctx) then
             if ctx.push_input then
-                ctx:push_input(r)
+                ctx:push_input(digit_str)
             else
-                ctx.input = input .. r
+                ctx.input = input .. digit_str
             end
             return true
         end
 
         -- 候选选词
         if state.kp_has_menu then
-            local d = tonumber(r)
+            local d = tonumber(digit_str)
             if d == 0 then
                 d = 10
             end
@@ -723,6 +731,7 @@ local function handle_number_logic(key, config, state, ctx)
                         local page_start = math.floor(sel_index / config.kp_page_size) * config.kp_page_size
                         local index = page_start + (d - 1)
                         if index < menu:candidate_count() then
+                            -- 这里执行纯净的 ctx:select，不干涉物理按键事件
                             if ctx:select(index) then
                                 return true
                             end

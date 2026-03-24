@@ -21187,7 +21187,7 @@ yjhw	延颈鹤望
 yjhx	衣锦还乡
 yjhy	欲拒还迎
 yjjc	有奖竞猜
-yjji	以酒解酲|一骑绝尘
+yjji	一骑绝尘|以酒解酲
 yjjd	引经据典
 yjjg	远交近攻
 yjju	一家眷属

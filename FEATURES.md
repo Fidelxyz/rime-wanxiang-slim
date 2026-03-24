@@ -355,6 +355,14 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 | `lua/wanxiang/super_processor.lua` | 双击斜杠 |
 | `wanxiang.schema.yaml` | 斜杠相关的 speller/recognizer 配置 |
 
+### 输入预测 Lua
+
+根据上文输入主动弹出预测词或被动置顶预测词。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/user_predict.lua` | 输入预测模块 |
+
 ---
 
 ## 方案与版本

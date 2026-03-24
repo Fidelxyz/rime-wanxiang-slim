@@ -102,26 +102,6 @@ local function codepoint_in_charset(codepoint, text, config, state, ctx)
     return is_allowed
 end
 
----@param text string
----@return boolean
-local function is_chinese_character(text)
-    local codepoint = utf8.codepoint(text)
-    return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) -- Basic
-        or (codepoint >= 0x3400 and codepoint <= 0x4DBF) -- Ext A
-        or (codepoint >= 0x20000 and codepoint <= 0x2A6DF) -- Ext B
-        or (codepoint >= 0x2A700 and codepoint <= 0x2B73F) -- Ext C
-        or (codepoint >= 0x2B740 and codepoint <= 0x2B81F) -- Ext D
-        or (codepoint >= 0x2B820 and codepoint <= 0x2CEAF) -- Ext E
-        or (codepoint >= 0x2CEB0 and codepoint <= 0x2EBEF) -- Ext F
-        or (codepoint >= 0x30000 and codepoint <= 0x3134F) -- Ext G
-        or (codepoint >= 0x31350 and codepoint <= 0x323AF) -- Ext H
-        or (codepoint >= 0x2EBF0 and codepoint <= 0x2EE5F) -- Ext I
-        or (codepoint >= 0xF900 and codepoint <= 0xFAFF) -- Compatibility
-        or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compatibility Supplement
-        or (codepoint >= 0x2E80 and codepoint <= 0x2EFF) -- Radicals Supplement
-        or (codepoint >= 0x2F00 and codepoint <= 0x2FDF) -- Kangxi Radicals
-end
-
 ---检查单字/全词是否符合字符集（供单字快速判定用）
 ---@param text string
 ---@param config CharsetFilterConfig
@@ -144,7 +124,7 @@ local function in_charset(text, config, state, ctx)
     end
 
     local char = utf8.char(target_codepoint)
-    if not is_chinese_character(char) then
+    if not wanxiang.is_chinese_char(char) then
         return true
     end
 
@@ -160,7 +140,7 @@ end
 local function has_rare_char(text, config, state, ctx)
     for _, codepoint in utf8.codes(text) do
         local char = utf8.char(codepoint)
-        if is_chinese_character(char) and not codepoint_in_charset(codepoint, char, config, state, ctx) then
+        if wanxiang.is_chinese_char(char) and not codepoint_in_charset(codepoint, char, config, state, ctx) then
             return true
         end
     end

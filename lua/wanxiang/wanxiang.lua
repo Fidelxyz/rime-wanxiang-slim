@@ -2,7 +2,7 @@
 local M = {}
 
 -- x-release-please-start-version
-M.version = "v15.2.0"
+M.version = "v15.3.6"
 -- x-release-please-end
 
 ---@alias PROCESS_RESULT ProcessResult
@@ -133,6 +133,26 @@ function M.s2t_conversion(context)
     return seg:has_tag("unicode") -- unicode.lua 输出 Unicode 字符 U+小写字母或数字
         or seg:has_tag("punct") -- 标点符号 全角半角提示
         or seg:has_tag("wanxiang_reverse")
+end
+
+---@param char string
+---@return boolean
+function M.is_chinese_char(char)
+    local codepoint = utf8.codepoint(char)
+    return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) -- Basic
+        or (codepoint >= 0x3400 and codepoint <= 0x4DBF) -- Ext A
+        or (codepoint >= 0x20000 and codepoint <= 0x2A6DF) -- Ext B
+        or (codepoint >= 0x2A700 and codepoint <= 0x2B73F) -- Ext C
+        or (codepoint >= 0x2B740 and codepoint <= 0x2B81F) -- Ext D
+        or (codepoint >= 0x2B820 and codepoint <= 0x2CEAF) -- Ext E
+        or (codepoint >= 0x2CEB0 and codepoint <= 0x2EBEF) -- Ext F
+        or (codepoint >= 0x30000 and codepoint <= 0x3134F) -- Ext G
+        or (codepoint >= 0x31350 and codepoint <= 0x323AF) -- Ext H
+        or (codepoint >= 0x2EBF0 and codepoint <= 0x2EE5F) -- Ext I
+        or (codepoint >= 0xF900 and codepoint <= 0xFAFF) -- Compatibility
+        or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compatibility Supplement
+        or (codepoint >= 0x2E80 and codepoint <= 0x2EFF) -- Radicals Supplement
+        or (codepoint >= 0x2F00 and codepoint <= 0x2FDF) -- Kangxi Radicals
 end
 
 ---@return number

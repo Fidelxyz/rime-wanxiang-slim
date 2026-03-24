@@ -2461,6 +2461,70 @@ english:
     - derive/^s([^h]*)/sh$1
     - derive/^sh/s
 
+# ==========================================
+# 细分模糊音模块 (供 UI 独立勾选挂载)
+# ==========================================
+
+模糊音_nl:
+  __append:
+    # n - l
+    - derive/^l/n
+    - derive/^n/l
+
+模糊音_ry:
+  __append:
+    # r - y 开头
+    - derive/^y/r
+    - derive/^r/y
+
+模糊音_hf:
+  __append:
+    # h - f 开头
+    - derive/^h/f
+    - derive/^f/h
+
+模糊音_rl:
+  __append:
+    # r - l 开头
+    - derive/^r/l
+    - derive/^l/r
+
+模糊音_kg:
+  __append:
+    # k - g 开头
+    - derive/^k/g
+    - derive/^g/k
+
+模糊音_en_eng:
+  __append:
+    # en - eng
+    - derive/(ē|é|ě|è|e)ng(.*)$/$1n$2
+    - derive/(ē|é|ě|è|e)n(.*)$/$1ng$2
+
+模糊音_in_ing:
+  __append:
+    # in - ing
+    - derive/(ī|í|ǐ|ì|i)ng(.*)$/$1n$2
+    - derive/(ī|í|ǐ|ì|i)n(.*)$/$1ng$2
+
+模糊音_c_ch:
+  __append:
+    # c - ch
+    - derive/^c([^h]*)/ch$1
+    - derive/^ch/c
+
+模糊音_z_zh:
+  __append:
+    # z - zh
+    - derive/^z([^h]*)/zh$1
+    - derive/^zh/z
+
+模糊音_s_sh:
+  __append:
+    # s - sh
+    - derive/^s([^h]*)/sh$1
+    - derive/^sh/s
+
 #特殊优化：部分音节字极少，几乎不参与构词，则提升对应四码字的优先级，仅对小鹤双拼有效，其他双拼方案需作对应修改）
 小鹤双拼提权:
   __append:

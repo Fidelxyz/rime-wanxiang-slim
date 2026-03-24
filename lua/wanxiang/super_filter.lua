@@ -12,6 +12,7 @@
 
 ---@class SuperFilterConfig
 ---@field enable_taichi_filter boolean
+---@field cand_type_symbols table<string, string>
 
 ---@class SuperFilterState
 ---@field last_2code_char string?
@@ -103,28 +104,50 @@ local function apply_escape_fast(text)
 end
 
 ---@param cand Candidate
+---@param config SuperFilterConfig
 ---@return Candidate
-local function format_and_autocap(cand)
+local function format_and_autocap(cand, config)
     local text = cand.text
     if not text or text == "" then
         return cand
     end
 
-    local t2, changed = apply_escape_fast(text)
-    if not changed then
-        return cand
+    -- 1. 处理转义字符
+    local t2, text_changed = apply_escape_fast(text)
+
+    -- 2. 处理尾巴符号追加
+    local genuine = cand:get_genuine()
+    local current_comment = genuine.comment or ""
+    local symbol = config.cand_type_symbols[fast_type(cand)]
+    local comment_changed = false
+
+    if symbol and symbol ~= "" and current_comment ~= "~" then
+        -- 防重判断，避免因为各种原因重复追加
+        local escaped_symbol = symbol:gsub("[%-%^%$%(%)%%%.%[%]%*%+%?]", "%%%1")
+        if not current_comment:match(escaped_symbol .. "$") then
+            current_comment = current_comment .. symbol
+            comment_changed = true
+        end
     end
 
-    local new_cand = Candidate(cand.type, cand.start, cand._end, t2, cand.comment)
-    new_cand.preedit = cand.preedit
-    return new_cand
+    if text_changed then
+        local new_cand = Candidate(cand.type, cand.start, cand._end, t2, current_comment)
+        new_cand.preedit = cand.preedit
+        return new_cand
+    else
+        if comment_changed then
+            genuine.comment = current_comment
+        end
+        return cand
+    end
 end
 
 -- 上屏管道：负责去重、格式化、修饰
 ---@param wrapper Wrapper
 ---@param ctxs EmitContext
+---@param config SuperFilterConfig
 ---@return boolean
-local function emit_with_pipeline(wrapper, ctxs)
+local function emit_with_pipeline(wrapper, ctxs, config)
     local cand = wrapper.cand
     local text = wrapper.text
 
@@ -148,7 +171,7 @@ local function emit_with_pipeline(wrapper, ctxs)
     end
 
     -- 5. 格式化与修饰
-    cand = format_and_autocap(cand)
+    cand = format_and_autocap(cand, config)
     cand = ctxs.unify_tail_span(cand)
 
     yield(cand)
@@ -159,16 +182,30 @@ local M = {}
 
 ---@param env Env
 function M.init(env)
-    local config = env.engine.schema.config
+    local rime_config = env.engine.schema.config
 
     -- PageSize & TablePosition
-    env.page_size = config and config:get_int("menu/page_size")
+    env.page_size = rime_config and rime_config:get_int("menu/page_size")
 
     local schema_id = env.engine.schema.schema_id
     local enable_taichi_filter = schema_id == "wanxiang" or schema_id == "wanxiang_pro"
 
+    -- 读取全局类型符号配置
+    ---@type table<string, string>
+    local cand_type_symbols = {}
+    local map = rime_config:get_map("super_comment/cand_type")
+    if map then
+        for _, key in ipairs(map:keys()) do
+            local val = map:get_value(key):get_string()
+            if val and val ~= "" then
+                cand_type_symbols[key] = val
+            end
+        end
+    end
+
     env.super_filter_config = {
         enable_taichi_filter = enable_taichi_filter,
+        cand_type_symbols = cand_type_symbols,
     }
 
     env.super_filter_state = {
@@ -247,7 +284,7 @@ function M.func(input, env)
     ---@param wrapper Wrapper
     ---@return boolean
     local function try_process_wrapper(wrapper)
-        if emit_with_pipeline(wrapper, emit_ctx) then
+        if emit_with_pipeline(wrapper, emit_ctx, config) then
             visual_idx = visual_idx + 1
             return true
         end

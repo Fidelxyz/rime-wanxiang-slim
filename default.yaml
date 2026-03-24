@@ -7,7 +7,8 @@ config_version: 'LTS'
 # 方案列表
 schema_list:
   - schema: wanxiang
-  - schema: wanxiang_english
+    # - schema: wanxiang_english
+
 # 菜单
 menu:
   page_size: 6  # 候选词个数

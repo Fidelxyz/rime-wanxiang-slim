@@ -1,7 +1,6 @@
 ---@class SuperCommentConfig
 ---@field auto_delimiter string
 ---@field candidate_length integer
----@field cand_type_symbols table<string, string>
 
 ---@class SuperCommentDecompositorConfig
 ---@field display_left string
@@ -18,19 +17,12 @@
 ---@class SuperCommentCorrectorState
 ---@field corrections_cache table<string, {text: string, comment: string}>
 
----@class SuperCommentStoreState
----@field seq_sig string
----@field last_pre string
----@field saved_input_for_seq string
----@field ctx_conn Connection
-
 ---@class Env
 ---@field super_comment_config SuperCommentConfig?
 ---@field super_comment_decompositor_config SuperCommentDecompositorConfig?
 ---@field super_comment_decompositor_state SuperCommentDecompositorState?
 ---@field super_comment_corrector_config SuperCommentCorrectorConfig?
 ---@field super_comment_corrector_state SuperCommentCorrectorState?
----@field super_comment_store_state SuperCommentStoreState?
 
 local wanxiang = require("wanxiang.wanxiang")
 
@@ -389,84 +381,6 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
     end
 end
 
-local store = {}
-
--- 工具：取光标前的编码（安全处理 caret 越界）
----@param ctx Context
----@return string
-local function front_input(ctx)
-    if not ctx then
-        return ""
-    end
-
-    local raw_full = ctx.input or ""
-    local caret = ctx.caret_pos or #raw_full
-    if caret < 0 then
-        caret = 0
-    elseif caret > #raw_full then
-        caret = #raw_full
-    end
-    return raw_full:sub(1, caret)
-end
-
--- 限制更新范围：同一个 raw_in 只记第一次的 preedit
----@param preedit string
----@param ctx Context
----@param state SuperCommentStoreState
-function store.update_preedit(preedit, ctx, state)
-    local raw_in = front_input(ctx)
-    preedit = preedit or ""
-
-    if raw_in == "" or preedit == "" then
-        return
-    end
-
-    if state.saved_input_for_seq ~= raw_in then
-        state.saved_input_for_seq = raw_in
-        state.last_pre = preedit
-    end
-end
-
--- 这个模块主要用于将滤镜阶段修改前的注释或者 preedit
--- 存到上下文变量里，按键处理阶段使用；update_notifier 保证一致性
----@param env Env
-function store.init(env)
-    local ctx = env.engine.context
-
-    local ctx_conn = ctx.update_notifier:connect(function(c)
-        local raw_in = front_input(c)
-
-        local pre = env.super_comment_store_state.last_pre or ""
-        if pre == "" or raw_in == "" then
-            return
-        end
-
-        -- 不重写：光标前编码 + preedit
-        local sig = raw_in .. "\t" .. pre
-        if env.super_comment_store_state.seq_sig == sig then
-            return
-        end
-
-        c:set_property("sequence_preedit_key", raw_in)
-        c:set_property("sequence_preedit_val", pre)
-        env.super_comment_store_state.seq_sig = sig
-    end)
-
-    env.super_comment_store_state = {
-        seq_sig = "",
-        last_pre = "", -- 最近一次要写入的 preedit
-        saved_input_for_seq = "", -- 上次对应的 raw_in（光标前编码）
-        ctx_conn = ctx_conn,
-    }
-end
-
--- 断开 notifier，清理状态
----@param env Env
-function store.fini(env)
-    env.super_comment_store_state.ctx_conn:disconnect()
-    env.super_comment_store_state = nil
-end
-
 -- ----------------------
 -- 主函数：根据优先级处理候选词的注释和preedit
 -- ----------------------
@@ -483,32 +397,16 @@ function M.init(env)
     env.super_comment_config = {
         auto_delimiter = auto_delimiter,
         candidate_length = config:get_int("super_comment/candidate_length") or 1,
-        cand_type_symbols = {},
     }
-
-    local cand_type_map = config:get_map("super_comment/cand_type")
-
-    if cand_type_map then
-        -- 直接遍历 map 的 keys
-        for _, key in ipairs(cand_type_map:keys()) do
-            -- 拼接路径去取对应的值，比如 "super_comment/cand_type/user_phrase"
-            local val = config:get_string("super_comment/cand_type/" .. key)
-            if val and val ~= "" then
-                env.super_comment_config.cand_type_symbols[key] = val
-            end
-        end
-    end
 
     decompositor.init(env)
     corrector.init(env)
-    store.init(env)
 end
 
 ---@param env Env
 function M.fini(env)
     decompositor.fini(env)
     corrector.fini(env)
-    store.fini(env)
 end
 
 ---@param input Translation
@@ -524,8 +422,6 @@ function M.func(input, env)
     assert(corrector_config)
     local corrector_state = env.super_comment_corrector_state
     assert(corrector_state)
-    local store_state = env.super_comment_store_state
-    assert(store_state)
 
     local context = env.engine.context
     local input_str = context.input or ""
@@ -539,12 +435,9 @@ function M.func(input, env)
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
-        local preedit = genuine_cand.preedit or ""
         local initial_comment = genuine_cand.comment
         local final_comment = initial_comment
         index = index + 1
-
-        store.update_preedit(preedit, context, store_state) --储存到环境变量
 
         -- preedit相关处理只跳过 preedit，不影响注释
         if is_reverse_lookup_mode then
@@ -576,7 +469,7 @@ function M.func(input, env)
                 final_comment = remove_pinyin_tone(aux_comment)
             end
         else
-            if initial_comment and initial_comment:find("~") then --保留尾部临时英文标记
+            if initial_comment and initial_comment:find("~") or initial_comment:find("\226\152\175") then --保留尾部临时英文标记和太极标记
                 final_comment = initial_comment
             else
                 final_comment = ""
@@ -607,11 +500,6 @@ function M.func(input, env)
             end
         end
 
-        -- ⑤ 候选词类型符号追加 (动态读取 cand_type 配置)
-        local symbol = env.super_comment_config.cand_type_symbols[cand.type]
-        if symbol and final_comment ~= "~" then
-            final_comment = (final_comment or "") .. symbol
-        end
         -- 应用注释
         if final_comment ~= initial_comment then
             genuine_cand.comment = final_comment

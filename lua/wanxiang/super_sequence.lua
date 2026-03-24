@@ -237,7 +237,31 @@ end
 ------------------------------------------------------------
 -- 五、DB 与状态
 ------------------------------------------------------------
-local seq_db = userdb.LevelDb("lua/sequence")
+---@type LevelDb?
+local seq_db = nil
+
+---@param env Env
+local function init_db(env)
+    local rime_config = env.engine.schema.config
+
+    if not seq_db then
+        local db_name = rime_config:get_string("super_sequence/db_name")
+
+        if db_name and db_name ~= "" then
+            db_name = db_name:gsub("\\", "/"):gsub("^/+", "")
+            while db_name:match("%.%./") do
+                db_name = db_name:gsub("%.%./", "")
+            end
+            db_name = db_name:gsub("%./", "")
+        end
+        if not db_name or db_name == "" then
+            db_name = "lua/sequence"
+        end
+
+        seq_db = userdb.LevelDb(db_name)
+        seq_db:open()
+    end
+end
 
 ---@class SeqProperty
 ---@field ADJUST_KEY string
@@ -492,7 +516,10 @@ end
 ---@param input string
 ---@return table<string, Adjustment>?
 local function get_input_adjustments(input)
-    if not input or input == "" then
+    if input == "" then
+        return nil
+    end
+    if not seq_db then
         return nil
     end
     local value_str = seq_db:fetch(input)
@@ -745,7 +772,7 @@ local P = {}
 function P.init(env)
     local rime_config = env.engine.schema.config
 
-    local key_namespace = "key_binder/sequence/"
+    local key_namespace = "super_sequence/"
     ---@type SeqKeys
     local seq_keys = {
         up = rime_config:get_string(key_namespace .. "up") or "Control+j",
@@ -758,7 +785,7 @@ function P.init(env)
     seq_data.ensure_export_file()
     seq_data.try_export(true)
 
-    seq_db:open()
+    init_db(env)
     local latest = collect_latest_from_all_sources()
     rewrite_export_from_latest(latest)
     apply_latest_to_db(latest)
@@ -977,7 +1004,10 @@ end
 ---@class Filter
 local F = {}
 
-function F.init(_) end
+---@param env Env
+function F.init(env)
+    init_db(env)
+end
 
 function F.fini(_) end
 
