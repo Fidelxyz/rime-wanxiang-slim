@@ -363,6 +363,7 @@ PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/r
 | --- | --- | --- |
 | `renming.dict.yaml` | 人名词库（Pro 版使用工具箱刷新编码） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
 | `wuzhong.dict.yaml` | 物种词库（动植物分类等词条，Pro 版使用工具箱刷新） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
+| `custom_phrase.txt` | 自定义短语 | 复制到根目录并添加自定义短语内容 |
 
 ## 数据文件说明
 

@@ -22,7 +22,6 @@ mkdir -p plum
   echo "  dicts/*.*"
   echo "  lua/*.*"
   echo "  *.yaml"
-  echo "  custom_phrase.txt"
   echo "  CHANGELOG.md"
   echo "  README.md"
   echo "  LICENSE"
