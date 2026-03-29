@@ -235,6 +235,13 @@ end
 
 ---@param env Env
 function F.fini(env)
+    if env.auto_phrase_state.zh_memory then
+        env.auto_phrase_state.zh_memory:disconnect()
+    end
+    if env.auto_phrase_state.en_memory then
+        env.auto_phrase_state.en_memory:disconnect()
+    end
+
     if env.auto_phrase_state.commit_conn then
         env.auto_phrase_state.commit_conn:disconnect()
     end
