@@ -834,9 +834,6 @@ function P.fini(env)
     if RUNTIME_EXPORT then
         seq_data.try_export(true)
     end
-    if env.super_sequence_processor_state.db then
-        env.super_sequence_processor_state.db:close()
-    end
     env.super_sequence_config = nil
     env.super_sequence_processor_state = nil
 end
@@ -1003,9 +1000,6 @@ end
 
 ---@param env Env
 function F.fini(env)
-    if env.super_sequence_filter_state.db then
-        env.super_sequence_filter_state.db:close()
-    end
     env.super_sequence_filter_state = nil
 end
 
