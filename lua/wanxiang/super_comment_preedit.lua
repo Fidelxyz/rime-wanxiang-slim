@@ -120,7 +120,7 @@ function decompositor.init(env)
         decomp_dict = nil,
     }
 
-    if wanxiang.is_pro_scheme(env) then
+    if wanxiang.is_pro_schema(env) then
         decompositor.get_dict(env.super_comment_decompositor_state)
     end
 end
@@ -172,13 +172,10 @@ function corrector.init(env)
 
     local auto_delimiter = env.super_comment_config.auto_delimiter
 
-    local is_pro = wanxiang.is_pro_scheme(env)
-    local path = is_pro and "dicts/cuoyin.pro.dict.yaml" or "dicts/cuoyin.dict.yaml"
-
-    local file, close_file, err = wanxiang.load_file_with_fallback(path)
-
+    local dict_path = wanxiang.is_pro_schema(env) and "dicts/cuoyin.pro.dict.yaml" or "dicts/cuoyin.dict.yaml"
+    local file, err = wanxiang.load_file_with_fallback(dict_path)
     if not file then
-        log.error(("[super_comment]: 加载失败 %s，错误: %s"):format(path, err))
+        log.error(("[super_comment]: 加载失败 %s，错误: %s"):format(dict_path, err))
         return
     end
 
@@ -202,7 +199,7 @@ function corrector.init(env)
         end
     end
 
-    close_file()
+    file:close()
 end
 
 ---@param env Env

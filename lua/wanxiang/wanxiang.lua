@@ -90,7 +90,7 @@ end
 --- 检测是否为万象专业版
 ---@param env Env
 ---@return boolean
-function M.is_pro_scheme(env)
+function M.is_pro_schema(env)
     return env.engine.schema.schema_id == "wanxiang_pro"
 end
 
@@ -163,7 +163,7 @@ end
 
 ---按照优先顺序获取文件：用户目录 > 系统目录
 ---@param filename string
----@return string | nil
+---@return string?
 function M.get_filename_with_fallback(filename)
     local _path = filename:gsub("^[\\/]+", "")
     local user_dir = rime_api.get_user_data_dir()
@@ -191,8 +191,8 @@ end
 
 -- 按照优先顺序加载文件：用户目录 > 系统目录
 ---@param filename string 相对路径
----@param mode string|nil
----@return file*|nil, function, string|nil
+---@param mode string?
+---@return file*?,  string?
 function M.load_file_with_fallback(filename, mode)
     mode = mode or "r" -- 默认读取模式
 
@@ -201,19 +201,11 @@ function M.load_file_with_fallback(filename, mode)
     ---@type file*?, string?
     local file, err
 
-    local function close()
-        if not file then
-            return
-        end
-        file:close()
-        file = nil
-    end
-
     if _filename then
         file, err = io.open(_filename, mode)
     end
 
-    return file, close, err
+    return file, err
 end
 
 local USER_ID_DEFAULT = "unknown"
@@ -275,8 +267,8 @@ local __input_md_cache = {} -- 新增：是否命中“ⅲ”（若命中则为 
 --- - 若未命中“ⅲ”，只返回 id（保持旧行为）
 --- - 若命中“ⅲ”，返回两个值：id, "ⅲ"
 ---@param env Env
----@return string                -- id
----@return string|nil            -- md（仅在命中“ⅲ”时返回 "ⅲ"）
+---@return string id
+---@return string? md （仅在命中“ⅲ”时返回 "ⅲ"）
 function M.get_input_method_type(env)
     local schema_id = env.engine.schema.schema_id or "unknown"
 
