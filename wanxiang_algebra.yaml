@@ -1,6 +1,7 @@
 # Rime schema
 # encoding: utf-8
 #标准版主方案转写段落
+
 base:
   全拼:
     __append:

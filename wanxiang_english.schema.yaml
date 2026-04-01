@@ -1,12 +1,13 @@
 # Rime schema
 # encoding: utf-8
+
 schema:
   schema_id: wanxiang_english
   name: 万象英文
-  version: "lts"
+  version: "LTS"
   author: amzxyz
   description: |
-    支持整句输入英文的语句流方案，拥有更加智能的词组上屏加空格策略，支持单词组、语句任意词组中首字母大写或者全大写格式化。
+    英文输入子方案，支持整句语句流输入，拥有智能加空格和大写策略。
 
 switches:
   - name: ascii_mode
@@ -42,7 +43,7 @@ speller:
   delimiter: " '"
   algebra:
     __include: wanxiang_algebra:/english/通用规则
-    __patch: wanxiang_algebra:/english/全拼  #可选的选项有（全拼, 自然码, 小鹤双拼, 微软双拼, 搜狗双拼, 智能ABC, 紫光双拼, 拼音加加）
+    __patch: wanxiang_algebra:/english/全拼
 translator:
   dictionary: wanxiang_english
   enable_user_dict: false

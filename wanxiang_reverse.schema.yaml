@@ -1,12 +1,13 @@
 # Rime schema settings
 # encoding: utf-8
+
 schema:
   schema_id: wanxiang_reverse
   name: "万象：拆分与笔画反查"
   version: "LTS"
   author: amzxyz
   description: |
-    万象的反查功能模块，方案融合了组字与笔画的能力
+    反查子方案，包含组字与笔画反查
 engine:
   processors:
     - key_binder

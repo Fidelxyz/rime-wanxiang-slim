@@ -1,14 +1,9 @@
 # Rime dictionary
 # encoding: utf-8
-#
-# rime配置的部署位置：
-# ~/.local/share/fcitx5/rime 或者 ~/.config/ibus/rime  (Linux)
-# ~/Library/Rime  (Mac OS)
-# %APPDATA%\Rime  (Windows)
 
 name: wanxiang
 version: "LTS"
-sort: by_weight  #字典初始排序，可選original或by_weight
+sort: by_weight  #字典初始排序，可选 original 或 by_weight
 use_preset_vocabulary: false
 import_tables:
   - dicts/zi  #字表，包含了所有带拼音的汉字
@@ -18,5 +13,5 @@ import_tables:
   - dicts/duoyin  #兼容词库，是基础词库的扩充，收录了多场景多种读音的词组
   - dicts/shici  #诗词
   - dicts/diming  #地名
-#  - dicts/wuzhong       #物种多样性,在线供应：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
-#  - dicts/renming       #人名,在线供应：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
+#  - dicts/wuzhong       #物种，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
+#  - dicts/renming       #人名，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
