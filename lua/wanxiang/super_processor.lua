@@ -1,23 +1,18 @@
 -- Features:
--- LimitRepeated: 重复限制
+-- RepeatLimit: 重复限制
 -- KpNumber: 小键盘
 -- SuperSegmentation: 超强分词
 -- BackspaceLimit: 退格限制
--- SelectCharacter: 以词定字
 
 ---@class SuperProcessorConfig
 ---
----Config for LimitRepeated
+---Config for RepeatLimit
 ---@field limit_repeated_enabled boolean
 ---@field backspace_limit_enabled boolean
 ---@field seg_loop_enabled boolean
 ---@field predict_space_enabled boolean
 ---@field max_repeat integer
 ---@field max_segments integer
----
----Config for SelectCharacter
----@field sc_first_key string?
----@field sc_last_key string?
 ---
 ---Config for KpNumber
 ---@field kp_page_size integer
@@ -72,7 +67,7 @@ local KP_MAP = {
     [0xFFB0] = 0,
 }
 
--- [LimitRepeated] 重复限制默认配置 (现已支持配置覆盖)
+-- [RepeatLimit] 重复限制默认配置 (现已支持配置覆盖)
 local INITIALS = "[bpmfdtnlgkhjqxrzcsywiu]"
 
 ---[SuperSegmentation] 分词模式配置
@@ -275,7 +270,7 @@ local function is_function_code_after_digit(digit_char, config, ctx)
     return false
 end
 
----计算尾部重复字符数 (LimitRepeated 使用)
+---计算尾部重复字符数 (RepeatLimit 使用)
 ---@param s string
 ---@return string, number
 local function tail_rep(s)
@@ -290,7 +285,7 @@ local function tail_rep(s)
     return last, n
 end
 
----设置候选框提示 (LimitRepeated 使用)
+---设置候选框提示 (RepeatLimit 使用)
 ---@param ctx Context
 ---@param msg string
 local function prompt(ctx, msg)
@@ -302,7 +297,7 @@ end
 
 -- 4. 逻辑分发处理
 
--- [Predict Space] 联想空格接力起跑点
+-- [PredictSpace] 联想空格接力起跑点
 ---@param config SuperProcessorConfig
 ---@param state SuperProcessorState
 ---@param ctx Context
@@ -443,7 +438,7 @@ local function handle_segmentation(key, config, state, ctx)
     end
 end
 
--- [Backspace Limit] 退格限制
+-- [BackspaceLimit] 退格限制
 ---@param key KeyEvent
 ---@param config SuperProcessorConfig
 ---@param state SuperProcessorState
@@ -476,7 +471,7 @@ local function handle_backspace(key, config, state, ctx)
     return false
 end
 
--- [Limit Repeated] 重复输入限制
+-- [RepeatLimit] 重复输入限制
 ---@param key KeyEvent
 ---@param config SuperProcessorConfig
 ---@param ctx Context
@@ -512,61 +507,6 @@ local function handle_limit_repeat(key, config, ctx)
         prompt(ctx, " 〔已超最大输入长度〕")
         return true
     end
-    return false
-end
-
--- [Select Character] 以词定字逻辑
----@param key KeyEvent
----@param config SuperProcessorConfig
----@param env Env
----@param ctx Context
----@return boolean
-local function handle_select_character(key, config, env, ctx)
-    -- 1. 检查配置是否存在
-    if not (config.sc_first_key or config.sc_last_key) then
-        return false
-    end
-
-    -- 2. 状态检查：必须在输入中或有候选菜单
-    if not (ctx:is_composing() or ctx:has_menu()) then
-        return false
-    end
-
-    -- 3. 键值与字符双重匹配（解决 Rime 返回 "bracketleft" 无法匹配 "[" 的问题）
-    local repr = key:repr()
-    local ch = ""
-    if key.keycode >= 0x20 and key.keycode <= 0x7E then
-        ch = string.char(key.keycode)
-    end
-
-    local is_first = (config.sc_first_key and (repr == config.sc_first_key or ch == config.sc_first_key))
-    local is_last = (config.sc_last_key and (repr == config.sc_last_key or ch == config.sc_last_key))
-    if not (is_first or is_last) then
-        return false
-    end
-
-    -- 4. 获取当前选中的候选词或输入
-    local text = ctx.input
-    local cand = ctx:get_selected_candidate()
-    if cand then
-        text = cand.text
-    end
-
-    -- 5. 执行上屏
-    if utf8.len(text) > 1 then
-        if is_first then
-            -- 上屏第一个字 (sub: 1 到 第二个字偏移量-1)
-            env.engine:commit_text(text:sub(1, utf8.offset(text, 2) - 1))
-            ctx:clear()
-            return true -- Accepted
-        elseif is_last then
-            -- 上屏最后一个字 (sub: 最后一个字偏移量)
-            env.engine:commit_text(text:sub(utf8.offset(text, -1)))
-            ctx:clear()
-            return true -- Accepted
-        end
-    end
-
     return false
 end
 
@@ -687,9 +627,7 @@ local P = {}
 
 ---@param env Env
 function P.init(env)
-    local engine = env.engine
-    local rime_config = engine.schema.config
-    local context = engine.context
+    local rime_config = env.engine.schema.config
 
     -- [1] 配置加载 (按功能模块分类)
 
@@ -708,7 +646,7 @@ function P.init(env)
         predict_space_enabled = true
     end
 
-    -- [LimitRepeated]
+    -- [RepeatLimit]
     ---Example: false, "", "8,40"
     ---@type boolean|string?
     local limit_repeated = rime_config:get_bool("super_processor/limit_repeated")
@@ -743,52 +681,6 @@ function P.init(env)
         end
     end
 
-    -- [SelectCharacter] 以词定字配置加载（支持 false, "", "[,]", "bracketleft, bracketright"）
-    local has_new_config = false
-    ---@type boolean|string?
-    local select_character = rime_config:get_bool("super_processor/select_character")
-    if select_character == nil then
-        select_character = rime_config:get_string("super_processor/select_character")
-    end
-
-    ---@type string?
-    local sc_first_key = nil
-    ---@type string?
-    local sc_last_key = nil
-    if type(select_character) == "boolean" then
-        if not select_character then
-            sc_first_key = nil
-            sc_last_key = nil
-            has_new_config = true
-        end
-    elseif type(select_character) == "string" then
-        ---@type string
-        local str_trim = select_character:match("^%s*(.-)%s*$")
-        if str_trim == "" or str_trim:lower() == "false" then
-            sc_first_key = nil
-            sc_last_key = nil
-        else
-            -- 尝试使用逗号分割
-            ---@type string?, string?
-            local p1, p2 = str_trim:match("^(.-),(.-)$")
-            if p1 and p2 then
-                sc_first_key = p1:match("^%s*(.-)%s*$")
-                sc_last_key = p2:match("^%s*(.-)%s*$")
-            elseif #str_trim >= 2 then
-                -- 兜底兼容旧的 "[]" 无逗号写法
-                sc_first_key = str_trim:sub(1, 1)
-                sc_last_key = str_trim:sub(2, 2)
-            end
-        end
-        has_new_config = true
-    end
-
-    if not has_new_config then
-        -- 兜底：只有在新配置完全缺失时，才去读旧配置
-        sc_first_key = rime_config:get_string("key_binder/select_first_character")
-        sc_last_key = rime_config:get_string("key_binder/select_last_character")
-    end
-
     -- [KpNumber] 小键盘
     local kp_page_size = rime_config:get_int("menu/page_size") or 6
     local m = rime_config:get_string("super_processor/kp_number_mode") or "auto"
@@ -801,7 +693,7 @@ function P.init(env)
     local seg_manual_delim = delim:sub(2, 2)
 
     -- [2] 统一 Update Notifier (状态缓存与自动处理)
-    local conn_update = context.update_notifier:connect(function(ctx)
+    local conn_update = env.engine.context.update_notifier:connect(function(ctx)
         local config = env.super_processor_config
         assert(config)
         local state = env.super_processor_state
@@ -837,8 +729,6 @@ function P.init(env)
         predict_space_enabled = predict_space_enabled,
         max_repeat = max_repeat,
         max_segments = max_segments,
-        sc_first_key = sc_first_key,
-        sc_last_key = sc_last_key,
         kp_page_size = kp_page_size,
         kp_mode = kp_mode,
         kp_func_patterns = kp_func_patterns,
@@ -905,18 +795,11 @@ function P.func(key, env)
         end
     end
 
-    -- 2. Backspace 退格防止删除已上屏内容
+    -- 2. [BackspaceLimit] 退格防止删除已上屏内容
     if kc == 0xFF08 then
         if handle_backspace(key, config, state, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
         end
-    end
-
-    -- 3. Select Character 以词定字
-    -- 它的优先级很高，因为是针对当前候选的操作
-    -- 但必须在 Backspace 之后，防止误操作
-    if handle_select_character(key, config, env, context) then
-        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
 
     -- 4. 分词符 ' [SuperSegmentation] 处理分词符 '
@@ -926,7 +809,7 @@ function P.func(key, env)
         end
     end
 
-    -- 5. 字母键[Limit Repeated] 重复输入限制
+    -- 5. [RepeatLimit] 重复输入限制
     if kc >= 0x61 and kc <= 0x7A then
         if handle_limit_repeat(key, config, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
