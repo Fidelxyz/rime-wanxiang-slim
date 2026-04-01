@@ -35,7 +35,7 @@
 | `lua/wanxiang/super_lookup.lua` | 输入后反查（候选筛选）、辅助码反查 |
 | `wanxiang_reverse.schema.yaml` | 输入前反查（拆字/笔画反查方案定义） |
 | `wanxiang_reverse.dict.yaml` | 反查字典数据 |
-| `wanxiang.schema.yaml` (`wanxiang_lookup` 段) | 反查系统配置（引导符、数据源优先级） |
+| `wanxiang.schema.yaml` (`lookup_filter` 段) | 反查系统配置（引导符、数据源优先级） |
 | `wanxiang_algebra.yaml` (`reverse/` 段) | 反查专用的拼写转写规则 |
 
 ### 创新 Lua 扩展
@@ -97,7 +97,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `lua/wanxiang/super_lookup.lua` | 候选筛选核心逻辑，支持 aux/db 双数据源 |
-| `wanxiang.schema.yaml` (`wanxiang_lookup` 段) | 反查配置（引导符、tags、数据源优先级） |
+| `wanxiang.schema.yaml` (`lookup_filter` 段) | 反查配置（引导符、tags、数据源优先级） |
 
 #### 输入前反查
 

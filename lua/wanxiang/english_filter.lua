@@ -325,7 +325,7 @@ function F.init(env)
 
     local english_spacing_mode = config:get_string("wanxiang_english/english_spacing") or "off"
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
-    local lookup_key = config:get_string("wanxiang_lookup/key") or "`"
+    local lookup_key = config:get_string("lookup_filter/trigger") or "`"
     local max_eng_cands = config:get_int("wanxiang_english/max_candidates") or 0
 
     local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
