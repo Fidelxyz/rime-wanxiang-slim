@@ -97,18 +97,30 @@ grammar:
   weak_collocation_penalty: -35
   rear_penalty: -12
 
-super_comment:  # 超级注释模块
-  candidate_length: 1  # 候选词辅助码提醒的生效长度，0为关闭
-  corrector_type: "〔comment〕"  # comment 为占位符
-  chaifen: "〔chaifen〕"  # chaifen 为占位符
+# 超级注释
+super_comment:
+  # 显示辅助码注释的最小候选词长度。0 为关闭并清空所有注释。
+  min_candidate_length: 1
+
+  # 显示错音错字注释。
+  correction_enabled: true
+
+  # 错音错字注释格式。%s 表示注释内容。
+  correction_format: "〔%s〕"
+
+  # 拆分注释格式。%s 表示注释内容。
+  decomposition_format: "〔%s〕"
+
+  # 各候选类型的注释标记。
   cand_type:
     user_phrase: "⁺"
-    sentence: ""
+    sentence: "∞"
     phrase: ""
     table: ""
     user_table: ""
     completion: ""
     abbrev: ""
+    predict: "›"
     fallback: "~"
 
 super_processor:

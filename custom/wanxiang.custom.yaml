@@ -10,20 +10,6 @@ patch:
   #下面是候选数量
   menu/page_size: 6  #候选词个数
 
-  super_comment:  # 超级注释模块，子项配置 true 开启，false 关闭
-    candidate_length: 2  # 候选词辅助码提醒的生效长度，0为关闭  但同时清空其它，应当使用上面开关来处理
-    corrector_type: "〔comment〕"  # 随意更换左右括号，比如"〔comment〕" 不加括号为无括号，comment占位不能动
-    cand_type:
-      user_phrase: ""
-      sentence: "∞"
-      phrase: ""
-      table: ""
-      user_table: ""
-      completion: ""
-      abbrev: ""
-      predict: "›"
-      fallback: "~"
-
   super_processor:
     enable_backspace_limit: true  # 开启/关闭退格限制
     enable_seg_loop: true  # 开启/关闭分词符（'）循环

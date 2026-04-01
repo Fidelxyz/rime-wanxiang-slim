@@ -1,18 +1,16 @@
 ---@class SuperCommentConfig
 ---@field auto_delimiter string
----@field candidate_length integer
+---@field min_candidate_length integer
 
 ---@class SuperCommentDecompositorConfig
----@field display_left string
----@field display_right string
+---@field format string
 
 ---@class SuperCommentDecompositorState
 ---@field decomp_dict ReverseLookup?
 
 ---@class SuperCommentCorrectorConfig
 ---@field enabled boolean
----@field display_left string
----@field display_right string
+---@field format string
 
 ---@class SuperCommentCorrectorState
 ---@field corrections_cache table<string, {text: string, comment: string}>
@@ -67,6 +65,13 @@ local function remove_pinyin_tone(s)
     return table.concat(result)
 end
 
+---@param format string
+---@return boolean
+local is_format_valid = function(format)
+    local success, _ = pcall(string.format, format, "test")
+    return success
+end
+
 -- ----------------------
 -- # 辅助码拆分提示模块
 -- PRO 专用
@@ -94,19 +99,21 @@ function decompositor.get_comment(cand, config, state)
         return ""
     end
 
-    return config.display_left .. raw .. config.display_right
+    return config.format:format(raw)
 end
 
 ---@param env Env
 function decompositor.init(env)
     local rime_config = env.engine.schema.config
 
-    local format = rime_config:get_string("super_comment/chaifen") or "〔chaifen〕"
-    local display_left, display_right = format:match("^(.-)chaifen(.-)$")
+    local format = rime_config:get_string("super_comment/decomposition_format") or "〔%s〕"
+    if not is_format_valid(format) then
+        log.error(("Invalid config value super_comment/decomposition_format: %s"):format(format))
+        format = "〔%s〕"
+    end
 
     env.super_comment_decompositor_config = {
-        display_left = display_left or "",
-        display_right = display_right or "",
+        format = format,
     }
 
     env.super_comment_decompositor_state = {
@@ -139,20 +146,24 @@ function corrector.get_comment(cand, config, state)
         return nil
     end
 
-    return config.display_left .. correction.comment .. config.display_right
+    return config.format:format(correction.comment)
 end
 
 ---@param env Env
 function corrector.init(env)
     local config = env.engine.schema.config
 
-    local format = config:get_string("super_comment/corrector_type") or "{comment}"
-    local display_left, display_right = format:match("^(.-)comment(.-)$")
+    local enabled = config:get_bool("super_comment/correction_enabled") or true
+
+    local format = config:get_string("super_comment/correction_format") or "〔%s〕"
+    if not is_format_valid(format) then
+        log.error(("Invalid config value super_comment/correction_format: %s"):format(format))
+        format = "〔%s〕"
+    end
 
     env.super_comment_corrector_config = {
-        enabled = config:get_bool("super_comment/corrector") or true,
-        display_left = display_left or "",
-        display_right = display_right or "",
+        enabled = enabled,
+        format = format,
     }
 
     env.super_comment_corrector_state = {
@@ -326,7 +337,7 @@ end
 ---@return string
 local function get_aux_comment(cand, initial_comment, config, ctx)
     local length = utf8.len(cand.text)
-    if length > config.candidate_length then
+    if length > config.min_candidate_length then
         return ""
     end
 
@@ -393,10 +404,11 @@ function M.init(env)
 
     local delimiter = config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
+    local min_candidate_length = config:get_int("super_comment/min_candidate_length") or 1
 
     env.super_comment_config = {
         auto_delimiter = auto_delimiter,
-        candidate_length = config:get_int("super_comment/candidate_length") or 1,
+        min_candidate_length = min_candidate_length,
     }
 
     decompositor.init(env)
