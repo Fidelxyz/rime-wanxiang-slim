@@ -1,144 +1,38 @@
 patch:
   speller/algebra:
     __patch:
-      #- 模糊音                                  # 这里启用后，本文件末尾可配置具体条目
-      - wanxiang_algebra:/base/全拼  # 可选输入方案名称：全拼，自然码, 自然龙, 汉心龙，小鹤双拼, 搜狗双拼, 微软双拼, 智能ABC, 紫光双拼, 国标双拼，拼音加加，乱序17
-      ##########################以上格式受指令初始化控制，最好保持格式不变，如果发生变更请不要使用指令修改相关数据#####################################
-    #custom_phrase/user_dict: custom_phrasexx    # 这里改成什么就需要手动创建同名的 custom_phrasexx.txt 文件在用户目录，这个文件主要用于置顶，编码为自定义编码的词汇
-    #translator/packs/+:
-    #- userxx                                  #导入根目录下名称为userxx.dict.yaml的自定义固定词典，编码要与固定词库一致，编码权重都不要少，形如姓名、专有名词公司名称等等
-  #下面是候选数量
-  menu/page_size: 6  #候选词个数
+      # 该选项由切换方案命令写入。如不了解原理，请勿手动修改。
+      # 可选输入方案名称："全拼", "自然码", "智能ABC", "小鹤双拼", "微软双拼", "搜狗双拼", "紫光双拼", "国标双拼", "拼音加加", "乱序17", "万象双拼", "自然龙", "汉心龙"
+      - wanxiang_algebra:/base/全拼
 
-  super_processor:
-    enable_backspace_limit: true  # 开启/关闭退格限制
-    enable_seg_loop: true  # 开启/关闭分词符（'）循环
-    enable_predict_space: false  # 启用联想空格打断，直接上屏空格并清空联想
-    kp_number_mode: auto  # 小键盘模式 (auto / compose)
-    limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+      # 启用后，可在下方对应部分配置具体条目。
+      #- 模糊音
 
-  user_predict:
-    db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
-    enable_post_predict: true  # 上屏后预测
-    enable_context_reorder: true  # 输入时调频
-    max_candidates: 10  # 屏幕最多显示的联想词数量
-    max_predictions: 3  # 连续触发预测的最高次数限制
-    expiry_days: 90  # 绝对寿命（天）：不命中则物理销毁
-    activation_days: 7  # 激活期限（天）：冷冻期内输入第2次转正
-    max_memory_branches: 15  # 分支上限：单前缀最多保留15个后续预测
-    decay_rate: 0.85  # 衰减率：单日时间权重打 85 折
-    enable_predict_space: false  # true: 联想时按空格上屏空格; false: 默认行为（根据输入法设定选词等）一般手机开电脑关，这里有个布尔转换，空格当空格时其他按键打断，空格当上屏则，其他按键当作空格，有：Tab、Alt、右键、\斜杠
-    context_timeout: 5000  # 上文超时时间毫秒
+  # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
+  #custom_phrase/user_dict: user_custom_phrase
 
-  super_replacer:
-    db_name: lua/replacer
-    delimiter: "|"
-    comment_format: "〔%s〕"
-    chain: true  #true表示流水线作业，上一个option产出交给下一个处理，典型的s2t>t2hk=s2hk，false就是并行，直接用text转换
-    rules:
-      # 场景1：输入 '哈哈' -> 变成 '1.哈哈 2.😄'
-      - option: emoji  # 开关名称与上面开关名称保持一致
-        mode: append  # 新增候选append 替换原候选replace 替换注释comment 简码模式abbrev匹配输入编码置顶词组
-        comment_mode: none  # 注释模式: "append"(原候选注释继承), "text"(原候选文本放在注释), "none"(空，默认)
-        tags: [abc]  # 生效的tag
-        prefix: "_em_"  # 前缀用于区分同一个数据库的不同用途数据
-        files:
-          - lua/data/emoji.txt
-      # 场景2：用于常驻的直接替换 option: true
-      - option: true
-        mode: append  # <--- 新增候选模式
-        comment_mode: none
-        tags: [abc]
-        prefix: "_ot_"
-        files:
-          - lua/data/others.txt
-      # 场景4：用于简繁转换的直接替换
-      - option: [s2t, s2hk, s2tw]  #后面依赖这条流水线有一个开关为true这条流水线就能工作
-        mode: replace  # <--- 替换原候选模式
-        comment_mode: append
-        sentence: true  # <--- 句子级别替换
-        tags: [abc]
-        prefix: "_s2t_"
-        files:
-          - lua/data/STCharacters.txt
-          - lua/data/STPhrases.txt
-      - option: s2hk
-        mode: replace  # <--- 替换原候选模式
-        comment_mode: append
-        sentence: true  # <--- 句子级别替换
-        tags: [abc]
-        prefix: "_s2hk_"
-        files:
-          - lua/data/HKVariants.txt
-      - option: s2tw
-        mode: replace  # <--- 替换原候选模式
-        comment_mode: append
-        sentence: true  # <--- 句子级别替换
-        tags: [abc]
-        prefix: "_s2tw_"
-        files:
-          - lua/data/TWVariants.txt
-      - option: abbrev  # 对应上面开关名称
-        mode: abbrev  # <--- 简码模式
-        tags: [abc]
-        prefix: "_abbr_"
-        abbrev_rule: "1,6"
-        # 前置数量1，前置位置6,数量说的是你维护得数据库编码后面分割了几个词前几个要前置显示,位置说的是你要前置到第二候选还是第几
-        # 然后空码或只有英文等自定义词组的时候直接全部兜底显示,这个新的设计简化的应用层面,我们只需要维护一个数据库即可.
-        files:
-          - lua/data/abbrev.txt
-          - lua/data/chengyu.txt
+  # 导入根目录下名称为 userdict.dict.yaml 的自定义固定词典，编码需与固定词库一致。
+  #translator/packs/+:
+  #- userdict
 
-  # 字符集过滤lua
-  # a,通用规范汉字表
-  # b,GB2312,
-  # g,GBK,
-  # T,Big5,(台港澳常用)
-  # j,简体,OpenCC (t2s)
-  # f,通用繁体,OpenCC (s2t)
-  # h,香港繁体, OpenCC (s2hk)
-  # t,台湾繁体, OpenCC (s2tw)
-  # u,基本区,U+4E00 - U+9FFF
-  # A-I,扩展 A-I 区,U+3400 及各扩展区 (支持到 Ext-I)
-  # c,兼容区汉字
-  # 你可以通过黑白名单微调你自己每个开关下面的字符集过滤清单，主数据库位于lua/charset.reverse.bin不可编辑
-  # 你可以按上面提到的规则代号在base处填写上基础集，还可以在每一个开关的开白名单设置微调数据，就像默认添加的字符集过滤在8105基础上新增了一些
-  # 你可以定义多个开关，多个开启状态的开关求并集，比如charset_filter开着，s2hk也开着，那么就会显示这两个集合的所有汉字
-  # 优雅的地方在于s2hk开着，charset_filter关着 我们照样能使用 港繁能用到的所有字，是真正的本体，无关字会被过滤，而当都开着则是享受简体转换成繁体的后的结果
-  # 这个设计真正的兼容了简繁转换与字符集过滤的矛盾，还能满足用户多种自定义需求，你可以在开关增加类别，并在charset下面新增option类去选择按照字区去过滤，等多种组合方式
-  charset:
-    - option: charset_filter
-      base: a  #可以填入多个类别如aj
-      addlist:
-        - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞"
-      blacklist: []
-    - option: s2t
-      base: fa
-      addlist: []
-      blacklist: []
-    - option: s2hk
-      base: ha
-      addlist: []
-      blacklist: []
-    - option: s2tw
-      base: ta
-      addlist: []
-      blacklist: []
+  # 每页候选词数量。
+  menu/page_size: 6
 
-  #下面用来改变你的windows小狼毫右下角软件图标
+  # 自动调频用户词。如果启用手动造词功能，请保持此项关闭，因为两个跨翻译器会造成词汇不能正常记录。
+  #translator/enable_user_dict: true
+
+  # 取消注释以启用手动造词功能。
+  #recognizer/patterns/add_user_dict: "^``[A-Za-z/`']*$"  #自造词引导
+  #user_dict_set/enable_user_dict: true
+  #add_user_dict/enable_user_dict: true
+
+  # 自动无词频造词。
+  #add_user_dict/enable_auto_phrase: true
+
+  # [For Weasel 小狼毫] 修改前端图标。
   #schema/+:
   #  icon: "icons/zhong.ico"
   #  ascii_icon: "icons/ying.ico"
-
-  #translator/enable_user_dict: true  # 是否开启自动调频用户词，如果你希望使用下面``造词功能，请保持false，因为两个跨翻译器会造成词汇不能正常记录
-
-#以下恢复``造词功能，也就是平时不记录，引导才记录，按需造词，如果你想恢复这个功能，请取消注释----
-#recognizer/patterns/add_user_dict: "^``[A-Za-z/`']*$"      #自造词引导方式
-#user_dict_set/enable_user_dict: true
-#add_user_dict/enable_user_dict: true
-# 取消注释以开启自动无词频造词
-#add_user_dict/enable_auto_phrase: true
-#按需造词全功能段落结束---------------------------------------------------------------
 
 模糊音:
   __append:
