@@ -1,32 +1,28 @@
--- 万象拼音 · 手动自由排序
--- 核心规则： 向前移动 = "Control+j", 向后移动 = "Control+k", 重置 = "Control+l", 置顶 = "Control+p
--- 1) p>0：有效排序（DB upsert + 导出）
+-- 手动排序
+-- 1) p>0：有效排序（DB insert + 导出）
 -- 2) p=0：墓碑（DB 删除 + 导出墓碑）
 -- 3) 初始化：先 flush 本机增量到导出 → 外部合并(所有设备文件+本机DB，LWW) → 重写本机导出(含墓碑) → 导入覆盖DB，p=0删除键，不导入
 -- 4) 关于同步的使用方法：先点击同步确保同步目录已经创建，建立sequence_device_list.txt设备清单，内部填写不同设备导出文件名称
--- sequence_ff9b2823-8733-44bb-a497-daf382b74ca5.txt
--- sequence_deepin.txt
--- 可能是自定义名称，可能是随机串号
--- sequence_开头，后面跟着installation_id，这个参数来自用户目录installation.yaml
+-- sequence_<installation_id>，来自 winstallation.yaml
 -- 清单有什么文件就会读取什么文件
 -- 仅使用 installation.yaml 的 sync_dir；读不到就回退到 user_dir/sync
 
 local wanxiang = require("wanxiang.wanxiang")
 local userdb = require("wanxiang.userdb")
 
----@class SuperSequenceConfig
+---@class SequencerConfig
 ---@field seq_keys SeqKeys
 
----@class SuperSequenceProcessorState
+---@class SequencerProcessorState
 ---@field db WrappedUserDb?
 
----@class SuperSequenceFilterState
+---@class SequencerFilterState
 ---@field db WrappedUserDb?
 
 ---@class Env
----@field super_sequence_config SuperSequenceConfig?
----@field super_sequence_processor_state SuperSequenceProcessorState?
----@field super_sequence_filter_state SuperSequenceFilterState?
+---@field sequencer_config SequencerConfig?
+---@field sequencer_processor_state SequencerProcessorState?
+---@field sequencer_filter_state SequencerFilterState?
 
 ---@class SeqKeys
 ---@field up string
@@ -34,15 +30,12 @@ local userdb = require("wanxiang.userdb")
 ---@field reset string
 ---@field pin string
 
-------------------------------------------------------------
--- 一、常量
-------------------------------------------------------------
 local SYNC_FILE_PREFIX, SYNC_FILE_SUFFIX = "sequence", ".txt"
 local RUNTIME_EXPORT = false
 local MANIFEST_FILE = "sequence_device_list.txt"
 
 ------------------------------------------------------------
--- 二、通用工具（路径处理）
+-- 通用工具（路径处理）
 ------------------------------------------------------------
 ---@param p string
 ---@return string
@@ -127,7 +120,7 @@ local function strip(s)
 end
 
 ------------------------------------------------------------
--- 三、安装信息 & 同步目录
+-- 安装信息 & 同步目录
 ------------------------------------------------------------
 ---@return string? installation_id
 ---@return string? sync_dir
@@ -239,7 +232,7 @@ local function detect_device_name()
 end
 
 ------------------------------------------------------------
--- 五、DB 与状态
+-- DB 与状态
 ------------------------------------------------------------
 
 local shared_state = {
@@ -254,7 +247,7 @@ local shared_state = {
 local function init_db(env)
     local rime_config = env.engine.schema.config
 
-    local db_name = rime_config:get_string("super_sequence/db_name")
+    local db_name = rime_config:get_string("sequencer/db_name")
     if db_name and db_name ~= "" then
         db_name = db_name:gsub("\\", "/"):gsub("^/+", "")
         while db_name:match("%.%./") do
@@ -276,7 +269,7 @@ local function init_db(env)
 end
 
 ------------------------------------------------------------
--- 六、记录解析
+-- 记录解析
 ------------------------------------------------------------
 
 ---@class Adjustment
@@ -380,7 +373,7 @@ local function get_adjustments_for_code(code, db)
 end
 
 ------------------------------------------------------------
--- 七、导出缓冲
+-- 导出缓冲
 ------------------------------------------------------------
 ---@class SeqData
 ---@field status string
@@ -520,7 +513,7 @@ function seq_data.try_export(force)
 end
 
 ------------------------------------------------------------
--- 八、保存与合并 (Save & Merge)
+-- 保存与合并
 ------------------------------------------------------------
 ---@param adjustments table<string, table<string, Adjustment>>
 local function write_adjustments_to_sync_files(adjustments)
@@ -752,7 +745,7 @@ local function read_adjustments_from_all_sources(db)
 end
 
 ------------------------------------------------------------
--- 九、Processor (含 Ctrl 监听)
+-- Processor
 ------------------------------------------------------------
 
 ---@param context Context
@@ -804,7 +797,7 @@ local P = {}
 function P.init(env)
     local rime_config = env.engine.schema.config
 
-    local key_namespace = "super_sequence/"
+    local key_namespace = "sequencer/"
     ---@type SeqKeys
     local seq_keys = {
         up = rime_config:get_string(key_namespace .. "up") or "Control+j",
@@ -824,9 +817,9 @@ function P.init(env)
         write_adjustments_to_db(adjustments, db)
     end
 
-    env.super_sequence_config = { seq_keys = seq_keys }
+    env.sequencer_config = { seq_keys = seq_keys }
 
-    env.super_sequence_processor_state = { db = db }
+    env.sequencer_processor_state = { db = db }
 end
 
 ---@param env Env
@@ -834,8 +827,8 @@ function P.fini(env)
     if RUNTIME_EXPORT then
         seq_data.try_export(true)
     end
-    env.super_sequence_config = nil
-    env.super_sequence_processor_state = nil
+    env.sequencer_config = nil
+    env.sequencer_processor_state = nil
 end
 
 ---@param key_event KeyEvent
@@ -844,9 +837,9 @@ end
 function P.func(key_event, env)
     local context = env.engine.context
 
-    local config = env.super_sequence_config
+    local config = env.sequencer_config
     assert(config)
-    local state = env.super_sequence_processor_state
+    local state = env.sequencer_processor_state
     assert(state)
 
     -- Adjustment is not allowed in function mode
@@ -939,7 +932,7 @@ function P.func(key_event, env)
 end
 
 ------------------------------------------------------------
--- 十、Filter (含标记可视化)
+-- Filter
 ------------------------------------------------------------
 ---@param candidates Candidate[]
 ---@param adjustments table<string, Adjustment>
@@ -995,12 +988,12 @@ local F = {}
 function F.init(env)
     local db = init_db(env)
 
-    env.super_sequence_filter_state = { db = db }
+    env.sequencer_filter_state = { db = db }
 end
 
 ---@param env Env
 function F.fini(env)
-    env.super_sequence_filter_state = nil
+    env.sequencer_filter_state = nil
 end
 
 ---@param input Translation
@@ -1008,7 +1001,7 @@ end
 function F.func(input, env)
     local context = env.engine.context
 
-    local state = env.super_sequence_filter_state
+    local state = env.sequencer_filter_state
     assert(state)
 
     local function yield_original()

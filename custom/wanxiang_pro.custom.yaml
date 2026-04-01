@@ -148,13 +148,6 @@ patch:
   #  icon: "icons/zhong.ico"
   #  ascii_icon: "icons/ying.ico"
 
-  super_sequence:  # Lua 配置：手动排序的快捷键 super_sequence.lua，不要用方向键，各种冲突，一定要避免冲突
-    db_name: "lua/sequence"
-    up: "Control+j"  # 上移
-    down: "Control+k"  # 下移
-    reset: "Control+l"  # 重置
-    pin: "Control+p"  # 置顶
-
   #开启自动无词频造词（默认已经开了）
   #add_user_dict/enable_auto_phrase: true
 
