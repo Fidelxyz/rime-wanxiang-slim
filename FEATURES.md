@@ -115,7 +115,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_english.lua` | 英文全能过滤器：格式化、智能加空格、大小写、空码补全 |
+| `lua/wanxiang/english_filter.lua` | 英文全能过滤器：格式化、智能加空格、大小写、空码补全 |
 | `wanxiang_english.schema.yaml` | 英文输入方案定义 |
 | `wanxiang_english.dict.yaml` | 英文词典数据 |
 | `dicts/en.dict.yaml` | 英文词条 |
@@ -127,8 +127,8 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_english.lua` | 加空格全部逻辑（smart 模式、超时、路径检测） |
-| `wanxiang.schema.yaml` (`super_english` 段) | 加空格策略配置项 |
+| `lua/wanxiang/english_filter.lua` | 加空格全部逻辑（smart 模式、超时、路径检测） |
+| `wanxiang.schema.yaml` (`english_filter` 段) | 加空格策略配置项 |
 
 ### 英文数字字母汉字混合输入
 
@@ -165,7 +165,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `lua/wanxiang/super_filter.lua` | 3 码回退逻辑，空码候选恢复与 `~` 标注 |
-| `lua/wanxiang/super_english.lua` | 英文场景的空码补全 |
+| `lua/wanxiang/english_filter.lua` | 英文场景的空码补全 |
 
 ### 数字后自动半角
 
@@ -237,8 +237,8 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_english.lua` | 英文造词逻辑（`trigger` 配置可自定义触发符） |
-| `wanxiang.schema.yaml` | `super_english` 段 `trigger` 配置 |
+| `lua/wanxiang/english_filter.lua` | 英文造词逻辑（`trigger` 配置可自定义触发符） |
+| `wanxiang.schema.yaml` | `english_filter` 段 `trigger` 配置 |
 
 ### 简码系统（Super Replacer 简码模式）
 

@@ -35,7 +35,7 @@ engine:
     - punct_translator
   filters:
     - lua_filter@*wanxiang.auto_phrase
-    - lua_filter@*wanxiang.super_english
+    - lua_filter@*wanxiang.english_filter
     - uniquifier
 
 speller:
@@ -65,11 +65,24 @@ wanxiang_english:
   enable_completion: true
   enable_sentence: true
   initial_quality: 3
-  comment_format:  #这里很重要如果残留带声调字母，剩余编码提示计算出错引发程序崩溃
-    - xform/^~.+$//
-  #英文自动加空格，除关闭外共有3种模式可供选择
-  #off: 关闭; before: 总是前加; after: 总是后加;
-  #smart: 智能模式连续输入英文时第二个单词前开始加空格，非输入状态的回车与空格都能打断加空格状态
-  #支持设置延时销毁加空格状态，单位秒,0不超时，大于0为超时时间，极大的保证了连续输入的体验。
+  comment_format:
+    - xform/^~.+$//  # 清除残留带声调字母
+
+  ### english_filter 相关配置 ###
+
+  # 自动添加空格。
+  # off: 关闭。
+  # before: 总是前加。
+  # after: 总是后加。
+  # smart: 连续输入英文时，第二个单词前开始加空格。非输入状态下回车与空格打断加空格状态。
+  # 可设置 spacing_timeout 延时取消加空格状态。
   english_spacing: smart
+
+  # 取消加空格状态的延时，单位为秒。设置为 0 则永不超时。
   spacing_timeout: 5
+
+  # 最大候英文候选数量。
+  max_candidates: 3
+
+  # 英文造词触发符号，双击触发造词。
+  user_dict_trigger: "\\"

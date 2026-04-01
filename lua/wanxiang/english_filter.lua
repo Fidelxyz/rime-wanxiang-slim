@@ -1,4 +1,3 @@
--- lua/super_english.lua
 -- https://github.com/amzxyz/rime_wanxiang
 -- @description: 英文全能处理器 (Filter Only: 锚点切分 + 动态分隔符 + 超时销毁 + 性能极速优化)
 -- @author: amzxyz
@@ -9,18 +8,18 @@
 -- 3. [Memory] 全量历史缓存，完美解决回删乱码问题
 -- 4. [Construct] 原生优先构造策略 (短词无分词则重置为原生输入)
 -- 5. [Order] 单字母(a/A) 智能插队排序,补齐单字母候选
--- 6. [Limit & Perf] 纯英文数量限制，并增加极速防卡顿熔断机制
+-- 6. [Limit] 纯英文数量限制，并增加极速防卡顿熔断机制
 
----@class SuperEnglishConfig
+---@class EnglishFilterConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field spacing_timeout number
 ---@field max_eng_cands integer
----@field phrase_trigger string
+---@field user_dict_trigger string
 ---@field split_pattern string
 ---@field delim_check_pattern string
 
----@class SuperEnglishState
----@field prev_commit_is_eng boolean
+---@class EnglishFilterState
+---@field is_prev_commit_english boolean
 ---@field last_commit_time number
 ---@field comp_start_time number?
 ---@field sticky_countdown integer
@@ -31,8 +30,8 @@
 ---@field commit_notifier Connection
 
 ---@class Env
----@field super_english_config SuperEnglishConfig?
----@field super_english_state SuperEnglishState?
+---@field english_filter_config EnglishFilterConfig?
+---@field english_filter_state EnglishFilterState?
 
 ---@class CodeContext
 ---@field raw_input string
@@ -111,11 +110,11 @@ end
 
 ---@param text string
 ---@param start_pos integer
----@param target_fp string
+---@param target string
 ---@return integer?
 ---@return integer?
-local function find_target_in_text(text, start_pos, target_fp)
-    if target_fp == "" then
+local function find_subsequence(text, start_pos, target)
+    if target == "" then
         return nil, nil
     end
 
@@ -123,9 +122,9 @@ local function find_target_in_text(text, start_pos, target_fp)
     local target_idx = 1
     local scan_pos = start_pos
 
-    while scan_pos <= #text and target_idx <= #target_fp do
+    while scan_pos <= #text and target_idx <= #target do
         local text_byte = text:byte(scan_pos)
-        local target_byte = target_fp:byte(target_idx)
+        local target_byte = target:byte(target_idx)
 
         -- ASCII lowercase normalization (only for A-Z)
         if target_byte >= 65 and target_byte <= 90 then
@@ -142,7 +141,7 @@ local function find_target_in_text(text, start_pos, target_fp)
         scan_pos = scan_pos + 1
     end
 
-    if target_idx > #target_fp then -- Matched all
+    if target_idx > #target then -- Matched all
         return match_start, scan_pos - 1
     end
 
@@ -155,7 +154,7 @@ end
 ---@param check_pattern string
 ---@return Candidate
 local function restore_sentence_spacing(cand, split_pattern, check_pattern)
-    local guide = cand.preedit or ""
+    local guide = cand.preedit
     if not guide:find(check_pattern) then
         return cand
     end
@@ -178,7 +177,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     local starts = {}
     local p = 1
     for _, target in ipairs(targets) do
-        local s, e = find_target_in_text(text, p, target)
+        local s, e = find_subsequence(text, p, target)
         if not s then
             return cand
         end
@@ -221,15 +220,14 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     return new_cand
 end
 
-local NBSP = string.char(0xC2, 0xA0)
-
 ---@param text string
 ---@param input_code string
 ---@return string
 local function apply_segment_formatting(text, input_code)
-    if not input_code or input_code == "" then
+    if input_code == "" then
         return text
     end
+
     local parts = {}
     local p_code = 1
     for word in text:gmatch("%S+") do
@@ -267,13 +265,13 @@ end
 ---@return Candidate
 local function apply_formatting(cand, code_ctx)
     local text = cand.text
-    if not text or text == "" then
+    if text == "" then
         return cand
     end
 
     local changed = false
 
-    local norm = text:gsub(NBSP, " ")
+    local norm = text:gsub(string.char(0xC2, 0xA0), " ")
     if norm ~= text then
         text = norm
         changed = true
@@ -319,23 +317,22 @@ local function apply_formatting(cand, code_ctx)
     return new_cand
 end
 
-local M = {}
+local F = {}
 
 ---@param env Env
-function M.init(env)
+function F.init(env)
     local config = env.engine.schema.config
 
     local english_spacing_mode = config:get_string("wanxiang_english/english_spacing") or "off"
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
     local lookup_key = config:get_string("wanxiang_lookup/key") or "`"
-
     local max_eng_cands = config:get_int("wanxiang_english/max_candidates") or 0
 
-    local phrase_trigger = config:get_string("wanxiang_english/trigger")
-    if phrase_trigger and phrase_trigger ~= "" then
-        phrase_trigger = phrase_trigger:sub(1, 1)
+    local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
+    if user_dict_trigger and user_dict_trigger ~= "" then
+        user_dict_trigger = user_dict_trigger:sub(1, 1)
     else
-        phrase_trigger = "\\"
+        user_dict_trigger = "\\"
     end
 
     local delimiter_str = config:get_string("speller/delimiter") or " '"
@@ -343,17 +340,17 @@ function M.init(env)
     local split_pattern = "[^" .. escaped_delims .. "]+"
     local delim_check_pattern = "[" .. escaped_delims .. "]"
 
-    env.super_english_config = {
+    env.english_filter_config = {
         english_spacing_mode = english_spacing_mode,
         spacing_timeout = spacing_timeout,
         max_eng_cands = max_eng_cands,
-        phrase_trigger = phrase_trigger,
+        user_dict_trigger = user_dict_trigger,
         split_pattern = split_pattern,
         delim_check_pattern = delim_check_pattern,
     }
 
     local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
-        local state = env.super_english_state
+        local state = env.english_filter_state
         assert(state)
 
         local input = ctx.input
@@ -368,7 +365,7 @@ function M.init(env)
     end)
 
     local commit_notifier = env.engine.context.commit_notifier:connect(function(ctx)
-        local state = env.super_english_state
+        local state = env.english_filter_state
         assert(state)
 
         local commit_text = ctx:get_commit_text()
@@ -392,7 +389,7 @@ function M.init(env)
             end
         end
 
-        state.prev_commit_is_eng = is_eng
+        state.is_prev_commit_english = is_eng
         if is_eng then
             state.last_commit_time = wanxiang.now()
         else
@@ -402,8 +399,8 @@ function M.init(env)
         state.block_derivation = false
     end)
 
-    env.super_english_state = {
-        prev_commit_is_eng = false,
+    env.english_filter_state = {
+        is_prev_commit_english = false,
         last_commit_time = 0,
         comp_start_time = nil,
         sticky_countdown = 0,
@@ -415,44 +412,44 @@ function M.init(env)
 end
 
 ---@param env Env
-function M.fini(env)
-    env.super_english_state.update_notifier:disconnect()
-    env.super_english_state.commit_notifier:disconnect()
-    env.super_english_config = nil
-    env.super_english_state = nil
+function F.fini(env)
+    env.english_filter_state.update_notifier:disconnect()
+    env.english_filter_state.commit_notifier:disconnect()
+    env.english_filter_config = nil
+    env.english_filter_state = nil
 end
 
 ---@param input Translation
 ---@param env Env
-function M.func(input, env)
+function F.func(input, env)
     local context = env.engine.context
 
-    local config = env.super_english_config
+    local config = env.english_filter_config
     assert(config)
-    local state = env.super_english_state
+    local state = env.english_filter_state
     assert(state)
 
     if context:get_property("force_sticky_code") == "true" then
         state.sticky_countdown = STICKY_BUFFER_SIZE
-        state.prev_commit_is_eng = false
+        state.is_prev_commit_english = false
         context:set_property("force_sticky_code", "")
     end
 
-    local curr_input = context.input
-    if not has_letters(curr_input) then
+    local code = context.input
+    if not has_letters(code) then
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
-    -- ===
+
     local has_valid_candidate = false
     local best_candidate_saved = false
-    local code_len = #curr_input
+    local code_len = #code
 
-    -- [Feature] 强制英文造词
-    if code_len > 2 and curr_input:sub(-2) == config.phrase_trigger .. config.phrase_trigger then
-        local raw_text = curr_input:sub(1, code_len - 2)
+    -- 强制英文造词
+    if code_len > 2 and code:sub(-2) == config.user_dict_trigger .. config.user_dict_trigger then
+        local raw_text = code:sub(1, code_len - 2)
         if is_english_phrase(raw_text) then
             if context.composition and not context.composition:empty() then
                 context.composition:back().prompt = "〔英文造词〕"
@@ -465,23 +462,23 @@ function M.func(input, env)
     end
 
     local break_signal = (context:get_property("english_spacing") == "true")
-    local effective_prev_is_eng = state.prev_commit_is_eng
+    local is_prev_commit_english = state.is_prev_commit_english
 
     if break_signal then
-        effective_prev_is_eng = false
-        state.prev_commit_is_eng = false
-    elseif effective_prev_is_eng and config.spacing_timeout > 0 then
+        is_prev_commit_english = false
+        state.is_prev_commit_english = false
+    elseif is_prev_commit_english and config.spacing_timeout > 0 then
         local check_time = state.comp_start_time or wanxiang.now()
         if (check_time - state.last_commit_time) > config.spacing_timeout then
-            effective_prev_is_eng = false
-            state.prev_commit_is_eng = false
+            is_prev_commit_english = false
+            state.is_prev_commit_english = false
         end
     end
 
     local code_ctx = {
-        raw_input = curr_input,
+        raw_input = code,
         spacing_mode = config.english_spacing_mode,
-        prev_is_eng = effective_prev_is_eng,
+        is_prev_commit_english = is_prev_commit_english,
     }
 
     ---@type Candidate[]
@@ -490,12 +487,12 @@ function M.func(input, env)
     local single_char_injected = false
 
     if code_len == 1 then
-        local b = curr_input:byte()
+        local b = code:byte()
         local is_upper = (b >= 65 and b <= 90)
         local is_lower = (b >= 97 and b <= 122)
         if is_upper or is_lower then
-            local t1 = curr_input
-            local t2 = is_upper and curr_input:lower() or curr_input:upper()
+            local t1 = code
+            local t2 = is_upper and code:lower() or code:upper()
             table.insert(single_chars, Candidate("completion", 0, 1, t1, ""))
             table.insert(single_chars, Candidate("completion", 0, 1, t2, ""))
             has_single_chars = true
@@ -517,10 +514,7 @@ function M.func(input, env)
         local raw_text = cand.text
 
         -- [垃圾词判定]：保护符号，只去重单字母
-        if
-            (c_type == "raw")
-            or (code_len == 1 and has_letters(curr_input) and raw_text:lower() == curr_input:lower())
-        then
+        if (c_type == "raw") or (code_len == 1 and has_letters(code) and raw_text:lower() == code:lower()) then
             goto continue
         end
 
@@ -542,7 +536,7 @@ function M.func(input, env)
             -- 即使当前的词被丢弃，也要确保单字母（若存在）成功插队输出
             if has_single_chars and not single_char_injected then
                 if not best_candidate_saved then
-                    state.memory[curr_input] = { text = single_chars[1].text, preedit = curr_input }
+                    state.memory[code] = { text = single_chars[1].text, preedit = code }
                     best_candidate_saved = true
                 end
                 for _, c in ipairs(single_chars) do
@@ -580,9 +574,9 @@ function M.func(input, env)
         if fmt_cand.type == "user_table" or fmt_cand.type == "fixed" or fmt_cand.type == "phrase" or not is_ascii then
             -- VIP 通道：不仅是 user_table，包括汉字等，都直接输出，不让单字母插队
             if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
-                state.memory[curr_input] = {
+                state.memory[code] = {
                     text = fmt_cand.text,
-                    preedit = curr_input,
+                    preedit = code,
                 }
                 best_candidate_saved = true
             end
@@ -593,7 +587,7 @@ function M.func(input, env)
         -- 普通通道：允许单字母插队到前面
         if has_single_chars and not single_char_injected then
             if not best_candidate_saved then
-                state.memory[curr_input] = { text = single_chars[1].text, preedit = curr_input }
+                state.memory[code] = { text = single_chars[1].text, preedit = code }
                 best_candidate_saved = true
             end
             for _, c in ipairs(single_chars) do
@@ -604,9 +598,9 @@ function M.func(input, env)
         end
 
         if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
-            state.memory[curr_input] = {
+            state.memory[code] = {
                 text = fmt_cand.text,
-                preedit = curr_input,
+                preedit = code,
             }
             best_candidate_saved = true
         end
@@ -615,68 +609,73 @@ function M.func(input, env)
         ::continue::
     end
 
-    -- [Phase 3] 历史回溯构造 & 统一兜底
-    if not has_valid_candidate then
-        if state.block_derivation then
-            return
+    -- 历史回溯构造 & 统一兜底
+    if has_valid_candidate then
+        return
+    end
+
+    if state.block_derivation then
+        return
+    end
+
+    -- 只有在 wanxiang_english 方案下，才进行英文的回溯派生逻辑
+    if env.engine.schema.schema_id ~= "wanxiang_english" or not has_letters(code) then
+        return
+    end
+
+    ---@type { text: string, preedit: string }?
+    local anchor = nil
+    local diff = ""
+    for i = #code - 1, 1, -1 do
+        local prefix = code:sub(1, i)
+        if state.memory[prefix] then
+            anchor = state.memory[prefix]
+            diff = code:sub(i + 1)
+            break
+        end
+    end
+
+    if not anchor or diff == "" then
+        return
+    end
+
+    local is_code_mode = code:find("[/\\]") or (state.sticky_countdown > 0)
+    if is_code_mode then
+        local clean_diff = diff
+        if clean_diff:sub(-1) == config.user_dict_trigger then
+            clean_diff = clean_diff:sub(1, -2)
+        end
+        local output_text = anchor.text .. clean_diff
+        local output_preedit = (anchor.preedit or anchor.text) .. diff
+        output_text = apply_segment_formatting(output_text, code)
+
+        local cand = Candidate("fallback", 0, #code, output_text, "~")
+        cand.preedit = output_preedit
+        cand.quality = 999
+        yield(cand)
+    elseif is_english_phrase(anchor.text) then
+        -- 纯英文模式（含逗号等）
+        local has_spacing = anchor.text:find(" ")
+        local last_word = anchor.text:match("(%S+)%s*$") or ""
+        local last_len = #last_word
+        local spacer = " "
+        if anchor.text:sub(-1) == " " then
+            spacer = ""
         end
 
-        -- 只有在 wanxiang_english 方案下，才进行英文的回溯派生逻辑
-        if env.engine.schema.schema_id == "wanxiang_english" and has_letters(curr_input) then
-            ---@type { text: string, preedit: string }?
-            local anchor = nil
-            local diff = ""
-            for i = #curr_input - 1, 1, -1 do
-                local prefix = curr_input:sub(1, i)
-                if state.memory[prefix] then
-                    anchor = state.memory[prefix]
-                    diff = curr_input:sub(i + 1)
-                    break
-                end
-            end
-
-            if anchor and diff ~= "" then
-                local is_code_mode = curr_input:find("[/\\]") or (state.sticky_countdown > 0)
-
-                if is_code_mode then
-                    local clean_diff = diff
-                    if clean_diff:sub(-1) == config.phrase_trigger then
-                        clean_diff = clean_diff:sub(1, -2)
-                    end
-                    local output_text = anchor.text .. clean_diff
-                    local output_preedit = (anchor.preedit or anchor.text) .. diff
-                    output_text = apply_segment_formatting(output_text, curr_input)
-
-                    local cand = Candidate("fallback", 0, #curr_input, output_text, "~")
-                    cand.preedit = output_preedit
-                    cand.quality = 999
-                    yield(cand)
-                elseif is_english_phrase(anchor.text) then
-                    -- 纯英文模式（含逗号等）
-                    local has_spacing = anchor.text:find(" ")
-                    local last_word = anchor.text:match("(%S+)%s*$") or ""
-                    local last_len = #last_word
-                    local spacer = " "
-                    if anchor.text:sub(-1) == " " then
-                        spacer = ""
-                    end
-
-                    local output_text = ""
-                    if has_spacing or last_len > 3 then
-                        output_text = anchor.text .. spacer .. diff
-                    else
-                        output_text = curr_input
-                    end
-
-                    output_text = apply_segment_formatting(output_text, curr_input)
-                    local cand = Candidate("fallback", 0, #curr_input, output_text, "~")
-                    cand.preedit = output_text
-                    cand.quality = 999
-                    yield(cand)
-                end
-            end
+        local output_text = ""
+        if has_spacing or last_len > 3 then
+            output_text = anchor.text .. spacer .. diff
+        else
+            output_text = code
         end
+
+        output_text = apply_segment_formatting(output_text, code)
+        local cand = Candidate("fallback", 0, #code, output_text, "~")
+        cand.preedit = output_text
+        cand.quality = 999
+        yield(cand)
     end
 end
 
-return M
+return F
