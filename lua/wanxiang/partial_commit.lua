@@ -8,7 +8,6 @@
 ---@field pending_rest string?
 ---
 ---@field update_conn Connection
----@field key_handler function
 
 ---@class Env
 ---@field partial_commit_config PartialCommitConfig?
@@ -51,7 +50,7 @@ local KP = {
 ---@param index integer
 ---@return string?
 local function get_utf8_char(str, index)
-    if not str or str == "" then
+    if str == "" then
         return nil
     end
     local start_byte = utf8.offset(str, index)
@@ -67,7 +66,7 @@ end
 ---@param n integer
 ---@return string
 local function utf8_head(s, n)
-    if not s or s == "" or n <= 0 then
+    if s == "" or n <= 0 then
         return ""
     end
     local offset = utf8.offset(s, n + 1)
@@ -80,10 +79,10 @@ local function set_pending(rest, state)
     state.pending_rest = rest
 end
 
-local M = {}
+local P = {}
 
 ---@param env Env
-function M.init(env)
+function P.init(env)
     local rime_config = env.engine.schema.config
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
@@ -114,66 +113,6 @@ function M.init(env)
         end
     end)
 
-    -- 核心拦截器
-    local key_handler = function(key)
-        local config = env.partial_commit_config
-        assert(config)
-        local state = env.partial_commit_state
-        assert(state)
-
-        if not key:ctrl() or key:release() then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        local n = DIGIT[key.keycode] or KP[key.keycode]
-        if not n then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        local ctx = env.engine.context
-        if not ctx:is_composing() then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        local cand = ctx:get_selected_candidate()
-        if not cand or #cand.text == 0 then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        -- 直接调用底层 spans 获取物理切分坐标
-        local spans = ctx.composition:spans()
-        if spans.count == 0 or #spans.vertices < 2 then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        -- 防呆保护：取 期望长度(N)、实际拼音音节数、候选词字符数 三者中的最小值
-        local available_syllables = #spans.vertices - 1
-        local cand_len = utf8.len(cand.text) or 0
-        n = math.min(n, available_syllables, cand_len)
-        if n <= 0 then
-            return wanxiang.RIME_PROCESS_RESULTS.kNoop
-        end
-
-        -- 获取需要上屏的中文候选字串
-        local head = utf8_head(cand.text, n)
-        -- 利用 vertices 拿到第 n 个音节的精确字节偏移量
-        local cut_byte = spans.vertices[n + 1]
-        -- 截取剩余的 raw_input
-        local rest = ctx.input:sub(cut_byte + 1)
-        -- 如果剩余输入首字符是手动输入的分隔符（比如 ' ），顺手切掉保证清爽
-        if rest:sub(1, 1) == "'" or rest:sub(1, 1) == " " then
-            rest = rest:sub(2)
-        end
-
-        -- 提交前 n 个字
-        env.engine:commit_text(head)
-        -- 挂起剩余拼音，触发 update_notifier 恢复
-        set_pending(rest, state)
-        ctx:refresh_non_confirmed_composition()
-
-        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-    end
-
     env.partial_commit_config = {
         auto_delimiter = auto_delimiter,
         manual_delimiter = manual_delimiter,
@@ -182,12 +121,11 @@ function M.init(env)
     env.partial_commit_state = {
         pending_rest = nil,
         update_conn = update_conn,
-        key_handler = key_handler,
     }
 end
 
 ---@param env Env
-function M.fini(env)
+function P.fini(env)
     env.partial_commit_state.update_conn:disconnect()
     env.partial_commit_state = nil
 end
@@ -195,14 +133,63 @@ end
 ---@param key KeyEvent
 ---@param env Env
 ---@return ProcessResult
-function M.func(key, env)
+function P.func(key, env)
+    local config = env.partial_commit_config
+    assert(config)
     local state = env.partial_commit_state
     assert(state)
 
-    if not state.key_handler then
+    if not key:ctrl() or key:release() then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
-    return state.key_handler(key)
+
+    local n = DIGIT[key.keycode] or KP[key.keycode]
+    if not n then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    local ctx = env.engine.context
+    if not ctx:is_composing() then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    local cand = ctx:get_selected_candidate()
+    if not cand or #cand.text == 0 then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    -- 直接调用底层 spans 获取物理切分坐标
+    local spans = ctx.composition:spans()
+    if spans.count == 0 or #spans.vertices < 2 then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    -- 防呆保护：取 期望长度(N)、实际拼音音节数、候选词字符数 三者中的最小值
+    local available_syllables = #spans.vertices - 1
+    local cand_len = utf8.len(cand.text) or 0
+    n = math.min(n, available_syllables, cand_len)
+    if n <= 0 then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    -- 获取需要上屏的中文候选字串
+    local head = utf8_head(cand.text, n)
+    -- 利用 vertices 拿到第 n 个音节的精确字节偏移量
+    local cut_byte = spans.vertices[n + 1]
+    -- 截取剩余的 raw_input
+    local rest = ctx.input:sub(cut_byte + 1)
+    -- 如果剩余输入首字符是手动输入的分隔符（比如 ' ），顺手切掉保证清爽
+    if rest:sub(1, 1) == "'" or rest:sub(1, 1) == " " then
+        rest = rest:sub(2)
+    end
+
+    -- 提交前 n 个字
+    env.engine:commit_text(head)
+    -- 挂起剩余拼音，触发 update_notifier 恢复
+    set_pending(rest, state)
+    ctx:refresh_non_confirmed_composition()
+
+    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
 end
 
-return M
+return P
