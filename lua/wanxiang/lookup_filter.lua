@@ -1,10 +1,6 @@
---wanxiang_lookup: #设置归属于super_lookup.lua
---tags: [ abc ]  # 检索当前tag的候选
---key: "`"       # 输入中反查引导符
---lookup: [ wanxiang_reverse ] #反查滤镜数据库
---data_source: [ aux, db ] # 优先级：写在前面优先。
+---反查过滤器
 
----@class SuperLookupConfig
+---@class LookupFilterConfig
 ---@field data_sources (string|"aux"|"db")[]
 ---@field has_db boolean
 ---@field has_comment boolean
@@ -12,23 +8,22 @@
 ---@field main_projection Projection?
 ---@field xlit_projection Projection?
 ---@field comment_split_pattern string?
----@field search_key_str string
----@field search_key_alt string
+---@field trigger_str string
 ---@field bypass_prefix string?
 ---@field tags string[]
 
----@class SuperLookupState
+---@class LookupFilterState
 ---@field db_cache table<string, {main: string[], xlit: string[]}>
 ---@field comment_cache table<string, string[][]|false>
 ---@field cache_size integer
 ---
----@field notifier Connection
+---@field select_notifier Connection
 
 ---@class Env
----@field super_lookup_config SuperLookupConfig?
----@field super_lookup_state SuperLookupState?
+---@field lookup_filter_config LookupFilterConfig?
+---@field lookup_filter_state LookupFilterState?
 
----工具函数：转义正则特殊字符
+---转义正则特殊字符
 ---@param s string
 ---@return string
 local function alt_lua_punc(s)
@@ -77,7 +72,7 @@ end
 ---@return string[] xlit_rules
 local function get_schema_rules(env)
     local config = env.engine.schema.config
-    local db_list = config:get_list("wanxiang_lookup/lookup")
+    local db_list = config:get_list("lookup_filter/dicts")
     if not db_list or db_list.size == 0 then
         return {}, {}
     end
@@ -401,7 +396,7 @@ local function parse_comment_codes(comment, pattern, target_len)
 end
 
 ---@param seg Segment
----@param config SuperLookupConfig
+---@param config LookupFilterConfig
 ---@return boolean
 local function matches_tags(seg, config)
     for _, v in ipairs(config.tags) do
@@ -419,7 +414,7 @@ function F.init(env)
     local rime_config = env.engine.schema.config
 
     -- 1. 读取数据源
-    local sources_list = rime_config:get_list("wanxiang_lookup/data_source")
+    local sources_list = rime_config:get_list("lookup_filter/data_source")
 
     ---@type string[]
     local data_sources = {}
@@ -451,7 +446,7 @@ function F.init(env)
     ---@type Projection?
     local xlit_projection = nil
     if has_db then
-        local db_list = rime_config:get_list("wanxiang_lookup/lookup")
+        local db_list = rime_config:get_list("lookup_filter/dicts")
         if db_list and db_list.size > 0 then
             db_table = {}
             for i = 0, db_list.size - 1 do
@@ -481,13 +476,12 @@ function F.init(env)
         comment_split_pattern = "[^" .. alt_lua_punc(delimiter) .. "]+"
     end
 
-    local search_key_str = rime_config:get_string("wanxiang_lookup/key") or "`"
-    local search_key_alt = alt_lua_punc(search_key_str)
+    local trigger_str = rime_config:get_string("lookup_filter/trigger") or "`"
     local bypass_prefix = rime_config:get_string("add_user_dict/prefix")
 
     ---@type string[]
     local tags = {}
-    local tags_list = rime_config:get_list("wanxiang_lookup/tags")
+    local tags_list = rime_config:get_list("lookup_filter/tags")
     if tags_list and tags_list.size > 0 then
         tags = {}
         for i = 0, tags_list.size - 1 do
@@ -497,12 +491,12 @@ function F.init(env)
         tags = { "abc" }
     end
 
-    local notifier = env.engine.context.select_notifier:connect(function(ctx)
-        local state = env.super_lookup_state
+    local select_notifier = env.engine.context.select_notifier:connect(function(ctx)
+        local state = env.lookup_filter_state
         assert(state)
 
         local input = ctx.input
-        local code, _ = split_lookup_input(input, search_key_str, bypass_prefix)
+        local code, _ = split_lookup_input(input, trigger_str, bypass_prefix)
         if not code or #code == 0 then
             return
         end
@@ -510,16 +504,16 @@ function F.init(env)
         local preedit = ctx:get_preedit()
         local no_search_string = code
         local preedit_text = (preedit and preedit.text) or ""
-        local edit = select(1, split_lookup_input(preedit_text, search_key_str, bypass_prefix))
+        local edit = select(1, split_lookup_input(preedit_text, trigger_str, bypass_prefix))
         if edit and edit:match("[%w/]") then
-            ctx.input = no_search_string .. search_key_str
+            ctx.input = no_search_string .. trigger_str
         else
             ctx.input = no_search_string
             ctx:commit()
         end
     end)
 
-    env.super_lookup_config = {
+    env.lookup_filter_config = {
         data_sources = data_sources,
         has_db = has_db,
         has_comment = has_comment,
@@ -527,17 +521,16 @@ function F.init(env)
         main_projection = main_projection,
         xlit_projection = xlit_projection,
         comment_split_pattern = comment_split_pattern,
-        search_key_str = search_key_str,
-        search_key_alt = search_key_alt,
+        trigger_str = trigger_str,
         bypass_prefix = bypass_prefix,
         tags = tags,
     }
 
-    env.super_lookup_state = {
+    env.lookup_filter_state = {
         db_cache = {},
         comment_cache = {},
         cache_size = 0,
-        notifier = notifier,
+        select_notifier = select_notifier,
     }
 end
 
@@ -546,9 +539,9 @@ end
 function F.func(input, env)
     local context = env.engine.context
 
-    local config = env.super_lookup_config
+    local config = env.lookup_filter_config
     assert(config)
-    local state = env.super_lookup_state
+    local state = env.lookup_filter_state
     assert(state)
 
     local seg = context.composition:back()
@@ -568,7 +561,7 @@ function F.func(input, env)
 
     local ctx_input = env.engine.context.input
     -- 传入 env.bypass_prefix
-    local _, aux_code, s_start, _ = split_lookup_input(ctx_input, config.search_key_str, config.bypass_prefix)
+    local _, aux_code, s_start, _ = split_lookup_input(ctx_input, config.trigger_str, config.bypass_prefix)
     if not s_start then
         for cand in input:iter() do
             yield(cand)
@@ -761,9 +754,9 @@ end
 
 ---@param env Env
 function F.fini(env)
-    env.super_lookup_state.notifier:disconnect()
-    env.super_lookup_config = nil
-    env.super_lookup_state = nil
+    env.lookup_filter_state.select_notifier:disconnect()
+    env.lookup_filter_config = nil
+    env.lookup_filter_state = nil
 end
 
 return F

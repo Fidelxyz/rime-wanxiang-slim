@@ -393,10 +393,10 @@ PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/r
 
 ### 反查系统
 
-在方案文件中配置 `wanxiang_lookup`：
+在方案文件中配置 `lookup_filter`：
 
 ```yaml
-wanxiang_lookup:
+lookup_filter:
   tags: [ abc ]
   key: "`"
   lookup: [ wanxiang_reverse ]

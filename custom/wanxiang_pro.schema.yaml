@@ -306,15 +306,20 @@ wanxiang_reverse:
   prefix: "`"  # 反查前缀（反查时前缀会消失），与 recognizer/patterns/wanxiang_reverse 匹配
   tips: "〔反查：拆分|笔画〕"
 
-wanxiang_lookup:  #设置归属于super_lookup.lua
-  tags: [abc, add_user_dict]  # 检索当前tag的候选
-  key: "`"  # 输入中反查引导符，要添加到 speller/alphabet
-  lookup: [wanxiang_reverse]  #反查滤镜数据库，万象都合并为一个了
+lookup_filter:
+  # 检索的标签。将检索带有所选标签的候选。
+  tags: [abc, add_user_dict]
+
+  # 反查引导符，需添加至 speller/alphabet。
+  trigger: "`"
+
+  # 反查数据库。
+  dicts: [wanxiang_reverse]
+
+  # 反查数据来源及顺序。
+  # "aux": 词库携带的辅助码。
+  # "db"：反查方案数据库。
   data_source: ['aux', 'db']
-  #data_source: ['db', 'aux']
-  #用来配置你的反查数据来自哪里，注释aux：即词库携带的辅助编码，数据库db：即反查方案携带的两分、多分、笔画
-  #谁在前哪种权重高比如 身db dian即dm，深aux dm 就能让相应的候选排在前面
-  #但注释在前有时候与笔画的感知会有一定冲突，可针对习惯使用一类数据库即可
 
 # 处理符合特定规则的输入码，如网址、反查
 recognizer:
