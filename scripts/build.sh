@@ -15,6 +15,21 @@ exclude_dict_files=(
 
 schema_list=("base" "flypy" "hanxin" "moqi" "tiger" "wubi" "zrm" "shouyou")
 
+archive=true
+
+# 解析命令行参数
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --no-archive)
+            archive=false
+            shift
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
 package_schema_base() {
     local out_dir=$1
 
@@ -127,14 +142,18 @@ package_schema() {
         package_schema_pro "${schema_name}" "${out_dir}"
     fi
 
-    zip_name="$(basename "${out_dir}").zip"
-    # Exclude ${exclude_dict_files[@]} files for only zip packages.
-    zip_exclude_args=()
-    for file in "${exclude_dict_files[@]}"; do
-        zip_exclude_args+=("dicts/${file}")
-    done
-    (cd "${out_dir}" && zip -r -q "../${zip_name}" . -x "${zip_exclude_args[@]}")
-    echo "=== 完成打包: ${zip_name}"
+    if [[ "${archive}" == "true" ]]; then
+        zip_name="$(basename "${out_dir}").zip"
+        # Exclude ${exclude_dict_files[@]} files for only zip packages.
+        zip_exclude_args=()
+        for file in "${exclude_dict_files[@]}"; do
+            zip_exclude_args+=("dicts/${file}")
+        done
+        (cd "${out_dir}" && zip -r -q "../${zip_name}" . -x "${zip_exclude_args[@]}")
+        echo "=== 完成打包: ${zip_name}"
+    else
+        echo "=== 跳过归档: $(basename "${out_dir}")"
+    fi
 }
 
 
