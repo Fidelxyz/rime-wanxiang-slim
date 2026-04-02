@@ -5,7 +5,15 @@
             "release-type": "simple",
             "draft": true,
             "extra-files": [
-                "lua/wanxiang/wanxiang.lua"
+                "lua/wanxiang/wanxiang.lua",
+                "default.yaml",
+                "wanxiang.schema.yaml",
+                "wanxiang_english.schema.yaml",
+                "wanxiang_mixedcode.schema.yaml",
+                "wanxiang_reverse.schema.yaml",
+                "weasel.yaml",
+                "custom/wanxiang_chaifen.schema.yaml",
+                "custom/wanxiang_pro.schema.yaml"
             ],
             "changelog-sections": [
                 {
