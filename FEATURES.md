@@ -193,16 +193,6 @@
 | `lua/wanxiang/super_filter.lua` | 转义序列格式化逻辑 |
 | `custom_phrase.txt` (用户目录) | 自定义短语数据源 |
 
-### 输入模式切换 Lua
-
-Shift+Space 在中文/英文/混合候选词之间切换。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_filter.lua` | 英文句子过滤、模式切换逻辑 |
-| `wanxiang.schema.yaml` | `input_type` 开关配置 |
-| `wanxiang_english.schema.yaml` | 英文方案 Shift+Space 切换配置 |
-
 ### 辅助码提示 Lua（仅 PRO）
 
 任意长度候选词的辅助码提示，Ctrl+a 循环切换（辅助码/关闭），Ctrl+c 拆分提示。
@@ -609,6 +599,16 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `lua/data/chinese_english.txt` | 中译英数据 |
 | `lua/data/english_chinese.txt` | 英译中数据 |
 | `wanxiang.schema.yaml` 等 | `chinese_english` 开关、replacer type、Ctrl+E 绑定 |
+
+### 输入模式切换
+
+Shift+Space 在中文/英文/混合候选词之间切换。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/super_filter.lua` | 英文句子过滤、模式切换逻辑 |
+| `wanxiang.schema.yaml` | `input_type` 开关配置 |
+| `wanxiang_english.schema.yaml` | 英文方案 Shift+Space 切换配置 |
 
 ### T9 九宫格方案
 

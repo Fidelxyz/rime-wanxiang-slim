@@ -386,10 +386,10 @@ key_binder:
     # 通过快捷键Control+g开启字符集过滤
     - {when: has_menu, accept: "Control+g", toggle: charset_filter}
     - {when: composing, accept: "Control+g", toggle: charset_filter}
-    #通过快捷键Shift+space开启输入模式切换
-    #- { when: always, accept: Shift+space, select: wanxiang }  #直接跳转指定方案
-    #- { when: always, accept: Shift+space, select: wanxiang_pro }  #直接跳转指定方案
-    - {when: always, accept: Shift+space, select: .next}  #下一个方案
+    # 通过快捷键Shift+space开启输入模式切换
+    # - {when: always, accept: Shift+space, select: wanxiang}  #直接跳转指定方案
+    # - {when: always, accept: Shift+space, select: wanxiang_pro}  #直接跳转指定方案
+    # - {when: always, accept: Shift+space, select: .next}  #下一个方案
     # 使用 tab 在不同音节之间跳转
     - {when: has_menu, accept: "Tab", send: "Control+Right"}
     - {when: composing, accept: "Tab", send: "Control+Right"}
