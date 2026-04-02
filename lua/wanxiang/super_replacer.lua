@@ -353,16 +353,8 @@ function M.init(env)
     local db_name = rime_config:get_string(namespace .. "/db_name") or "lua/replacer"
     local delimiter = rime_config:get_string(namespace .. "/delimiter") or "|"
 
-    -- 获取全局版本号
-    local current_version = "v0.0.0"
-    if wanxiang and wanxiang.version then
-        current_version = wanxiang.version
-    end
-
-    local input_type = "unknown"
-    if wanxiang and wanxiang.get_input_method_type then
-        input_type = wanxiang.get_input_method_type(env)
-    end
+    local current_version = wanxiang.version or "v0.0.0"
+    local input_type = wanxiang.get_input_method_type(env)
 
     ---@type string
     local split_pattern

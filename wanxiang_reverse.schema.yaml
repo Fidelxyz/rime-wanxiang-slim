@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang_reverse
   name: "万象：拆分与笔画反查"
-  version: "LTS"
+  version: "15.3.6"  # x-release-please-version
   author: amzxyz
   description: |
     反查子方案，包含组字与笔画反查

@@ -1,7 +1,7 @@
 # Weasel settings
 # encoding: utf-8
 
-config_version: "LTS"
+config_version: "15.3.6"  # x-release-please-version
 
 # [app_options]
 # 针对特定应用的设置
