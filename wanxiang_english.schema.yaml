@@ -53,9 +53,9 @@ translator:
 key_binder:
   import_preset: default
   bindings:
-    #- { when: always, accept: Shift+space, select: wanxiang }  #直接跳转指定方案
-    #- { when: always, accept: Shift+space, select: wanxiang_pro }  #直接跳转指定方案
-    - {when: always, accept: Shift+space, select: .next}  #下一个方案
+  # - {when: always, accept: Shift+space, select: wanxiang}  #直接跳转指定方案
+  # - {when: always, accept: Shift+space, select: wanxiang_pro}  #直接跳转指定方案
+  # - {when: always, accept: Shift+space, select: .next}  #下一个方案
 recognizer:
   import_preset: default
 
