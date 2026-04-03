@@ -5,6 +5,7 @@ from pathlib import Path
 
 # 辅助码表列定义
 SCHEMA_COLUMNS: list[str] = [
+    "pro-wx-fuzhu-dicts",
     "pro-moqi-fuzhu-dicts",
     "pro-flypy-fuzhu-dicts",
     "pro-zrm-fuzhu-dicts",
@@ -12,6 +13,7 @@ SCHEMA_COLUMNS: list[str] = [
     "pro-wubi-fuzhu-dicts",
     "pro-hanxin-fuzhu-dicts",
     "pro-shouyou-fuzhu-dicts",
+    "pro-shyplus-fuzhu-dicts",
 ]
 SEP = ";"  # 拼音与辅助码段的分隔符
 
@@ -163,7 +165,10 @@ def build_schema_maps(aux_table: dict[str, list[str]]) -> list[dict[str, str]]:
     Build a mapping for each aux code schema that maps characters to their corresponding aux code segment for that schema.
     """
     return [
-        {ch: aux_list[i] for ch, aux_list in aux_table.items()}
+        {
+            ch: aux_list[i] if i < len(aux_list) else ""
+            for ch, aux_list in aux_table.items()
+        }
         for i in range(len(SCHEMA_COLUMNS))
     ]
 

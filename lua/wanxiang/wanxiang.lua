@@ -124,15 +124,12 @@ function M.is_chinese_codepoint(codepoint)
     return (codepoint >= 0x4E00 and codepoint <= 0x9FFF) -- Basic
         or (codepoint >= 0x3400 and codepoint <= 0x4DBF) -- Ext A
         or (codepoint >= 0x20000 and codepoint <= 0x2A6DF) -- Ext B
-        or (codepoint >= 0x2A700 and codepoint <= 0x2B73F) -- Ext C
-        or (codepoint >= 0x2B740 and codepoint <= 0x2B81F) -- Ext D
-        or (codepoint >= 0x2B820 and codepoint <= 0x2CEAF) -- Ext E
-        or (codepoint >= 0x2CEB0 and codepoint <= 0x2EBEF) -- Ext F
+        or (codepoint >= 0x2A700 and codepoint <= 0x2CEAF) -- Ext C/D/E
+        or (codepoint >= 0x2CEB0 and codepoint <= 0x2EE5F) -- Ext F/I
         or (codepoint >= 0x30000 and codepoint <= 0x3134F) -- Ext G
         or (codepoint >= 0x31350 and codepoint <= 0x323AF) -- Ext H
-        or (codepoint >= 0x2EBF0 and codepoint <= 0x2EE5F) -- Ext I
         or (codepoint >= 0xF900 and codepoint <= 0xFAFF) -- Compatibility
-        or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compatibility Supplement
+        or (codepoint >= 0x2F800 and codepoint <= 0x2FA1F) -- Compat Supplement
         or (codepoint >= 0x2E80 and codepoint <= 0x2EFF) -- Radicals Supplement
         or (codepoint >= 0x2F00 and codepoint <= 0x2FDF) -- Kangxi Radicals
 end

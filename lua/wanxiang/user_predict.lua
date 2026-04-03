@@ -22,12 +22,12 @@
 ---@field activation_seconds integer
 ---@field max_memory_branches integer
 ---@field decay_rate number
----@field scan_limit integer
 ---@field enable_predict_space boolean
 ---@field context_timeout_ms integer
 ---@field enable_post_predict boolean
 ---@field enable_context_reorder boolean
 ---@field db_name string
+---@field page_size integer
 
 ---@class UserPredictProcessorState
 ---@field need_push boolean
@@ -60,6 +60,8 @@
 
 local wanxiang = require("wanxiang.wanxiang")
 local userdb = require("wanxiang.userdb")
+
+local SCAN_LIMIT = 80
 
 -- 语气助词白名单与高频句末白名单
 local PARTICLE_WHITELIST = {
@@ -139,6 +141,9 @@ local function load_config(env)
 
     local db_name = rime_config:get_string("user_predict/db_name") or "lua/predict"
 
+    local page_size = rime_config:get_int("user_predict/page_size") or 6
+
+    ---@type UserPredictConfig
     local config = {
         max_candidates = max_candidates,
         max_predictions = max_predictions,
@@ -152,6 +157,7 @@ local function load_config(env)
         enable_post_predict = enable_post_predict,
         enable_context_reorder = enable_context_reorder,
         db_name = db_name,
+        page_size = page_size,
     }
 
     return config
@@ -301,7 +307,6 @@ local function get_predictions(prev_commit, db, config)
     local cands = {}
     ---@type table<string, boolean>
     local seen = {}
-    local scan_limit = config.scan_limit
 
     ---@param query_key string
     ---@param multiplier number
@@ -314,7 +319,7 @@ local function get_predictions(prev_commit, db, config)
         local prefix_cands = {}
 
         for k, v in da:iter() do
-            if scan_count >= scan_limit or not k:find(query_key, 1, true) then
+            if scan_count >= SCAN_LIMIT or not k:find(query_key, 1, true) then
                 break
             end
 
@@ -822,15 +827,38 @@ function P.func(key, env)
     end
 
     if shared_state.is_predicting then
-        local is_alt_key = (
-            repr == "Tab"
-            or repr == "Right"
-            or repr == "backslash"
-            or repr == "\\"
-            or repr == "Alt"
-            or repr == "Alt_L"
-            or repr == "Alt_R"
-        )
+        local is_alt_key = (repr == "Tab" or repr == "Alt" or repr == "Alt_L" or repr == "Alt_R")
+
+        -- 根据选词范围分流数字键
+        if repr:match("^[0-9]$") or repr:match("^KP_[0-9]$") then
+            local digit = repr:match("%d")
+            local index = tonumber(digit)
+            if index == 0 then
+                index = 10
+            end
+
+            local is_valid_candidate = false
+            local seg = context.composition:back()
+            if seg then
+                local current_page = math.floor(seg.selected_index / config.page_size)
+                local target_index = current_page * config.page_size + (index - 1)
+                if seg:get_candidate_at(target_index) then
+                    is_valid_candidate = true
+                end
+            end
+
+            if index > config.page_size or not is_valid_candidate then
+                context:clear()
+                if reset_memory_chain then
+                    reset_memory_chain(state) -- 非选词数字打断联想并上屏
+                end
+                env.engine:commit_text(digit)
+                return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+            else
+                -- 选词范围内的数字（如 1-6）：放行，让 super_processor 去执行正常的选词
+                return wanxiang.RIME_PROCESS_RESULTS.kNoop
+            end
+        end
 
         if config.enable_predict_space then
             -- enable_predict_space: true
@@ -862,6 +890,10 @@ function P.func(key, env)
     end
 
     if not context:is_composing() then
+        if repr == "Return" or repr == "KP_Enter" or key.keycode == 0x20 then
+            reset_memory_chain(state) -- 非输入状态排版打断
+            return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        end
         local symbol_map = { ["?"] = "？", ["!"] = "！", [","] = "，", ["."] = "。" }
         if symbol_map[repr] then
             env.engine:commit_text(symbol_map[repr])
@@ -1032,8 +1064,9 @@ function F.func(input, env)
     ---@type Candidate[]
     local normal = {}
     local count = 0
-    local max_scan = 20
+    local max_scan = 50
     local stop_scanning = false
+    local target_len = 0 -- 用于记录首选词的字数
 
     -- 实时匹配与拦截
     for cand in input:iter() do
@@ -1042,8 +1075,21 @@ function F.func(input, env)
         else
             count = count + 1
             local text = cand.text or ""
-            if cand.type == "raw" or cand.type == "english" or text:match("^[a-zA-Z]+$") then
+
+            local current_len = #get_utf8_chars(text)
+
+            if count == 1 then
+                target_len = current_len
+            end
+
+            if
+                cand.type == "raw"
+                or cand.type == "english"
+                or text:match("^[a-zA-Z]+$")
+                or (count > 1 and current_len ~= target_len)
+            then
                 stop_scanning = true
+                -- 结算已经收集到的同等字数的词
                 table.sort(boosted, function(a, b)
                     return a.rank < b.rank
                 end)

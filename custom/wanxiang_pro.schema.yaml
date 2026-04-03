@@ -90,10 +90,10 @@ engine:
 
 grammar:
   language: wanxiang-lts-zh-hans
-  collocation_max_length: 7
+  collocation_max_length: 8
   collocation_min_length: 2
   collocation_penalty: -10
-  non_collocation_penalty: -20
+  non_collocation_penalty: -5
   weak_collocation_penalty: -35
   rear_penalty: -12
 
@@ -120,7 +120,7 @@ super_comment:
     user_table: ""
     completion: ""
     abbrev: ""
-    predict: "›"
+    predict: ""
     fallback: "~"
 
 super_processor:
@@ -144,7 +144,10 @@ user_predict:
   activation_days: 7  # 激活期限（天）：冷冻期内输入第2次转正
   max_memory_branches: 15  # 分支上限：单前缀最多保留15个后续预测
   decay_rate: 0.85  # 衰减率：单日时间权重打 85 折
-  enable_predict_space: false  # true: 联想时按空格上屏空格; false: 默认行为（根据输入法设定选词等）一般手机开电脑关，这里有个布尔转换，空格当空格时其他按键打断，空格当上屏则，其他按键当作空格，有：Tab、Alt、右键、\斜杠
+  # true: 按空格键输入空格。
+  # false: 按空格键提交候选，按 Tab 或 Alt 键输入空格。
+  # 推荐手机端开启，电脑端关闭。
+  enable_predict_space: false
   context_timeout: 5000  # 上文超时时间毫秒
 
 sequencer:  # 手动排序
@@ -229,7 +232,7 @@ charset:
   - option: charset_filter
     base: a
     addlist:
-      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞"
+      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
     blacklist: []
   - option: s2t
     base: fa

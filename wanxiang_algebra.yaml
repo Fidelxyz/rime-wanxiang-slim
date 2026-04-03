@@ -657,34 +657,34 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - derive/^([aoe])([ioun])(;.*)$/$1$1$2$3/
-      - xform/^([aoe])(ng)?(;.*)$/$1$1$2$3/
-      - xform/iu(;.*)$/Ⓠ$1/
-      - xform/[uv]an(;.*)$/Ⓡ$1/
-      - xform/[uv]e(;.*)$/Ⓣ$1/
-      - xform/[uv]n(;.*)$/Ⓨ$1/
-      - xform/i?ong(;.*)$/Ⓦ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - derive/^([aoe])([ioun]);/$1$1$2;/
+      - xform/^([aoe])(ng)?;/$1$1$2;/
+      - xform/iu;/Ⓠ;/
+      - xform/[uv]an;/Ⓡ;/
+      - xform/[uv]e;/Ⓣ;/
+      - xform/[uv]n;/Ⓨ;/
+      - xform/i?ong;/Ⓦ;/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/[iu]ang(;.*)$/Ⓓ$1/
-      - xform/ang(;.*)$/Ⓢ$1/
-      - xform/(ing|uai)(;.*)$/Ⓖ$2/
-      - xform/[iu]a(;.*)$/Ⓧ$1/
-      - xform/ui(;.*)$/Ⓥ$1/
-      - xform/iao(;.*)$/Ⓝ$1/
-      - xform/ian(;.*)$/Ⓜ$1/
-      - xform/ie(;.*)$/Ⓟ$1/
-      - xform/eng(;.*)$/Ⓙ$1/
-      - xform/in(;.*)$/Ⓑ$1/
-      - xform/^(.)en(;.*)$/$1Ⓗ$2/
-      - xform/^(.)ao(;.*)$/$1Ⓚ$2/
-      - xform/^(.)ai(;.*)$/$1Ⓛ$2/
-      - xform/^(.)ei(;.*)$/$1Ⓩ$2/
-      - xform/^(.)ou(;.*)$/$1Ⓒ$2/
-      - xform/^(.)an(;.*)$/$1Ⓕ$2/
+      - xform/uo;/Ⓞ;/
+      - xform/[iu]ang;/Ⓓ;/
+      - xform/ang;/Ⓢ;/
+      - xform/(ing|uai);/Ⓖ;/
+      - xform/[iu]a;/Ⓧ;/
+      - xform/ui;/Ⓥ;/
+      - xform/iao;/Ⓝ;/
+      - xform/ian;/Ⓜ;/
+      - xform/ie;/Ⓟ;/
+      - xform/eng;/Ⓙ;/
+      - xform/in;/Ⓑ;/
+      - xform/^(.)en;/$1Ⓗ;/
+      - xform/^(.)ao;/$1Ⓚ;/
+      - xform/^(.)ai;/$1Ⓛ;/
+      - xform/^(.)ei;/$1Ⓩ;/
+      - xform/^(.)ou;/$1Ⓒ;/
+      - xform/^(.)an;/$1Ⓕ;/
       - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⓂⒿⒸⓀⓁⓏⓍⓋⒷⓃ/qwrtyuiopsdfghmjcklzxvbn/
       #- xform/^(aj|ak|al|ob|ez|ef)(;.*)$//
 
@@ -696,32 +696,32 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - derive/^([aoe])([ioun])(;.*)$/$1$1$2$3/  # 注释释放非原本自然码规则
-      - xform/^([aoe])(ng)?(;.*)$/$1$1$2$3/
-      - xform/iu(;.*)$/Ⓠ$1/
-      - xform/[uv]an(;.*)$/Ⓡ$1/
-      - xform/[uv]e(;.*)$/Ⓣ$1/
-      - xform/ing(;.*)$/Ⓨ$1/
-      - xform/uai(;.*)$/Ⓨ$1/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/[uv]n(;.*)$/Ⓟ$1/
-      - xform/i?ong(;.*)$/Ⓢ$1/
-      - xform/[iu]ang(;.*)$/Ⓓ$1/
-      - xform/eng(;.*)$/Ⓖ$1/
-      - xform/ang(;.*)$/Ⓗ$1/
-      - xform/ian(;.*)$/Ⓜ$1/
-      - xform/iao(;.*)$/Ⓒ$1/
-      - xform/ie(;.*)$/Ⓧ$1/
-      - xform/ui(;.*)$/Ⓥ$1/
-      - xform/in(;.*)$/Ⓝ$1/
-      - xform/[iu]a(;.*)$/Ⓦ$1/
-      - xform/(.+)ao(;.*)$/$1Ⓚ$2/
-      - xform/(.+)ai(;.*)$/$1Ⓛ$2/
-      - xform/(.+)ei(;.*)$/$1Ⓩ$2/
-      - xform/(.+)an(;.*)$/$1Ⓙ$2/
-      - xform/(.+)en(;.*)$/$1Ⓕ$2/
-      - xform/(.+)ou(;.*)$/$1Ⓑ$2/
+      - derive/^([jqxy])u;/$1v;/
+      - derive/^([aoe])([ioun]);/$1$1$2;/  # 注释释放非原本自然码规则
+      - xform/^([aoe])(ng)?;/$1$1$2;/
+      - xform/iu;/Ⓠ;/
+      - xform/[uv]an;/Ⓡ;/
+      - xform/[uv]e;/Ⓣ;/
+      - xform/ing;/Ⓨ;/
+      - xform/uai;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/[uv]n;/Ⓟ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/[iu]ang;/Ⓓ;/
+      - xform/eng;/Ⓖ;/
+      - xform/ang;/Ⓗ;/
+      - xform/ian;/Ⓜ;/
+      - xform/iao;/Ⓒ;/
+      - xform/ie;/Ⓧ;/
+      - xform/ui;/Ⓥ;/
+      - xform/in;/Ⓝ;/
+      - xform/[iu]a;/Ⓦ;/
+      - xform/([a-z]+)ao;/$1Ⓚ;/
+      - xform/([a-z]+)ai;/$1Ⓛ;/
+      - xform/([a-z]+)ei;/$1Ⓩ;/
+      - xform/([a-z]+)an;/$1Ⓙ;/
+      - xform/([a-z]+)en;/$1Ⓕ;/
+      - xform/([a-z]+)ou;/$1Ⓑ;/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
@@ -872,32 +872,32 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - derive/^([aoe])([ioun])(;.*)$/$1$1$2$3/
-      - xform/^([aoe])(ng)?(;.*)$/$1$1$2$3/
-      - xform/iu(;.*)/Ⓠ$1/
-      - xform/uan(;.*)/Ⓡ$1/
-      - xform/[uv]e(;.*)/Ⓣ$1/
-      - xform/un(;.*)/Ⓨ$1/
-      - xform/uo(;.*)/Ⓞ$1/
-      - xform/ie(;.*)/Ⓟ$1/
-      - xform/i?ong(;.*)/Ⓢ$1/
-      - xform/ing(;.*)/Ⓚ$1/
-      - xform/uai(;.*)/Ⓚ$1/
-      - xform/eng(;.*)/Ⓖ$1/
-      - xform/[iu]ang(;.*)/Ⓛ$1/
-      - xform/ang(;.*)/Ⓗ$1/
-      - xform/ian(;.*)/Ⓜ$1/
-      - xform/iao(;.*)/Ⓝ$1/
-      - xform/[iu]a(;.*)/Ⓧ$1/
-      - xform/ui(;.*)/Ⓥ$1/
-      - xform/in(;.*)/Ⓑ$1/
-      - xform/(.+)ai(;.*)/$1Ⓓ$2/
-      - xform/(.+)an(;.*)/$1Ⓙ$2/
-      - xform/(.+)ao(;.*)/$1Ⓒ$2/
-      - xform/(.+)en(;.*)/$1Ⓕ$2/
-      - xform/(.+)ei(;.*)/$1Ⓦ$2/
-      - xform/(.+)ou(;.*)/$1Ⓩ$2/
+      - derive/^([jqxy])u;/$1v;/
+      - derive/^([aoe])([ioun]);/$1$1$2;/
+      - xform/^([aoe])(ng)?;/$1$1$2;/
+      - xform/iu;/Ⓠ;/
+      - xform/uan;/Ⓡ;/
+      - xform/[uv]e;/Ⓣ;/
+      - xform/un;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/ie;/Ⓟ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/ing;/Ⓚ;/
+      - xform/uai;/Ⓚ;/
+      - xform/eng;/Ⓖ;/
+      - xform/[iu]ang;/Ⓛ;/
+      - xform/ang;/Ⓗ;/
+      - xform/ian;/Ⓜ;/
+      - xform/iao;/Ⓝ;/
+      - xform/[iu]a;/Ⓧ;/
+      - xform/ui;/Ⓥ;/
+      - xform/in;/Ⓑ;/
+      - xform/([a-z]+)ai;/$1Ⓓ;/
+      - xform/([a-z]+)an;/$1Ⓙ;/
+      - xform/([a-z]+)ao;/$1Ⓒ;/
+      - xform/([a-z]+)en;/$1Ⓕ;/
+      - xform/([a-z]+)ei;/$1Ⓦ;/
+      - xform/([a-z]+)ou;/$1Ⓩ;/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
@@ -911,35 +911,35 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - xform/^([aoe].*)(;.*)$/o$1$2/
-      - xform/^([ae])(.*)(;.*)$/$1$1$2$3/
-      - xform/iu(;.*)/Ⓠ$1/
-      - xform/er(;.*)/Ⓡ$1/
-      - xform/[uv]an(;.*)/Ⓡ$1/
-      - xform/[uv]e(;.*)/Ⓣ$1/
-      - xform/v(;.*)/Ⓨ$1/
-      - xform/uai(;.*)/Ⓨ$1/
-      - xform/uo(;.*)/Ⓞ$1/
-      - xform/[uv]n(;.*)/Ⓟ$1/
-      - xform/i?ong(;.*)/Ⓢ$1/
-      - xform/[iu]ang(;.*)/Ⓓ$1/
-      - xform/eng(;.*)/Ⓖ$1/
-      - xform/en(;.*)/Ⓕ$1/
-      - xform/ang(;.*)/Ⓗ$1/
-      - xform/ian(;.*)/Ⓜ$1/
-      - xform/an(;.*)/Ⓙ$1/
-      - xform/iao(;.*)/Ⓒ$1/
-      - xform/ao(;.*)/Ⓚ$1/
-      - xform/ai(;.*)/Ⓛ$1/
-      - xform/ei(;.*)/Ⓩ$1/
-      - xform/ie(;.*)/Ⓧ$1/
-      - xform/ui(;.*)/Ⓥ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - xform/^([aoe].*);/o$1;/
+      - xform/^([ae])(.*);/$1$1$2;/
+      - xform/iu;/Ⓠ;/
+      - xform/er;/Ⓡ;/
+      - xform/[uv]an;/Ⓡ;/
+      - xform/[uv]e;/Ⓣ;/
+      - xform/v;/Ⓨ;/
+      - xform/uai;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/[uv]n;/Ⓟ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/[iu]ang;/Ⓓ;/
+      - xform/eng;/Ⓖ;/
+      - xform/en;/Ⓕ;/
+      - xform/ang;/Ⓗ;/
+      - xform/ian;/Ⓜ;/
+      - xform/an;/Ⓙ;/
+      - xform/iao;/Ⓒ;/
+      - xform/ao;/Ⓚ;/
+      - xform/ai;/Ⓛ;/
+      - xform/ei;/Ⓩ;/
+      - xform/ie;/Ⓧ;/
+      - xform/ui;/Ⓥ;/
       - derive/Ⓣ/Ⓥ/
-      - xform/ou(;.*)/Ⓑ$1/
-      - xform/ing(;.*)/◯$1/  #注意这里的◯用来暂时替换分号
-      - xform/in(;.*)/Ⓝ$1/
-      - xform/[iu]a(;.*)/Ⓦ$1/
+      - xform/ou;/Ⓑ;/
+      - xform/ing;/◯;/  #注意这里的◯用来暂时替换分号
+      - xform/in;/Ⓝ;/
+      - xform/[iu]a;/Ⓦ;/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
@@ -953,34 +953,34 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - xform/^([aoe].*)(;.*)$/o$1$2/
-      - xform/^([ae])(.*)(;.*)$/$1$1$2$3/
-      - xform/iu(;.*)$/Ⓠ$1/
-      - xform/[iu]a(;.*)$/Ⓦ$1/
-      - xform/er(;.*)$/Ⓡ$1/
-      - xform/[uv]an(;.*)$/Ⓡ$1/
-      - xform/[uv]e(;.*)$/Ⓣ$1/
-      - xform/v(;.*)$/Ⓨ$1/
-      - xform/uai(;.*)$/Ⓨ$1/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/[uv]n(;.*)$/Ⓟ$1/
-      - xform/i?ong(;.*)$/Ⓢ$1/
-      - xform/[iu]ang(;.*)$/Ⓓ$1/
-      - xform/en(;.*)$/Ⓕ$1/
-      - xform/eng(;.*)$/Ⓖ$1/
-      - xform/ang(;.*)$/Ⓗ$1/
-      - xform/ian(;.*)$/Ⓜ$1/
-      - xform/an(;.*)$/Ⓙ$1/
-      - xform/iao(;.*)$/Ⓒ$1/
-      - xform/ao(;.*)$/Ⓚ$1/
-      - xform/ai(;.*)$/Ⓛ$1/
-      - xform/ei(;.*)$/Ⓩ$1/
-      - xform/ie(;.*)$/Ⓧ$1/
-      - xform/ui(;.*)$/Ⓥ$1/
-      - xform/ou(;.*)$/Ⓑ$1/
-      - xform/in(;.*)$/Ⓝ$1/
-      - xform/ing(;.*)$/◯$1/  #注意这里的◯用来暂时替换分号
+      - derive/^([jqxy])u;/$1v;/
+      - xform/^([aoe].*);/o$1;/
+      - xform/^([ae])(.*);/$1$1$2;/
+      - xform/iu;/Ⓠ;/
+      - xform/[iu]a;/Ⓦ;/
+      - xform/er;/Ⓡ;/
+      - xform/[uv]an;/Ⓡ;/
+      - xform/[uv]e;/Ⓣ;/
+      - xform/v;/Ⓨ;/
+      - xform/uai;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/[uv]n;/Ⓟ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/[iu]ang;/Ⓓ;/
+      - xform/en;/Ⓕ;/
+      - xform/eng;/Ⓖ;/
+      - xform/ang;/Ⓗ;/
+      - xform/ian;/Ⓜ;/
+      - xform/an;/Ⓙ;/
+      - xform/iao;/Ⓒ;/
+      - xform/ao;/Ⓚ;/
+      - xform/ai;/Ⓛ;/
+      - xform/ei;/Ⓩ;/
+      - xform/ie;/Ⓧ;/
+      - xform/ui;/Ⓥ;/
+      - xform/ou;/Ⓑ;/
+      - xform/in;/Ⓝ;/
+      - xform/ing;/◯;/  #注意这里的◯用来暂时替换分号
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
@@ -994,33 +994,33 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - xform/^([aoe].*)(;.*)$/o$1$2/
-      - xform/en(;.*)$/Ⓦ$1/
-      - xform/eng(;.*)$/Ⓣ$1/
-      - xform/in(;.*)$/Ⓨ$1/
-      - xform/uai(;.*)$/Ⓨ$1/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/ai(;.*)$/Ⓟ$1/
-      - xform/[iu]ang(;.*)$/Ⓖ$1/
-      - xform/ang(;.*)$/Ⓢ$1/
-      - xform/ie(;.*)$/Ⓓ$1/
-      - xform/ian(;.*)$/Ⓕ$1/
-      - xform/i?ong(;.*)$/Ⓗ$1/
-      - xform/er(;.*)$/Ⓙ$1/
-      - xform/iu(;.*)$/Ⓙ$1/
-      - xform/ei(;.*)$/Ⓚ$1/
-      - xform/uan(;.*)$/Ⓛ$1/
-      - xform/ing(;.*)$/◯$1/  #注意这里的◯用来暂时替换分号
-      - xform/ou(;.*)$/Ⓩ$1/
-      - xform/[iu]a(;.*)$/Ⓧ$1/
-      - xform/iao(;.*)$/Ⓑ$1/
-      - xform/ue(;.*)$/Ⓝ$1/
-      - xform/ui(;.*)$/Ⓝ$1/
-      - xform/ve(;.*)$/Ⓝ$1/
-      - xform/un(;.*)$/Ⓜ$1/
-      - xform/ao(;.*)$/Ⓠ$1/
-      - xform/an(;.*)$/Ⓡ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - xform/^([aoe].*);/o$1;/
+      - xform/en;/Ⓦ;/
+      - xform/eng;/Ⓣ;/
+      - xform/in;/Ⓨ;/
+      - xform/uai;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/ai;/Ⓟ;/
+      - xform/[iu]ang;/Ⓖ;/
+      - xform/ang;/Ⓢ;/
+      - xform/ie;/Ⓓ;/
+      - xform/ian;/Ⓕ;/
+      - xform/i?ong;/Ⓗ;/
+      - xform/er;/Ⓙ;/
+      - xform/iu;/Ⓙ;/
+      - xform/ei;/Ⓚ;/
+      - xform/uan;/Ⓛ;/
+      - xform/ing;/◯;/  #注意这里的◯用来暂时替换分号
+      - xform/ou;/Ⓩ;/
+      - xform/[iu]a;/Ⓧ;/
+      - xform/iao;/Ⓑ;/
+      - xform/ue;/Ⓝ;/
+      - xform/ui;/Ⓝ;/
+      - xform/ve;/Ⓝ;/
+      - xform/un;/Ⓜ;/
+      - xform/ao;/Ⓠ;/
+      - xform/an;/Ⓡ;/
       - xform/^zh/Ⓤ/
       - xform/^sh/ⓛ/
       - xform/^ch/Ⓐ/
@@ -1034,31 +1034,32 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - xform/^([aoe].*)(;.*)$/Ⓞ$1$2/
-      - xform/ei(;.*)$/Ⓠ$1/
-      - xform/ian(;.*)$/Ⓦ$1/
-      - xform/er(;.*)$/Ⓡ$1/
-      - xform/iu(;.*)$/Ⓡ$1/
-      - xform/[iu]ang(;.*)$/Ⓣ$1/
-      - xform/ing(;.*)$/Ⓨ$1/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/uan(;.*)$/Ⓟ$1/
-      - xform/i?ong(;.*)$/Ⓢ$1/
-      - xform/[iu]a(;.*)$/Ⓓ$1/
-      - xform/en(;.*)$/Ⓕ$1/
-      - xform/eng(;.*)$/Ⓖ$1/
-      - xform/ang(;.*)$/Ⓗ$1/
-      - xform/an(;.*)$/Ⓙ$1/
-      - xform/iao(;.*)$/Ⓩ$1/
-      - xform/ao(;.*)$/Ⓚ$1/
-      - xform/in(;.*)$/Ⓒ$1/
-      - xform/uai(;.*)$/Ⓒ$1/
-      - xform/ai(;.*)$/Ⓛ$1/
-      - xform/ie(;.*)$/Ⓧ$1/
-      - xform/ou(;.*)$/Ⓑ$1/
-      - xform/un(;.*)$/Ⓝ$1/
-      - xform/[uv]e(;.*)$/Ⓜ$1/
-      - xform/ui(;.*)$/Ⓜ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - xform/^([aoe].*);/Ⓞ$1;/
+      - xform/ei;/Ⓠ;/
+      - xform/ian;/Ⓦ;/
+      - xform/er;/Ⓡ;/
+      - xform/iu;/Ⓡ;/
+      - xform/[iu]ang;/Ⓣ;/
+      - xform/ing;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/uan;/Ⓟ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/[iu]a;/Ⓓ;/
+      - xform/en;/Ⓕ;/
+      - xform/eng;/Ⓖ;/
+      - xform/ang;/Ⓗ;/
+      - xform/an;/Ⓙ;/
+      - xform/iao;/Ⓩ;/
+      - xform/ao;/Ⓚ;/
+      - xform/in;/Ⓒ;/
+      - xform/uai;/Ⓒ;/
+      - xform/ai;/Ⓛ;/
+      - xform/ie;/Ⓧ;/
+      - xform/ou;/Ⓑ;/
+      - xform/un;/Ⓝ;/
+      - xform/[uv]e;/Ⓜ;/
+      - xform/ui;/Ⓜ;/
       - xform/^zh/Ⓐ/
       - xform/^ch/Ⓔ/
       - xform/^sh/Ⓥ/
@@ -1072,35 +1073,35 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - derive/^([aoe].*)(;.*)$/o$1$2/
-      - xform/^([ae])(.*)$/$1$1$2/
-      - xform/iu(;.*)$/Ⓝ$1/
-      - xform/[iu]a(;.*)$/Ⓑ$1/
-      - xform/er(;.*)$/Ⓠ$1/
-      - xform/ing(;.*)$/Ⓠ$1/
-      - xform/[uv]an(;.*)$/Ⓒ$1/
-      - xform/[uv]e(;.*)$|uai(;.*)$/Ⓧ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - derive/^([aoe].*);/o$1;/
+      - xform/^([ae])/$1$1/
+      - xform/iu;/Ⓝ;/
+      - xform/[iu]a;/Ⓑ;/
+      - xform/er;/Ⓠ;/
+      - xform/ing;/Ⓠ;/
+      - xform/[uv]an;/Ⓒ;/
+      - xform/(?:[uv]e|uai);/Ⓧ;/
       - xform/^sh/ⓛ/
       - xform/^ch/Ⓤ/
       - xform/^zh/Ⓥ/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/[uv]n(;.*)$/Ⓩ$1/
-      - xform/i?ong(;.*)$/Ⓨ$1/
-      - xform/[iu]ang(;.*)$/Ⓗ$1/
-      - xform/(.)en(;.*)$/$1Ⓡ$2/
-      - xform/(.)eng(;.*)$/$1Ⓣ$2/
-      - xform/(.)ang(;.*)$/$1Ⓖ$2/
-      - xform/ian(;.*)$/Ⓙ$1/
-      - xform/(.)an(;.*)$/$1Ⓕ$2/
-      - xform/iao(;.*)$/Ⓚ$1/
-      - xform/(.)ao(;.*)$/$1Ⓓ$2/
-      - xform/(.)ai(;.*)$/$1Ⓢ$2/
-      - xform/(.)ei(;.*)$/$1Ⓦ$2/
-      - xform/ie(;.*)$/Ⓜ$1/
-      - xform/ui(;.*)$/Ⓥ$1/
-      - xform/(.)ou(;.*)$/$1Ⓟ$2/
-      - xform/in(;.*)$/Ⓛ$1/
+      - xform/uo;/Ⓞ;/
+      - xform/[uv]n;/Ⓩ;/
+      - xform/i?ong;/Ⓨ;/
+      - xform/[iu]ang;/Ⓗ;/
+      - xform/^(.)en;/$1Ⓡ;/
+      - xform/^(.)eng;/$1Ⓣ;/
+      - xform/^(.)ang;/$1Ⓖ;/
+      - xform/ian;/Ⓙ;/
+      - xform/^(.)an;/$1Ⓕ;/
+      - xform/iao;/Ⓚ;/
+      - xform/^(.)ao;/$1Ⓓ;/
+      - xform/^(.)ai;/$1Ⓢ;/
+      - xform/^(.)ei;/$1Ⓦ;/
+      - xform/ie;/Ⓜ;/
+      - xform/ui;/Ⓥ;/
+      - xform/^(.)ou;/$1Ⓟ;/
+      - xform/in;/Ⓛ;/
       - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⓂⒿⒸⓀⓁⓏⓍⓋⒷⓃ/qwrtyuiopsdfghmjcklzxvbn/
 
   国标双拼:
@@ -1111,34 +1112,34 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
-      - derive/^([jqxy])u(;.*)$/$1v$2/
-      - derive/^([aoe])([ioun])(;.*)$/$1$1$2$3/
-      - xform/^([aoe])(ng)?(;.*)$/$1$1$2$3/
-      - xform/[iu]a(;.*)$/Ⓠ$1/
-      - xform/[vu]an(;.*)$/Ⓦ$1/
-      - xform/en(;.*)$/Ⓡ$1/
-      - xform/ie(;.*)$/Ⓣ$1/
-      - xform/iu(;.*)$/Ⓨ$1/
-      - xform/uai(;.*)$/Ⓨ$1/
-      - xform/uo(;.*)$/Ⓞ$1/
-      - xform/ou(;.*)$/Ⓟ$1/
-      - xform/i?ong(;.*)$/Ⓢ$1/
-      - xform/ian(;.*)$/Ⓓ$1/
-      - xform/an(;.*)$/Ⓕ$1/
-      - xform/[iu]ang(;.*)$/Ⓝ$1/
-      - xform/iao(;.*)$/Ⓜ$1/
-      - xform/ang(;.*)$/Ⓖ$1/
-      - xform/eng(;.*)$/Ⓗ$1/
-      - xform/ing(;.*)$/Ⓙ$1/
-      - xform/ai(;.*)$/Ⓚ$1/
-      - xform/in(;.*)$/Ⓛ$1/
-      - xform/er(;.*)$/Ⓛ$1/
-      - xform/[vu]n(;.*)$/Ⓩ$1/
-      - xform/[vu]e(;.*)$/Ⓧ$1/
-      - xform/ao(;.*)$/Ⓒ$1/
-      - xform/v(;.*)$/Ⓥ$1/
-      - xform/ui(;.*)$/Ⓥ$1/
-      - xform/ei(;.*)$/Ⓑ$1/
+      - derive/^([jqxy])u;/$1v;/
+      - derive/^([aoe])([ioun]);/$1$1$2;/
+      - xform/^([aoe])(ng)?;/$1$1$2;/
+      - xform/[iu]a;/Ⓠ;/
+      - xform/[vu]an;/Ⓦ;/
+      - xform/ie;/Ⓣ;/
+      - xform/iu;/Ⓨ;/
+      - xform/uai;/Ⓨ;/
+      - xform/uo;/Ⓞ;/
+      - xform/i?ong;/Ⓢ;/
+      - xform/ian;/Ⓓ;/
+      - xform/[iu]ang;/Ⓝ;/
+      - xform/iao;/Ⓜ;/
+      - xform/ang;/Ⓖ;/
+      - xform/eng;/Ⓗ;/
+      - xform/ing;/Ⓙ;/
+      - xform/in;/Ⓛ;/
+      - xform/er;/Ⓛ;/
+      - xform/[vu]n;/Ⓩ;/
+      - xform/[vu]e;/Ⓧ;/
+      - xform/v;/Ⓥ;/
+      - xform/ui;/Ⓥ;/
+      - xform/([a-z]+)ao;/$1Ⓒ;/
+      - xform/([a-z]+)ai;/$1Ⓚ;/
+      - xform/([a-z]+)an;/$1Ⓕ;/
+      - xform/([a-z]+)ou;/$1Ⓟ;/
+      - xform/([a-z]+)ei;/$1Ⓑ;/
+      - xform/([a-z]+)en;/$1Ⓡ;/
       - xform/^zh/Ⓥ/
       - xform/^ch/ⓛ/
       - xform/^sh/Ⓤ/
@@ -1146,42 +1147,38 @@ pro:
 
   直接辅助:  ########################################位于词库第三个分号后
     __append:
-      #以下是双拼运算
-      - derive/^(.*?);.*$/$1/  # 纯双拼的情况
-      #分号后面第一组辅助码
-      - derive/^(.*?);(\w).*$/$1$2/  # 双拼+一位辅助码的情况
-      - abbrev/^(.*?);(\w)(\w).*$/$1$2$3/  # 双拼+2位辅助码的情况
-      - derive|^(.*?);(\w)(\w).*$|$1$2$3/|
-      - derive|^(.*?);(\w)(\w).*$|$1$2$3o|  # 双拼\+2位辅助码\+o，主要用来应对小企鹅这类输入法没法使用符号的场景，但同时有些辅助码会出现异常，如：ui uio>uiuio，手机小企鹅使用时开启
-      #分号后面第二组辅助码
-      - derive/^(.*?);.*?,(\w).*$/$1$2/  # 双拼+一位辅助码的情况
-      - abbrev/^(.*?);.*?,(\w)(\w).*$/$1$2$3/  # 双拼+2位辅助码的情况
-      - derive|^(.*?);.*?,(\w)(\w).*$|$1$2$3/|
-      - derive|^(.*?);.*?,(\w)(\w).*$|$1$2$3o|  # 双拼\+2位辅助码\+o，主要用来应对小企鹅这类输入法没法使用符号的场景，但同时有些辅助码会出现异常，如：ui uio>uiuio，手机小企鹅使用时开启
-      - erase/^(.+);(.+)$/  # 删除原始编码加速检索
+      - derive/^([a-z◯]+);.*$/$1/  # 纯双拼
+      # 分号后第一组辅助码
+      - derive/^([a-z◯]+);([a-z]).*$/$1$2/  # 双拼+1位辅助码
+      - abbrev/^([a-z◯]+);([a-z])([a-z]).*$/$1$2$3/  # 双拼+2位辅助码
+      - derive|^([a-z◯]+);([a-z])([a-z]).*$|$1$2$3/|  # 双拼+2位辅助码+/
+      - derive|^([a-z◯]+);([a-z])([a-z]).*$|$1$2$3o|  # 双拼\+2位辅助码\+o，主要用来应对小企鹅这类输入法没法使用符号的场景，但同时有些辅助码会出现异常，如：ui uio>uiuio，手机小企鹅使用时开启
+      # 分号后第二组辅助码 (跳过第一组，直达逗号)
+      - derive/^([a-z◯]+);[^,]*,([a-z]).*$/$1$2/  # 双拼+1位辅助码
+      - abbrev/^([a-z◯]+);[^,]*,([a-z])([a-z]).*$/$1$2$3/  # 双拼+2位辅助码
+      - derive|^([a-z◯]+);[^,]*,([a-z])([a-z]).*$|$1$2$3/|  # 双拼+2位辅助码+/
+      - derive|^([a-z◯]+);[^,]*,([a-z])([a-z]).*$|$1$2$3o|  # 双拼\+2位辅助码\+o，主要用来应对小企鹅这类输入法没法使用符号的场景，但同时有些辅助码会出现异常，如：ui uio>uiuio，手机小企鹅使用时开启
+      - erase/^([a-z◯]+);.*$/  # 删除原始带分号编码，加速检索，并防大写变体套娃
       - xform/◯/;/  #对于微软双拼、搜狗双拼，前面将分号保护了起来，现在放出来让其发挥作用
-      # 变体1：转第3位大写 (abCd)
-      - derive|^(..)([a-z])([a-z]?)$|$1\u$2$3|
-      # 变体2：转第4位大写 (abcD)
-      - derive|^(..)([a-z])([a-z]?)$|$1$2\u$3|
-      # 变体3：两字母都转大写 (abCD)
-      - derive|^(..)([a-z])([a-z]?)$|$1\u$2\u$3|
+      - derive|^([a-z]{2})([a-z])([a-z]?)$|$1\u$2$3|  # 变体1：转第3位大写 (abCd)
+      - derive|^([a-z]{2})([a-z])([a-z])$|$1$2\u$3|  # 变体2：转第4位大写 (abcD)
+      - derive|^([a-z]{2})([a-z])([a-z])$|$1\u$2\u$3|  # 变体3：两字母都转大写 (abCD)
 
   间接辅助:  ########################################位于词库第三个分号后
     __append:
-      #以下是双拼运算
-      - xform/ⅲ//  #用于Lua判断是否处于间接辅助的标记
-      - derive/^(.*?);.*$/$1/  # 纯双拼的情况
-      #分号后面第一组辅助码
-      - derive|^(.*?);(\w).*$|$1/$2|  # 双拼+一位辅助码的情况
-      - derive|^(.*?);(\w)(\w).*$|$1/$2$3|  # 双拼+2位辅助码的情况
-      #分号后面第二组辅助码
-      - derive|^(.*?);.*?,(\w).*$|$1/$2|  # 双拼+一位辅助码的情况
-      - derive|^(.*?);.*?,(\w)(\w).*$|$1/$2$3|  # 双拼+2位辅助码的情况
-      - erase/^(.+);(.+)$/  # 删除原始编码加速检索
-      - xform/◯/;/  #对于微软双拼、搜狗双拼，前面将分号保护了起来，现在放出来让其发挥作用
-      # 以下直接大写辅助
-      - derive|^(..)/([a-z])([a-z]?)$|$1\u$2\u$3|
+      - xform/ⅲ//  # 用于Lua判断是否处于间接辅助的标记
+      # 纯双拼与声调
+      - derive/^([a-z◯]+)\d?;.*$/$1/  # 纯双拼
+      # 分号后第一组辅助码
+      - derive|^([a-z◯]+);([a-z]).*$|$1/$2|  # 双拼+/1位辅码
+      - derive|^([a-z◯]+);([a-z])([a-z]).*$|$1/$2$3|  # 双拼+/2位辅码
+      # 分号后第二组辅助码 (利用 [^,]* 零回溯直达逗号)
+      - derive|^([a-z◯]+);[^,]*,([a-z]).*$|$1/$2|  # 双拼+/1位辅码
+      - derive|^([a-z◯]+);[^,]*,([a-z])([a-z]).*$|$1/$2$3|  # 双拼+/2位辅码
+      - erase/^([a-z◯]+);.*$/  # 删除原始带分号编码，加速检索
+      - xform/◯/;/  # 释放微软/搜狗双拼保护的分号
+      # 大写辅助
+      - derive|^([a-z]{2})/([a-z])([a-z]?)$|$1\u$2\u$3|
 
 #反查转写段落
 reverse:

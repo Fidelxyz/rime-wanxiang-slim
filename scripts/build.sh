@@ -13,7 +13,7 @@ exclude_dict_files=(
     "renming.pro.dict.yaml"
 )
 
-schema_list=("base" "flypy" "hanxin" "moqi" "tiger" "wubi" "zrm" "shouyou")
+schema_list=("base" "wx" "moqi" "flypy" "zrm" "tiger" "wubi" "hanxin" "shouyou" "shyplus")
 
 archive=true
 

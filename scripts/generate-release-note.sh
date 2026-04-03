@@ -9,6 +9,8 @@ declare -A display_names=(
   [wubi]="五笔前二"
   [tiger]="虎码首末"
   [shouyou]="首右"
+  [shyplus]="首右+"
+  [wx]="万象"
 )
 
 repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"

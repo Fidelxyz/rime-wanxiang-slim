@@ -142,9 +142,9 @@ local function read_installation_yaml()
     ---@type string
     for line in f:lines() do
         ---@type string
-        line = line:gsub("%s+#.*$", "")
+        local cleaned = line:gsub("%s+#.*$", "")
         ---@type string?, string?
-        local key, val = line:match("^%s*([%w_]+)%s*:%s*(.+)$")
+        local key, val = cleaned:match("^%s*([%w_]+)%s*:%s*(.+)$")
         if key and val then
             val = val:gsub('^%s*"(.*)"%s*$', "%1"):gsub("^%s*'(.*)'%s*$", "%1")
             ---@type string
