@@ -13,5 +13,5 @@ import_tables:
   - dicts/duoyin  # 多场景多种读音的词组
   - dicts/shici  # 诗词
   - dicts/diming  # 地名
-  # - dicts/wuzhong       #物种，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
-  # - dicts/renming       #人名，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
+  # - dicts/wuzhong
+  # - dicts/renming
