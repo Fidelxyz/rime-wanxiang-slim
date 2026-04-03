@@ -13,5 +13,5 @@ import_tables:
   - dicts/duoyin.pro  # 多场景多种读音的词组
   - dicts/shici.pro  # 诗词
   - dicts/diming.pro  # 地名
-  # - dicts/wuzhong.pro  # 物种，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
-  # - dicts/renming.pro  # 人名，下载：https://github.com/amzxyz/rime_wanxiang/tree/wanxiang/dicts
+  # - dicts/wuzhong.pro
+  # - dicts/renming.pro

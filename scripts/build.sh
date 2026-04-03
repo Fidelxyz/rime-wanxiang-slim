@@ -6,13 +6,6 @@ root_dir="${script_dir}/.."
 dist_dir="${root_dir}/dist"
 custom_dir="${root_dir}/custom"
 
-exclude_dict_files=(
-    "wuzhong.dict.yaml"
-    "renming.dict.yaml"
-    "wuzhong.pro.dict.yaml"
-    "renming.pro.dict.yaml"
-)
-
 schema_list=("base" "wx" "moqi" "flypy" "zrm" "tiger" "wubi" "hanxin" "shouyou" "shyplus")
 
 archive=true
@@ -144,12 +137,7 @@ package_schema() {
 
     if [[ "${archive}" == "true" ]]; then
         zip_name="$(basename "${out_dir}").zip"
-        # Exclude ${exclude_dict_files[@]} files for only zip packages.
-        zip_exclude_args=()
-        for file in "${exclude_dict_files[@]}"; do
-            zip_exclude_args+=("dicts/${file}")
-        done
-        (cd "${out_dir}" && zip -r -q "../${zip_name}" . -x "${zip_exclude_args[@]}")
+        (cd "${out_dir}" && zip -r -q "../${zip_name}" .)
         echo "=== 完成打包: ${zip_name}"
     else
         echo "=== 跳过归档: $(basename "${out_dir}")"

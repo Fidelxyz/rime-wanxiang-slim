@@ -343,10 +343,13 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 
 ## 可选扩展数据
 
+部分扩展数据未默认启用，可按需开启：
 
 | 文件名 | 用途 | 安装方式 |
 | --- | --- | --- |
-| `custom_phrase.txt` | 自定义短语 | 复制到根目录并添加自定义短语内容 |
+| `renming.dict.yaml` | 人名词库 | 在 `wanxiang.dict.yaml` / `wanxiang_pro.dict.yaml` 中取消注释 `dicts/renming` |
+| `wuzhong.dict.yaml` | 物种词库 | 在 `wanxiang.dict.yaml` / `wanxiang_pro.dict.yaml` 中取消注释 `dicts/wuzhong` |
+| `custom_phrase.txt` | 自定义短语 | 复制 `custom/custom_phrase.txt` 到根目录并添加自定义短语内容 |
 
 ## 数据文件说明
 
