@@ -7,7 +7,9 @@
 ---@class AutoPhraseState
 ---@field zh_memory Memory?
 ---@field en_memory Memory?
----@field comment_cache table<string, string> -- 注释缓存：text -> comment (for chinese only)
+---注释缓存：text -> comment (for chinese only)
+---Invariant: no empty string.
+---@field comment_cache table<string, string>
 ---
 ---@field commit_conn Connection?
 ---@field delete_conn Connection?
@@ -120,41 +122,26 @@ local function commit_handler(ctx, env)
     ---@type string[]
     local codes = {}
 
+    -- 遍历所有词段收集编码
     for i = 1, segments_count do
         local seg = segments[i]
         local cand = seg:get_selected_candidate()
 
-        -- 无候选：可能是符号段
         if not cand then
-            if i == segments_count then
-                -- 最后一个 segment 无候选，允许跳过
-                goto continue
-            else
-                state.comment_cache = {}
-                return
-            end
+            state.comment_cache = {}
+            return
         end
 
-        -- 从缓存中取出该候选的注释（编码）
         local comment = state.comment_cache[cand.text]
-
-        -- 有候选但无编码
-        if not comment then
-            if i == segments_count then
-                -- 最后一个 segment 无编码，允许跳过
-                goto continue
-            else
-                state.comment_cache = {}
-                return
-            end
+        if not comment or comment == "" then
+            state.comment_cache = {}
+            return
         end
 
         -- 有编码，分割加入
         for part in comment:gmatch("[^" .. config.escaped_delimiter .. "]+") do
             table.insert(codes, part)
         end
-
-        ::continue::
     end
 
     -- 最终至少需要一个编码片段
@@ -170,6 +157,7 @@ local function commit_handler(ctx, env)
         return
     end
 
+    -- 写入用户词典
     local dictEntry = DictEntry()
     dictEntry.text = commit_text
     dictEntry.weight = 1
@@ -189,7 +177,7 @@ function F.init(env)
     local context = env.engine.context
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
-    local escaped_delimiter = utf8.char(utf8.codepoint(delimiter)):gsub("(%W)", "%%%1")
+    local escaped_delimiter = delimiter:gsub("(%W)", "%%%1")
 
     -- 中文自动造词的开关（只控制 add_user_dict）
     local auto_phrase_enabled = rime_config:get_bool("add_user_dict/enable_auto_phrase") or false

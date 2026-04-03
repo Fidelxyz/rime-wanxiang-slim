@@ -8,6 +8,43 @@ name: renming
 version: "LTS"
 sort: by_weight
 ...
+刘岑	10
+张超	1297
+刘璞	13
+刘准	130
+刘璋	1439
+张丙	149
+张明	1546
+冯屋	17
+张展	176
+张涛	1765
+张强	2070
+张博	2187
+张辽	23
+李朔	23
+李淦	24
+张敏	2487
+李暄	25
+刘瓒	29
+张合	299
+张江	3248
+张龙	338
+李童	37
+张宅	38
+张得	382
+张斌	4160
+张燮	46
+刘缵	47
+刘瞻	55
+李萼	55
+张英	572
+张燕	578
+李颙	66
+李容	71
+李婶	73
+刘藻	84
+张俊	914
+张静	917
 白波	bái bō
 白长	bái cháng
 白枫	bái fēng
@@ -604,6 +641,7 @@ sort: by_weight
 崔瑗	cuī yuàn
 崔允	cuī yǔn
 崔哲	cuī zhé
+丁佩	dīng pèi	356
 杜斌	dù bīn
 杜彬	dù bīn
 杜伯	dù bó
@@ -1112,6 +1150,7 @@ sort: by_weight
 黄铸	huáng zhù
 黄祖	huáng zǔ
 黄佐	huáng zuǒ
+吉藏	jí zàng	357
 蒋斌	jiǎng bīn
 蒋春	jiǎng chūn
 姜道	jiāng dào
@@ -5753,6 +5792,91 @@ sort: by_weight
 朱治	zhū zhì
 朱竹	zhū zhú
 朱梓	zhū zǐ
+李九春	10
+刘长健	10
+刘桂五	106
+张以宁	11
+张宥浩	11
+李多寅	11
+刘桂成	11
+刘景山	11
+刘喜海	11
+李彩领	13
+李汝华	13
+刘娘府	13
+刘仲甫	13
+刘诗颖	137
+张家宅	14
+冯佳怡	14
+刘传兴	14
+刘古昌	14
+刘冠翔	140
+张英才	142
+刘美娟	146
+张堃鹏	15
+刘夫阳	15
+刘国伦	154
+张德纯	16
+张五典	16
+李国君	16
+刘鸿声	17
+刘冠麟	18
+刘珊玲	18
+刘芯彤	18
+刘毓崧	18
+刘湛秋	18
+刘国永	180
+刘一含	181
+张古江	192
+张二奎	22
+刘世珩	22
+刘书文	22
+刘子扬	23
+刘佩玥	234
+刘善桥	24
+刘传健	241
+李再勇	25
+刘海若	27
+李沐泽	28
+张秋人	30
+李必蕃	30
+刘天池	31
+刘文正	322
+刘献廷	34
+刘体仁	35
+刘文淇	35
+刘爱杰	36
+刘士奇	36
+刘于义	36
+张贴者	37
+李之芳	37
+刘绍先	38
+刘武周	389
+冯了性	39
+张本渝	40
+刘雨欣	417
+刘丁硕	42
+刘雨卿	42
+刘仙洲	44
+冯裤子	47
+刘海儿	474
+张维庆	50
+刘书宏	50
+刘宝全	53
+刘承干	54
+刘士毅	54
+张思卿	58
+刘逸云	58
+刘国平	60
+刘丽川	60
+刘增艳	60
+张玉卓	64
+刘大钧	66
+刘海粟	726
+刘姝贤	73
+刘希平	78
+刘茂恩	83
+刘复之	91
 白一骢	bái yī cōng
 白音华	bái yīn huá
 白英杰	bái yīng jié
@@ -6555,7 +6679,6 @@ sort: by_weight
 陈官屯	chén guān tún
 陈冠伟	chén guān wěi
 陈罐西	chén guàn xī
-陈官营	chén guān yíng
 陈冠英	chén guān yīng
 陈冠中	chén guān zhōng
 陈光诚	chén guāng chéng
@@ -19426,7 +19549,6 @@ sort: by_weight
 林峰海	lín fēng hǎi
 林枫松	lín fēng sōng
 林丰俗	lín fēng sú
-林凤营	lín fèng yíng
 林丰正	lín fēng zhèng
 林峰正	lín fēng zhèng
 林福成	lín fú chéng
@@ -20523,7 +20645,6 @@ sort: by_weight
 鲁瑟夫	lǔ sè fū
 鲁瑟兰	lǔ sè lán
 鲁沙尔	lǔ shā ěr
-鲁山窑	lǔ shān yáo
 鲁山站	lǔ shān zhàn
 鲁殇王	lǔ shāng wáng
 鲁少飞	lǔ shǎo fēi
@@ -21633,7 +21754,6 @@ sort: by_weight
 马长山	mǎ cháng shān
 马场台	mǎ chǎng tái
 马昌仪	mǎ chāng yí
-马昌营	mǎ chāng yíng
 马场垣	mǎ chǎng yuán
 马场站	mǎ chǎng zhàn
 马肠子	mǎ cháng zi
@@ -21873,7 +21993,6 @@ sort: by_weight
 马贯东	mǎ guàn dōng
 马官桥	mǎ guān qiáo
 马冠生	mǎ guān shēng
-马官营	mǎ guān yíng
 马光辉	mǎ guāng huī
 马光明	mǎ guāng míng
 马圭尔	mǎ guī ěr
@@ -22265,7 +22384,6 @@ sort: by_weight
 马利娅	mǎ lì yà
 马莉亚	mǎ lì yà
 马莲井	mǎ lián jǐng
-马练营	mǎ liàn yíng
 马亮亮	mǎ liàng liàng
 马良庙	mǎ liáng miào
 马良行	mǎ liáng xíng
@@ -22443,7 +22561,6 @@ sort: by_weight
 马普姐	mǎ pǔ jiě
 马普里	mǎ pǔ lǐ
 马普龙	mǎ pǔ lóng
-马铺营	mǎ pù yíng
 马普语	mǎ pǔ yǔ
 马启仁	mǎ qǐ rén
 马其他	mǎ qí tā
@@ -23245,6 +23362,7 @@ sort: by_weight
 彭祖寿	péng zǔ shòu
 彭祖园	péng zǔ yuán
 彭遵泗	péng zūn sì
+平坂读	píng bǎn dú	92
 戚福艳	qī fú yàn
 戚建卫	qī jiàn wèi
 钱百万	qián bǎi wàn
@@ -24145,7 +24263,6 @@ sort: by_weight
 宋俊峰	sòng jùn fēng
 宋浚洋	sòng jùn yáng
 宋骏业	sòng jùn yè
-宋军营	sòng jūn yíng
 宋卡府	sòng kǎ fǔ
 宋开府	sòng kāi fǔ
 宋康明	sòng kāng míng
@@ -25623,7 +25740,6 @@ sort: by_weight
 陶瓷芯	táo cí xīn
 陶瓷学	táo cí xué
 陶瓷牙	táo cí yá
-陶瓷窑	táo cí yáo
 陶瓷砖	táo cí zhuān
 陶大伟	táo dà wěi
 陶德海	táo dé hǎi
@@ -27859,7 +27975,6 @@ sort: by_weight
 王清宪	wáng qīng xiàn
 王庆祥	wáng qìng xiáng
 王庆新	wáng qìng xīn
-王清营	wáng qīng yíng
 王庆余	wáng qìng yú
 王清远	wáng qīng yuǎn
 王庆云	wáng qìng yún
@@ -28336,7 +28451,6 @@ sort: by_weight
 王思岩	wáng sī yán
 王思懿	wáng sī yì
 王思义	wáng sī yì
-王四营	wáng sì yíng
 王思雨	wáng sī yǔ
 王思远	wáng sī yuǎn
 王思源	wáng sī yuán
@@ -29814,7 +29928,6 @@ sort: by_weight
 王占领	wáng zhàn lǐng
 王占仁	wáng zhàn rén
 王詹样	wáng zhān yàng
-王战营	wáng zhàn yíng
 王占元	wáng zhàn yuán
 王站长	wáng zhàn zhǎng
 王杖子	wáng zhàng zi
@@ -35747,7 +35860,6 @@ sort: by_weight
 岳志强	yuè zhì qiáng
 岳钟琪	yuè zhōng qí
 岳锺琪	yuè zhōng qí
-岳州窑	yuè zhōu yáo
 曾立岩	zēng lì yán
 曾立志	zēng lì zhì
 曾奇峰	zēng qí fēng
@@ -43716,8 +43828,8 @@ sort: by_weight
 赵夫印	zhào fū yìn	1
 赵福印	zhào fú yìn	1
 赵福英	zhào fú yīng	3
-赵夫英	zhào fū yīng	1
 赵福营	zhào fú yíng	1
+赵夫英	zhào fū yīng	1
 赵福永	zhào fú yǒng	2
 赵伏勇	zhào fú yǒng	1
 赵富勇	zhào fù yǒng	1
@@ -45905,8 +46017,8 @@ sort: by_weight
 赵纪艳	zhào jì yàn	1
 赵计阳	zhào jì yáng	1
 赵纪英	zhào jì yīng	2
-赵继影	zhào jì yǐng	1
 赵吉营	zhào jí yíng	1
+赵继影	zhào jì yǐng	1
 赵吉迎	zhào jí yíng	1
 赵继英	zhào jì yīng	1
 赵继勇	zhào jì yǒng	1
@@ -47252,9 +47364,9 @@ sort: by_weight
 赵静仪	zhào jìng yí
 赵净因	zhào jìng yīn	2
 赵井英	zhào jǐng yīng	2
+赵经营	zhào jīng yíng	1
 赵婧莹	zhào jìng yíng	1
 赵晶莹	zhào jīng yíng	1
-赵经营	zhào jīng yíng	1
 赵经影	zhào jīng yǐng	1
 赵菁莹	zhào jīng yíng	1
 赵景英	zhào jǐng yīng	1
@@ -51786,8 +51898,8 @@ sort: by_weight
 赵石英	zhào shí yīng	2
 赵诗颖	zhào shī yǐng	2
 赵世英	zhào shì yīng	2
-赵世瑛	zhào shì yīng	1
 赵士营	zhào shì yíng	1
+赵世瑛	zhào shì yīng	1
 赵士勇	zhào shì yǒng	2
 赵市勇	zhào shì yǒng	1
 赵世勇	zhào shì yǒng	1
@@ -54139,8 +54251,8 @@ sort: by_weight
 赵显尧	zhào xiǎn yáo	1
 赵显仪	zhào xiǎn yí	1
 赵先胤	zhào xiān yìn	1
-赵仙英	zhào xiān yīng	9
 赵显营	zhào xiǎn yíng	9
+赵仙英	zhào xiān yīng	9
 赵宪英	zhào xiàn yīng	2
 赵先英	zhào xiān yīng	1
 赵宪友	zhào xiàn yǒu	1
@@ -55212,8 +55324,8 @@ sort: by_weight
 赵星懿	zhào xīng yì	1
 赵星印	zhào xīng yìn	1
 赵兴英	zhào xīng yīng	8
-赵杏英	zhào xìng yīng	1
 赵兴营	zhào xīng yíng	1
+赵杏英	zhào xìng yīng	1
 赵兴永	zhào xīng yǒng	10
 赵兴勇	zhào xīng yǒng	1
 赵性友	zhào xìng yǒu	1
@@ -63533,6 +63645,8 @@ sort: by_weight
 佐藤胜	zuǒ téng shèng
 佐藤长	zuǒ téng zhǎng
 佐藤智	zuǒ téng zhì
+张家坟北	11
+张嘴说话	114
 阿巴斯江	ā bā sī jiāng
 阿澄佳奈	ā chéng jiā nài
 爱川京香	ài chuān jīng xiāng

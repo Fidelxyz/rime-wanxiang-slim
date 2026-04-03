@@ -12,9 +12,9 @@ app_options:
   idea64.exe:
     ascii_mode: false
     ascii_punct: true
-  Code.exe:
-    ascii_mode: false
-    ascii_punct: true
+  # Code.exe:
+  #   ascii_mode: false
+  #   ascii_punct: true
   Bandizip.exe:
     ascii_mode: true  # 英文模式
   7zFM.exe:

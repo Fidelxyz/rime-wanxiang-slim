@@ -183,7 +183,7 @@ local function rebuild(tasks, db, delimiter)
             end
 
             ---@type string?, string?
-            local k, v = line:match("^(%S+)%s+(.+)")
+            local k, v = line:match("^([^\t]+)\t+(.+)")
             if not k or not v then
                 goto continue_line
             end
@@ -353,7 +353,6 @@ function M.init(env)
     local db_name = rime_config:get_string(namespace .. "/db_name") or "lua/replacer"
     local delimiter = rime_config:get_string(namespace .. "/delimiter") or "|"
 
-    local current_version = wanxiang.version or "v0.0.0"
     local input_type = wanxiang.get_input_method_type(env)
 
     ---@type string
@@ -526,7 +525,7 @@ function M.init(env)
 
     -- 3. DB 初始化 (使用单例连接)
     env.super_replacer_state.db =
-        connect_db(db_name, current_version, delimiter, tasks, config_sig, env.super_replacer_state)
+        connect_db(db_name, wanxiang.version, delimiter, tasks, config_sig, env.super_replacer_state)
 end
 
 ---@param env Env
@@ -612,7 +611,10 @@ function M.func(input, env)
                     local query_text = config.is_chain and current_text or cand.text
                     local key = rule.prefix .. query_text
                     local val = state.db and state.db:fetch(key)
-
+                    if not val and string.match(query_text, "[A-Z]") then
+                        local lower_key = rule.prefix .. string.lower(query_text)
+                        val = state.db:fetch(lower_key)
+                    end
                     if not val and rule.fmm then
                         local seg_result =
                             segment_convert(query_text, state.db, rule.prefix, config.split_pattern, state)
@@ -624,12 +626,16 @@ function M.func(input, env)
                     if val then
                         matched_cand_type = rule.cand_type or matched_cand_type
 
-                        local mode = rule.mode
                         local rule_comment = ""
                         if rule.comment_mode == "text" then
                             rule_comment = cand.text
                         elseif rule.comment_mode == "comment" then
                             rule_comment = cand.comment
+                        end
+
+                        local mode = rule.mode
+                        if mode ~= "comment" and rule_comment ~= "" then
+                            rule_comment = config.comment_format:format(rule_comment)
                         end
 
                         if mode == "comment" then

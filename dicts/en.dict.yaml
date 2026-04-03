@@ -16,6 +16,7 @@ Si	Si
 Cl	Cl
 Ar	Ar
 Ca	Ca
+MV	MV
 BD	BD
 Sc	Sc
 Ti	Ti
@@ -16628,6 +16629,7 @@ datagrams	datagrams
 datagraph	datagraph
 DataGrip	DataGrip
 datalore	datalore
+DataFrame	DataFrame
 Datamation	Datamation
 Datamedia	Datamedia
 dataset	dataset
@@ -25865,6 +25867,7 @@ FPGA	FPGA
 FPS	FPS
 fpu	fpu
 fracas	fracas
+fractal	fractal
 fraction	fraction
 fractional	fractional
 fractionalise	fractionalise
@@ -35044,6 +35047,7 @@ junoesque	junoesque
 junta	junta
 junto	junto
 Jupiter	Jupiter
+Jupyter	Jupyter
 Jura	Jura
 Juras	Juras
 Jurassic	Jurassic
