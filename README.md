@@ -191,21 +191,6 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 
 ## 安装与更新工具
 
-### 万象工具箱
-
-PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)，内置在线更新器。
-
-- **智能更新**：自动检测 GitHub / CNB 源，自动下载并解压覆盖。
-- **白名单保护**：支持受控文件覆盖，防止个人配置被覆盖。
-- **双重重置模式**：
-  - 构建重置：清空 `build` 目录，强制重新编译。
-  - 纯净重置：仅保留白名单文件，其余全部替换为官方最新版。
-
-### 第三方更新工具
-
-- [Python / PowerShell 脚本](https://github.com/rimeinn/rime-wanxiang-update-tools)
-- [Go 语言更新器](https://github.com/ca-x/rime-wanxiang-updater)
-
 ### 东风破 (Plum) 管理器
 
 > [!WARNING]
@@ -358,12 +343,9 @@ PC 用户推荐使用[**万象工具箱**](https://github.com/amzxyz/RIME-LMDG/r
 
 ## 可选扩展数据
 
-部分扩展数据未随压缩包分发，可从仓库 `custom` 目录下载：
 
 | 文件名 | 用途 | 安装方式 |
 | --- | --- | --- |
-| `renming.dict.yaml` | 人名词库（Pro 版使用工具箱刷新编码） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
-| `wuzhong.dict.yaml` | 物种词库（动植物分类等词条，Pro 版使用工具箱刷新） | 复制内容追加到根目录 `wanxiang.dict.yaml` |
 | `custom_phrase.txt` | 自定义短语 | 复制到根目录并添加自定义短语内容 |
 
 ## 数据文件说明
