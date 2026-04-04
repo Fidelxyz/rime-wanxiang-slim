@@ -1,3 +1,4 @@
+---Provides manual candidate sorting and synchronization across devices by managing a local sequence database with tombstones for deleted items.
 ---@module "wanxiang.sequencer"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>

@@ -1,6 +1,7 @@
--- https://github.com/amzxyz/rime_wanxiang
--- @description: 英文全能处理器 锚点切分 + 动态分隔符 + 超时销毁
--- @author: amzxyz
+---Enhances English input by applying smart casing and spacing, limiting candidate count for performance, ensuring single-letter candidates are available, and providing fallback English word derivation based on typing history.
+---@module "wanxiang.english_filter"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
 
 -- 核心功能清单:
 -- 1. [Format] 语句级英文大写格式化,逐词大小写对应 (look HELLO -> look HELLO)

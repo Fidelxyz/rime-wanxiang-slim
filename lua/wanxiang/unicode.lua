@@ -1,5 +1,8 @@
---- Unicode translator
---- Translate `U` + `<unicode>` to the corresponding Unicode character
+---Generates Unicode character candidates by parsing a hexadecimal code entered after a specific trigger prefix.
+---@module "wanxiang.unicode"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 --- @param input string
 --- @param seg Segment
 --- @param env Env

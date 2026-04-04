@@ -1,8 +1,7 @@
--- 功能：独立的字符集过滤与兜底组件
--- 逻辑：
--- 1. 支持配置多个选项，开启多个选项时 Base 和 Addlist 取并集，Blacklist 一票否决。
--- 2. 单字如果不符合字符集，直接丢弃（删除），不进行兜底。
--- 3. 词组如果包含生僻字，尝试从历史记录寻找同长度拼音的词组进行兜底。
+---Filters candidates based on configurable character sets, removing single characters outside the allowed sets and attempting to replace phrases containing unallowed characters with valid historical input of the same length.
+---@module "wanxiang.charset_filter"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class Filter
 ---@field options string[]|true

@@ -1,3 +1,8 @@
+---Enhances input processing by limiting repeated keystrokes, enforcing backspace limits, and providing a manual mechanism to cycle through alternative Pinyin syllable segmentations.
+---@module "wanxiang.super_processor"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 -- Features:
 -- RepeatLimit: 重复限制
 -- SuperSegmentation: 超强分词

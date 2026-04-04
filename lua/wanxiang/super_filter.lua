@@ -1,4 +1,8 @@
--- @amzxyz  https://github.com/amzxyz/rime_wanxiang
+---Reorders candidates to prioritize table/user-dictionary entries, formats escape sequences within candidate text, and filters out unwanted sentence derivations to improve mixed Chinese-English input experience.
+---@module "wanxiang.super_filter"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 -- 功能 A：候选文本中的转义序列格式化（始终开启）
 --         \n \t \r \\ \s(空格) \d(-)
 -- 功能 B：候选重排（仅编码长度 2..6 时）
