@@ -45,8 +45,7 @@ switches:
 engine:
   processors:
     - lua_processor@*wanxiang.character_selector  # 以词定字
-    - lua_processor@*wanxiang.super_processor  # KP小键盘、超强分词、重复限制、退格限制
-    - lua_processor@*wanxiang.partial_commit  # Ctrl+数字键N 提交前N个字
+    - lua_processor@*wanxiang.super_processor  # 超强分词、重复限制、退格限制
     - lua_processor@*wanxiang.sequencer*P  #手动排序。默认快捷键：Ctrl+J 左移，Ctrl+K 右移，Ctrl+P 置顶，Ctrl+L 重置
     - ascii_composer  # 处理英文模式及中英文切换
     - recognizer  # 与 matcher 搭配，处理符合特定规则的输入码，如网址、反查等 tags
@@ -54,7 +53,9 @@ engine:
     - lua_processor@*wanxiang.key_binder  # 绑定按键扩展能力，支持正则扩展将按键生效情景更加细化
     - speller  # 拼写处理器，接受字符按键，编辑输入
     - punctuator  # 符号处理器，将单个字符按键直接映射为标点符号或文字
-    - selector  # 选字处理器，处理数字选字键〔可以换成别的哦〕、上、下候选定位、换页
+    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector前
+    - lua_processor@*wanxiang.partial_commit  # Ctrl+数字键N 提交前N个字
+    - selector  # 选字处理器，处理数字选字键、上下候选定位、换页
     - navigator  # 处理输入栏内的光标移动
     - express_editor  # 编辑器，处理空格、回车上屏、回退键
   segmentors:
@@ -127,8 +128,13 @@ super_processor:
   enable_backspace_limit: true  # 开启/关闭退格限制
   enable_seg_loop: true  # 开启/关闭分词符（'）循环
   enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想
-  kp_number_mode: auto  # 小键盘模式 (auto / compose)
   limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+
+keypad_composer:
+  # 小键盘模式。
+  # auto: 按下小键盘数字键时，若处于选词状态，则提交对应候选词，否则输入数字。
+  # compose: 按下小键盘数字键时，总是直接输入数字。
+  keypad_mode: auto
 
 character_selector:  # 以词定字
   select_first_key: "["  # 选择首个字符的按键。支持按键表达式（如 bracketleft）。
@@ -433,7 +439,7 @@ speller:
   #  auto_select: true
   #  auto_select_pattern: ^[a-z]+/|^[a-df-zA-DF-Z]\w{3}|^e\w{4}
   # 如果不想让什么标点直接上屏，可以加在 alphabet，或者编辑标点符号为两个及以上的映射
-  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA123456`;/\
+  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`;/\
   # initials 定义仅作为始码的按键，排除 ` 让单个的 ` 可以直接上屏
   initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/
   delimiter: " '"  # 第一位<空格>是拼音之间的分隔符；第二位<'>表示可以手动输入单引号来分割拼音。

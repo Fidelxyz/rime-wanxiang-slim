@@ -1,6 +1,5 @@
 -- Features:
 -- RepeatLimit: 重复限制
--- KpNumber: 小键盘
 -- SuperSegmentation: 超强分词
 -- BackspaceLimit: 退格限制
 
@@ -14,11 +13,6 @@
 ---@field max_repeat integer
 ---@field max_segments integer
 ---
----Config for KpNumber
----@field kp_page_size integer
----@field kp_mode "auto"|"compose"
----@field kp_func_patterns string[]
----
 ---Config for SuperSegmentation
 ---@field seg_auto_delim string
 ---@field seg_manual_delim string
@@ -28,10 +22,6 @@
 ---States for BackspaceLimit
 ---@field bs_prev_len integer
 ---@field bs_sequence boolean
----
----States for KpNumber
----@field kp_is_composing boolean
----@field kp_has_menu boolean
 ---
 ---States for SuperSegmentation
 ---@field seg_core string?
@@ -45,27 +35,13 @@
 ---States for PredictSpace
 ---@field pending_predict_space boolean
 ---
----@field conn_update Connection
+---@field update_notifier Connection
 
 ---@class Env
 ---@field super_processor_config SuperProcessorConfig?
 ---@field super_processor_state SuperProcessorState?
 
 local wanxiang = require("wanxiang.wanxiang")
-
--- [KpNumber] 小键盘键码映射
-local KP_MAP = {
-    [0xFFB1] = 1,
-    [0xFFB2] = 2,
-    [0xFFB3] = 3,
-    [0xFFB4] = 4,
-    [0xFFB5] = 5,
-    [0xFFB6] = 6,
-    [0xFFB7] = 7,
-    [0xFFB8] = 8,
-    [0xFFB9] = 9,
-    [0xFFB0] = 0,
-}
 
 -- [RepeatLimit] 重复限制默认配置 (现已支持配置覆盖)
 local INITIALS = "[bpmfdtnlgkhjqxrzcsywiu]"
@@ -250,24 +226,6 @@ end
 ---@return number
 local function utf8_len(s)
     return utf8.len(s) or #s
-end
-
----检查数字后是否紧跟功能编码 (KpNumber 使用)
----@param digit_char string
----@param config SuperProcessorConfig
----@param ctx Context
----@return boolean
-local function is_function_code_after_digit(digit_char, config, ctx)
-    if digit_char == "" then
-        return false
-    end
-    local s = ctx.input .. digit_char
-    for _, pattern in ipairs(config.kp_func_patterns) do
-        if s:match(pattern) then
-            return true
-        end
-    end
-    return false
 end
 
 ---计算尾部重复字符数 (RepeatLimit 使用)
@@ -509,125 +467,11 @@ local function handle_limit_repeat(key, config, ctx)
     return false
 end
 
--- [KpNumber] 数字键综合逻辑
----@param key KeyEvent
----@param config SuperProcessorConfig
----@param state SuperProcessorState
----@param ctx Context
----@return boolean
-local function handle_number_logic(key, config, state, ctx)
-    local input = ctx.input
-    local kp_num = KP_MAP[key.keycode]
-
-    -- A. 小键盘处理 (KpNumber)
-    -- 桌面端专属：小键盘不上屏处理 (移动端直接跳过此区)
-    if kp_num and not wanxiang.is_mobile_device() then
-        if key:ctrl() or key:alt() or key:super() or key:shift() then
-            return false
-        end
-
-        local ch = tostring(kp_num)
-
-        -- 1. 正则拦截
-        if is_function_code_after_digit(ch, config, ctx) then
-            if ctx.push_input then
-                ctx:push_input(ch)
-            else
-                ctx.input = input .. ch
-            end
-            return true
-        end
-
-        -- 2. 模式处理
-        if config.kp_mode == "auto" then
-            if state.kp_is_composing then
-                if ctx.push_input then
-                    ctx:push_input(ch)
-                else
-                    ctx.input = input .. ch
-                end
-            else
-                return false -- Noop
-            end
-        else -- compose mode
-            if ctx.push_input then
-                ctx:push_input(ch)
-            else
-                ctx.input = input .. ch
-            end
-        end
-
-        return true
-    end
-
-    -- B. 主键盘数字
-    local digit_str = nil
-    local r = key:repr()
-    if r:match("^[0-9]$") then
-        digit_str = r
-    elseif kp_num and wanxiang.is_mobile_device() then
-        digit_str = tostring(kp_num) -- 移动端小键盘视为标准数字
-    end
-    if not digit_str then
-        return false
-    end
-
-    if key:ctrl() or key:alt() or key:super() then
-        return false
-    end
-
-    -- 正则拦截
-    if is_function_code_after_digit(digit_str, config, ctx) then
-        if ctx.push_input then
-            ctx:push_input(digit_str)
-        else
-            ctx.input = input .. digit_str
-        end
-        return true
-    end
-
-    -- 候选选词
-    if not state.kp_has_menu then
-        return false
-    end
-
-    local digit = tonumber(digit_str)
-    if digit == 0 then
-        digit = 10
-    end
-    if digit > config.kp_page_size then
-        return false
-    end
-
-    local comp = ctx.composition
-    if comp:empty() then
-        return false
-    end
-
-    local seg = comp:back()
-    local menu = seg and seg.menu
-    if not menu or menu:empty() then
-        return false
-    end
-
-    local selected_index = seg and seg.selected_index or 0
-    local page_start = math.floor(selected_index / config.kp_page_size) * config.kp_page_size
-    local index = page_start + (digit - 1)
-    if index >= menu:candidate_count() then
-        return false
-    end
-
-    -- 这里执行纯净的 ctx:select，不干涉物理按键事件
-    return ctx:select(index)
-end
-
 local P = {}
 
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
-
-    -- [1] 配置加载 (按功能模块分类)
 
     local backspace_limit_enabled = rime_config:get_bool("super_processor/enable_backspace_limit")
     if backspace_limit_enabled == nil then
@@ -679,19 +523,13 @@ function P.init(env)
         end
     end
 
-    -- [KpNumber] 小键盘
-    local kp_page_size = rime_config:get_int("menu/page_size") or 6
-    local m = rime_config:get_string("super_processor/kp_number_mode") or "auto"
-    local kp_mode = (m == "auto" or m == "compose") and m or "auto"
-    local kp_func_patterns = wanxiang.load_regex_patterns(rime_config, "recognizer/patterns")
-
     -- [SuperSegmentation] 超强分词
     local delim = rime_config:get_string("speller/delimiter") or " '"
     local seg_auto_delim = delim:sub(1, 1)
     local seg_manual_delim = delim:sub(2, 2)
 
     -- [2] 统一 Update Notifier (状态缓存与自动处理)
-    local conn_update = env.engine.context.update_notifier:connect(function(ctx)
+    local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
         local config = env.super_processor_config
         assert(config)
         local state = env.super_processor_state
@@ -714,10 +552,6 @@ function P.init(env)
         state.seg_last_preedit_lens = lens_from_string(pre, config.seg_manual_delim, config.seg_auto_delim)
         state.seg_last_input_caret = input
         state.seg_last_caret_pos = ctx.caret_pos
-
-        -- C. [KpNumber] 缓存状态
-        state.kp_is_composing = ctx:is_composing()
-        state.kp_has_menu = ctx:has_menu()
     end)
 
     env.super_processor_config = {
@@ -727,9 +561,6 @@ function P.init(env)
         predict_space_enabled = predict_space_enabled,
         max_repeat = max_repeat,
         max_segments = max_segments,
-        kp_page_size = kp_page_size,
-        kp_mode = kp_mode,
-        kp_func_patterns = kp_func_patterns,
         seg_auto_delim = seg_auto_delim,
         seg_manual_delim = seg_manual_delim,
     }
@@ -737,8 +568,6 @@ function P.init(env)
     env.super_processor_state = {
         bs_prev_len = -1,
         bs_sequence = false,
-        kp_is_composing = false,
-        kp_has_menu = false,
         seg_core = nil,
         seg_start_idx = nil,
         seg_n = nil,
@@ -747,13 +576,13 @@ function P.init(env)
         seg_last_input_caret = nil,
         seg_last_caret_pos = nil,
         pending_predict_space = false,
-        conn_update = conn_update,
+        update_notifier = update_notifier,
     }
 end
 
 ---@param env Env
 function P.fini(env)
-    env.super_processor_state.conn_update:disconnect()
+    env.super_processor_state.update_notifier:disconnect()
     env.super_processor_config = nil
     env.super_processor_state = nil
 end
@@ -810,13 +639,6 @@ function P.func(key, env)
     -- 5. [RepeatLimit] 重复输入限制
     if kc >= 0x61 and kc <= 0x7A then
         if handle_limit_repeat(key, config, context) then
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-        end
-    end
-
-    -- 7. 数字键 (小键盘 + 选词)[KpNumber] 数字键综合逻辑
-    if (kc >= 0xFFB0 and kc <= 0xFFB9) or (kc >= 0x30 and kc <= 0x39) then
-        if handle_number_logic(key, config, state, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
         end
     end
