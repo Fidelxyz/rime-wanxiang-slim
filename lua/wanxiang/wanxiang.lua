@@ -40,17 +40,16 @@ end
 ---@return boolean
 function M.is_mobile_device()
     local function _is_mobile_device()
-        local dist = rime_api.get_distribution_code_name() or ""
-        local user_data_dir = rime_api.get_user_data_dir() or ""
-        local sys_dir = rime_api.get_shared_data_dir() or ""
+        local dist = rime_api.get_distribution_code_name()
+        local user_data_dir = rime_api.get_user_data_dir()
 
         -- 主判断：常见移动端输入法
         local lower_dist = dist:lower()
-        if lower_dist == "trime" or lower_dist == "hamster" or lower_dist == "hamster3" or lower_dist == "squirrel" then
+        if lower_dist == "trime" or lower_dist == "hamster" or lower_dist == "hamster3" then
             return true
         end
 
-        -- 补充判断：路径中包含移动设备特征，很可以mac的运行逻辑和手机一球样
+        -- 补充判断：路径中包含移动设备特征
         local lower_path = user_data_dir:lower()
         if
             lower_path:find("/android/")
@@ -58,15 +57,7 @@ function M.is_mobile_device()
             or lower_path:find("/sdcard/")
             or lower_path:find("/data/storage/")
             or lower_path:find("/storage/emulated/")
-            or lower_path:find("applications")
-            or lower_path:find("library")
         then
-            return true
-        end
-
-        -- 补充判断：路径中包含移动设备特征，很可以mac的运行逻辑和手机一球样
-        local sys_lower_path = sys_dir:lower()
-        if sys_lower_path:find("applications") or sys_lower_path:find("library") then
             return true
         end
 
