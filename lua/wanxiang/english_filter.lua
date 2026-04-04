@@ -1,5 +1,5 @@
 -- https://github.com/amzxyz/rime_wanxiang
--- @description: 英文全能处理器 (Filter Only: 锚点切分 + 动态分隔符 + 超时销毁 + 性能极速优化)
+-- @description: 英文全能处理器 锚点切分 + 动态分隔符 + 超时销毁
 -- @author: amzxyz
 
 -- 核心功能清单:
@@ -86,10 +86,6 @@ local allowed_ascii_symbols = {
 ---@param s string
 ---@return boolean
 local function is_english_phrase(s)
-    if s == "" then
-        return false
-    end
-
     local has_alpha = false
     for i = 1, #s do
         local b = s:byte(i)
@@ -169,7 +165,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
             table.insert(targets, t)
         end
     end
-    if #targets == 0 then
+    if next(targets) == nil then
         return cand
     end
 
@@ -331,11 +327,13 @@ function F.init(env)
     local max_eng_cands = config:get_int("wanxiang_english/max_candidates") or 0
 
     local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
-    if user_dict_trigger and user_dict_trigger ~= "" then
-        user_dict_trigger = user_dict_trigger:sub(1, 1)
-    else
+    if not user_dict_trigger or user_dict_trigger == "" then
         user_dict_trigger = "\\"
     end
+    if #user_dict_trigger > 1 then
+        user_dict_trigger = user_dict_trigger:sub(1, 1)
+    end
+    ---@cast user_dict_trigger string
 
     local delimiter_str = config:get_string("speller/delimiter") or " '"
     local escaped_delims = delimiter_str:gsub("([%%%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
@@ -372,27 +370,27 @@ function F.init(env)
 
         local commit_text = ctx:get_commit_text()
         local text_no_space = commit_text:gsub("%s", "")
-        local is_eng = is_english_phrase(text_no_space)
+        local is_english = is_english_phrase(text_no_space)
 
         if text_no_space:find("[/\\\\]$") then
             state.sticky_countdown = STICKY_BUFFER_SIZE
-            is_eng = false
+            is_english = false
         elseif state.sticky_countdown > 0 then
-            if is_eng then
+            if is_english then
                 state.sticky_countdown = state.sticky_countdown - 1
-                is_eng = false
+                is_english = false
             else
                 state.sticky_countdown = 0
             end
-        elseif is_eng then
+        elseif is_english then
             local clean = commit_text:gsub("%s+$", ""):lower()
             if no_spacing_words[clean] then
-                is_eng = false
+                is_english = false
             end
         end
 
-        state.is_prev_commit_english = is_eng
-        if is_eng then
+        state.is_prev_commit_english = is_english
+        if is_english then
             state.last_commit_time = wanxiang.now()
         else
             state.last_commit_time = 0
@@ -574,7 +572,7 @@ function F.func(input, env)
         has_valid_candidate = true
 
         if fmt_cand.type == "user_table" or fmt_cand.type == "fixed" or fmt_cand.type == "phrase" or not is_ascii then
-            -- VIP 通道：不仅是 user_table，包括汉字等，都直接输出，不让单字母插队
+            -- 直接输出user_table、汉字等，不让单字母插队
             if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
                 state.memory[code] = {
                     text = fmt_cand.text,
@@ -586,7 +584,7 @@ function F.func(input, env)
             goto continue
         end
 
-        -- 普通通道：允许单字母插队到前面
+        -- 允许单字母插队到前面
         if has_single_chars and not single_char_injected then
             if not best_candidate_saved then
                 state.memory[code] = { text = single_chars[1].text, preedit = code }
@@ -611,12 +609,7 @@ function F.func(input, env)
         ::continue::
     end
 
-    -- 历史回溯构造 & 统一兜底
-    if has_valid_candidate then
-        return
-    end
-
-    if state.block_derivation then
+    if state.block_derivation or has_valid_candidate then
         return
     end
 
@@ -625,6 +618,7 @@ function F.func(input, env)
         return
     end
 
+    -- 历史回溯构造 & 统一兜底
     ---@type { text: string, preedit: string }?
     local anchor = nil
     local diff = ""
@@ -636,7 +630,6 @@ function F.func(input, env)
             break
         end
     end
-
     if not anchor or diff == "" then
         return
     end

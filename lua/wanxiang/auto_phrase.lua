@@ -1,5 +1,7 @@
--- @amzxyz https://github.com/amzxyz/rime_wanxiang
--- 自动造词
+---Automatically add new phrases to user dictionaries.
+---@module "wanxiang.auto_phrase"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class AutoPhraseConfig
 ---@field escaped_delimiter string
@@ -11,8 +13,8 @@
 ---Invariant: no empty string.
 ---@field comment_cache table<string, string>
 ---
----@field commit_conn Connection?
----@field delete_conn Connection?
+---@field commit_notifier Connection?
+---@field delete_notifier Connection?
 
 ---@class Env
 ---@field auto_phrase_config AutoPhraseConfig?
@@ -192,15 +194,15 @@ function F.init(env)
     local en_memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
 
     ---@type Connection?
-    local commit_conn = nil
+    local commit_notifier = nil
     ---@type Connection?
-    local delete_conn = nil
+    local delete_notifier = nil
     if zh_memory or en_memory then
         -- 只要有一边需要，就挂上 commit/delete 通知
-        commit_conn = context.commit_notifier:connect(function(ctx)
+        commit_notifier = context.commit_notifier:connect(function(ctx)
             commit_handler(ctx, env)
         end)
-        delete_conn = context.delete_notifier:connect(function(_)
+        delete_notifier = context.delete_notifier:connect(function(_)
             local state = env.auto_phrase_state
             assert(state)
 
@@ -216,8 +218,8 @@ function F.init(env)
         zh_memory = zh_memory,
         en_memory = en_memory,
         comment_cache = {},
-        commit_conn = commit_conn,
-        delete_conn = delete_conn,
+        commit_notifier = commit_notifier,
+        delete_notifier = delete_notifier,
     }
 end
 
@@ -230,11 +232,11 @@ function F.fini(env)
         env.auto_phrase_state.en_memory:disconnect()
     end
 
-    if env.auto_phrase_state.commit_conn then
-        env.auto_phrase_state.commit_conn:disconnect()
+    if env.auto_phrase_state.commit_notifier then
+        env.auto_phrase_state.commit_notifier:disconnect()
     end
-    if env.auto_phrase_state.delete_conn then
-        env.auto_phrase_state.delete_conn:disconnect()
+    if env.auto_phrase_state.delete_notifier then
+        env.auto_phrase_state.delete_notifier:disconnect()
     end
     env.auto_phrase_config = nil
     env.auto_phrase_state = nil

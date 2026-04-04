@@ -27,24 +27,19 @@
 ---@param s string
 ---@return string
 local function alt_lua_punc(s)
-    return s and s:gsub("([%.%+%-%*%?%[%]%^%$%(%)%%])", "%%%1") or ""
+    return (s:gsub("([%.%+%-%*%?%[%]%^%$%(%)%%])", "%%%1"))
 end
 
 ---@param schema_id string
 ---@return string[]? main_rules
 ---@return string[]? xlit_rules
 local function parse_rules(schema_id)
-    if not schema_id or #schema_id == 0 then
+    if schema_id == "" then
         return nil, nil
     end
     local schema = Schema(schema_id)
-    if not schema then
-        return nil, nil
-    end
     local config = schema.config
-    if not config then
-        return nil, nil
-    end
+
     local algebra_list = config:get_list("speller/algebra")
     if not algebra_list or algebra_list.size == 0 then
         return nil, nil
@@ -76,19 +71,23 @@ local function get_schema_rules(env)
     if not db_list or db_list.size == 0 then
         return {}, {}
     end
-    local schema_id = db_list:get_value_at(0).value
-    if not schema_id or #schema_id == 0 then
+
+    local schema_id_val = db_list:get_value_at(0)
+    local schema_id = schema_id_val and schema_id_val.value
+    if not schema_id or schema_id == "" then
         return {}, {}
     end
+
     local main_rules, xlit_rules = parse_rules(schema_id)
     if not main_rules and not xlit_rules then
         return {}, {}
     end
+
     return main_rules or {}, xlit_rules or {}
 end
 
----@param main_projection Projection
----@param xlit_projection Projection
+---@param main_projection Projection?
+---@param xlit_projection Projection?
 ---@param part string
 ---@return string[] main_variants
 ---@return string[] xlit_variants
@@ -104,7 +103,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
 
     ---@param s string
     local function add(s)
-        if s and #s > 0 and not seen[s] then
+        if #s > 0 and not seen[s] then
             seen[s] = true
             table.insert(out, s)
         end
@@ -112,7 +111,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
 
     ---@param s string
     local function add_xlit(s)
-        if s and #s > 0 and not seen_xlit[s] then
+        if #s > 0 and not seen_xlit[s] then
             seen_xlit[s] = true
             table.insert(out_xlit, s)
         end
@@ -121,7 +120,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     ---@param s string
     ---@return string?
     local function extract_odd_positions(s)
-        if not s or not s:match("^%l+$") or #s % 2 ~= 0 then
+        if not s:match("^%l+$") or #s % 2 ~= 0 then
             return nil
         end
         local res = ""
@@ -134,7 +133,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     ---@param s string
     ---@return string?
     local function get_v_variant(s)
-        if not s or not s:match("^%l+$") or #s % 2 ~= 0 then
+        if not s:match("^%l+$") or #s % 2 ~= 0 then
             return nil
         end
         local res = ""
@@ -190,8 +189,8 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     return out, out_xlit
 end
 
----@param main_projection Projection
----@param xlit_projection Projection
+---@param main_projection Projection?
+---@param xlit_projection Projection?
 ---@param db_table ReverseLookup[]
 ---@param text string
 ---@return string[] main
@@ -208,7 +207,7 @@ local function build_reverse_group(main_projection, xlit_projection, db_table, t
 
     for _, db in ipairs(db_table) do
         local code = db:lookup(text)
-        if code and #code > 0 then
+        if code ~= "" then
             for part in code:gmatch("%S+") do
                 -- 接收分离的两种数据
                 local main_variants, xlit_variants = expand_code_variant(main_projection, xlit_projection, part)
@@ -497,7 +496,7 @@ function F.init(env)
 
         local input = ctx.input
         local code, _ = split_lookup_input(input, trigger_str, bypass_prefix)
-        if not code or #code == 0 then
+        if not code or code == "" then
             return
         end
 

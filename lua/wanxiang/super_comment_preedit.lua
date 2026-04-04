@@ -273,7 +273,7 @@ local function get_reverse_lookup_comment(cand, initial_comment)
     local inner_parts = {}
 
     -- 音形注释拆解逻辑
-    if initial_comment and initial_comment ~= "" then
+    if initial_comment ~= "" then
         ---@type string[]
         local segments = {}
         for segment in initial_comment:gmatch("[^%s]+") do
@@ -310,11 +310,9 @@ local function get_reverse_lookup_comment(cand, initial_comment)
         end
     end
 
-    if cand and cand.text then
-        local label = get_charset_label(cand.text)
-        if label then
-            table.insert(inner_parts, label)
-        end
+    local label = get_charset_label(cand.text)
+    if label then
+        table.insert(inner_parts, label)
     end
 
     if #inner_parts == 0 then
