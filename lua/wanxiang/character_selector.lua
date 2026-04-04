@@ -1,4 +1,7 @@
----以词定字
+---Selects and commits only the first or last character of the current candidate phrase based on configured shortcut keys.
+---@module "wanxiang.character_selector"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class CharacterSelectorConfig
 ---@field select_first_key string?

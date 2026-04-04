@@ -1,3 +1,8 @@
+---Provides a memory-safe wrapper and object pool for Rime UserDb, offering utility methods for meta-data operations and memory-managed queries.
+---@module "wanxiang.userdb"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 local META_KEY_PREFIX = "\001" .. "/"
 
 -- UserDb 缓存，使用弱引用表，不阻止垃圾回收并能自动清理

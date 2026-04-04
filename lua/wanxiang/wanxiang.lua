@@ -1,4 +1,8 @@
--- 万象的一些共用工具函数
+---Provides core shared utilities, constants, and environment variables used across the various Lua modules in the Wanxiang schema.
+---@module "wanxiang.wanxiang"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 local M = {}
 
 -- x-release-please-start-version

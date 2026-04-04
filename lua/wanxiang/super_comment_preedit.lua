@@ -1,3 +1,8 @@
+---Enhances candidate display by dynamically generating and appending character decomposition info or corrected Pinyin tones to the candidate comments.
+---@module "wanxiang.super_comment_preedit"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 ---@class SuperCommentConfig
 ---@field auto_delimiter string
 ---@field min_candidate_length integer

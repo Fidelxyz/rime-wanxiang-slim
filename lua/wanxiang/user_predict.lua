@@ -1,6 +1,8 @@
--- user_predict.lua
--- https://github.com/amzxyz/rime_wanxiang
--- by amzxyz
+---Implements an advanced predictive text engine featuring n-gram models, time-decayed ranking, cross-device synchronization, and context-aware candidate prediction and filtering.
+---@module "wanxiang.user_predict"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 -- 架构层: Processor (物理按键截取与逻辑分发) + Translator (候选词生成与上屏) + Filter (输入调频)
 -- 算法层:
 -- 1. 瀑布流查询模型 (S-Gram -> 2-Gram 精确 -> 1-Gram 断崖回退 -> P-Gram 模糊抗抖动)

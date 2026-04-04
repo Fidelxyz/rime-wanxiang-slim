@@ -1,4 +1,7 @@
----反查过滤器
+---Filters candidates by matching secondary auxiliary codes (entered after a trigger character) against reverse lookup dictionaries or candidate comments, supporting fuzzy matching and multiple data sources.
+---@module "wanxiang.lookup_filter"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class LookupFilterConfig
 ---@field data_sources (string|"aux"|"db")[]
