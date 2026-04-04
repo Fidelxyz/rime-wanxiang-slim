@@ -1,3 +1,7 @@
+---@module "wanxiang.sequencer"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
 -- 手动排序
 -- 1) p>0：有效排序（DB insert + 导出）
 -- 2) p=0：墓碑（DB 删除 + 导出墓碑）
@@ -615,7 +619,7 @@ local function write_adjustments_for_code_to_db(code, adjustments, db)
         end
     end
 
-    if next(valid_adjs) then
+    if next(valid_adjs) ~= nil then
         db:update(code, serialize_adjustments_for_code(valid_adjs))
     else
         db:erase(code)

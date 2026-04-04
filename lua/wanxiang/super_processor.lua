@@ -329,11 +329,12 @@ local function handle_segmentation(key, config, state, ctx)
         state.seg_core, state.seg_start_idx, state.seg_n, state.seg_base = nil, nil, nil, nil
         return false
     end
+
     if ctx.composition:empty() then
         return false
     end
 
-    local last_input = state.seg_last_input_caret or ctx.input or ""
+    local last_input = state.seg_last_input_caret or ctx.input
     local last_caret = state.seg_last_caret_pos
     if not last_caret or last_caret ~= utf8_len(last_input) then
         state.seg_core, state.seg_start_idx, state.seg_n, state.seg_base = nil, nil, nil, nil
@@ -341,13 +342,13 @@ local function handle_segmentation(key, config, state, ctx)
     end
 
     local md = config.seg_manual_delim
-    local before = ctx.input or ""
-    local after = before .. md
-    local tlen = count_trailing(after, md)
+    local after = ctx.input .. md
+    local trailing_len = count_trailing(after, md)
     local head = strip_trailing(after, md)
     local core = strip_delims(head, md, config.seg_auto_delim)
     local n = #core
     local conf = SEG_PATTERNS[n]
+
     -- 大于 10 码动态构建分词：在2、3码之间循环
     if n > 10 then
         local groups_2 = {}
@@ -379,7 +380,12 @@ local function handle_segmentation(key, config, state, ctx)
         state.seg_base = head
     end
 
-    if conf and state.seg_start_idx == nil then
+    if not conf then
+        ctx.input = after
+        return true
+    end
+
+    if state.seg_start_idx == nil then
         local start_idx = 0
         local lens = get_cached_lens(md, config.seg_auto_delim, state, ctx)
         if sum(lens) ~= n then
@@ -393,26 +399,24 @@ local function handle_segmentation(key, config, state, ctx)
         state.seg_start_idx = start_idx
     end
 
-    if tlen == 1 then
-        ctx.input = after
-        return true
-    end
-
-    if not conf then
+    if trailing_len == 1 then
         ctx.input = after
         return true
     end
 
     local m = #conf.all
-    local k = tlen - 1
+    local k = trailing_len - 1
 
     local function restore()
         ctx.input = (state.seg_base or head) .. md
-        state.seg_core, state.seg_start_idx, state.seg_n, state.seg_base = nil, nil, nil, nil
         state.seg_core = core
         state.seg_n = n
+        state.seg_start_idx = nil
+        state.seg_base = nil
     end
 
+    ---@type integer
+    local idx
     if state.seg_start_idx and state.seg_start_idx ~= 0 then
         local cycle_len = m
         local r = k % cycle_len
@@ -420,10 +424,7 @@ local function handle_segmentation(key, config, state, ctx)
             restore()
             return true
         end
-        local idx = ((state.seg_start_idx - 1 + r) % m) + 1
-        local rebuilt = build_by_groups(core, md, conf.all[idx])
-        ctx.input = rebuilt .. md:rep(tlen)
-        return true
+        idx = ((state.seg_start_idx - 1 + r) % m) + 1
     else
         local cycle_len = m + 1
         local r = k % cycle_len
@@ -431,11 +432,11 @@ local function handle_segmentation(key, config, state, ctx)
             restore()
             return true
         end
-        local idx = ((r - 1) % m) + 1
-        local rebuilt = build_by_groups(core, md, conf.all[idx])
-        ctx.input = rebuilt .. md:rep(tlen)
-        return true
+        idx = ((r - 1) % m) + 1
     end
+    local rebuilt = build_by_groups(core, md, conf.all[idx] or {})
+    ctx.input = rebuilt .. md:rep(trailing_len)
+    return true
 end
 
 -- [BackspaceLimit] 退格限制
@@ -449,25 +450,24 @@ local function handle_backspace(key, config, state, ctx)
         return false
     end
 
-    local kc = key.keycode
-    if kc ~= 0xFF08 or key:release() then
+    if key.keycode ~= 0xFF08 or key:release() then
         state.bs_sequence = false
         state.bs_prev_len = -1
         return false
     end
 
-    local cur_len = ctx.input and #ctx.input or 0
+    local curr_len = #ctx.input
     if state.bs_sequence then
         if not wanxiang.is_mobile_device() then
-            if state.bs_prev_len == 1 and cur_len == 0 then
+            if state.bs_prev_len == 1 and curr_len == 0 then
                 return true
             end
         end
-        state.bs_prev_len = cur_len
+        state.bs_prev_len = curr_len
         return false
     end
     state.bs_sequence = true
-    state.bs_prev_len = cur_len
+    state.bs_prev_len = curr_len
     return false
 end
 
@@ -481,8 +481,8 @@ local function handle_limit_repeat(key, config, ctx)
         return false
     end
 
-    local kc = key.keycode
-    if not (kc >= 0x61 and kc <= 0x7A) then
+    local keycode = key.keycode
+    if not (keycode >= 0x61 and keycode <= 0x7A) then
         return false
     end
 
@@ -493,10 +493,9 @@ local function handle_limit_repeat(key, config, ctx)
         segs = segs + 1
     end
 
-    local ch = string.char(kc)
-    local input = ctx.input or ""
-    local nxt = input .. ch
-    local last, rep_n = tail_rep(nxt)
+    local ch = string.char(keycode)
+    local next_input = ctx.input .. ch
+    local last, rep_n = tail_rep(next_input)
 
     if last:match(INITIALS) and rep_n > config.max_repeat then
         prompt(ctx, " 〔已超最大重复声母〕")
@@ -592,12 +591,11 @@ local function handle_number_logic(key, config, state, ctx)
         return false
     end
 
-    local d = tonumber(digit_str)
-    if d == 0 then
-        d = 10
+    local digit = tonumber(digit_str)
+    if digit == 0 then
+        digit = 10
     end
-
-    if d > config.kp_page_size then
+    if digit > config.kp_page_size then
         return false
     end
 
@@ -614,7 +612,7 @@ local function handle_number_logic(key, config, state, ctx)
 
     local selected_index = seg and seg.selected_index or 0
     local page_start = math.floor(selected_index / config.kp_page_size) * config.kp_page_size
-    local index = page_start + (d - 1)
+    local index = page_start + (digit - 1)
     if index >= menu:candidate_count() then
         return false
     end
@@ -699,7 +697,7 @@ function P.init(env)
         local state = env.super_processor_state
         assert(state)
 
-        local input = ctx.input or ""
+        local input = ctx.input
 
         -- [Predict Space] 联想空格接力起跑点
         if state.pending_predict_space then

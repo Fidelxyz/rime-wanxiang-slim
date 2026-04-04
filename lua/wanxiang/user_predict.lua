@@ -36,8 +36,8 @@
 ---@field just_committed boolean
 ---@field last_action_time number
 ---
----@field commit_conn Connection
----@field update_conn Connection
+---@field commit_notifier Connection
+---@field update_notifier Connection
 ---@field db WrappedUserDb?
 
 ---@class UserPredictTranslatorState
@@ -435,7 +435,7 @@ function P.init(env)
         sweep_expired_data(db, config)
     end
 
-    local commit_conn = env.engine.context.commit_notifier:connect(function(ctx)
+    local commit_notifier = env.engine.context.commit_notifier:connect(function(ctx)
         local config = env.user_predict_config
         assert(config)
         local state = env.user_predict_processor_state
@@ -624,7 +624,7 @@ function P.init(env)
 
         -- 事务入栈：把本次写库的记录推入回滚栈（最大保留 3 级）
         state.undo_stack = state.undo_stack or {}
-        if next(state.last_written_keys) then
+        if next(state.last_written_keys) ~= nil then
             table.insert(state.undo_stack, state.last_written_keys)
             if #state.undo_stack > 3 then
                 table.remove(state.undo_stack, 1)
@@ -656,7 +656,7 @@ function P.init(env)
         end
     end)
 
-    local update_conn = env.engine.context.update_notifier:connect(function(ctx)
+    local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
         if not db then
             return
         end
@@ -752,16 +752,16 @@ function P.init(env)
         just_committed = false,
         last_action_time = 0,
         undo_stack = {},
-        commit_conn = commit_conn,
-        update_conn = update_conn,
+        commit_notifier = commit_notifier,
+        update_notifier = update_notifier,
         db = db,
     }
 end
 
 ---@param env Env
 function P.fini(env)
-    env.user_predict_processor_state.commit_conn:disconnect()
-    env.user_predict_processor_state.update_conn:disconnect()
+    env.user_predict_processor_state.commit_notifier:disconnect()
+    env.user_predict_processor_state.update_notifier:disconnect()
     env.user_predict_config = nil
     env.user_predict_processor_state = nil
 end
@@ -831,28 +831,28 @@ function P.func(key, env)
 
         -- 根据选词范围分流数字键
         if repr:match("^[0-9]$") or repr:match("^KP_[0-9]$") then
-            local digit = repr:match("%d")
-            local index = tonumber(digit)
-            if index == 0 then
-                index = 10
+            local digit_str = repr:match("%d")
+            local digit = tonumber(digit_str)
+            if digit == 0 then
+                digit = 10
             end
 
             local is_valid_candidate = false
             local seg = context.composition:back()
             if seg then
                 local current_page = math.floor(seg.selected_index / config.page_size)
-                local target_index = current_page * config.page_size + (index - 1)
+                local target_index = current_page * config.page_size + (digit - 1)
                 if seg:get_candidate_at(target_index) then
                     is_valid_candidate = true
                 end
             end
 
-            if index > config.page_size or not is_valid_candidate then
+            if digit > config.page_size or not is_valid_candidate then
                 context:clear()
                 if reset_memory_chain then
                     reset_memory_chain(state) -- 非选词数字打断联想并上屏
                 end
-                env.engine:commit_text(digit)
+                env.engine:commit_text(digit_str)
                 return wanxiang.RIME_PROCESS_RESULTS.kAccepted
             else
                 -- 选词范围内的数字（如 1-6）：放行，让 super_processor 去执行正常的选词

@@ -7,7 +7,7 @@
 ---@class PartialCommitState
 ---@field pending_rest string?
 ---
----@field update_conn Connection
+---@field update_notifier Connection
 
 ---@class Env
 ---@field partial_commit_config PartialCommitConfig?
@@ -92,7 +92,7 @@ function P.init(env)
     local context = env.engine.context
 
     -- 监听器：在上屏动作完成后，立刻将截断后的剩余拼音恢复到输入框
-    local update_conn = context.update_notifier:connect(function(ctx)
+    local update_notifier = context.update_notifier:connect(function(ctx)
         local state = env.partial_commit_state
         assert(state)
 
@@ -120,13 +120,13 @@ function P.init(env)
 
     env.partial_commit_state = {
         pending_rest = nil,
-        update_conn = update_conn,
+        update_notifier = update_notifier,
     }
 end
 
 ---@param env Env
 function P.fini(env)
-    env.partial_commit_state.update_conn:disconnect()
+    env.partial_commit_state.update_notifier:disconnect()
     env.partial_commit_state = nil
 end
 
@@ -154,7 +154,7 @@ function P.func(key, env)
     end
 
     local cand = ctx:get_selected_candidate()
-    if not cand or #cand.text == 0 then
+    if not cand or cand.text == "" then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
