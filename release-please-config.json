@@ -14,40 +14,6 @@
                 "weasel.yaml",
                 "custom/wanxiang_chaifen.schema.yaml",
                 "custom/wanxiang_pro.schema.yaml"
-            ],
-            "changelog-sections": [
-                {
-                    "type": "feat",
-                    "section": "✨ 新特性"
-                },
-                {
-                    "type": "dict",
-                    "section": "📚 词库更新"
-                },
-                {
-                    "type": "perf",
-                    "section": "🔥 性能优化"
-                },
-                {
-                    "type": "fix",
-                    "section": "🐛 Bug 修复"
-                },
-                {
-                    "type": "refactor",
-                    "section": "💅 重构"
-                },
-                {
-                    "type": "docs",
-                    "section": "📖 文档"
-                },
-                {
-                    "type": "chore",
-                    "section": "🏡 杂项"
-                },
-                {
-                    "type": "ci",
-                    "section": "🤖 持续集成"
-                }
             ]
         }
     }
