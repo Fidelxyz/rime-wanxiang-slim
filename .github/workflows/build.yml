@@ -34,7 +34,7 @@ jobs:
         run: |-
           set -euxo pipefail
 
-          schemes=("base" "shouyou-fuzhu" "zrm-fuzhu" "tiger-fuzhu" "moqi-fuzhu" "flypy-fuzhu" "wubi-fuzhu" "hanxin-fuzhu" "shyplus-fuzhu")
+          schemes=("base" "zrm-fuzhu" "flypy-fuzhu" "moqi-fuzhu" "hanxin-fuzhu" "wubi-fuzhu" "tiger-fuzhu" "shouyou-fuzhu" "shyplus-fuzhu" "wx-fuzhu")
 
           for scheme in "${schemes[@]}"; do
             branch="wanxiang-${scheme}"
