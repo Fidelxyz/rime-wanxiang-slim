@@ -129,13 +129,27 @@ local function commit_handler(ctx, env)
         local seg = segments[i]
         local cand = seg:get_selected_candidate()
 
+        -- 无候选：可能是符号段
         if not cand then
+            if i == segments_count then
+                -- 最后一个 segment 无候选，允许跳过
+                goto continue
+            end
+
             state.comment_cache = {}
             return
         end
 
+        -- 从缓存中取出该候选的注释（编码）
         local comment = state.comment_cache[cand.text]
+
+        -- 有候选但无编码
         if not comment or comment == "" then
+            if i == segments_count then
+                -- 最后一个 segment 无编码，允许跳过
+                goto continue
+            end
+
             state.comment_cache = {}
             return
         end
@@ -144,6 +158,8 @@ local function commit_handler(ctx, env)
         for part in comment:gmatch("[^" .. config.escaped_delimiter .. "]+") do
             table.insert(codes, part)
         end
+
+        ::continue::
     end
 
     -- 最终至少需要一个编码片段

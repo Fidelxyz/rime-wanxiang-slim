@@ -99,21 +99,9 @@ patch:
 ```yaml
 patch:
   engine/filters:
-    - lua_filter@*chars_filter
-    - lua_filter@*cold_word_drop.filter
-    - lua_filter@*assist_sort
-    - lua_filter@*autocap_filter
-    - reverse_lookup_filter@radical_reverse_lookup
-    - lua_filter@*pro_preedit_format
-    - simplifier@emoji
-    - simplifier@traditionalize
-    - simplifier@mars
-    - simplifier@chinese_english
-    - simplifier@zrm_chaifen
-    - lua_filter@*search@radical_pinyin
-    #- lua_filter@*en_spacer       # 注释掉即为删除
-    - lua_filter@*pro_comment_format
-    - uniquifier
+    - lua_filter@*A
+    #- lua_filter@*B  # 注释掉即为删除
+    - lua_filter@*C
 ```
 
 **方法二：将键值置空**（适合单个键值对）
