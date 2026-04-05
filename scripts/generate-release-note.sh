@@ -22,23 +22,23 @@ changes="$(gh release view --json body -t "{{.body}}" "${TAG_NAME}" | sed '1d; /
 # Print the release note #
 ##########################
 
-echo "## 📝 更新日志"
+echo "## 更新日志"
 echo ""
 echo "${changes}"
 echo ""
-echo "## 🚀 下载引导"
+echo "## 输入方案下载"
 echo ""
-echo "### 1. 标准版输入方案（Base）"
+echo "### 拼音输入方案（Base）"
 echo ""
-echo "适用于**不使用辅助码的用户**。"
+echo "适用于**不使用辅助码**的用户。"
 echo ""
 echo "- 下载地址：[rime-wanxiang-base.zip](${download_url}/rime-wanxiang-base.zip)"
 echo ""
-echo "### 2. 双拼辅助码输入方案（Pro）"
+echo "### 拼音+辅助码输入方案（Pro）"
 echo ""
-echo "支持**任意双拼+辅助码**自由组合。"
+echo "支持任意**拼音+辅助码方案**自由组合。"
 echo ""
-echo "每一个 zip 压缩包对应一种**辅助码**方案的配置，请根据您使用的**辅助码**方案下载对应压缩包。每种辅助码方案配置均支持切换**任意双拼方案**。"
+echo "每一个 zip 压缩包对应一种**辅助码**方案的配置，请根据您使用的辅助码方案下载对应压缩包。每种辅助码方案配置均支持切换**任意双拼方案**。"
 echo ""
 
 for type in "${!display_names[@]}"; do
@@ -47,7 +47,9 @@ for type in "${!display_names[@]}"; do
 done
 
 echo ""
-echo "### 3. 语法模型"
+echo "## 可选数据下载"
+echo ""
+echo "### 语法模型"
 echo ""
 echo "语法模型需单独下载，并放入输入法用户目录根目录（方案文件旁），无需配置。"
 echo ""
