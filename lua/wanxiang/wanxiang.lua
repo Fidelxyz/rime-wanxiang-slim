@@ -6,7 +6,7 @@
 local M = {}
 
 -- x-release-please-start-version
-M.version = "v15.3.6"
+M.version = "v15.5.2"
 -- x-release-please-end
 
 ---@alias PROCESS_RESULT ProcessResult

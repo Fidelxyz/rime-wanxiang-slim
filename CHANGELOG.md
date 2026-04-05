@@ -1,5 +1,41 @@
 # Changelog
 
+## [15.5.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.3.6...v15.5.2) (2026-04-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* **keypad_composer:** extract keypad_composer from super_processor
+* disable Shift+Space for switching schema
+* **super_comment:** organize super_comment configs
+* **lookup_filter:** rename super_lookup to lookup_filter
+* **english_filter:** rename super_english to english_filter
+* **sequencer:** rename super_sequence to sequencer
+* **character_selector:** extract character_selector from super_processor
+
+### Bug Fixes
+
+* **auto_phrase:** fix syncing error caused by memory not closed ([13b17a9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/13b17a99abf7c58e72898c8d9541e912510fdc83))
+* **set_schema:** cleanup and fix code for switching schema ([32d2a13](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/32d2a130c384e680fd86d83dcdefe3f2dc53ede2))
+* **super_sequence:** not closing database manually ([5b466a6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5b466a6d98097d3888183deaa993c9cc29cb3823))
+
+
+### Miscellaneous Chores
+
+* disable Shift+Space for switching schema ([422bb72](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/422bb728a8ea2b134ed1f355b57dc95cd6d89a37))
+* merge v15.5.0 from upstream ([9c2b3fc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c2b3fc518b5c85ba08ac98e4d4a9a6ab7e28b7a))
+* merge v15.5.2 from upstream ([fdb5e44](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/fdb5e44354c1627b52cee8a61dc81d0853af206c))
+
+
+### Code Refactoring
+
+* **character_selector:** extract character_selector from super_processor ([8cf5611](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8cf5611970d3a2e4e34b0157fa634b279640ed65))
+* **english_filter:** rename super_english to english_filter ([cca68ce](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/cca68ce16ffcd0f9ba03440ed049acf255bafbe8))
+* **keypad_composer:** extract keypad_composer from super_processor ([eb5c196](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/eb5c196a7ad47fc7fee05641b928ea0454246b62))
+* **lookup_filter:** rename super_lookup to lookup_filter ([ed88267](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ed8826748c742cad72087ee4ae2ff567acb47807))
+* **sequencer:** rename super_sequence to sequencer ([3b117f9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/3b117f9dc2ca8ff6d007b0293607f56699cf7036))
+* **super_comment:** organize super_comment configs ([7d89af1](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7d89af131e9ddb2d7b80f489bfe15029cffdba0d))
+
 ## [15.3.6](https://github.com/Fidelxyz/rime_wanxiang/compare/v15.2.0...v15.3.6) (2026-03-24)
 
 
