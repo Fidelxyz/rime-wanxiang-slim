@@ -74,6 +74,7 @@
 - 虎码首末
 - 首右码
 - 首右+
+- 万象码
 
 ## 快速开始
 
@@ -217,7 +218,7 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
     <summary>基础版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-base:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-base:plum/full
     ```
     </details>
 
@@ -225,7 +226,7 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
     <summary>基础版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-base:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-base:plum/dicts
     ```
     </details>
 
@@ -233,7 +234,7 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
     <summary>自然码辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-zrm-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-zrm-fuzhu:plum/full
     ```
     </details>
 
@@ -241,103 +242,135 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
     <summary>自然码辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-zrm-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-zrm-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>墨奇辅助版（完整）</summary>
+    <summary>小鹤形码辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-moqi-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-flypy-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>墨奇辅助版（仅词库）</summary>
+    <summary>小鹤形码辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-moqi-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-flypy-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>小鹤辅助版（完整）</summary>
+    <summary>墨奇码辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-flypy-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-moqi-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>小鹤辅助版（仅词库）</summary>
+    <summary>墨奇码辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-flypy-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-moqi-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>虎码辅助版（完整）</summary>
+    <summary>汉心码辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-tiger-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-hanxin-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>虎码辅助版（仅词库）</summary>
+    <summary>汉心码辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-tiger-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-hanxin-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>五笔辅助版（完整）</summary>
+    <summary>五笔前二辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-wubi-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-wubi-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>五笔辅助版（仅词库）</summary>
+    <summary>五笔前二辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-wubi-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-wubi-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>汉心辅助版（完整）</summary>
+    <summary>虎码首末辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-hanxin-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-tiger-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>汉心辅助版（仅词库）</summary>
+    <summary>虎码首末辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-hanxin-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-tiger-fuzhu:plum/dicts
     ```
     </details>
 
     <details>
-    <summary>首右辅助版（完整）</summary>
+    <summary>首右码辅助版（完整）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-shouyou-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shouyou-fuzhu:plum/full
     ```
     </details>
 
     <details>
-    <summary>首右辅助版（仅词库）</summary>
+    <summary>首右码辅助版（仅词库）</summary>
 
     ```bash
-    bash rime-install amzxyz/rime_wanxiang@wanxiang-shouyou-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shouyou-fuzhu:plum/dicts
+    ```
+    </details>
+
+    <details>
+    <summary>首右+辅助版（完整）</summary>
+
+    ```bash
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/full
+    ```
+    </details>
+
+    <details>
+    <summary>首右+辅助版（仅词库）</summary>
+
+    ```bash
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/dicts
+    ```
+    </details>
+
+    <details>
+    <summary>万象码辅助版（完整）</summary>
+
+    ```bash
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/full
+    ```
+    </details>
+
+    <details>
+    <summary>万象码辅助版（仅词库）</summary>
+
+    ```bash
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/dicts
     ```
     </details>
 
