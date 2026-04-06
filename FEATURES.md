@@ -327,6 +327,14 @@ auto 模式/compose 模式下的数字键行为控制。
 |----------|------|
 | `wanxiang.schema.yaml` | `key_binder/bindings` 中 Tab/Ctrl+Tab 配置 |
 
+### 循环切换分词
+
+多次按下分词键 <kbd>'</kbd> 循环切换分词模式。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/manual_segmentor.lua` | 循环分词处理器 |
+
 ### 候选切割机 Lua
 
 Ctrl+1~0 上屏首选前 N 个字，保留后续编码。

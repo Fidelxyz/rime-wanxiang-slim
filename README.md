@@ -475,6 +475,10 @@ lookup_filter:
 
 **字符集过滤 Lua**：默认过滤启用，可通过开关切换字集范围（通用规范、GB2312、GBK、Big5、简繁体等），Ctrl+G 快捷切换。支持联动简繁转换开关，对不同开关单独配置显示范围和黑白名单。
 
+**循环切换音节**：多次按 <kbd>Tab</kbd> 循环切换分词位置，<kbd>Ctrl</kbd>+<kbd>Tab</kbd> 逐字确认。
+
+**循环切换分词**：多次按下分词键 <kbd>'</kbd> 循环切换分词模式。
+
 ```yaml
 charset:
   - option: charset_filter
