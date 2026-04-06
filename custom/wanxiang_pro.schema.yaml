@@ -44,7 +44,6 @@ switches:
 # 输入引擎
 engine:
   processors:
-    - lua_processor@*wanxiang.character_selector  # 以词定字
     - lua_processor@*wanxiang.super_processor  # 超强分词、重复限制、退格限制
     - lua_processor@*wanxiang.sequencer*P  #手动排序。默认快捷键：Ctrl+J 左移，Ctrl+K 右移，Ctrl+P 置顶，Ctrl+L 重置
     - ascii_composer  # 处理英文模式及中英文切换
@@ -52,8 +51,9 @@ engine:
     - key_binder  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
     - lua_processor@*wanxiang.key_binder  # 绑定按键扩展能力，支持正则扩展将按键生效情景更加细化
     - speller  # 拼写处理器，接受字符按键，编辑输入
+    - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
     - punctuator  # 符号处理器，将单个字符按键直接映射为标点符号或文字
-    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector前
+    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector, partial_commit 前
     - lua_processor@*wanxiang.partial_commit  # Ctrl+数字键N 提交前N个字
     - selector  # 选字处理器，处理数字选字键、上下候选定位、换页
     - navigator  # 处理输入栏内的光标移动
