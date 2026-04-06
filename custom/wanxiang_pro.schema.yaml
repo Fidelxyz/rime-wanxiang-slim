@@ -365,8 +365,16 @@ recognizer:
 #              '~' 是半角的，
 #              '`'（反引号）没有改成 '·'（间隔号）。
 punctuator:
-  digit_separators: ":,."  #数字分隔符
   __include: wanxiang_symbols:/punctuator
+
+  # 数字后标点优化。
+  # 指定的数字后的标点将转换为半角标点。
+  digit_separators: ":,."
+
+  # 数字后标点优化行为。
+  # commit: 数字后标点优化直接上屏。
+  # 若关闭数字后标点优化，该项需要设置为 commit。
+  #digit_separator_action: commit
 
 key_binder:
   import_preset: default

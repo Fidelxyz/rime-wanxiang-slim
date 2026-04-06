@@ -88,7 +88,7 @@
 
 ### 1. 安装
 
-1. 从 [Release](https://github.com/amzxyz/rime_wanxiang/releases) 页面下载方案文件，或使用[万象工具箱](#万象工具箱)。
+1. 从 [Release](https://github.com/Fidelxyz/rime-wanxiang-slim/releases) 页面下载方案文件。
 2. 将解压后的文件放入 Rime **用户目录**。
 3. 点击“重新部署”。
 
@@ -412,7 +412,7 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 
 使用 `/` 作为分隔符引导辅助码，格式：`拼音/辅码`。例如：双拼 `ni` + 辅助码 `re` → `ni/re`。
 
-不输入 `/` 则视为普通拼音，不干扰整句切分。适合新手或轻量级用户。
+不输入 `/` 则视为普通拼音，不干扰整句切分。
 
 ### 反查系统
 
@@ -441,58 +441,49 @@ lookup_filter:
 
 > **示例**：输入 `` ` `` 后输入“雨”和“辰”的双拼编码 `yu if`，可找到“震”字并显示辅助码。
 
+### 造词功能
+
+**按需造词（仅 Pro）**：通过 ` `` ` 引导进入造词模式；编码后双击 ` `` ` 可在不删除编码的情况下后触发造词；次选词上屏后自动记录。配置项：`add_user_dict`。
+
+**无感造词（仅 Pro）**：关闭调频时，选字上屏会自动记录不在词库中的词条。配置项：`add_user_dict/enable_auto_phrase`。
+
+**英文造词**：英文编码末尾输入 `\\` 触发英文造词，记录到 `en.userdb`。
+
+**用户词删除**：<kbd>Ctrl</kbd>+<kbd>Del</kbd> 软删除用户词。
+
+### 提示功能
+
+**错音错字提示**：输入常见错误读音时提示正确读音。配置项：`super_comment/correction_enabled`。
+
+**辅助码提示（仅 Pro）**：显示候选词的辅助码提示，<kbd>Ctrl</kbd>+<kbd>A</kbd> 循环切换辅助码提示 / 声调全拼提示 / 关闭注释，<kbd>Ctrl</kbd>+<kbd>C</kbd> 开启拆分辅助提示。
+
+### 候选排序功能
+
+**自动调频**：默认关闭，配置项：`translator/enable_user_dict`。
+
+**手动排序**：<kbd>Ctrl</kbd>+<kbd>J</kbd> 提升，<kbd>Ctrl</kbd>+<kbd>K</kbd> 降低，<kbd>Ctrl</kbd>+<kbd>L</kbd> 重置排序，<kbd>Ctrl</kbd>+<kbd>P</kbd> 置顶。支持多设备同步（通过 `/sync` 目录）。配置项：`sequencer`。
+
+**输入预测**：上屏后弹出预测候选（推荐仅在手机端开启），或置顶预测候选词。配置项：`user_predict`。
+
 ### 其他功能
 
-**Unicode 输入**：`U` + Unicode 编码输入对应字符。示例：`U62fc` 得到“拼”。
+**字符集过滤**：默认过滤启用，可通过开关切换字集范围（通用规范、GB2312、GBK、Big5、简繁体等），<kbd>Ctrl</kbd>+<kbd>G</kbd> 快捷切换。支持联动简繁转换开关，对不同开关单独配置显示范围和黑白名单。配置项：`charset`。
 
-**自动上屏**：三四位简码唯一时自动上屏（默认关闭，在 `speller:` 字段下取消注释开启）。
+**自动上屏**：三四位简码唯一时自动上屏。默认关闭，配置项：`speller/auto_select`。
 
-**空码回溯**：输入编码无候选时，显示上一次候选并标注 `~`，可直接空格上屏，减少回删操作。
+**空码回溯**：输入编码无候选时，显示上一次候选，可直接空格上屏，减少回删操作。
 
-**数字后自动半角**：中文状态下输入数字后紧跟 `,` 或 `.` 自动转为数字分隔符，如 `1000,000` 或 `3.1415`。
+**Unicode 输入**：`U` + Unicode 编码输入对应字符。配置项：`recognizer/patterns/unicode`。
 
-> 如不需要此功能，可通过 patch 修改：
->
-> ```
-> punctuator/digit_separators: ","  →  punctuator/digit_separators: commit
-> ```
+**数字后自动半角**：中文状态下输入数字后紧跟 `，` 或 `。`，自动转为半角标点。配置项：`punctuator/digit_separators`。
 
-**错音错字提示**：如输入 `gei yu 给予`，会提示正确读音 `jǐ yǔ`，全拼双拼均支持。
-
-**短语格式化 Lua**：将 `custom_phrase.txt` 中的 `\n`、`\s`、`\t` 等转换为实际的换行、空格、制表符。
-
-**输入模式切换 Lua**：使用 Shift+Space 在中文、英文、混合候选词之间切换。
-
-**辅助码提示 Lua（仅 Pro）**：显示候选词的辅助码提示，Ctrl+A 循环切换辅助码提示 / 声调全拼提示 / 关闭注释，Ctrl+C 开启拆分辅助提示。
-
-**按需造词（仅 Pro）**：通过 ` `` ` 引导进入造词模式；编码后双击 ` `` ` 可在不删除编码的情况下后触发造词；次选词上屏后自动记录。
-
-**无感造词 Lua（仅 Pro）**：关闭调频时，逐步选字上屏会自动记录词条，不产生碎片。
-
-**英文造词 Lua**：英文编码末尾输入 `\\` 触发英文造词，记录到 `en.userdb`。
-
-**用户词删除**：Ctrl+Del 标记用户词为不使用（假性删除）。
-
-**字符集过滤 Lua**：默认过滤启用，可通过开关切换字集范围（通用规范、GB2312、GBK、Big5、简繁体等），Ctrl+G 快捷切换。支持联动简繁转换开关，对不同开关单独配置显示范围和黑白名单。
+**短语格式化**：将 `custom_phrase.txt` 中的 `\n`、`\s`、`\t` 解析为换行、空格、制表符。
 
 **循环切换音节**：多次按 <kbd>Tab</kbd> 循环切换分词位置，<kbd>Ctrl</kbd>+<kbd>Tab</kbd> 逐字确认。
 
-**循环切换分词**：多次按下分词键 <kbd>'</kbd> 循环切换分词模式。
+**循环切换分词**：多次按下分词键 <kbd>'</kbd> 循环切换分词模式。配置项：`manual_segmentor`。
 
-```yaml
-charset:
-  - option: charset_filter
-    base: a
-    addlist:
-      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
-    blacklist: []
-  - option: s2t
-    base: f
-    addlist: []
-    blacklist: []
-```
-
-**超级替换 Lua**：替代内置 OpenCC，支持候选词的动态替换和追加。
+**超级替换**：替代内置 OpenCC，支持候选词的动态替换和追加。配置项：`super_replacer`。
 
 数据文件（`.txt`）使用 Tab 分隔：`匹配内容[Tab]替换内容1|替换内容2`
 
@@ -503,35 +494,25 @@ charset:
 | `comment` | 仅在注释中提示 | `hello` → `hello〔你好〕` |
 | `abbrev` | 匹配输入编码而非文本 | `zm` → `1.怎么 2.在吗` |
 
-**手动排序 Lua**：Ctrl+J 向左，Ctrl+K 向右，Ctrl+L 移除排序，Ctrl+P 置顶。支持多设备同步（通过 `/sync` 目录）。
-
-**Pro 版开启自动调频**：在 `wanxiang_pro.custom.yaml` 中添加：
-
-```yaml
-  enable_user_dict: true
-```
-
-**输入预测**：上屏后弹出预测候选（推荐仅在手机端开启），或置顶预测候选词。
-
 ## 自定义词库
 
 ### 固定词库
 
-**packs 方式**：确保外部词库文件名 `userxx.dict.yaml` 与内部 `name: userxx` 一致：
+**packs 方式**：新建 `your_user_dict.dict.yaml`，并添加 `translator/packs` 配置项：
 
 ```yaml
 patch:
   translator/packs/+:
-    - userxx
+    - your_user_dict
 ```
 
-**重命名方式**：将 `wanxiang.dict.yaml` 重命名为 `wanxianguser.dict.yaml`（避免更新覆盖），并更新所有方案文件中的引用：
+**重命名方式**：将 `wanxiang.dict.yaml` 重命名为 `your_user_dict.dict.yaml`（避免更新覆盖），并更新所有方案文件中的引用：
 
 ```yaml
 patch:
-  translator/dictionary: wanxianguser
-  user_dict_set/dictionary: wanxianguser
-  add_user_dict/dictionary: wanxianguser
+  translator/dictionary: your_user_dict
+  user_dict_set/dictionary: your_user_dict
+  add_user_dict/dictionary: your_user_dict
 ```
 
 ### 用户词库迁移
@@ -540,13 +521,13 @@ patch:
 
 ```yaml
 # Linux / macOS / Android
-sync_dir: "/home/amz/sync"
+sync_dir: "/home/username/sync"
 
 # Windows
-sync_dir: "D:\\home\\amz\\sync"
+sync_dir: "D:\\home\\username\\sync"
 ```
 
-点击右键菜单"同步用户数据"后，词库以 `设备名/wanxiang.userdb.txt` 格式导出到同步目录。将 txt 文件在设备间共享后再次同步即可合并数据。
+点击输入法菜单「同步用户数据」后，词库以 `<设备名>/wanxiang.userdb.txt` 格式导出到同步目录。将 txt 文件在设备间共享后再次同步即可合并数据。
 
 词库中预处理格式必须与万象编码完全一致，可使用[词库刷拼音辅助码工具](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)处理。
 
