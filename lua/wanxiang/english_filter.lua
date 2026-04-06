@@ -162,8 +162,8 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     local targets = {}
     for seg in guide:gmatch(split_pattern) do
         local t = normalize_word(seg)
-        if #t > 0 then
-            table.insert(targets, t)
+        if t ~= "" then
+            targets[#targets + 1] = t
         end
     end
     if next(targets) == nil then
@@ -178,20 +178,20 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
         if not s then
             return cand
         end
-        table.insert(starts, s)
+        starts[#starts + 1] = s
         p = e + 1
     end
 
     ---@type string[]
     local parts = {}
     if starts[1] > 1 then
-        table.insert(parts, text:sub(1, starts[1] - 1))
+        parts[#parts + 1] = text:sub(1, starts[1] - 1)
     end
     for i = 1, #starts do
         local current_s = starts[i]
         local next_s = starts[i + 1]
         local chunk_end = next_s and (next_s - 1) or #text
-        table.insert(parts, text:sub(current_s, chunk_end))
+        parts[#parts + 1] = text:sub(current_s, chunk_end)
     end
 
     local new_text = ""
@@ -225,6 +225,7 @@ local function apply_segment_formatting(text, input_code)
         return text
     end
 
+    ---@type string[]
     local parts = {}
     local p_code = 1
     for word in text:gmatch("%S+") do
@@ -254,7 +255,7 @@ local function apply_segment_formatting(text, input_code)
                 end
             end
         end
-        table.insert(parts, out_word)
+        parts[#parts + 1] = out_word
     end
     return table.concat(parts, " ")
 end
@@ -462,16 +463,11 @@ function F.func(input, env)
         end
     end
 
-    local break_signal = (context:get_property("english_spacing") == "true")
-    local is_prev_commit_english = state.is_prev_commit_english
-
-    if break_signal then
-        is_prev_commit_english = false
+    if context:get_property("english_spacing") == "true" then
         state.is_prev_commit_english = false
-    elseif is_prev_commit_english and config.spacing_timeout > 0 then
+    elseif state.is_prev_commit_english and config.spacing_timeout > 0 then
         local check_time = state.comp_start_time or wanxiang.now()
         if (check_time - state.last_commit_time) > config.spacing_timeout then
-            is_prev_commit_english = false
             state.is_prev_commit_english = false
         end
     end
@@ -479,7 +475,7 @@ function F.func(input, env)
     local code_ctx = {
         raw_input = code,
         spacing_mode = config.english_spacing_mode,
-        is_prev_commit_english = is_prev_commit_english,
+        is_prev_commit_english = state.is_prev_commit_english,
     }
 
     ---@type Candidate[]
@@ -494,9 +490,8 @@ function F.func(input, env)
         if is_upper or is_lower then
             local t1 = code
             local t2 = is_upper and code:lower() or code:upper()
-            table.insert(single_chars, Candidate("completion", 0, 1, t1, ""))
-            table.insert(single_chars, Candidate("completion", 0, 1, t2, ""))
-            has_single_chars = true
+            single_chars[#single_chars + 1] = Candidate("completion", 0, 1, t1, "")
+            single_chars[#single_chars + 1] = Candidate("completion", 0, 1, t2, "")
         end
     else
         single_char_injected = true

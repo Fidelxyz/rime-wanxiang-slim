@@ -66,6 +66,7 @@ end
 ---@param tasks Task[]
 ---@return string
 local function generate_files_signature(tasks)
+    ---@type string[]
     local sig_parts = {}
     for _, task in ipairs(tasks) do
         local f = io.open(task.path, "rb")
@@ -96,7 +97,7 @@ local function generate_files_signature(tasks)
             f:close()
 
             -- 将 前缀 + 大小 + 头中尾 拼接成该文件的唯一特征码
-            table.insert(sig_parts, task.prefix .. size .. head .. mid .. tail)
+            sig_parts[#sig_parts + 1] = task.prefix .. size .. head .. mid .. tail
         end
     end
     -- 将所有文件的特征码合并
@@ -216,10 +217,11 @@ end
 local function segment_convert(text, db, prefix, split_pat, state)
     local offsets = utf8_offsets(text)
     local char_count = #offsets - 1
+
+    ---@type string[]
     local result_parts = {}
     local i = 1
     local MAX_LOOKAHEAD = 6
-
     while i <= char_count do
         local start_byte = offsets[i]
         local matched = false
@@ -244,7 +246,7 @@ local function segment_convert(text, db, prefix, split_pat, state)
 
             if val then
                 local first_val = val:match(split_pat)
-                table.insert(result_parts, first_val or sub_text)
+                result_parts[#result_parts + 1] = first_val or sub_text
                 i = j - 1
                 matched = true
                 break
@@ -265,9 +267,9 @@ local function segment_convert(text, db, prefix, split_pat, state)
 
             if val then
                 local first_val = val:match(split_pat)
-                table.insert(result_parts, first_val or single_char)
+                result_parts[#result_parts + 1] = first_val or single_char
             else
-                table.insert(result_parts, single_char)
+                result_parts[#result_parts + 1] = single_char
             end
         end
 
@@ -339,6 +341,7 @@ function M.init(env)
             local entry_path = rules_path .. "/@" .. i
 
             -- 解析 triggers
+            ---@type (string|true)[]
             local triggers = {}
             local opts_keys = { "option", "options" }
             for _, key in ipairs(opts_keys) do
@@ -348,32 +351,29 @@ function M.init(env)
                     for k = 0, list.size - 1 do
                         local val = rime_config:get_string(key_path .. "/@" .. k)
                         if val then
-                            table.insert(triggers, val)
+                            triggers[#triggers + 1] = val
                         end
                     end
                 else
                     if rime_config:get_bool(key_path) == true then
-                        table.insert(triggers, true)
+                        triggers[#triggers + 1] = true
                     else
                         local val = rime_config:get_string(key_path)
                         if val and val ~= "true" then
-                            table.insert(triggers, val)
+                            triggers[#triggers + 1] = val
                         end
                     end
                 end
             end
 
             -- 解析 Tags
-            ---@type table<string, boolean>?
-            local target_tags = nil
+            ---@type table<string, boolean>
+            local target_tags = {}
             local tag_keys = { "tag", "tags" }
             for _, key in ipairs(tag_keys) do
                 local key_path = entry_path .. "/" .. key
                 local list = rime_config:get_list(key_path)
                 if list then
-                    if not target_tags then
-                        target_tags = {}
-                    end
                     for k = 0, list.size - 1 do
                         local val = rime_config:get_string(key_path .. "/@" .. k)
                         if val then
@@ -383,9 +383,6 @@ function M.init(env)
                 else
                     local val = rime_config:get_string(key_path)
                     if val then
-                        if not target_tags then
-                            target_tags = {}
-                        end
                         target_tags[val] = true
                     end
                 end
@@ -410,7 +407,7 @@ function M.init(env)
                     always_idx = tonumber(idx_str) or 1
                 end
 
-                table.insert(rules, {
+                rules[#rules + 1] = {
                     triggers = triggers,
                     tags = target_tags,
                     prefix = prefix,
@@ -420,7 +417,7 @@ function M.init(env)
                     comment_mode = comment_mode,
                     fmm = fmm,
                     cand_type = custom_cand_type,
-                })
+                }
 
                 -- 收集文件路径 (仅用于可能发生的 rebuild)
                 local keys_to_check = { "files", "file" }
@@ -431,13 +428,13 @@ function M.init(env)
                         for j = 0, list.size - 1 do
                             local p = resolve_path(rime_config:get_string(d_path .. "/@" .. j))
                             if p then
-                                table.insert(tasks, { path = p, prefix = prefix })
+                                tasks[#tasks + 1] = { path = p, prefix = prefix }
                             end
                         end
                     else
                         local p = resolve_path(rime_config:get_string(d_path))
                         if p then
-                            table.insert(tasks, { path = p, prefix = prefix })
+                            tasks[#tasks + 1] = { path = p, prefix = prefix }
                         end
                     end
                 end
@@ -445,9 +442,10 @@ function M.init(env)
         end
     end
 
+    ---@type string[]
     local config_sig_parts = {}
     for _, t in ipairs(rules) do
-        table.insert(config_sig_parts, (t.cand_type or ""))
+        config_sig_parts[#config_sig_parts + 1] = t.cand_type or ""
     end
     local config_sig = table.concat(config_sig_parts, "|")
 
@@ -538,7 +536,7 @@ function M.func(input, env)
                 end
 
                 local is_tag_match = true
-                if rule.tags then
+                if next(rule.tags) ~= nil then
                     is_tag_match = false
                     for req_tag, _ in pairs(rule.tags) do
                         if current_seg_tags[req_tag] then
@@ -585,12 +583,12 @@ function M.func(input, env)
                             for p in val:gmatch(config.split_pattern) do
                                 -- 如果词库提示的简码，刚好等于用户当前已经敲下的编码，则不显示提示
                                 if p ~= input_code then
-                                    table.insert(parts, p)
+                                    parts[#parts + 1] = p
                                 end
                             end
                             -- 只有当 parts 里有剩余有效提示时，才追加到注释数组里
                             if #parts > 0 then
-                                table.insert(shared_comments, table.concat(parts, " "))
+                                shared_comments[#shared_comments + 1] = table.concat(parts, " ")
                             end
                         elseif mode == "replace" then
                             if config.is_chain then
@@ -605,18 +603,18 @@ function M.func(input, env)
                                         end
                                         first = false
                                     else
-                                        table.insert(shared_pending, { text = p, comment = rule_comment })
+                                        shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
                                     end
                                 end
                             else
                                 show_main = false
                                 for p in val:gmatch(config.split_pattern) do
-                                    table.insert(shared_pending, { text = p, comment = rule_comment })
+                                    shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
                                 end
                             end
                         elseif mode == "append" then
                             for p in val:gmatch(config.split_pattern) do
-                                table.insert(shared_pending, { text = p, comment = rule_comment })
+                                shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
                             end
                         end
                     end
@@ -640,10 +638,10 @@ function M.func(input, env)
                 local new_cand = Candidate(final_type, cand.start, cand._end, current_text, current_main_comment)
                 new_cand.preedit = cand.preedit
                 new_cand.quality = cand.quality
-                table.insert(results, new_cand)
+                results[#results + 1] = new_cand
             else
                 cand.comment = current_main_comment
-                table.insert(results, cand)
+                results[#results + 1] = cand
             end
         end
 
@@ -653,7 +651,7 @@ function M.func(input, env)
                 local new_cand = Candidate(final_type, cand.start, cand._end, item.text, item.comment)
                 new_cand.preedit = cand.preedit
                 new_cand.quality = cand.quality
-                table.insert(results, new_cand)
+                results[#results + 1] = new_cand
             end
         end
         return results
@@ -675,10 +673,10 @@ function M.func(input, env)
     local top_buffer = {}
 
     -- 第一步：提前提取简码候选，分配阵营
-    for _, t in ipairs(config.rules) do
-        if t.mode == "abbrev" then
+    for _, rule in ipairs(config.rules) do
+        if rule.mode == "abbrev" then
             local is_active = false
-            for _, trigger in ipairs(t.triggers) do
+            for _, trigger in ipairs(rule.triggers) do
                 if trigger == true then
                     is_active = true
                     break
@@ -689,9 +687,9 @@ function M.func(input, env)
             end
 
             local is_tag_match = true
-            if t.tags then
+            if next(rule.tags) ~= nil then
                 is_tag_match = false
-                for req_tag, _ in pairs(t.tags) do
+                for req_tag, _ in pairs(rule.tags) do
                     if current_seg_tags[req_tag] then
                         is_tag_match = true
                         break
@@ -700,9 +698,9 @@ function M.func(input, env)
             end
 
             if is_active and is_tag_match and input_code ~= "" then -- 加上输入非空保护
-                local key = t.prefix .. input_code
+                local key = rule.prefix .. input_code
                 local val = state.db:fetch(key)
-                    or (not input_code:match("[A-Z]") and state.db:fetch(t.prefix .. input_code:upper()))
+                    or (not input_code:match("[A-Z]") and state.db:fetch(rule.prefix .. input_code:upper()))
 
                 if val then
                     local count = 0
@@ -711,18 +709,19 @@ function M.func(input, env)
                             seen_texts[p] = true
 
                             -- 简码也支持强制注入 type
-                            local final_type = t.cand_type or "abbrev"
+                            local final_type = rule.cand_type or "abbrev"
                             local abbrev_cand =
                                 Candidate(final_type, seg and seg.start or 0, seg and seg._end or #input_code, p, "")
 
                             count = count + 1
 
-                            if count <= t.always_qty then
+                            if count <= rule.always_qty then
                                 abbrev_cand.quality = 999
-                                table.insert(always_cands, { cand = abbrev_cand, index = t.always_idx + (count - 1) })
+                                always_cands[#always_cands + 1] =
+                                    { cand = abbrev_cand, index = rule.always_idx + (count - 1) }
                             else
                                 abbrev_cand.quality = 98
-                                table.insert(lazy_cands, abbrev_cand)
+                                lazy_cands[#lazy_cands + 1] = abbrev_cand
                             end
                         end
                     end
@@ -817,7 +816,7 @@ function M.func(input, env)
 
         if not quality_dropped then
             if q >= 99 then
-                table.insert(top_buffer, cand)
+                top_buffer[#top_buffer + 1] = cand
             else
                 quality_dropped = true
                 flush_buffer()

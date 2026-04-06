@@ -344,7 +344,9 @@ function M.func(input, env)
     local idx2 = 0
     local mode = "unknown" -- unknown | passthrough | grouping
 
+    ---@type Wrapper[]
     local normal_buf = {} -- 存 Normal
+    ---@type Wrapper[]
     local special_buf = {} -- 存 Table/UserTable
 
     ---@param force_all boolean
@@ -431,7 +433,7 @@ function M.func(input, env)
                 try_process_wrapper(w)
             else
                 mode = "grouping"
-                table.insert(normal_buf, w)
+                normal_buf[#normal_buf + 1] = w
                 try_flush_page_sort(false)
             end
         else
@@ -441,9 +443,9 @@ function M.func(input, env)
                 if (not window_closed) and (grouped_cnt < sort_window) then
                     grouped_cnt = grouped_cnt + 1
                     if w.is_table and not w.has_eng then
-                        table.insert(special_buf, w)
+                        special_buf[#special_buf + 1] = w
                     else
-                        table.insert(normal_buf, w)
+                        normal_buf[#normal_buf + 1] = w
                     end
 
                     if grouped_cnt >= sort_window then
@@ -452,9 +454,9 @@ function M.func(input, env)
                     try_flush_page_sort(false)
                 else
                     if w.is_table and not w.has_eng then
-                        table.insert(special_buf, w)
+                        special_buf[#special_buf + 1] = w
                     else
-                        table.insert(normal_buf, w)
+                        normal_buf[#normal_buf + 1] = w
                     end
                     try_flush_page_sort(false)
                 end

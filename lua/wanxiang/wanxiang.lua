@@ -339,6 +339,7 @@ end
 ---@param pattern_list string[]
 ---@return string[]
 local function expand_optional(pattern_list)
+    ---@type string[]
     local result = {}
     local has_expansion = false
 
@@ -397,14 +398,11 @@ local function expand_optional(pattern_list)
         if q_idx then
             has_expansion = true
             -- 1. 保留原子 (去掉 ?)
-            local p1 = pattern:sub(1, atom_end) .. pattern:sub(q_idx + 1)
+            result[#result + 1] = pattern:sub(1, atom_end) .. pattern:sub(q_idx + 1)
             -- 2. 删除原子 (去掉 原子+?)
-            local p2 = pattern:sub(1, atom_start - 1) .. pattern:sub(q_idx + 1)
-
-            table.insert(result, p1)
-            table.insert(result, p2)
+            result[#result + 1] = pattern:sub(1, atom_start - 1) .. pattern:sub(q_idx + 1)
         else
-            table.insert(result, pattern)
+            result[#result + 1] = pattern
         end
     end
 
@@ -453,6 +451,7 @@ end
 ---@param sep string
 ---@return string[]
 function RegexParser.smart_split(str, sep)
+    ---@type string[]
     local results = {}
     local current = ""
     local paren_depth = 0
@@ -476,20 +475,21 @@ function RegexParser.smart_split(str, sep)
                 brack_depth = brack_depth - 1
             end
             if char == sep and paren_depth == 0 and brack_depth == 0 then
-                table.insert(results, current)
+                results[#results + 1] = current
                 current = ""
             else
                 current = current .. char
             end
         end
     end
-    table.insert(results, current)
+    results[#results + 1] = current
     return results
 end
 
 ---@param str_list string[]
 ---@return string[]
 function RegexParser.expand_groups(str_list)
+    ---@type string[]
     local expanded = {}
     for _, str in ipairs(str_list) do
         local s_idx, e_idx = nil, nil
@@ -518,10 +518,10 @@ function RegexParser.expand_groups(str_list)
             local suffix = str:sub(e_idx + 1)
             local parts = RegexParser.smart_split(content, "|")
             for _, part in ipairs(parts) do
-                table.insert(expanded, prefix .. part .. suffix)
+                expanded[#expanded + 1] = prefix .. part .. suffix
             end
         else
-            table.insert(expanded, str)
+            expanded[#expanded + 1] = str
         end
     end
     return expanded
@@ -581,7 +581,7 @@ function M.load_regex_patterns(config, path)
             if val and val.value ~= "" then
                 local lua_pats = RegexParser.convert(val.value)
                 for _, p in ipairs(lua_pats) do
-                    table.insert(patterns, p)
+                    patterns[#patterns + 1] = p
                 end
             end
         end

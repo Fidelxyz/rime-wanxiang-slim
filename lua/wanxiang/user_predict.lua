@@ -233,7 +233,7 @@ local function get_utf8_chars(str)
     ---@type string[]
     local chars = {}
     for c in str:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        table.insert(chars, c)
+        chars[#chars + 1] = c
     end
     return chars
 end
@@ -344,7 +344,7 @@ local function get_predictions(prev_commit, db, config)
                     local age_days = (now - ts) / 86400.0
                     local score = count * (config.decay_rate ^ age_days) * multiplier
                     if score > 0.05 and word ~= "" then
-                        table.insert(prefix_cands, { word = word, weight = score, db_key = k })
+                        prefix_cands[#prefix_cands + 1] = { word = word, weight = score, db_key = k }
                     end
                 end
             end
@@ -358,7 +358,7 @@ local function get_predictions(prev_commit, db, config)
             for i, c in ipairs(prefix_cands) do
                 if i <= config.max_memory_branches then
                     if not seen[c.word] then
-                        table.insert(cands, c)
+                        cands[#cands + 1] = c
                         seen[c.word] = true
                     end
                 else
@@ -616,7 +616,7 @@ function P.init(env)
             if is_terminal_symbol then
                 reset_memory_chain(state) -- 终结符上屏完毕
             else
-                table.insert(shared_state.history, text)
+                shared_state.history[#shared_state.history + 1] = text
                 if #shared_state.history > 2 then
                     table.remove(shared_state.history, 1)
                 end
@@ -627,7 +627,7 @@ function P.init(env)
         -- 事务入栈：把本次写库的记录推入回滚栈（最大保留 3 级）
         state.undo_stack = state.undo_stack or {}
         if next(state.last_written_keys) ~= nil then
-            table.insert(state.undo_stack, state.last_written_keys)
+            state.undo_stack[#state.undo_stack + 1] = state.last_written_keys
             if #state.undo_stack > 3 then
                 table.remove(state.undo_stack, 1)
             end
@@ -1054,7 +1054,7 @@ function F.func(input, env)
         end
     end
 
-    if next(state.reorder_map) or context.input == "" then
+    if next(state.reorder_map) ~= nil or context.input == "" then
         for cand in input:iter() do
             yield(cand)
         end
@@ -1105,9 +1105,9 @@ function F.func(input, env)
             else
                 local rank = state.reorder_map[text]
                 if rank then
-                    table.insert(boosted, { cand = cand, rank = rank })
+                    boosted[#boosted + 1] = { cand = cand, rank = rank }
                 else
-                    table.insert(normal, cand)
+                    normal[#normal + 1] = cand
                 end
 
                 if count >= max_scan then

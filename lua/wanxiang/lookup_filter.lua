@@ -48,14 +48,17 @@ local function parse_rules(schema_id)
         return nil, nil
     end
 
-    local main_rules, xlit_rules = {}, {}
+    ---@type string[]
+    local main_rules = {}
+    ---@type string[]
+    local xlit_rules = {}
     for i = 0, algebra_list.size - 1 do
         local rule = algebra_list:get_value_at(i).value
         if rule and #rule > 0 then
             if rule:match("^xlit/HSPZN/") then
-                table.insert(xlit_rules, rule)
+                xlit_rules[#xlit_rules + 1] = rule
             else
-                table.insert(main_rules, rule)
+                main_rules[#main_rules + 1] = rule
             end
         end
     end
@@ -108,7 +111,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     local function add(s)
         if #s > 0 and not seen[s] then
             seen[s] = true
-            table.insert(out, s)
+            out[#out + 1] = s
         end
     end
 
@@ -116,7 +119,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     local function add_xlit(s)
         if #s > 0 and not seen_xlit[s] then
             seen_xlit[s] = true
-            table.insert(out_xlit, s)
+            out_xlit[#out_xlit + 1] = s
         end
     end
 
@@ -367,7 +370,7 @@ local function parse_comment_codes(comment, pattern, target_len)
         parts = { comment }
     else
         for seg in comment:gmatch(pattern) do
-            table.insert(parts, seg)
+            parts[#parts + 1] = seg
         end
         if #parts ~= target_len then
             return nil
@@ -388,7 +391,7 @@ local function parse_comment_codes(comment, pattern, target_len)
             for c in codes_part:gmatch("[^,]+") do
                 local trimmed = c:gsub("^%s+", ""):gsub("%s+$", "")
                 if #trimmed > 0 then
-                    table.insert(codes_list, trimmed)
+                    codes_list[#codes_list + 1] = trimmed
                 end
             end
         end
@@ -424,13 +427,17 @@ function F.init(env)
     local config_has_aux_source = false
     if sources_list and sources_list.size > 0 then
         for i = 0, sources_list.size - 1 do
-            local s = sources_list:get_value_at(i).value
-            table.insert(data_sources, s)
-            if s == "aux" then
-                config_has_aux_source = true
-            end
-            if s == "db" then
-                has_db = true
+            local source_val = sources_list:get_value_at(i)
+            local source = source_val and source_val:get_string()
+            if source and source ~= "" then
+                data_sources[#data_sources + 1] = source
+
+                if source == "aux" then
+                    config_has_aux_source = true
+                end
+                if source == "db" then
+                    has_db = true
+                end
             end
         end
     else
@@ -450,9 +457,14 @@ function F.init(env)
     if has_db then
         local db_list = rime_config:get_list("lookup_filter/dicts")
         if db_list and db_list.size > 0 then
+            ---@type ReverseLookup[]
             db_table = {}
             for i = 0, db_list.size - 1 do
-                table.insert(db_table, ReverseLookup(db_list:get_value_at(i).value))
+                local db_name_val = db_list:get_value_at(i)
+                local db_name = db_name_val and db_name_val:get_string()
+                if db_name and db_name ~= "" then
+                    db_table[#db_table + 1] = ReverseLookup(db_name)
+                end
             end
             local main_rules, xlit_rules = get_schema_rules(env)
             main_projection = #main_rules > 0 and Projection() or nil
@@ -485,9 +497,12 @@ function F.init(env)
     local tags = {}
     local tags_list = rime_config:get_list("lookup_filter/tags")
     if tags_list and tags_list.size > 0 then
-        tags = {}
         for i = 0, tags_list.size - 1 do
-            table.insert(tags, tags_list:get_value_at(i).value)
+            local tag_val = tags_list:get_value_at(i)
+            local tag = tag_val and tag_val:get_string()
+            if tag and tag ~= "" then
+                tags[#tags + 1] = tag
+            end
         end
     else
         tags = { "abc" }
@@ -652,12 +667,13 @@ function F.func(input, env)
 
                 -- 2. 核心分配逻辑：控制词组取什么数据
                 if cand_len == 1 then
+                    ---@type string[]
                     local combined = {}
                     for _, v in ipairs(db_cache[char_str].main) do
-                        table.insert(combined, v)
+                        combined[#combined + 1] = v
                     end
                     for _, v in ipairs(db_cache[char_str].xlit) do
-                        table.insert(combined, v)
+                        combined[#combined + 1] = v
                     end
                     raw_data.db[i] = (#combined > 0) and combined or nil
                 else
@@ -706,12 +722,14 @@ function F.func(input, env)
 
         if matched_idx then
             if if_single_char_first and cand_len > 1 then
-                table.insert(long_word_cands, cand)
+                long_word_cands[#long_word_cands + 1] = cand
             else
                 if not buckets[matched_idx][cand_len] then
                     buckets[matched_idx][cand_len] = {}
                 end
-                table.insert(buckets[matched_idx][cand_len], cand)
+                local cand_list = buckets[matched_idx][cand_len]
+                cand_list[#cand_list + 1] = cand
+
                 if cand_len > max_len then
                     max_len = cand_len
                 end

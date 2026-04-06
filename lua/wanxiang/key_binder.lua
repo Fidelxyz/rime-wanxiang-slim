@@ -73,7 +73,7 @@ function M.init(env)
             goto continue
         end
 
-        table.insert(bindings, binding)
+        bindings[#bindings + 1] = binding
         ::continue::
     end
 

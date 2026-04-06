@@ -63,9 +63,10 @@ local tone_map = {
 ---@param s string
 ---@return string
 local function remove_pinyin_tone(s)
+    ---@type string[]
     local result = {}
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        table.insert(result, tone_map[uchar] or uchar)
+        result[#result + 1] = tone_map[uchar] or uchar
     end
     return table.concat(result)
 end
@@ -275,6 +276,7 @@ end
 ---@param initial_comment string
 ---@return string
 local function get_reverse_lookup_comment(cand, initial_comment)
+    ---@type string[]
     local inner_parts = {}
 
     -- 音形注释拆解逻辑
@@ -282,18 +284,20 @@ local function get_reverse_lookup_comment(cand, initial_comment)
         ---@type string[]
         local segments = {}
         for segment in initial_comment:gmatch("[^%s]+") do
-            table.insert(segments, segment)
+            segments[#segments + 1] = segment
         end
 
         if #segments > 0 then
             local semicolon_count = select(2, segments[1]:gsub(";", ""))
+            ---@type string[]
             local pinyins = {}
+            ---@type string?
             local aux = nil
 
             for _, segment in ipairs(segments) do
                 local pinyin = segment:match("^[^;~]+")
                 if pinyin then
-                    table.insert(pinyins, pinyin)
+                    pinyins[#pinyins + 1] = pinyin
                 end
 
                 if not aux then
@@ -306,10 +310,10 @@ local function get_reverse_lookup_comment(cand, initial_comment)
 
             if #pinyins > 0 then
                 local pinyin_str = table.concat(pinyins, ",")
-                table.insert(inner_parts, ("音%s"):format(pinyin_str))
+                inner_parts[#inner_parts + 1] = ("音%s"):format(pinyin_str)
 
                 if aux then
-                    table.insert(inner_parts, ("辅%s"):format(aux))
+                    inner_parts[#inner_parts + 1] = ("辅%s"):format(aux)
                 end
             end
         end
@@ -317,7 +321,7 @@ local function get_reverse_lookup_comment(cand, initial_comment)
 
     local label = get_charset_label(cand.text)
     if label then
-        table.insert(inner_parts, label)
+        inner_parts[#inner_parts + 1] = label
     end
 
     if #inner_parts == 0 then
@@ -346,7 +350,7 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
     ---@type string[]
     local segments = {}
     for segment in initial_comment:gmatch("[^" .. auto_delimiter .. "]+") do
-        table.insert(segments, segment)
+        segments[#segments + 1] = segment
     end
 
     -- 根据 option 动态决定是否强制使用 tone
@@ -368,13 +372,13 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
                 -- 取第一个分号“前”的内容
                 local before = segment:match("^(.-);")
                 if before and before ~= "" then
-                    table.insert(aux_comments, before)
+                    aux_comments[#aux_comments + 1] = before
                 end
             else -- "fuzhu"
                 -- 取第一个分号“后”的内容（到行尾）
                 local after = segment:match(";(.+)$")
                 if after and after ~= "" then
-                    table.insert(aux_comments, after)
+                    aux_comments[#aux_comments + 1] = after
                 end
             end
         end

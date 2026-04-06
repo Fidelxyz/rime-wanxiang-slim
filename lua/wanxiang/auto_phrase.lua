@@ -156,7 +156,7 @@ local function commit_handler(ctx, env)
 
         -- 有编码，分割加入
         for part in comment:gmatch("[^" .. config.escaped_delimiter .. "]+") do
-            table.insert(codes, part)
+            codes[#codes + 1] = part
         end
 
         ::continue::

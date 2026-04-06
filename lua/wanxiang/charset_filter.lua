@@ -3,14 +3,14 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@class Filter
+---@class CharsetFilter
 ---@field options string[]|true
 ---@field base_set table<string, boolean>
 ---@field add table<integer, boolean>
 ---@field ban table<integer, boolean>
 
 ---@class CharsetFilterConfig
----@field filters Filter[]
+---@field filters CharsetFilter[]
 
 ---@class CharsetFilterState
 ---@field charset_db ReverseDb
@@ -149,7 +149,7 @@ function M.init(env)
 
     local filters_cfg = rime_config:get_list("charset")
 
-    ---@type Filter[]
+    ---@type CharsetFilter[]
     local filters = {}
     if filters_cfg then
         for i = 0, filters_cfg.size - 1 do
@@ -170,17 +170,18 @@ function M.init(env)
                 local options_value = options_cfg:get_value()
                 if options_list then
                     for k = 0, options_list.size - 1 do
-                        local val = options_list:get_value_at(k)
-                        if val and val ~= "" then
-                            table.insert(options, val)
+                        local option_val = options_list:get_value_at(k)
+                        local option = option_val and option_val:get_string()
+                        if option and option ~= "" then
+                            options[#options + 1] = option
                         end
                     end
                 elseif options_value and options_value:get_bool() == true then
                     always_on = true
                 else
-                    local options_str = options_value and options_value:get_string()
-                    if options_str and options_str ~= "" then
-                        table.insert(options, options_str)
+                    local option = options_value and options_value:get_string()
+                    if option and option ~= "" then
+                        options[#options + 1] = option
                     end
                 end
             end
@@ -188,11 +189,11 @@ function M.init(env)
             if always_on or #options > 0 then
                 ---@type table<string, boolean>
                 local rule_base_set = {}
-                local base_value = filter_map:get_value("base")
-                local base_str = base_value and base_value:get_string()
-                if base_str then
-                    for j = 1, #base_str do
-                        rule_base_set[base_str:sub(j, j)] = true
+                local base_val = filter_map:get_value("base")
+                local base = base_val and base_val:get_string()
+                if base then
+                    for j = 1, #base do
+                        rule_base_set[base:sub(j, j)] = true
                     end
                 end
 
@@ -201,9 +202,9 @@ function M.init(env)
                 local function load_list_to_map(list, map)
                     for k = 0, list.size - 1 do
                         local val = list:get_value_at(k)
-                        local val_str = val and val:get_string()
-                        if val_str and val_str ~= "" then
-                            for _, cp in utf8.codes(val_str) do
+                        local str = val and val:get_string()
+                        if str and str ~= "" then
+                            for _, cp in utf8.codes(str) do
                                 map[cp] = true
                             end
                         end
@@ -226,12 +227,12 @@ function M.init(env)
                     load_list_to_map(blacklist_list, rule_ban)
                 end
 
-                table.insert(filters, {
+                filters[#filters + 1] = {
                     options = always_on or options,
                     base_set = rule_base_set,
                     add = rule_add,
                     ban = rule_ban,
-                })
+                }
             end
             ::continue::
         end
