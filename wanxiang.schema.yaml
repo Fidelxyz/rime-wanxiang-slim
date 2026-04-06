@@ -154,18 +154,6 @@ user_predict:
   enable_predict_space: false
   context_timeout: 5000  # 上文超时时间毫秒
 
-super_tips:
-  db_name: "lua/tips"  # 可选字段，不写的话默认使用 "lua/tips"，相对路径
-  tips_key: "comma"  # key英文单词不清楚去default找
-  files:  # 自定义数据文件列表（可选，不配置则使用默认文件）
-    - lua/data/tips_show.txt  # 仍可保留默认文件
-    #- lua/data/my_tips.txt     # 用户自定义文件
-  disabled_types:
-    - "禁用类型A"
-    - "禁用类型B"
-    # 禁用的 tips 类型，初始化 tips 数据库的时候会直接忽略相关规则，修改部署后生效
-    # 可选项为：偏旁，符号，化学式，时间，符号，组字，翻译，表情，货币，车牌, 单位
-
 sequencer:  # 手动排序
   db_name: "lua/sequence"
   up: "Control+j"  # 上移
