@@ -15,9 +15,9 @@ menu:
   #alternative_select_labels: [ ⒈, ⒉, ⒊, ⒋, ⒌, ⒍, ⒎, ⒏, ⒐, ⒑ ]  # 修改候选项标签，Linux用这行用了加点字符
   #alternative_select_keys: ASDFGHJKL  # 这里战略性占用选字按键，如编码字符占用数字键，则需另设选字键
 
-# 万象状态面板相关
+# 方案选单相关
 switcher:
-  caption: 「万象状态面板」
+  caption: 「方案选单」
   hotkeys:
     - Control+grave
   save_options:  # 开关记忆（方案中的 switches），从万象状态面板（而非快捷键）切换时会记住的选项，需要记忆的开关不能设定 reset
