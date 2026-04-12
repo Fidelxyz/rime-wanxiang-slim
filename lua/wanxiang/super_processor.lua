@@ -158,7 +158,7 @@ function P.init(env)
 
     local backspace_limit_enabled = rime_config:get_bool("super_processor/enable_backspace_limit")
     if backspace_limit_enabled == nil then
-        backspace_limit_enabled = true
+        backspace_limit_enabled = false
     end
 
     local predict_space_enabled = rime_config:get_bool("super_processor/enable_predict_space")

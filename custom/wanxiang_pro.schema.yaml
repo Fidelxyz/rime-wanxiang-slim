@@ -126,7 +126,7 @@ super_comment:
     fallback: "~"
 
 super_processor:
-  enable_backspace_limit: true  # 开启/关闭退格限制
+  enable_backspace_limit: false  # 开启/关闭退格限制
   enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想
   limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
 
