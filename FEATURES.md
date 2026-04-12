@@ -110,8 +110,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `lua/wanxiang/english.lua` | 英文全能过滤器：格式化、智能加空格、大小写、空码补全 |
-| `wanxiang_english.schema.yaml` | 英文输入方案定义 |
-| `wanxiang_english.dict.yaml` | 英文词典数据 |
+| `melt_eng.dict.yaml` | 英文词典数据 |
 | `dicts/en.dict.yaml` | 英文词条 |
 | `wanxiang_algebra.yaml` (`english` 段) | 英文输入转写规则 |
 
@@ -610,7 +609,6 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 |----------|------|
 | `lua/wanxiang/super_filter.lua` | 英文句子过滤、模式切换逻辑 |
 | `wanxiang.schema.yaml` | `input_type` 开关配置 |
-| `wanxiang_english.schema.yaml` | 英文方案 Shift+Space 切换配置 |
 
 ### T9 九宫格方案
 

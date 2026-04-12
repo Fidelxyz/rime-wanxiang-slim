@@ -36,7 +36,6 @@ package_schema_base() {
         --exclude='wanxiang_chaifen_*.dict.yaml' \
         --exclude='wanxiang_chaifen.schema.yaml' \
         --exclude='wanxiang_pro.custom.yaml' \
-        --exclude='wanxiang_pro.dict.yaml' \
         --exclude='wanxiang_pro.schema.yaml' \
         --include='*.yaml' \
         --exclude='*' \
@@ -61,19 +60,7 @@ package_schema_pro() {
     local schema="$1"
     local out_dir="$2"
 
-    rm -rf "${out_dir}"
     mkdir -p "${out_dir}"
-
-    # 1) 移动分包后的 dicts
-    if [[ -d "${dist_dir}/pro-${schema}-fuzhu-dicts" ]]; then
-        mv "${dist_dir}/pro-${schema}-fuzhu-dicts" "${out_dir}/dicts"
-    fi
-    # 1.1) 补充必要的附加文件
-    for file in "en.dict.yaml" "cn&en.dict.yaml" "chengyu.txt" "people.dict.yaml"; do
-        if [[ -f "${root_dir}/dicts/${file}" ]]; then
-            cp "${root_dir}/dicts/${file}" "${out_dir}/dicts/"
-        fi
-    done
 
     # 2) 复制拆分表并重命名，同时拷贝 schema
     src="${root_dir}/custom/wanxiang_chaifen_${schema}.dict.yaml"
@@ -81,7 +68,6 @@ package_schema_pro() {
     [[ -f "$src" ]] && cp "$src" "$dst"
 
     for file in \
-        wanxiang_pro.dict.yaml \
         wanxiang_pro.schema.yaml \
         wanxiang_chaifen.schema.yaml
     do
@@ -97,7 +83,6 @@ package_schema_pro() {
         --exclude='wanxiang.custom*' \
         --exclude='wanxiang_chaifen_*.dict.yaml' \
         --exclude='wanxiang_chaifen.schema.yaml' \
-        --exclude='wanxiang_pro.dict.yaml' \
         --exclude='wanxiang_pro.schema.yaml' \
         --include='*.yaml' \
         --exclude='*' \
@@ -107,18 +92,17 @@ package_schema_pro() {
     rsync -av --ignore-existing \
         --exclude='.*' \
         --exclude='/custom' \
-        --exclude='/dicts' \
+        --exclude='/cn_dicts' \
         --exclude='/dist' \
         --exclude='/scripts' \
         --exclude='release-please-config.json' \
         --include='README.md' \
         --include='CHANGELOG.md' \
         --exclude='*.md' \
-        --exclude='wanxiang.dict.yaml' \
         --exclude='wanxiang.schema.yaml' \
         "${root_dir}/" "${out_dir}/"
 
-    # 5) default.yaml: - schema: wanxiang -> - schema: wanxiang_pro
+    # 5) Edit default.yaml: - schema: wanxiang -> - schema: wanxiang_pro
     sed -i -E 's/^([[:space:]]*)-\s*schema:\s*wanxiang\s*$/\1- schema: wanxiang_pro/' "${out_dir}/default.yaml"
 }
 
@@ -148,9 +132,14 @@ package_schema() {
 rm -rf "${dist_dir}"
 mkdir -p "${dist_dir}"
 
-echo "=== PRO 分包开始"
-python3 "${script_dir}/split_aux.py"
-echo "=== PRO 分包完毕"
+echo "=== 生成中英混输词库"
+python3 "${script_dir}/generate_cn_en_dict.py"
+echo "=== 生成中英混输词库完成"
+
+echo
+echo "=== 生成 PRO 中文词库"
+python3 "${script_dir}/generate_pro_cn_dicts.py"
+echo "=== 生成 PRO 中文词库完成"
 
 for schema in "${schema_list[@]}"; do
     package_schema "${schema}"

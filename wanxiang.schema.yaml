@@ -13,7 +13,7 @@ schema:
   dependencies:
     - wanxiang_mixedcode
     - wanxiang_reverse
-    - wanxiang_english
+    - melt_eng
 
 # 开关
 # reset: 默认状态。注释掉后，切换窗口时不会重置到默认状态。
@@ -258,7 +258,7 @@ charset_filter:
 
 # 主翻译器，拼音
 translator:
-  dictionary: wanxiang  # 挂载主词库
+  dictionary: rime_ice  # 挂载主词库
   #  packs: user                  #导入根目录下名称为user.dict.yaml的自定义固定词典
   #prism: wanxiang             # 多方案共用一个词库时，为避免冲突，需要用 prism 指定一个名字。
   enable_completion: true  # 启用候选词补全
@@ -290,13 +290,13 @@ custom_phrase:
   initial_quality: 99  #custom_phrase 的权重应该比 pinyin 和 wanxiang_en 大
 
 wanxiang_english:
-  dictionary: wanxiang_english
+  dictionary: melt_eng
   user_dict: en
   enable_completion: true
   enable_sentence: true
   initial_quality: 2.1
   comment_format:
-    - xform/^~.+$//  # 清除残留带声调字母
+    - xform/.*//  # 清除残留带声调字母
 
   ### Lua 相关配置 ###
 
@@ -454,7 +454,7 @@ speller:
       - wanxiang_algebra:/base/全拼  #拼音转双拼码
 
 user_dict_set:
-  dictionary: wanxiang
+  dictionary: rime_ice
   initial_quality: 0
   enable_completion: false
   enable_sentence: false
@@ -468,7 +468,7 @@ user_dict_set:
 
 add_user_dict:
   tag: add_user_dict
-  dictionary: wanxiang
+  dictionary: rime_ice
   initial_quality: -1
   user_dict: zc
   enable_completion: true  # 提前显示尚未输入完整码的字〔仅 table_translator 有效〕

@@ -5,4 +5,4 @@ name: wanxiang_mixedcode
 version: "LTS"
 sort: by_weight
 import_tables:
-  - dicts/cn&en  #混合编码词库
+  - en_dicts/cn_en

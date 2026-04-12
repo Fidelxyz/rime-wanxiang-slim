@@ -15,8 +15,6 @@ local SCHEMA_MAP = {
     ["/pyjj"] = "拼音加加",
     ["/gbpy"] = "国标双拼",
     ["/lxsq"] = "乱序17",
-    ["/zrlong"] = "自然龙",
-    ["/hxlong"] = "汉心龙",
     ["/pinyin"] = "全拼",
 }
 
@@ -64,8 +62,6 @@ local function set_pinyin_schema(custom_file, schema_name)
         content = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
     elseif custom_file:find("wanxiang_mixedcode") then
         content = content:gsub("(%s*__patch:%s*wanxiang_algebra:/mixed/)%S+", "%1" .. schema_name)
-    elseif custom_file:find("wanxiang_english") then
-        content = content:gsub("(%s*__patch:%s*wanxiang_algebra:/english/)%S+", "%1" .. schema_name)
     elseif custom_file:find("wanxiang%.custom") then
         content = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
             return prefix .. new_schema_name(suffix)
@@ -149,7 +145,6 @@ local function translator(input, seg, env)
             main_custom_file,
             "wanxiang_mixedcode.custom.yaml",
             "wanxiang_reverse.custom.yaml",
-            "wanxiang_english.custom.yaml",
         }
 
         for _, filename in ipairs(files) do

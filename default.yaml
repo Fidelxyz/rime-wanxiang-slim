@@ -6,7 +6,6 @@ config_version: "15.5.2"  # x-release-please-version
 # 方案列表
 schema_list:
   - schema: wanxiang
-    # - schema: wanxiang_english
 
 # 菜单
 menu:
