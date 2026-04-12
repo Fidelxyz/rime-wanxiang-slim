@@ -235,24 +235,24 @@ super_replacer:
 #   u: 基本区，U+4E00 - U+9FFF
 #   A-I: 扩展 A-I 区，U+3400 及各扩展区 (支持到 Ext-I)
 #   c: 兼容区汉字
-# addlist / blacklist: 针对字符的白名单 / 黑名单。
-charset:
+# whitelist / blacklist: 针对字符的白名单 / 黑名单。
+charset_filter:
   - option: charset_filter
     base: a
-    addlist:
+    whitelist:
       - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
     blacklist: []
   - option: s2t
     base: fa
-    addlist: []
+    whitelist: []
     blacklist: []
   - option: s2hk
     base: ha
-    addlist: []
+    whitelist: []
     blacklist: []
   - option: s2tw
     base: ta
-    addlist: []
+    whitelist: []
     blacklist: []
 
 # 主翻译器，拼音

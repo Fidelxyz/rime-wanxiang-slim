@@ -261,7 +261,7 @@ Ctrl+Del 标记用户词为不使用（假性删除）。
 |----------|------|
 | `lua/wanxiang/charset_filter.lua` | 字符集过滤模块 |
 | `lua/data/charset.reverse.bin` | 二进制字符集标记数据库 |
-| `wanxiang.schema.yaml` | `charset` 段配置（option、base、addlist、blacklist） |
+| `wanxiang.schema.yaml` | `charset` 段配置（option、base、whitelist、blacklist） |
 
 ### 超级替换（Super Replacer）
 

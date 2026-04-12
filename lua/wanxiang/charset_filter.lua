@@ -79,7 +79,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
             else
                 local attr = state.db_memo[char]
                 if attr == nil then
-                    attr = state.charset_db:lookup(char) or ""
+                    attr = state.charset_db:lookup(char)
                     state.db_memo[char] = attr
                 end
 
@@ -143,14 +143,13 @@ local M = {}
 function M.init(env)
     local rime_config = env.engine.schema.config
 
-    local charsetFile = rime_api.get_distribution_code_name():lower() ~= "weasel"
+    local charset_db = rime_api.get_distribution_code_name():lower() ~= "weasel"
             and wanxiang.get_filename_with_fallback("lua/data/charset.reverse.bin")
         or "lua/data/charset.reverse.bin"
 
-    local filters_cfg = rime_config:get_list("charset")
-
     ---@type CharsetFilter[]
     local filters = {}
+    local filters_cfg = rime_config:get_list("charset_filter")
     if filters_cfg then
         for i = 0, filters_cfg.size - 1 do
             local filter_cfg = filters_cfg:get_at(i)
@@ -213,10 +212,10 @@ function M.init(env)
 
                 ---@type table<integer, boolean>
                 local rule_add = {}
-                local addlist_cfg = filter_map:get("addlist")
-                local addlist_list = addlist_cfg and addlist_cfg:get_list()
-                if addlist_list then
-                    load_list_to_map(addlist_list, rule_add)
+                local whitelist_cfg = filter_map:get("whitelist")
+                local whitelist_list = whitelist_cfg and whitelist_cfg:get_list()
+                if whitelist_list then
+                    load_list_to_map(whitelist_list, rule_add)
                 end
 
                 ---@type table<integer, boolean>
@@ -243,7 +242,7 @@ function M.init(env)
     }
 
     env.charset_Filter_state = {
-        charset_db = ReverseDb(charsetFile),
+        charset_db = ReverseDb(charset_db),
         db_memo = {},
         phrase_history_dict = {},
     }
