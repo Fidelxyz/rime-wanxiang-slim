@@ -1,5 +1,5 @@
 ---Enhances English input by applying smart casing and spacing, limiting candidate count for performance, ensuring single-letter candidates are available, and providing fallback English word derivation based on typing history.
----@module "wanxiang.english_filter"
+---@module "wanxiang.english"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -11,7 +11,7 @@
 -- 5. [Order] 单字母(a/A) 智能插队排序,补齐单字母候选
 -- 6. [Limit] 纯英文数量限制，并增加极速防卡顿熔断机制
 
----@class EnglishFilterConfig
+---@class EnglishConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field spacing_timeout number
 ---@field max_eng_cands integer
@@ -19,7 +19,7 @@
 ---@field split_pattern string
 ---@field delim_check_pattern string
 
----@class EnglishFilterState
+---@class EnglishState
 ---@field is_prev_commit_english boolean
 ---@field last_commit_time number
 ---@field comp_start_time number?
@@ -31,8 +31,8 @@
 ---@field commit_notifier Connection
 
 ---@class Env
----@field english_filter_config EnglishFilterConfig?
----@field english_filter_state EnglishFilterState?
+---@field english_config EnglishConfig?
+---@field english_state EnglishState?
 
 ---@class CodeContext
 ---@field raw_input string
@@ -317,6 +317,25 @@ local function apply_formatting(cand, code_ctx)
     return new_cand
 end
 
+---@param key_event KeyEvent
+---@param env Env
+---@return ProcessResult
+local function P(key_event, env)
+    local context = env.engine.context
+    local keycode = key_event.keycode
+
+    if context.composition:empty() then
+        if keycode == 0xff0d or keycode == 0xff8d or keycode == 0x20 then
+            context:set_property("english_spacing", "true")
+        end
+        if keycode == 0x5c or keycode == 0x2f then
+            context:set_property("force_sticky_code", "true")
+        end
+    end
+
+    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+end
+
 local F = {}
 
 ---@param env Env
@@ -342,7 +361,7 @@ function F.init(env)
     local split_pattern = "[^" .. escaped_delims .. "]+"
     local delim_check_pattern = "[" .. escaped_delims .. "]"
 
-    env.english_filter_config = {
+    env.english_config = {
         english_spacing_mode = english_spacing_mode,
         spacing_timeout = spacing_timeout,
         max_eng_cands = max_eng_cands,
@@ -352,7 +371,7 @@ function F.init(env)
     }
 
     local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
-        local state = env.english_filter_state
+        local state = env.english_state
         assert(state)
 
         local input = ctx.input
@@ -367,7 +386,7 @@ function F.init(env)
     end)
 
     local commit_notifier = env.engine.context.commit_notifier:connect(function(ctx)
-        local state = env.english_filter_state
+        local state = env.english_state
         assert(state)
 
         local commit_text = ctx:get_commit_text()
@@ -401,7 +420,7 @@ function F.init(env)
         state.block_derivation = false
     end)
 
-    env.english_filter_state = {
+    env.english_state = {
         is_prev_commit_english = false,
         last_commit_time = 0,
         comp_start_time = nil,
@@ -415,10 +434,10 @@ end
 
 ---@param env Env
 function F.fini(env)
-    env.english_filter_state.update_notifier:disconnect()
-    env.english_filter_state.commit_notifier:disconnect()
-    env.english_filter_config = nil
-    env.english_filter_state = nil
+    env.english_state.update_notifier:disconnect()
+    env.english_state.commit_notifier:disconnect()
+    env.english_config = nil
+    env.english_state = nil
 end
 
 ---@param input Translation
@@ -426,9 +445,9 @@ end
 function F.func(input, env)
     local context = env.engine.context
 
-    local config = env.english_filter_config
+    local config = env.english_config
     assert(config)
-    local state = env.english_filter_state
+    local state = env.english_state
     assert(state)
 
     if context:get_property("force_sticky_code") == "true" then
@@ -669,4 +688,4 @@ function F.func(input, env)
     end
 end
 
-return F
+return { P = P, F = F }

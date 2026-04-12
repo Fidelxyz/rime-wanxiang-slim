@@ -19,8 +19,7 @@
 ---@class SuperProcessorState
 ---
 ---States for BackspaceLimit
----@field bs_prev_len integer
----@field bs_sequence boolean
+---@field bs_deleting_preedit boolean
 ---
 ---States for PredictSpace
 ---@field pending_predict_space boolean
@@ -74,7 +73,6 @@ local function handle_predict_space(config, state, ctx)
     end
     if (not ctx:is_composing() or ctx.input == "") and ctx:has_menu() then
         state.pending_predict_space = true
-        ctx:set_option("_dummy_predict_update", true)
         return true
     end
     return false
@@ -87,29 +85,27 @@ end
 ---@param ctx Context
 ---@return boolean
 local function handle_backspace(key, config, state, ctx)
-    if not config.backspace_limit_enabled then
+    if wanxiang.is_mobile_device() or not config.backspace_limit_enabled then
         return false
     end
 
+    -- If the backspace key is released, reset the state.
     if key.keycode ~= 0xFF08 or key:release() then
-        state.bs_sequence = false
-        state.bs_prev_len = -1
+        state.bs_deleting_preedit = false
         return false
     end
 
-    local curr_len = #ctx.input
-    if state.bs_sequence then
-        if not wanxiang.is_mobile_device() then
-            if state.bs_prev_len == 1 and curr_len == 0 then
-                return true
-            end
-        end
-        state.bs_prev_len = curr_len
+    -- If the backspace key is presesed when the input is not empty,
+    -- it means the user is deleting preedit.
+    if ctx.input ~= "" then
+        state.bs_deleting_preedit = true
         return false
     end
-    state.bs_sequence = true
-    state.bs_prev_len = curr_len
-    return false
+
+    -- Now, the input is empty, i.e. the last character of the input has been deleted.
+    -- Intercept the backspace key to prevent deleting committed text, if the
+    -- backspace key is pressed when deleting preedit.
+    return state.bs_deleting_preedit
 end
 
 -- [RepeatLimit] 重复输入限制
@@ -209,7 +205,6 @@ function P.init(env)
         -- [Predict Space] 联想空格接力起跑点
         if state.pending_predict_space then
             state.pending_predict_space = false
-            ctx:set_option("_dummy_predict_update", false)
             ctx:clear()
             env.engine:commit_text(" ")
         end
@@ -224,8 +219,7 @@ function P.init(env)
     }
 
     env.super_processor_state = {
-        bs_prev_len = -1,
-        bs_sequence = false,
+        bs_deleting_preedit = false,
         pending_predict_space = false,
         update_notifier = update_notifier,
     }
@@ -238,10 +232,10 @@ function P.fini(env)
     env.super_processor_state = nil
 end
 
----@param key KeyEvent
+---@param key_event KeyEvent
 ---@param env Env
----@return integer
-function P.func(key, env)
+---@return ProcessResult
+function P.func(key_event, env)
     local context = env.engine.context
 
     local config = env.super_processor_config
@@ -249,41 +243,25 @@ function P.func(key, env)
     local state = env.super_processor_state
     assert(state)
 
-    -- 优先处理按键释放
-    if key:release() then
-        handle_backspace(key, config, state, context)
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
-    end
-
-    local kc = key.keycode
+    local keycode = key_event.keycode
 
     -- [Predict Space] 联想空格
-    if kc == 0x20 then
+    if keycode == 0x20 then
         if handle_predict_space(config, state, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
         end
     end
 
-    -- TODO: move to english processor
-    if context.composition:empty() then
-        if kc == 0xff0d or kc == 0xff8d or kc == 0x20 then
-            context:set_property("english_spacing", "true")
-        end
-        if kc == 0x5c or kc == 0x2f then
-            context:set_property("force_sticky_code", "true")
-        end
-    end
-
     -- [BackspaceLimit] 退格防止删除已上屏内容
-    if kc == 0xFF08 then
-        if handle_backspace(key, config, state, context) then
+    if keycode == 0xFF08 then
+        if handle_backspace(key_event, config, state, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
         end
     end
 
     -- [RepeatLimit] 重复输入限制
-    if kc >= 0x61 and kc <= 0x7A then
-        if handle_limit_repeat(key, config, context) then
+    if keycode >= 0x61 and keycode <= 0x7A then
+        if handle_limit_repeat(key_event, config, context) then
             return wanxiang.RIME_PROCESS_RESULTS.kAccepted
         end
     end

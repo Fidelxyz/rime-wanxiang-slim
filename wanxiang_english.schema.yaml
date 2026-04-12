@@ -35,7 +35,7 @@ engine:
     - punct_translator
   filters:
     - lua_filter@*wanxiang.auto_phrase
-    - lua_filter@*wanxiang.english_filter
+    - lua_filter@*wanxiang.english*F
     - uniquifier
 
 speller:
@@ -68,7 +68,7 @@ wanxiang_english:
   comment_format:
     - xform/^~.+$//  # 清除残留带声调字母
 
-  ### english_filter 相关配置 ###
+  ### Lua 相关配置 ###
 
   # 自动添加空格。
   # off: 关闭。
