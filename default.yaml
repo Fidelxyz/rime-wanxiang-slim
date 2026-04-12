@@ -38,6 +38,12 @@ switcher:
   abbreviate_options: true  # 折叠时是否缩写选项
 option_list_separator: ' / '  # 折叠时的选项分隔符
 
+punctuator:
+  full_shape:
+    __include: punctuation:/full_shape
+  half_shape:
+    __include: punctuation:/half_shape
+
 # 中英文切换
 #
 # good_old_caps_lock:

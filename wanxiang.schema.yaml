@@ -360,23 +360,15 @@ recognizer:
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
 
 # 标点符号
-# punctuator 下面有2个子项：
-# 设置为一个映射，就自动上屏；设置为多个映射，如 '/' : [ '/', ÷ ] 则进行复选。
-#   full_shape: 全角没改，使用预设值
-#   half_shape: 标点符号全部直接上屏，和 macOS 自带输入法的区别是
-#              '|' 是半角的，
-#              '~' 是半角的，
-#              '`'（反引号）没有改成 '·'（间隔号）。
 punctuator:
-  __include: wanxiang_symbols:/punctuator
+  import_preset: default
 
   # 数字后标点优化。
   # 指定的数字后的标点将转换为半角标点。
-  digit_separators: ":,."
+  #digit_separators: ":,."
 
   # 数字后标点优化行为。
-  # commit: 数字后标点优化直接上屏。
-  # 若关闭数字后标点优化，该项需要设置为 commit。
+  # commit: 数字后标点直接提交。
   #digit_separator_action: commit
 
 key_binder:
