@@ -1,16 +1,20 @@
 # 万象拼音输入方案精简版
 
-专注于输入的万象拼音方案精简版，支持多种拼音方案和辅助码方案的任意组合。
+<blockquote>
+<p align="center"><em><strong>You don't pay for what you don't use.</strong></em></p>
 
-以基于大规模语料筛选构建的[万象词库](https://github.com/amzxyz/RIME-LMDG)和语法模型为核心，提供流畅的输入体验。
+<p align="center"><em><strong>只为你所需的功能买单。</strong></em></p>
+</blockquote>
 
-## 精简说明
+这是源自于 C++ 的[零开销（Zero-overhead）](https://en.cppreference.com/w/cpp/language/Zero-overhead_principle.html)设计哲学。原版[万象拼音输入方案](https://github.com/amzxyz/rime_wanxiang)涵盖了丰富的功能，在“对标大厂体验”的同时也引入了具有“大厂风味”的庞大臃肿：其中大部分与输入无关的功能不会被绝大多数用户使用（我为什么要在一个输入法中计算时辰，且[该功能花费了超 3000 行代码来实现](https://github.com/amzxyz/rime_wanxiang/blob/v15.7.0/lua/wanxiang/shijian.lua)？），却依旧会带来潜在的性能负担。此外，其“低内聚、高耦合”的混乱架构设计[^1]也增加了用户的自定义难度及开发者的维护难度。
 
-本仓库是 [amzxyz/rime_wanxiang](https://github.com/amzxyz/rime_wanxiang) 的 fork。
+基于以上背景，该 Fork 作为一个**专注于输入**的精简分支，移除了原版中与输入无关的功能，遵循 [SOLID 原则](https://en.wikipedia.org/wiki/SOLID)重构了代码架构，并为全部 Lua 代码添加了完整的类型注解。该 Fork 由科班程序员维护，定期同步上游更新，逐步重写原版由 LLM 生成的低效代码，提供更轻量高效的输入体验。同时，该 Fork 重写了原版混乱的说明文档，为用户提供更低的上手门槛和更好的自定义体验。
+
+[^1]: [“高内聚、低耦合”](https://baike.baidu.com/item/%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/5227009)是软件工程中的设计原则，指模块内部的元素应该紧密相关（高内聚），而模块之间的依赖关系应该尽量减少（低耦合）。此处“低内聚、高耦合”为其反义词。原版万象拼音输入方案采用了大量“超级模块”的设计，将互不相关的功能混杂在同一个模块中，而实现单个功能的代码却分散在各处，以毫无必要的方式增加了代码的复杂度和维护难度。
 
 <details>
 <summary>
-这是一个<strong>专注于输入</strong>的精简分支，移除了无关功能，并定期同步上游更新。
+已移除功能列表
 </summary>
 <br>
 
@@ -30,17 +34,18 @@
 | 固定已输入语句 | 按下句号锁定当前候选，双击句号锁定上一次 N-1 字候选 |
 | 短语格式化 | 自定义短语中重复字符与动态变量（时间、日期等）格式化 |
 | 翻译模式 | <kbd>Ctrl</kbd> + <kbd>E</kbd> 进入中英互译模式 |
-| T9 九宫格方案 | 移动端 T9 输入方案 |
+| T9 九宫格方案 | 移动端九宫格输入方案 |
 | 14 键 / 18 键 | 移动端缩减键盘布局支持 |
 
 </details>
 
 ## 版本对比
 
+标准版与 Pro 版本的主要区别在于是否支持**辅助码**筛选。
+
 |  | 标准版 (Base) | 增强版 (Pro) |
 | --- | --- | --- |
-| **方案文件** | `wanxiang.schema.yaml` | `wanxiang_pro.schema.yaml` |
-| **辅助码** | **不适用** | **7 种辅助码可选** |
+| **辅助码** | **不适用** | **9 种辅助码可选**，支持**直接引导**或**间接引导** |
 | **自动调频** | 默认开启 | 默认关闭 |
 | **用户词记录** | 自动记录 | 手动造词（` `` ` 引导）或无感造词 |
 
@@ -78,7 +83,7 @@
 
 ## 快速开始
 
-如果你不熟悉 Rime 基础概念（用户目录、部署等），建议先参考：
+如果你不熟悉 Rime 基础概念（用户目录、部署等），建议先阅读以下文档：
 
 - [Oh My Rime - Rime 安装指南](https://www.mintimate.cc/zh/guide/installRime.html)
 - [Rime 参数配置详解](https://xishansnow.github.io/posts/41ac964d.html)
@@ -165,30 +170,29 @@
 
 </details>
 
-### 4. 个人配置：Custom Patch
+### 4. 使用补丁文件自定义
 
 `*.custom.yaml` 是对方案文件的补丁，属于个人私有配置，**不会被升级覆盖**。
 
-custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 同级）。
+custom 文件须位于**用户目录根目录**（`*.schema.yaml` 旁）。通过 `/` 指令切换方案时，脚本已自动将模板从 `custom` 文件夹复制到根目录完成初始化。
 
 > [!CAUTION]
 > 不要直接修改 `custom` 文件夹中的文件，该文件夹为模板仓库，修改不会生效。
-
-通过 `/` 指令切换方案时，脚本会自动将模板从 `custom` 文件夹复制到根目录完成初始化。初始化后请仔细阅读每一行，保留需要的配置并删除不需要的。
-
-更多方法参见 `custom` 目录中的 [Rime Custom Patch 语法指南](PATCH_GUIDE.md)。
 
 补丁对应关系：
 
 | Custom 文件 | 对应方案文件 | 用途 |
 | --- | --- | --- |
-| `wanxiang.custom.yaml` | `wanxiang.schema.yaml` | 输入方案配置 |
-| `default.custom.yaml` | `default.yaml` | 全局配置（通常留给前端控制） |
-| `squirrel.custom.yaml` | `squirrel.yaml` | Mac 鼠须管外观 |
-| `weasel.custom.yaml` | `weasel.yaml` | Win 小狼毫外观 |
+| `wanxiang.custom.yaml` | `wanxiang.schema.yaml` | [仅基础版] 输入方案配置 |
+| `wanxiang_pro.custom.yaml` | `wanxiang_pro.schema.yaml` | [仅 Pro 版] 输入方案配置 |
+| `default.custom.yaml` | `default.yaml` | 全局配置 |
+| `squirrel.custom.yaml` | `squirrel.yaml` | Squirrel 鼠须管前端配置 |
+| `weasel.custom.yaml` | `weasel.yaml` | Weasel 小狼毫前端配置 |
+
+如需自定义，请查阅对应的**方案文件**找到需要修改的选项，并在补丁文件下的 `patch` 项下添加补丁项。详见 [**Rime Custom Patch 语法指南**](PATCH_GUIDE.md) 及 [Rime 定制指南](https://github.com/rime/home/wiki/CustomizationGuide)。
 
 > [!IMPORTANT]
-> 不要在 `default.custom.yaml` 中修改输入方案配置。所有方案相关修改（模糊音、快捷键等）应针对具体 `schema` 进行 patch，`default` 文件请留给输入法前端自动管理。
+> 不要在 `default.custom.yaml` 中修改输入方案配置。所有方案相关修改（模糊音、快捷键等）应针对具体 `schema` 进行 patch，`default` 文件建议交由输入法前端自动管理。
 
 ## 安装与更新工具
 
@@ -374,7 +378,14 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
     ```
     </details>
 
-## 可选扩展数据
+## 扩展词库
+
+| 文件 | 用途 |
+| --- | --- |
+| `lua/data/emoji.txt` | Emoji 词库 |
+| `lua/data/abbrev.txt` | 简码词库 |
+| `lua/data/*Phrases.txt` | 简繁转换词组词库（`HK` 香港 / `TW` 台湾） |
+| `lua/data/*Characters.txt` | 简繁转换单字词库（`ST` 简-繁 / `TS` 繁-简） |
 
 部分扩展数据未默认启用，可按需开启：
 
@@ -382,21 +393,11 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 | --- | --- | --- |
 | `renming.dict.yaml` | 人名词库 | 在 `wanxiang.dict.yaml` / `wanxiang_pro.dict.yaml` 中取消注释 `dicts/renming` |
 | `wuzhong.dict.yaml` | 物种词库 | 在 `wanxiang.dict.yaml` / `wanxiang_pro.dict.yaml` 中取消注释 `dicts/wuzhong` |
-| `custom_phrase.txt` | 自定义短语 | 复制 `custom/custom_phrase.txt` 到根目录并添加自定义短语内容 |
-
-## 数据文件说明
-
-| 文件 | 数据库位置 | 用途 |
-| --- | --- | --- |
-| `lua/data/emoji.txt` |`lua/replacer.userdb` | Emoji 数据库 |
-| `lua/data/abbrev.txt` | `lua/replacer.userdb` | 公共简码数据库 |
-| `lua/data/*Phrases.txt` | `lua/replacer.userdb` | OpenCC 简繁转换词组（HK 香港 / TW 台湾） |
-| `lua/data/*Characters.txt` | `lua/replacer.userdb` | OpenCC 简繁转换单字（ST 简繁 / TS 繁简） |
-| | `lua/sequence.userdb` | 手动排序 Lua 实时数据 |
+| `custom_phrase.txt` | 自定义短语 | 复制 `custom/custom_phrase.txt` 到根目录，并添加自定义短语内容 |
 
 ## 功能详解
 
-### 辅助码系统（仅 Pro 版）
+### 辅助码（仅 Pro 版）
 
 #### 直接辅助码
 
@@ -414,26 +415,16 @@ custom 文件必须位于**用户目录根目录**（与 `wanxiang.schema.yaml` 
 
 不输入 `/` 则视为普通拼音，不干扰整句切分。
 
-### 反查系统
+### 反查
 
-在方案文件中配置 `lookup_filter`：
-
-```yaml
-lookup_filter:
-  tags: [ abc ]
-  key: "`"
-  lookup: [ wanxiang_reverse ]
-  data_source: [ aux, db ]    # aux: 从词库注释提取；db: 从反查数据库提取
-```
-
-反查和笔画需在 `wanxiang_reverse.custom.yaml` 中配置。
+配置项：`lookup_filter`。笔画反查模式需在 `wanxiang_reverse.custom.yaml` 中配置 `speller/algebra`。
 
 #### 候选筛选（输入后反查）
 
-输入主拼音后按 <kbd>\`</kbd>，再输入辅助码进行二次筛选。
+输入主拼音后输入反查符 `` ` ``，再输入辅助码进行二次筛选。
 
-- 单字：支持两分（`` ni`re ``）、多分（`` mu`ckrida ``）、笔画（`` ni`pspzhpd ``）
-- 词组：匹配辅助码序列的任意非空子字符串
+- 单字：支持两分（`` ni`re ``）、多分（`` mu`ckrida ``）、笔画（`` ni`pspzhpd ``）。
+- 词组：匹配辅助码序列的任意非空子字符串。
 
 #### 输入前反查
 
@@ -441,7 +432,7 @@ lookup_filter:
 
 > **示例**：输入 `` ` `` 后输入“雨”和“辰”的双拼编码 `yu if`，可找到“震”字并显示辅助码。
 
-### 造词功能
+### 造词
 
 **按需造词（仅 Pro）**：通过 ` `` ` 引导进入造词模式；编码后双击 ` `` ` 可在不删除编码的情况下后触发造词；次选词上屏后自动记录。配置项：`add_user_dict`。
 
@@ -451,13 +442,13 @@ lookup_filter:
 
 **用户词删除**：<kbd>Ctrl</kbd>+<kbd>Del</kbd> 软删除用户词。
 
-### 提示功能
+### 提示
 
 **错音错字提示**：输入常见错误读音时提示正确读音。配置项：`super_comment/correction_enabled`。
 
 **辅助码提示（仅 Pro）**：显示候选词的辅助码提示，<kbd>Ctrl</kbd>+<kbd>A</kbd> 循环切换辅助码提示 / 声调全拼提示 / 关闭注释，<kbd>Ctrl</kbd>+<kbd>C</kbd> 开启拆分辅助提示。
 
-### 候选排序功能
+### 候选排序
 
 **自动调频**：默认关闭，配置项：`translator/enable_user_dict`。
 
@@ -465,9 +456,24 @@ lookup_filter:
 
 **输入预测**：上屏后弹出预测候选（推荐仅在手机端开启），或置顶预测候选词。配置项：`user_predict`。
 
-### 其他功能
+### 超级替换
 
-**字符集过滤**：默认过滤启用，可通过开关切换字集范围（通用规范、GB2312、GBK、Big5、简繁体等），<kbd>Ctrl</kbd>+<kbd>G</kbd> 快捷切换。支持联动简繁转换开关，对不同开关单独配置显示范围和黑白名单。配置项：`charset`。
+替代内置 OpenCC，支持候选词的动态替换和追加。配置项：`super_replacer`。
+
+数据文件（`.txt`）使用 Tab 分隔：`匹配内容[Tab]替换内容1|替换内容2`
+
+| 模式 | 行为 | 示例 |
+| --- | --- | --- |
+| `append` | 在原词后追加新候选 | `哈哈` → `1.哈哈 2.😄` |
+| `replace` | 直接替换原词 | `软件` → `軟體` |
+| `comment` | 仅在注释中提示 | `hello` → `hello〔你好〕` |
+| `abbrev` | 匹配输入编码而非文本 | `zm` → `1.怎么 2.在吗` |
+
+### 字符集过滤
+
+可通过开关切换字符集范围（通用规范、GB2312、GBK、Big5、简繁体等），<kbd>Ctrl</kbd>+<kbd>G</kbd> 快捷切换。支持联动简繁转换开关，对不同开关单独配置字符集范围和黑白名单。配置项：`charset_filter`。
+
+### 其他功能
 
 **自动上屏**：三四位简码唯一时自动上屏。默认关闭，配置项：`speller/auto_select`。
 
@@ -482,17 +488,6 @@ lookup_filter:
 **循环切换音节**：多次按 <kbd>Tab</kbd> 循环切换分词位置，<kbd>Ctrl</kbd>+<kbd>Tab</kbd> 逐字确认。
 
 **循环切换分词**：多次按下分词键 <kbd>'</kbd> 循环切换分词模式。配置项：`manual_segmentor`。
-
-**超级替换**：替代内置 OpenCC，支持候选词的动态替换和追加。配置项：`super_replacer`。
-
-数据文件（`.txt`）使用 Tab 分隔：`匹配内容[Tab]替换内容1|替换内容2`
-
-| 模式 | 行为 | 示例 |
-| --- | --- | --- |
-| `append` | 在原词后追加新候选 | `哈哈` → `1.哈哈 2.😄` |
-| `replace` | 直接替换原词 | `软件` → `軟體` |
-| `comment` | 仅在注释中提示 | `hello` → `hello〔你好〕` |
-| `abbrev` | 匹配输入编码而非文本 | `zm` → `1.怎么 2.在吗` |
 
 ## 自定义词库
 
@@ -529,9 +524,4 @@ sync_dir: "D:\\home\\username\\sync"
 
 点击输入法菜单「同步用户数据」后，词库以 `<设备名>/wanxiang.userdb.txt` 格式导出到同步目录。将 txt 文件在设备间共享后再次同步即可合并数据。
 
-词库中预处理格式必须与万象编码完全一致，可使用[词库刷拼音辅助码工具](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)处理。
-
-## 反馈与问题
-
-- [万象词库问题收集反馈表](https://docs.qq.com/smartsheet/DWHZsdnZZaGh5bWJI?viewId=vUQPXH&tab=BB08J2)
-- [为什么 Pro 版默认关闭调频](https://github.com/amzxyz/RIME-LMDG/wiki/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%85%B3%E9%97%AD%E8%B0%83%E9%A2%91%E4%BB%A5%E5%8F%8A%E4%B8%8E%E4%B9%8B%E5%85%B3%E8%81%94%E7%9A%84%E6%8E%AA%E6%96%BD%E6%9C%89%E5%93%AA%E4%BA%9B)
+词库格式须与万象词库格式一致，可使用[词库刷拼音辅助码工具](https://github.com/amzxyz/RIME-LMDG/releases/tag/tool)处理。
