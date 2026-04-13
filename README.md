@@ -6,9 +6,11 @@
 <p align="center"><em><strong>只为你所需的功能买单。</strong></em></p>
 </blockquote>
 
-这是源自于 C++ 的[零开销（Zero-overhead）](https://en.cppreference.com/w/cpp/language/Zero-overhead_principle.html)设计哲学。原版[万象拼音输入方案](https://github.com/amzxyz/rime_wanxiang)涵盖了丰富的功能，在“对标大厂体验”的同时也引入了具有“大厂风味”的庞大臃肿：其中大部分与输入无关的功能不会被绝大多数用户使用（我为什么要在一个输入法中计算时辰，且[该功能花费了超 3000 行代码来实现](https://github.com/amzxyz/rime_wanxiang/blob/v15.7.0/lua/wanxiang/shijian.lua)？），却依旧会带来潜在的性能负担。此外，其“低内聚、高耦合”的混乱架构设计[^1]也增加了用户的自定义难度及开发者的维护难度。
+这是源自于 C++ 的[零开销（Zero-overhead）](https://en.cppreference.com/w/cpp/language/Zero-overhead_principle.html)设计哲学。
 
-基于以上背景，该 Fork 作为一个**专注于输入**的精简分支，移除了原版中与输入无关的功能，遵循 [SOLID 原则](https://en.wikipedia.org/wiki/SOLID)重构了代码架构，并为全部 Lua 代码添加了完整的类型注解。该 Fork 由科班程序员维护，定期同步上游更新，逐步重写原版由 LLM 生成的低效代码，提供更轻量高效的输入体验。同时，该 Fork 重写了原版混乱的说明文档，为用户提供更低的上手门槛和更好的自定义体验。
+原版[万象拼音输入方案](https://github.com/amzxyz/rime_wanxiang)涵盖了丰富的功能，在“对标大厂体验”的同时也引入了具有“大厂风味”的庞大臃肿：其中大部分与输入无关的功能不会被绝大多数用户使用（我为什么要在一个输入法中计算时辰，且[该功能花费了超 3000 行代码来实现](https://github.com/amzxyz/rime_wanxiang/blob/v15.7.0/lua/wanxiang/shijian.lua)？），却依旧会带来潜在的性能负担。此外，其“低内聚、高耦合”的混乱架构设计[^1]也增加了用户的自定义难度及开发者的维护难度。
+
+该 Fork 作为一个**专注于输入**的精简分支，移除了原版中与输入无关的功能，遵循 [SOLID 原则](https://en.wikipedia.org/wiki/SOLID)重构了代码架构，并为全部 Lua 代码添加了完整的类型注解。该 Fork 由科班程序员维护，定期同步上游更新，逐步重写原版由 LLM 生成的低效代码，提供更轻量高效的输入体验。同时，该 Fork 重写了原版混乱的说明文档，为用户提供更低的上手门槛和更好的自定义体验。
 
 [^1]: [“高内聚、低耦合”](https://baike.baidu.com/item/%E9%AB%98%E5%86%85%E8%81%9A%E4%BD%8E%E8%80%A6%E5%90%88/5227009)是软件工程中的设计原则，指模块内部的元素应该紧密相关（高内聚），而模块之间的依赖关系应该尽量减少（低耦合）。此处“低内聚、高耦合”为其反义词。原版万象拼音输入方案采用了大量“超级模块”的设计，将互不相关的功能混杂在同一个模块中，而实现单个功能的代码却分散在各处，以毫无必要的方式增加了代码的复杂度和维护难度。
 
