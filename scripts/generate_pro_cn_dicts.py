@@ -292,11 +292,16 @@ def process(
 
 if __name__ == "__main__":
     AUX_FILE = Path("custom/aux_code.txt")  # 辅助码表文件
-    DICTS_DIR = Path("cn_dicts")  # 词库文件夹
     DIST_DIR = Path("dist")  # 输出根目录
 
     process(
-        DICTS_DIR,
+        Path("cn_dicts"),
+        AUX_FILE,
+        DIST_DIR,
+    )
+
+    process(
+        Path("cn_dicts_cell"),
         AUX_FILE,
         DIST_DIR,
     )

@@ -260,7 +260,7 @@ charset_filter:
 
 # 主翻译器，拼音
 translator:
-  dictionary: rime_ice  # 挂载词库
+  dictionary: rime_frost  # 挂载词库
   #  packs: user                  #导入根目录下名称为user.dict.yaml的自定义固定词典
   #  prism: double_pinyin          # 多方案共用一个词库时，为避免冲突，需要用 prism 指定一个名字。
   enable_completion: true  # 启用候选词补全
@@ -455,7 +455,7 @@ speller:
       - wanxiang_algebra:/pro/直接辅助  #辅助码部分
 
 user_dict_set:
-  dictionary: rime_ice
+  dictionary: rime_frost
   initial_quality: 2.5
   enable_completion: false
   enable_sentence: false
@@ -471,7 +471,7 @@ user_dict_set:
 
 add_user_dict:
   tag: add_user_dict
-  dictionary: rime_ice
+  dictionary: rime_frost
   initial_quality: -1
   user_dict: zc
   enable_completion: true  # 提前显示尚未输入完整码的字〔仅 table_translator 有效〕
