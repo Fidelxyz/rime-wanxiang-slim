@@ -106,11 +106,11 @@ super_comment:
   # 显示错音错字注释。
   correction_enabled: true
 
-  # 错音错字注释格式。comment 为占位符。
-  correction_format: "〔comment〕"
+  # 错音错字注释格式。%s 表示注释内容。
+  correction_format: "〔%s〕"
 
-  # 拆分注释格式。chaifen 为占位符。
-  decomposition_format: "〔chaifen〕"
+  # 拆分注释格式。%s 表示注释内容。
+  decomposition_format: "〔%s〕"
 
   # 各候选类型的注释标记。
   cand_type:
