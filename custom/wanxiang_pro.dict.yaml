@@ -8,7 +8,7 @@ use_preset_vocabulary: false
 import_tables:
   - dicts/zi.pro  # 字表，包含所有带拼音的汉字
   - dicts/jichu.pro  # 基础词库，2-3字词汇
-  - dicts/lianxiang.pro  # 联想词库，5字以上词汇
+  # - dicts/lianxiang.pro  # 联想词库，5字以上词汇
   - dicts/cuoyin.pro  # 错音错字
   - dicts/duoyin.pro  # 多场景多种读音的词组
   - dicts/shici.pro  # 诗词
