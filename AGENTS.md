@@ -9,15 +9,15 @@ collection of YAML configuration files, Lua extensions, and dictionary data for 
 ### Directory Structure
 
 ```
-├── lua/wanxiang/          # 15 Lua plugin modules (core logic)
-├── lua/data/              # Data files for Lua plugins (emoji, charset, OpenCC)
-├── dicts/                 # Dictionary data files (.dict.yaml)
-├── custom/                # Custom configuration templates, pro schema variants
-├── .github/workflows/     # CI/CD (GitHub Actions)
-├── wanxiang.schema.yaml   # Main input schema definition
-├── wanxiang_algebra.yaml  # Spelling algebra rules (1391+ lines, 12+ pinyin schemes)
-├── default.yaml           # Rime global settings
-└── version.txt            # Canonical version (managed by release-please)
+├── lua/wanxiang/            # Lua plugin modules (core logic)
+├── lua/data/                # Data files for Lua plugins (emoji, charset, OpenCC)
+├── dicts/                   # Dictionary data files (.dict.yaml)
+├── custom/                  # Custom configuration templates, pro schema variants
+├── .github/workflows/       # CI/CD (GitHub Actions)
+├── wanxiang.schema.yaml     # Main input schema definition for standard version
+├── wanxiang_pro.schema.yaml # Main input schema definition for pro version
+├── wanxiang_algebra.yaml    # Spelling algebra rules (1391+ lines, 12+ pinyin schemes)
+└── default.yaml             # Rime global settings
 ```
 
 ## Build / Release / Test Commands

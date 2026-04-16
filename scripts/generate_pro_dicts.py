@@ -1,19 +1,18 @@
-import os
 import re
 from contextlib import ExitStack
 from pathlib import Path
 
 # 辅助码表列定义
 SCHEMA_COLUMNS: list[str] = [
-    "pro-wx-fuzhu-dicts",
-    "pro-moqi-fuzhu-dicts",
-    "pro-flypy-fuzhu-dicts",
-    "pro-zrm-fuzhu-dicts",
-    "pro-tiger-fuzhu-dicts",
-    "pro-wubi-fuzhu-dicts",
-    "pro-hanxin-fuzhu-dicts",
-    "pro-shouyou-fuzhu-dicts",
-    "pro-shyplus-fuzhu-dicts",
+    "wx",
+    "moqi",
+    "flypy",
+    "zrm",
+    "tiger",
+    "wubi",
+    "hanxin",
+    "shouyou",
+    "shyplus",
 ]
 SEP = ";"  # 拼音与辅助码段的分隔符
 
@@ -117,21 +116,6 @@ def get_alignment(
     return None
 
 
-def add_suffix_before_extensions(filename: str, suffix: str) -> str:
-    """
-    在第一个点前插入后缀。
-
-    >>> add_suffix_before_extensions("base.dict.yaml", ".pro")
-    'base.pro.dict.yaml'
-    """
-    if not suffix:
-        return filename
-    i = filename.find(".")
-    if i == -1:
-        return filename + suffix
-    return filename[:i] + suffix + filename[i:]
-
-
 def load_aux_table(aux_file: Path) -> dict[str, list[str]]:
     """
     从单个 aux 文件加载“字 -> 辅助码段”列表，并预计算各 schema 映射。
@@ -192,7 +176,7 @@ def process_dict(
     }
 
     for out_file in out_files:
-        os.makedirs(out_file.parent or ".", exist_ok=True)
+        out_file.parent.mkdir(parents=True, exist_ok=True)
 
     with ExitStack() as stack:  # Close all files on exit
         fin = stack.enter_context(dict_file.open("r", encoding="utf-8"))
@@ -280,9 +264,8 @@ def process_dict(
 def process(
     dicts_dir: Path,
     aux_file: Path,
-    out_dir: Path,
+    dist_dir: Path,
     dicts: list[str] | None = None,
-    output_suffix: str = "",
 ):
     aux_table = load_aux_table(aux_file)
     print(f"已加载辅助码条目：{len(aux_table)}")
@@ -292,24 +275,21 @@ def process(
     print("拆分完成。")
 
     # Collect dict files to process
-    dict_files: list[Path] = []
-    for file in dicts_dir.iterdir():
-        if not file.is_file():
-            continue
-
+    for dict_file in dicts_dir.iterdir():
         # Filter by dicts if provided
-        dict_name = file.name
-        if dicts and dict_name not in dicts:
-            continue
-        if not dict_name.endswith((".yaml", ".yml", ".txt")):
+        if dicts and dict_file.name not in dicts:
             continue
 
-        dict_files.append(file)
+        if not dict_file.is_file():
+            continue
 
-    # 每个输入文件只读一次，同时写出所有 schema 输出
-    for dict_file in dict_files:
-        out_filename = add_suffix_before_extensions(dict_file.name, output_suffix)
-        out_files = [(out_dir / schema / out_filename) for schema in SCHEMA_COLUMNS]
+        if not dict_file.name.endswith(".dict.yaml"):
+            continue
+
+        out_files = [
+            (dist_dir / f"rime-wanxiang-{schema}-fuzhu" / dicts_dir / dict_file.name)
+            for schema in SCHEMA_COLUMNS
+        ]
         print(f"\n=== 处理 {dict_file.name} ===")
         process_dict(dict_file, out_files, schema_maps)
 
@@ -317,7 +297,7 @@ def process(
 if __name__ == "__main__":
     AUX_FILE = Path("custom/aux_code.txt")  # 辅助码表文件
     DICTS_DIR = Path("dicts")  # 词库文件夹
-    OUT_DIR = Path("dist")  # 输出根目录
+    DIST_DIR = Path("dist")  # 输出根目录
 
     # 仅处理这些文件
     DICTS = [
@@ -337,9 +317,8 @@ if __name__ == "__main__":
     OUTPUT_SUFFIX = ".pro"
 
     process(
-        DICTS_DIR,
-        AUX_FILE,
-        OUT_DIR,
+        dicts_dir=DICTS_DIR,
+        aux_file=AUX_FILE,
+        dist_dir=DIST_DIR,
         dicts=DICTS,
-        output_suffix=OUTPUT_SUFFIX,
     )

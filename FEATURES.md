@@ -62,7 +62,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `custom/wanxiang_pro.schema.yaml` | PRO 方案中的辅助码编码配置 |
-| `custom/wanxiang_pro.dict.yaml` | 携带辅助码的 PRO 词库（格式：`字 拼音;辅码 词频`） |
+| `custom/wanxiang.dict.yaml` | 携带辅助码的 PRO 词库（格式：`字 拼音;辅码 词频`） |
 | `wanxiang_algebra.yaml` | `/` 引导辅助码聚拢的转写规则 |
 
 #### 间接辅助码（仅 PRO 版）
@@ -375,7 +375,6 @@ Ctrl+1~0 上屏首选前 N 个字，保留后续编码。
 |----------|------|
 | `wanxiang.schema.yaml` | 标准版方案定义 |
 | `custom/wanxiang_pro.schema.yaml` | PRO 版方案定义 |
-| `custom/wanxiang_pro.dict.yaml` | PRO 版词库（带辅助码） |
 | `custom/wanxiang_pro.custom.yaml` | PRO 版自定义模板 |
 
 ---
