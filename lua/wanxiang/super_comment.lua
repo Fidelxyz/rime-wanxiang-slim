@@ -1,5 +1,5 @@
 ---Enhances candidate display by dynamically generating and appending corrected Pinyin tones to the candidate comments.
----@module "wanxiang.super_comment_preedit"
+---@module "wanxiang.super_comment"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -321,7 +321,7 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
 end
 
 -- ----------------------
--- 主函数：根据优先级处理候选词的注释和preedit
+-- 主函数：根据优先级处理候选词的注释
 -- ----------------------
 --
 local M = {}
@@ -368,12 +368,6 @@ function M.func(input, env)
         local initial_comment = genuine_cand.comment
         local final_comment = initial_comment
 
-        -- preedit相关处理只跳过 preedit，不影响注释
-        if is_reverse_lookup_mode then
-            goto after_preedit
-        end
-
-        ::after_preedit::
         if should_skip_candidate_comment then
             yield(genuine_cand)
             goto continue
