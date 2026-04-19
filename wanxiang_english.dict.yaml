@@ -1,0 +1,7 @@
+# Rime dictionary
+# encoding: utf-8
+
+name: wanxiang_english
+version: "LTS"
+import_tables:
+  - dicts/en  # 英文主词库
