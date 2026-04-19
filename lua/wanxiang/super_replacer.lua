@@ -10,7 +10,6 @@
 ---@field rules Rule[]
 
 ---@class SuperReplacerState
----@field input_type string
 ---@field fmm_cache table<string, string|false>
 ---@field db WrappedUserDb?
 
@@ -33,8 +32,8 @@
 ---@field fmm boolean
 ---@field cand_type string?
 
-local userdb = require("wanxiang.userdb")
 local wanxiang = require("wanxiang.wanxiang")
+local userdb = require("wanxiang.userdb")
 
 ---@type WrappedUserDb?
 local db_instance = nil
@@ -282,21 +281,17 @@ local M = {}
 
 ---@param env Env
 function M.init(env)
-    local namespace = env.name_space
-    namespace = namespace:gsub("^%*", "")
-    ---@type string
-    namespace = namespace:match("([^%.]+)$") or namespace
-
-    local rime_config = env.engine.schema.config
-
     local user_dir = rime_api.get_user_data_dir()
     local shared_dir = rime_api.get_shared_data_dir()
 
-    -- 1. 基础配置
-    local db_name = rime_config:get_string(namespace .. "/db_name") or "lua/replacer"
-    local delimiter = rime_config:get_string(namespace .. "/delimiter") or "|"
+    local rime_config = env.engine.schema.config
+    local cfg_root = rime_config:get_map("super_replacer")
 
-    local input_type = wanxiang.get_input_method_type(env)
+    local db_name_val = cfg_root and cfg_root:get_value("db_name")
+    local db_name = db_name_val and db_name_val:get_string() or "lua/replacer"
+
+    local delimiter_val = cfg_root and cfg_root:get_value("delimiter")
+    local delimiter = delimiter_val and delimiter_val:get_string() or "|"
 
     ---@type string
     local split_pattern
@@ -306,6 +301,12 @@ function M.init(env)
         local esc = delimiter:gsub("[%-%.%+%[%]%(%)%$%^%%%?%*]", "%%%1")
         split_pattern = "([^" .. esc .. "]+)"
     end
+
+    local comment_format_val = cfg_root and cfg_root:get_value("comment_format")
+    local comment_format = comment_format_val and comment_format_val:get_string() or "〔%s〕"
+
+    local is_chain_val = cfg_root and cfg_root:get_value("is_chain")
+    local is_chain = is_chain_val and is_chain_val:get_bool() or false
 
     ---@param relative string?
     ---@return string?
@@ -328,117 +329,119 @@ function M.init(env)
         return user_path
     end
 
-    local rules_path = namespace .. "/rules"
-    local rule_list = rime_config:get_list(rules_path)
+    local rules_item = cfg_root and cfg_root:get("rules")
+    local rules_cfg = rules_item and rules_item:get_list()
 
     ---@type Task[]
     local tasks = {}
     ---@type Rule[]
     local rules = {}
 
-    if rule_list then
-        for i = 0, rule_list.size - 1 do
-            local entry_path = rules_path .. "/@" .. i
+    if rules_cfg then
+        for i = 0, rules_cfg.size - 1 do
+            local rule_item = rules_cfg:get_at(i)
+            local rule = rule_item and rule_item:get_map()
+            if not rule then
+                goto continue
+            end
 
-            -- 解析 triggers
             ---@type (string|true)[]
             local triggers = {}
-            local opts_keys = { "option", "options" }
-            for _, key in ipairs(opts_keys) do
-                local key_path = entry_path .. "/" .. key
-                local list = rime_config:get_list(key_path)
-                if list then
-                    for k = 0, list.size - 1 do
-                        local val = rime_config:get_string(key_path .. "/@" .. k)
-                        if val then
-                            triggers[#triggers + 1] = val
+            local trigger_item = rule:get("option")
+            if trigger_item then
+                local trigger_obj = trigger_item:get_obj()
+                if trigger_item.type == "kList" then
+                    ---@cast trigger_obj ConfigList
+                    for j = 0, trigger_obj.size - 1 do
+                        local trigger_val = trigger_obj:get_value_at(j)
+                        local trigger = trigger_val and trigger_val:get_string()
+                        if trigger then
+                            triggers[#triggers + 1] = trigger
                         end
                     end
-                else
-                    if rime_config:get_bool(key_path) == true then
-                        triggers[#triggers + 1] = true
+                elseif trigger_item.type == "kScalar" then
+                    ---@cast trigger_obj ConfigValue
+                    if trigger_obj:get_bool() == true then
+                        triggers[1] = true
                     else
-                        local val = rime_config:get_string(key_path)
-                        if val and val ~= "true" then
-                            triggers[#triggers + 1] = val
+                        local trigger = trigger_obj:get_string()
+                        if trigger then
+                            triggers[1] = trigger
                         end
                     end
                 end
             end
+            if #triggers == 0 then
+                goto continue
+            end
 
-            -- 解析 Tags
             ---@type table<string, boolean>
             local target_tags = {}
-            local tag_keys = { "tag", "tags" }
-            for _, key in ipairs(tag_keys) do
-                local key_path = entry_path .. "/" .. key
-                local list = rime_config:get_list(key_path)
-                if list then
-                    for k = 0, list.size - 1 do
-                        local val = rime_config:get_string(key_path .. "/@" .. k)
-                        if val then
-                            target_tags[val] = true
-                        end
-                    end
-                else
-                    local val = rime_config:get_string(key_path)
-                    if val then
-                        target_tags[val] = true
+            local tags_item = rule:get("tags")
+            local tags_list = tags_item and tags_item:get_list()
+            if tags_list then
+                for j = 0, tags_list.size - 1 do
+                    local tag_val = tags_list:get_value_at(j)
+                    local tag = tag_val and tag_val:get_string()
+                    if tag then
+                        target_tags[tag] = true
                     end
                 end
             end
 
-            if #triggers > 0 then
-                local prefix = rime_config:get_string(entry_path .. "/prefix") or ""
-                local mode = rime_config:get_string(entry_path .. "/mode") or "append"
+            local prefix_val = rule:get_value("prefix")
+            local prefix = prefix_val and prefix_val:get_string() or ""
 
-                local comment_mode = rime_config:get_string(entry_path .. "/comment_mode") or "comment"
-                local fmm = rime_config:get_bool(entry_path .. "/sentence") or false
+            local mode_val = rule:get_value("mode")
+            local mode = mode_val and mode_val:get_string() or "append"
 
-                -- 解析 cand_type
-                local custom_cand_type = rime_config:get_string(entry_path .. "/cand_type")
+            local comment_mode_val = rule:get_value("comment_mode")
+            local comment_mode = comment_mode_val and comment_mode_val:get_string() or "comment"
 
-                local always_qty = 1
-                local always_idx = 1
-                if mode == "abbrev" then
-                    local rule_str = rime_config:get_string(entry_path .. "/abbrev_rule") or "1,1"
-                    local qty_str, idx_str = rule_str:match("^(%d+)%s*,%s*(%d+)$")
-                    always_qty = tonumber(qty_str) or 1
-                    always_idx = tonumber(idx_str) or 1
-                end
+            local fmm_val = rule:get_value("sentence")
+            local fmm = fmm_val and fmm_val:get_bool() or false
 
-                rules[#rules + 1] = {
-                    triggers = triggers,
-                    tags = target_tags,
-                    prefix = prefix,
-                    mode = mode,
-                    always_qty = always_qty,
-                    always_idx = always_idx,
-                    comment_mode = comment_mode,
-                    fmm = fmm,
-                    cand_type = custom_cand_type,
-                }
+            local cand_type_val = rule:get_value("cand_type")
+            local cand_type = cand_type_val and cand_type_val:get_string()
 
-                -- 收集文件路径 (仅用于可能发生的 rebuild)
-                local keys_to_check = { "files", "file" }
-                for _, key in ipairs(keys_to_check) do
-                    local d_path = entry_path .. "/" .. key
-                    local list = rime_config:get_list(d_path)
-                    if list then
-                        for j = 0, list.size - 1 do
-                            local p = resolve_path(rime_config:get_string(d_path .. "/@" .. j))
-                            if p then
-                                tasks[#tasks + 1] = { path = p, prefix = prefix }
-                            end
-                        end
-                    else
-                        local p = resolve_path(rime_config:get_string(d_path))
-                        if p then
-                            tasks[#tasks + 1] = { path = p, prefix = prefix }
-                        end
+            local always_qty = 1
+            local always_idx = 1
+            if mode == "abbrev" then
+                local abbrev_rule_val = rule:get_value("abbrev_rule")
+                local abbrev_rule = abbrev_rule_val and abbrev_rule_val:get_string() or "1,1"
+
+                local qty_str, idx_str = abbrev_rule:match("^(%d+)%s*,%s*(%d+)$")
+                always_qty = tonumber(qty_str) or 1
+                always_idx = tonumber(idx_str) or 1
+            end
+
+            rules[#rules + 1] = {
+                triggers = triggers,
+                tags = target_tags,
+                prefix = prefix,
+                mode = mode,
+                always_qty = always_qty,
+                always_idx = always_idx,
+                comment_mode = comment_mode,
+                fmm = fmm,
+                cand_type = cand_type,
+            }
+
+            -- 收集文件路径 (仅用于可能发生的 rebuild)
+            local files_item = rule:get("files")
+            local files = files_item and files_item:get_list()
+            if files then
+                for j = 0, files.size - 1 do
+                    local file_val = files:get_value_at(j)
+                    local file = file_val and file_val:get_string()
+                    local path = resolve_path(file)
+                    if path then
+                        tasks[#tasks + 1] = { path = path, prefix = prefix }
                     end
                 end
             end
+
+            ::continue::
         end
     end
 
@@ -451,13 +454,12 @@ function M.init(env)
 
     env.super_replacer_config = {
         split_pattern = split_pattern,
-        comment_format = rime_config:get_string(namespace .. "/comment_format") or "〔%s〕",
-        is_chain = rime_config:get_bool(namespace .. "/chain") or false,
+        comment_format = comment_format,
+        is_chain = is_chain,
         rules = rules,
     }
 
     env.super_replacer_state = {
-        input_type = input_type,
         fmm_cache = {},
         db = nil,
     }

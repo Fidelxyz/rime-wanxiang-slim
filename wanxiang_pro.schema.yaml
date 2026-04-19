@@ -173,7 +173,7 @@ sequencer:  # 手动排序
 # comment_format: string. 注释内容的显示格式，例如 "〔%s〕"。
 #
 # 【触发条件】
-# option: string | string[]. 触发开关。支持单值（如 "emoji"），列表（如 ["s2t", "s2hk"]，任意选项开启则生效），或常驻（true）
+# option: string | string[] | boolean. 触发开关。支持单值（如 "emoji"），列表（如 ["s2t", "s2hk"]，任意选项开启则生效），或常驻（true）
 # tags: string[]. 生效的引擎 tag 范围（如 ["abc"]）。
 #
 # mode: string. 模式。
@@ -191,7 +191,7 @@ sequencer:  # 手动排序
 # sentence: boolean. 开启长句分词（FMM）匹配，适用于简繁转换等整句处理场景。
 # cand_type: string. 自定义候选词的 type 名称（如 custom_emoji），方便给不同候选词挂载独立皮肤样式。
 # abbrev_rule: string. 仅 abbrev 模式生效。格式："<num>,<pos>"。将数据库中编码对应前<num>个词前置到第<pos>候选。
-# files: string. 要读取的 txt 词库文件列表（支持多文件合并，UserDir 优先于 SharedDir）。
+# files: string[]. 要读取的 txt 词库文件列表（支持多文件合并，UserDir 优先于 SharedDir）。
 super_replacer:
   db_name: lua/replacer
   delimiter: "|"
