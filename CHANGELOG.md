@@ -1,5 +1,40 @@
 # Changelog
 
+## [15.8.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.5.2...v15.8.1) (2026-04-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* reorder switches
+* merge v15.8.1 from upstream
+* update default Weasel config
+* disable lianxiang dictionary by default
+* restore default punctuation behavior
+* **super_processor:** disable backspace limit by default
+* **charset_filter:** rename config fields
+* **manual_segmentor:** extract manual_segmentor from super_processor
+
+### Bug Fixes
+
+* **super_comment:** fix incorrect default config for standard version ([835a7e9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/835a7e92e1c736a4a264bd3e1602422600241122))
+* **super_replacer:** fix super replacer not working due to incorrect option name in schema ([1adefa4](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1adefa4604dd85e38fddd2f6a00af42cd8c041b7))
+
+
+### Miscellaneous Chores
+
+* disable lianxiang dictionary by default ([ed75ed0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ed75ed090d23f0f9de51ea29eb340b3b068b9b24))
+* merge v15.8.1 from upstream ([de32257](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/de3225760f78b95914c6299538f6644af9e5b470))
+* reorder switches ([5d408dc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5d408dc8f6d44c108f7fc2bc0d9d6ac7225d6e18))
+* restore default punctuation behavior ([00124b6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/00124b6cf88f61c312d48eb922ce077fe82bc17e))
+* **super_processor:** disable backspace limit by default ([278fe8e](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/278fe8e1e6035ea8f00e1a26156f3ede6630632e))
+* update default Weasel config ([e673f9c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/e673f9cff82514571cd293881abc05577c352260))
+
+
+### Code Refactoring
+
+* **charset_filter:** rename config fields ([4acba0c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/4acba0c11925cb98f43159be4a5f0fecde305a64))
+* **manual_segmentor:** extract manual_segmentor from super_processor ([580bae3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/580bae304c529cf3f4c91d7d3fb77ed205663b33))
+
 ## [15.5.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.3.6...v15.5.2) (2026-04-06)
 
 
