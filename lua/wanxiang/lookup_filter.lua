@@ -11,7 +11,7 @@
 ---@field main_projection Projection?
 ---@field xlit_projection Projection?
 ---@field comment_split_pattern string?
----@field trigger_str string
+---@field trigger string
 ---@field bypass_prefix string?
 ---@field tags string[]
 
@@ -34,18 +34,18 @@ local function alt_lua_punc(s)
 end
 
 ---@param schema_id string
----@return string[]? main_rules
----@return string[]? xlit_rules
-local function parse_rules(schema_id)
+---@return string[] main_rules
+---@return string[] xlit_rules
+local function parse_schema_rules(schema_id)
     if schema_id == "" then
-        return nil, nil
+        return {}, {}
     end
     local schema = Schema(schema_id)
     local config = schema.config
 
     local algebra_list = config:get_list("speller/algebra")
     if not algebra_list or algebra_list.size == 0 then
-        return nil, nil
+        return {}, {}
     end
 
     ---@type string[]
@@ -62,34 +62,7 @@ local function parse_rules(schema_id)
             end
         end
     end
-    if #main_rules == 0 and #xlit_rules == 0 then
-        return nil, nil
-    end
     return main_rules, xlit_rules
-end
-
----@param env Env
----@return string[] main_rules
----@return string[] xlit_rules
-local function get_schema_rules(env)
-    local config = env.engine.schema.config
-    local db_list = config:get_list("lookup_filter/dicts")
-    if not db_list or db_list.size == 0 then
-        return {}, {}
-    end
-
-    local schema_id_val = db_list:get_value_at(0)
-    local schema_id = schema_id_val and schema_id_val.value
-    if not schema_id or schema_id == "" then
-        return {}, {}
-    end
-
-    local main_rules, xlit_rules = parse_rules(schema_id)
-    if not main_rules and not xlit_rules then
-        return {}, {}
-    end
-
-    return main_rules or {}, xlit_rules or {}
 end
 
 ---@param main_projection Projection?
@@ -417,14 +390,14 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
-
-    -- 1. 读取数据源
-    local sources_list = rime_config:get_list("lookup_filter/data_source")
+    local cfg_root = rime_config:get_map("lookup_filter")
 
     ---@type string[]
     local data_sources = {}
-    local has_db = false
-    local config_has_aux_source = false
+    local has_db_source = false
+    local has_aux_source = false
+    local sources_list_item = cfg_root and cfg_root:get("data_source")
+    local sources_list = sources_list_item and sources_list_item:get_list()
     if sources_list and sources_list.size > 0 then
         for i = 0, sources_list.size - 1 do
             local source_val = sources_list:get_value_at(i)
@@ -433,20 +406,20 @@ function F.init(env)
                 data_sources[#data_sources + 1] = source
 
                 if source == "aux" then
-                    config_has_aux_source = true
+                    has_aux_source = true
                 end
                 if source == "db" then
-                    has_db = true
+                    has_db_source = true
                 end
             end
         end
     else
         data_sources = { "aux", "db" }
-        config_has_aux_source = true
-        has_db = true
+        has_aux_source = true
+        has_db_source = true
     end
     -- 核心逻辑：只要配置了 aux 源，就必须解析注释
-    local has_comment = config_has_aux_source
+    local has_comment = has_aux_source
 
     ---@type ReverseLookup[]
     local db_table = nil
@@ -454,29 +427,36 @@ function F.init(env)
     local main_projection = nil
     ---@type Projection?
     local xlit_projection = nil
-    if has_db then
-        local db_list = rime_config:get_list("lookup_filter/dicts")
-        if db_list and db_list.size > 0 then
+    if has_db_source then
+        local db_list_item = cfg_root and cfg_root:get("dicts")
+        local db_list_cfg = db_list_item and db_list_item:get_list()
+        if db_list_cfg and db_list_cfg.size > 0 then
+            ---@type string[]
+            local db_names = {}
             ---@type ReverseLookup[]
             db_table = {}
-            for i = 0, db_list.size - 1 do
-                local db_name_val = db_list:get_value_at(i)
+            for i = 0, db_list_cfg.size - 1 do
+                local db_name_val = db_list_cfg:get_value_at(i)
                 local db_name = db_name_val and db_name_val:get_string()
                 if db_name and db_name ~= "" then
+                    db_names[#db_names + 1] = db_name
                     db_table[#db_table + 1] = ReverseLookup(db_name)
                 end
             end
-            local main_rules, xlit_rules = get_schema_rules(env)
-            main_projection = #main_rules > 0 and Projection() or nil
-            if main_projection then
-                main_projection:load(main_rules)
-            end
-            xlit_projection = #xlit_rules > 0 and Projection() or nil
-            if xlit_projection then
-                xlit_projection:load(xlit_rules)
+
+            if #db_names > 0 then
+                local main_rules, xlit_rules = parse_schema_rules(db_names[1])
+                if #main_rules > 0 then
+                    main_projection = Projection()
+                    main_projection:load(main_rules)
+                end
+                if #xlit_rules > 0 then
+                    xlit_projection = Projection()
+                    xlit_projection:load(xlit_rules)
+                end
             end
         else
-            has_db = false
+            has_db_source = false
         end
     end
 
@@ -490,15 +470,18 @@ function F.init(env)
         comment_split_pattern = "[^" .. alt_lua_punc(delimiter) .. "]+"
     end
 
-    local trigger_str = rime_config:get_string("lookup_filter/trigger") or "`"
+    local trigger_val = cfg_root and cfg_root:get_value("trigger")
+    local trigger = trigger_val and trigger_val:get_string() or "`"
+
     local bypass_prefix = rime_config:get_string("add_user_dict/prefix")
 
     ---@type string[]
     local tags = {}
-    local tags_list = rime_config:get_list("lookup_filter/tags")
-    if tags_list and tags_list.size > 0 then
-        for i = 0, tags_list.size - 1 do
-            local tag_val = tags_list:get_value_at(i)
+    local tags_item = cfg_root and cfg_root:get("tags")
+    local tags_cfg = tags_item and tags_item:get_list()
+    if tags_cfg and tags_cfg.size > 0 then
+        for i = 0, tags_cfg.size - 1 do
+            local tag_val = tags_cfg:get_value_at(i)
             local tag = tag_val and tag_val:get_string()
             if tag and tag ~= "" then
                 tags[#tags + 1] = tag
@@ -513,7 +496,7 @@ function F.init(env)
         assert(state)
 
         local input = ctx.input
-        local code, _ = split_lookup_input(input, trigger_str, bypass_prefix)
+        local code, _ = split_lookup_input(input, trigger, bypass_prefix)
         if not code or code == "" then
             return
         end
@@ -521,9 +504,9 @@ function F.init(env)
         local preedit = ctx:get_preedit()
         local no_search_string = code
         local preedit_text = (preedit and preedit.text) or ""
-        local edit = select(1, split_lookup_input(preedit_text, trigger_str, bypass_prefix))
+        local edit = select(1, split_lookup_input(preedit_text, trigger, bypass_prefix))
         if edit and edit:match("[%w/]") then
-            ctx.input = no_search_string .. trigger_str
+            ctx.input = no_search_string .. trigger
         else
             ctx.input = no_search_string
             ctx:commit()
@@ -532,13 +515,13 @@ function F.init(env)
 
     env.lookup_filter_config = {
         data_sources = data_sources,
-        has_db = has_db,
+        has_db = has_db_source,
         has_comment = has_comment,
         db_table = db_table,
         main_projection = main_projection,
         xlit_projection = xlit_projection,
         comment_split_pattern = comment_split_pattern,
-        trigger_str = trigger_str,
+        trigger = trigger,
         bypass_prefix = bypass_prefix,
         tags = tags,
     }
@@ -577,7 +560,7 @@ function F.func(translation, env)
     end
 
     local input = env.engine.context.input
-    local _, aux_code, _, _ = split_lookup_input(input, config.trigger_str, config.bypass_prefix)
+    local _, aux_code, _, _ = split_lookup_input(input, config.trigger, config.bypass_prefix)
     if not aux_code or aux_code == "" then
         for cand in translation:iter() do
             yield(cand)
