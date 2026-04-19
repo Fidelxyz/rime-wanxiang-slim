@@ -27,16 +27,16 @@ switches:
     states: [半角, 全角]
   - name: emoji
     states: [表情关, 表情开]
-  - name: chaifen_switch  # 显示候选辅助码拆分。默认切换快捷键 Ctrl+C。
-    states: [拆分关, 拆分开]
-  - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
-    states: [大字集, 小字集]
-  - options: [comment_off, fuzhu_hint, tone_hint]  # 显示候选辅助码或全拼声调。默认切换快捷键 Ctrl+A。
-    states: [注释关, 辅助开, 读音开]
   - options: [s2s, s2t, s2hk, s2tw]  # 简繁转换。
     states: [简, 繁, 港繁, 臺繁]
+  - name: chaifen_switch  # 显示候选辅助码拆分。默认切换快捷键 Ctrl+C。
+    states: [拆分关, 拆分开]
+  - options: [comment_off, fuzhu_hint, tone_hint]  # 显示候选辅助码或全拼声调。默认切换快捷键 Ctrl+A。
+    states: [注释关, 辅助开, 读音开]
   - name: abbrev
     states: [简码关, 简码开]
+  - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
+    states: [大字集, 小字集]
   - name: char_priority  # 单字与词组编码重合时，单字或词组优先。
     states: [词组先, 单字先]
 

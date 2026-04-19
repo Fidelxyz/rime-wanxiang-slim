@@ -30,10 +30,10 @@ switches:
     states: [表情关, 表情开]
   - options: [s2s, s2t, s2hk, s2tw]  # 简繁转换。
     states: [简体, 通繁, 港繁, 臺繁]
-  - name: abbrev
-    states: [简码关, 简码开]
   - options: [comment_off, tone_hint, toneless_hint]  # 显示候选辅助码或全拼声调。默认切换快捷键 Ctrl+A。
     states: [注释关, 有声调, 无声调]
+  - name: abbrev
+    states: [简码关, 简码开]
   - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
     states: [大字集, 小字集]
   - name: char_priority  # 单字与词组编码重合时，单字或词组优先。
