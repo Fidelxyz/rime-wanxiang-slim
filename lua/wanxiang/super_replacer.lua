@@ -1,0 +1,846 @@
+---Provides flexible text replacement for candidates (such as emoji insertion or Traditional/Simplified Chinese conversion) serving as an alternative to OpenCC with configurable replacement pipelines.
+---@module "wanxiang.super_replacer"
+---@author amzxyz
+---@author Fidel Yin <fidel.yin@hotmail.com>
+
+---@class SuperReplacerConfig
+---@field split_pattern string
+---@field comment_format string
+---@field is_chain boolean
+---@field rules Rule[]
+
+---@class SuperReplacerState
+---@field fmm_cache table<string, string|false>
+---@field db WrappedUserDb?
+
+---@class Env
+---@field super_replacer_config SuperReplacerConfig?
+---@field super_replacer_state SuperReplacerState?
+
+---@class Task
+---@field path string
+---@field prefix string
+
+---@class Rule
+---@field triggers (boolean|string)[]
+---@field tags string[]
+---@field prefix string
+---@field mode string
+---@field always_qty integer
+---@field always_idx integer
+---@field comment_mode string
+---@field fmm boolean
+---@field cand_type string?
+
+local wanxiang = require("wanxiang.wanxiang")
+local userdb = require("wanxiang.userdb")
+
+---@type WrappedUserDb?
+local db_instance = nil
+
+---@type { text: string, comment: string }[]
+local shared_pending = {}
+---@type string[]
+local shared_comments = {}
+
+---@param t table<integer, any>
+local function clear_list(t)
+    for i = 1, #t do
+        t[i] = nil
+    end
+end
+
+---@param text string
+---@return integer[]
+local function utf8_offsets(text)
+    ---@type integer[]
+    local offsets = {}
+    for pos in utf8.codes(text) do
+        offsets[#offsets + 1] = pos
+    end
+    offsets[#offsets + 1] = #text + 1
+    return offsets
+end
+
+---@param tasks Task[]
+---@return string
+local function generate_files_signature(tasks)
+    ---@type string[]
+    local sig_parts = {}
+    for _, task in ipairs(tasks) do
+        local f = io.open(task.path, "rb")
+        if f then
+            local size = f:seek("end")
+            local head = ""
+            local mid = ""
+            local tail = ""
+
+            if size > 0 then
+                -- 截取头 64 字节
+                f:seek("set", 0)
+                head = f:read(64) or ""
+
+                -- 截取尾 64 字节
+                local tail_pos = size - 64
+                if tail_pos < 0 then
+                    tail_pos = 0
+                end
+                f:seek("set", tail_pos)
+                tail = f:read(64) or ""
+
+                -- 截取中间 64 字节 (防止同字节数的等长替换)
+                local mid_pos = math.floor(size / 2)
+                f:seek("set", mid_pos)
+                mid = f:read(64) or ""
+            end
+            f:close()
+
+            -- 将 前缀 + 大小 + 头中尾 拼接成该文件的唯一特征码
+            sig_parts[#sig_parts + 1] = task.prefix .. size .. head .. mid .. tail
+        end
+    end
+    -- 将所有文件的特征码合并
+    return table.concat(sig_parts, "||")
+end
+
+-- 重建数据库 (仅在 wanxiang 版本变更时运行)
+---@param tasks Task[]
+---@param db WrappedUserDb
+---@param delimiter string
+---@return boolean
+local function rebuild(tasks, db, delimiter)
+    for _, task in ipairs(tasks) do
+        local txt_path = task.path
+        local prefix = task.prefix
+
+        local f = io.open(txt_path, "r")
+        if not f then
+            goto continue
+        end
+
+        for line in f:lines() do
+            if line == "" or line:match("^%s*#") then
+                goto continue_line
+            end
+
+            ---@type string?, string?
+            local k, v = line:match("^([^\t]+)\t+(.+)")
+            if not k or not v then
+                goto continue_line
+            end
+
+            -- 转换完成后，再和 prefix 组合
+            ---@type string
+            v = v:match("^%s*(.-)%s*$")
+
+            local db_key = prefix .. k
+            local existing_v = db:fetch(db_key)
+            if existing_v and existing_v ~= "" then
+                v = existing_v .. delimiter .. v
+            end
+            db:update(db_key, v)
+
+            ::continue_line::
+        end
+        f:close()
+
+        ::continue::
+    end
+    return true
+end
+
+---@param db_name string
+---@param current_version string
+---@param delimiter string
+---@param tasks Task[]
+---@param config_sig string
+---@param state table
+---@return WrappedUserDb?
+local function connect_db(db_name, current_version, delimiter, tasks, config_sig, state)
+    if db_instance then
+        return db_instance
+    end
+
+    local db = userdb.LevelDb(db_name)
+    if not db then
+        return nil
+    end
+
+    -- 1. 计算当前所有物理文件的特征码
+    local current_signature = generate_files_signature(tasks) .. "||" .. (config_sig or "")
+
+    local needs_rebuild = false
+    if db:open_read_only() then
+        local db_ver = db:meta_fetch("_wanxiang_ver") or ""
+        local db_delim = db:meta_fetch("_delim")
+        local db_sig = db:meta_fetch("_files_sig") or "" -- 读取数据库里存的特征码
+
+        -- 版本变了、分隔符变了、或者文件内容被用户改了，触发重建
+        if db_ver ~= current_version or db_delim ~= delimiter or db_sig ~= current_signature then
+            needs_rebuild = true
+        end
+        db:close()
+    else
+        needs_rebuild = true
+    end
+
+    if needs_rebuild then
+        if db:open() then
+            rebuild(tasks, db, delimiter)
+            state.fmm_cache = {} --只要词库重建，彻底清空旧缓存
+            -- 更新最新的烙印
+            db:meta_update("_wanxiang_ver", current_version)
+            db:meta_update("_delim", delimiter)
+            db:meta_update("_files_sig", current_signature) -- 记下当前的文件特征
+
+            log.info("super_replacer: 数据已重载")
+            db:close()
+        end
+    end
+
+    if db:open_read_only() then
+        db_instance = db
+        return db
+    end
+
+    return nil
+end
+
+-- FMM 分词转换算法
+---@param text string
+---@param db WrappedUserDb?
+---@param prefix string
+---@param split_pat string
+---@param state SuperReplacerState
+---@return string
+local function segment_convert(text, db, prefix, split_pat, state)
+    local offsets = utf8_offsets(text)
+    local char_count = #offsets - 1
+
+    ---@type string[]
+    local result_parts = {}
+    local i = 1
+    local MAX_LOOKAHEAD = 6
+    while i <= char_count do
+        local start_byte = offsets[i]
+        local matched = false
+
+        local max_j = i + MAX_LOOKAHEAD
+        if max_j > char_count + 1 then
+            max_j = char_count + 1
+        end
+
+        -- 1. 长词 FMM 循环与缓存拦截
+        for j = max_j, i + 2, -1 do
+            local end_byte = offsets[j] - 1
+            local sub_text = text:sub(start_byte, end_byte)
+            local cache_key = prefix .. sub_text
+
+            local val = state.fmm_cache[cache_key]
+            if val == nil then
+                local db_res = db and db:fetch(cache_key)
+                state.fmm_cache[cache_key] = db_res or false
+                val = state.fmm_cache[cache_key]
+            end
+
+            if val then
+                local first_val = val:match(split_pat)
+                result_parts[#result_parts + 1] = first_val or sub_text
+                i = j - 1
+                matched = true
+                break
+            end
+        end
+
+        -- 2. 单字/单字符兜底（带缓存）
+        if not matched then
+            local single_char = text:sub(start_byte, offsets[i + 1] - 1)
+            local cache_key = prefix .. single_char
+
+            local val = state.fmm_cache[cache_key]
+            if val == nil then
+                local db_res = db and db:fetch(cache_key)
+                state.fmm_cache[cache_key] = db_res or false
+                val = state.fmm_cache[cache_key]
+            end
+
+            if val then
+                local first_val = val:match(split_pat)
+                result_parts[#result_parts + 1] = first_val or single_char
+            else
+                result_parts[#result_parts + 1] = single_char
+            end
+        end
+
+        i = i + 1
+    end
+    return table.concat(result_parts)
+end
+
+local M = {}
+
+---@param env Env
+function M.init(env)
+    local user_dir = rime_api.get_user_data_dir()
+    local shared_dir = rime_api.get_shared_data_dir()
+
+    local rime_config = env.engine.schema.config
+    local cfg_root = rime_config:get_map("super_replacer")
+
+    local db_name_val = cfg_root and cfg_root:get_value("db_name")
+    local db_name = db_name_val and db_name_val:get_string() or "lua/replacer"
+
+    local delimiter_val = cfg_root and cfg_root:get_value("delimiter")
+    local delimiter = delimiter_val and delimiter_val:get_string() or "|"
+
+    ---@type string
+    local split_pattern
+    if delimiter == " " then
+        split_pattern = "%S+"
+    else
+        local esc = delimiter:gsub("[%-%.%+%[%]%(%)%$%^%%%?%*]", "%%%1")
+        split_pattern = "([^" .. esc .. "]+)"
+    end
+
+    local comment_format_val = cfg_root and cfg_root:get_value("comment_format")
+    local comment_format = comment_format_val and comment_format_val:get_string() or "〔%s〕"
+
+    local is_chain_val = cfg_root and cfg_root:get_value("is_chain")
+    local is_chain = is_chain_val and is_chain_val:get_bool() or false
+
+    ---@param relative string?
+    ---@return string?
+    local function resolve_path(relative)
+        if not relative then
+            return nil
+        end
+        local user_path = user_dir .. "/" .. relative
+        local f = io.open(user_path, "r")
+        if f then
+            f:close()
+            return user_path
+        end
+        local shared_path = shared_dir .. "/" .. relative
+        f = io.open(shared_path, "r")
+        if f then
+            f:close()
+            return shared_path
+        end
+        return user_path
+    end
+
+    local rules_item = cfg_root and cfg_root:get("rules")
+    local rules_cfg = rules_item and rules_item:get_list()
+
+    ---@type Task[]
+    local tasks = {}
+    ---@type Rule[]
+    local rules = {}
+
+    if rules_cfg then
+        for i = 0, rules_cfg.size - 1 do
+            local rule_item = rules_cfg:get_at(i)
+            local rule = rule_item and rule_item:get_map()
+            if not rule then
+                goto continue
+            end
+
+            ---@type (string|true)[]
+            local triggers = {}
+            local trigger_item = rule:get("option")
+            if trigger_item then
+                local trigger_obj = trigger_item:get_obj()
+                if trigger_item.type == "kList" then
+                    ---@cast trigger_obj ConfigList
+                    for j = 0, trigger_obj.size - 1 do
+                        local trigger_val = trigger_obj:get_value_at(j)
+                        local trigger = trigger_val and trigger_val:get_string()
+                        if trigger then
+                            triggers[#triggers + 1] = trigger
+                        end
+                    end
+                elseif trigger_item.type == "kScalar" then
+                    ---@cast trigger_obj ConfigValue
+                    if trigger_obj:get_bool() == true then
+                        triggers[1] = true
+                    else
+                        local trigger = trigger_obj:get_string()
+                        if trigger then
+                            triggers[1] = trigger
+                        end
+                    end
+                end
+            end
+            if #triggers == 0 then
+                goto continue
+            end
+
+            ---@type table<string, boolean>
+            local target_tags = {}
+            local tags_item = rule:get("tags")
+            local tags_list = tags_item and tags_item:get_list()
+            if tags_list then
+                for j = 0, tags_list.size - 1 do
+                    local tag_val = tags_list:get_value_at(j)
+                    local tag = tag_val and tag_val:get_string()
+                    if tag then
+                        target_tags[tag] = true
+                    end
+                end
+            end
+
+            local prefix_val = rule:get_value("prefix")
+            local prefix = prefix_val and prefix_val:get_string() or ""
+
+            local mode_val = rule:get_value("mode")
+            local mode = mode_val and mode_val:get_string() or "append"
+
+            local comment_mode_val = rule:get_value("comment_mode")
+            local comment_mode = comment_mode_val and comment_mode_val:get_string() or "comment"
+
+            local fmm_val = rule:get_value("sentence")
+            local fmm = fmm_val and fmm_val:get_bool() or false
+
+            local cand_type_val = rule:get_value("cand_type")
+            local cand_type = cand_type_val and cand_type_val:get_string()
+
+            local always_qty = 1
+            local always_idx = 1
+            if mode == "abbrev" then
+                local abbrev_rule_val = rule:get_value("abbrev_rule")
+                local abbrev_rule = abbrev_rule_val and abbrev_rule_val:get_string() or "1,1"
+
+                local qty_str, idx_str = abbrev_rule:match("^(%d+)%s*,%s*(%d+)$")
+                always_qty = tonumber(qty_str) or 1
+                always_idx = tonumber(idx_str) or 1
+            end
+
+            rules[#rules + 1] = {
+                triggers = triggers,
+                tags = target_tags,
+                prefix = prefix,
+                mode = mode,
+                always_qty = always_qty,
+                always_idx = always_idx,
+                comment_mode = comment_mode,
+                fmm = fmm,
+                cand_type = cand_type,
+            }
+
+            -- 收集文件路径 (仅用于可能发生的 rebuild)
+            local files_item = rule:get("files")
+            local files = files_item and files_item:get_list()
+            if files then
+                for j = 0, files.size - 1 do
+                    local file_val = files:get_value_at(j)
+                    local file = file_val and file_val:get_string()
+                    local path = resolve_path(file)
+                    if path then
+                        tasks[#tasks + 1] = { path = path, prefix = prefix }
+                    end
+                end
+            end
+
+            ::continue::
+        end
+    end
+
+    ---@type string[]
+    local config_sig_parts = {}
+    for _, t in ipairs(rules) do
+        config_sig_parts[#config_sig_parts + 1] = t.cand_type or ""
+    end
+    local config_sig = table.concat(config_sig_parts, "|")
+
+    env.super_replacer_config = {
+        split_pattern = split_pattern,
+        comment_format = comment_format,
+        is_chain = is_chain,
+        rules = rules,
+    }
+
+    env.super_replacer_state = {
+        fmm_cache = {},
+        db = nil,
+    }
+
+    -- 3. DB 初始化 (使用单例连接)
+    env.super_replacer_state.db =
+        connect_db(db_name, wanxiang.version, delimiter, tasks, config_sig, env.super_replacer_state)
+end
+
+---@param env Env
+function M.fini(env)
+    env.super_replacer_config = nil
+    env.super_replacer_state = nil
+end
+
+---@param input Translation
+---@param env Env
+function M.func(input, env)
+    local config = env.super_replacer_config
+    assert(config)
+    local state = env.super_replacer_state
+    assert(state)
+
+    local ctx = env.engine.context
+
+    local input_code = ctx.input
+
+    if not ctx:is_composing() or ctx.input == "" then
+        state.fmm_cache = {}
+        collectgarbage("step", 200)
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
+
+    if #config.rules == 0 or not state.db then
+        for cand in input:iter() do
+            yield(cand)
+        end
+        return
+    end
+
+    local seg = ctx.composition:back()
+    local current_seg_tags = seg and seg.tags or {}
+
+    if seg then
+        input_code = ctx.input:sub(seg.start + 1, seg._end)
+    end
+
+    -- [Helper] 通用处理函数
+    ---@param cand Candidate
+    ---@return Candidate[]
+    local function process_rules(cand)
+        ---@type Candidate[]
+        local results = {}
+        local current_text = cand.text
+        local show_main = true
+        local current_main_comment = cand.comment
+        local matched_cand_type = nil
+
+        clear_list(shared_pending)
+        clear_list(shared_comments)
+
+        for _, rule in ipairs(config.rules) do
+            if rule.mode ~= "abbrev" then
+                local is_active = false
+                for _, trigger in ipairs(rule.triggers) do
+                    if trigger == true then
+                        is_active = true
+                        break
+                    elseif type(trigger) == "string" and ctx:get_option(trigger) then
+                        is_active = true
+                        break
+                    end
+                end
+
+                local is_tag_match = true
+                if next(rule.tags) ~= nil then
+                    is_tag_match = false
+                    for req_tag, _ in pairs(rule.tags) do
+                        if current_seg_tags[req_tag] then
+                            is_tag_match = true
+                            break
+                        end
+                    end
+                end
+
+                if is_active and is_tag_match then
+                    local query_text = config.is_chain and current_text or cand.text
+                    local key = rule.prefix .. query_text
+                    local val = state.db and state.db:fetch(key)
+                    if not val and string.match(query_text, "[A-Z]") then
+                        local lower_key = rule.prefix .. string.lower(query_text)
+                        val = state.db:fetch(lower_key)
+                    end
+                    if not val and rule.fmm then
+                        local seg_result =
+                            segment_convert(query_text, state.db, rule.prefix, config.split_pattern, state)
+                        if seg_result ~= query_text then
+                            val = seg_result
+                        end
+                    end
+
+                    if val then
+                        matched_cand_type = rule.cand_type or matched_cand_type
+
+                        local rule_comment = ""
+                        if rule.comment_mode == "text" then
+                            rule_comment = cand.text
+                        elseif rule.comment_mode == "comment" then
+                            rule_comment = cand.comment
+                        end
+
+                        local mode = rule.mode
+                        if mode ~= "comment" and rule_comment ~= "" then
+                            rule_comment = config.comment_format:format(rule_comment)
+                        end
+
+                        if mode == "comment" then
+                            ---@type string[]
+                            local parts = {}
+                            for p in val:gmatch(config.split_pattern) do
+                                -- 如果词库提示的简码，刚好等于用户当前已经敲下的编码，则不显示提示
+                                if p ~= input_code then
+                                    parts[#parts + 1] = p
+                                end
+                            end
+                            -- 只有当 parts 里有剩余有效提示时，才追加到注释数组里
+                            if #parts > 0 then
+                                shared_comments[#shared_comments + 1] = table.concat(parts, " ")
+                            end
+                        elseif mode == "replace" then
+                            if config.is_chain then
+                                local first = true
+                                for p in val:gmatch(config.split_pattern) do
+                                    if first then
+                                        current_text = p
+                                        if rule.comment_mode == "none" then
+                                            current_main_comment = ""
+                                        elseif rule.comment_mode == "text" then
+                                            current_main_comment = cand.text
+                                        end
+                                        first = false
+                                    else
+                                        shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
+                                    end
+                                end
+                            else
+                                show_main = false
+                                for p in val:gmatch(config.split_pattern) do
+                                    shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
+                                end
+                            end
+                        elseif mode == "append" then
+                            for p in val:gmatch(config.split_pattern) do
+                                shared_pending[#shared_pending + 1] = { text = p, comment = rule_comment }
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if #shared_comments > 0 then
+            local comment_str = table.concat(shared_comments, " ")
+            current_main_comment = config.comment_format:format(comment_str)
+        end
+
+        if show_main then
+            if config.is_chain and current_text ~= cand.text then
+                local final_type = matched_cand_type or cand.type or "kv"
+                local new_cand = Candidate(final_type, cand.start, cand._end, current_text, current_main_comment)
+                new_cand.preedit = cand.preedit
+                new_cand.quality = cand.quality
+                results[#results + 1] = new_cand
+            else
+                cand.comment = current_main_comment
+                results[#results + 1] = cand
+            end
+        end
+
+        for _, item in ipairs(shared_pending) do
+            if not (show_main and item.text == current_text) then
+                local final_type = matched_cand_type or "derived"
+                local new_cand = Candidate(final_type, cand.start, cand._end, item.text, item.comment)
+                new_cand.preedit = cand.preedit
+                new_cand.quality = cand.quality
+                results[#results + 1] = new_cand
+            end
+        end
+        return results
+    end
+
+    -- 流式拦截器 + 候车室 架构
+    local yield_count = 0
+    local quality_dropped = false
+    local has_exact_phrase = false
+    ---@type table<string, boolean>
+    local seen_texts = {}
+    ---@type table<string, boolean>
+    local global_yielded = {}
+    ---@type { cand: Candidate, index: integer }[]
+    local always_cands = {}
+    ---@type Candidate[]
+    local lazy_cands = {}
+    ---@type Candidate[]
+    local top_buffer = {}
+
+    -- 第一步：提前提取简码候选，分配阵营
+    for _, rule in ipairs(config.rules) do
+        if rule.mode == "abbrev" then
+            local is_active = false
+            for _, trigger in ipairs(rule.triggers) do
+                if trigger == true then
+                    is_active = true
+                    break
+                elseif type(trigger) == "string" and ctx:get_option(trigger) then
+                    is_active = true
+                    break
+                end
+            end
+
+            local is_tag_match = true
+            if next(rule.tags) ~= nil then
+                is_tag_match = false
+                for req_tag, _ in pairs(rule.tags) do
+                    if current_seg_tags[req_tag] then
+                        is_tag_match = true
+                        break
+                    end
+                end
+            end
+
+            if is_active and is_tag_match and input_code ~= "" then -- 加上输入非空保护
+                local key = rule.prefix .. input_code
+                local val = state.db:fetch(key)
+                    or (not input_code:match("[A-Z]") and state.db:fetch(rule.prefix .. input_code:upper()))
+
+                if val then
+                    local count = 0
+                    for p in val:gmatch(config.split_pattern) do
+                        if not seen_texts[p] then
+                            seen_texts[p] = true
+
+                            -- 简码也支持强制注入 type
+                            local final_type = rule.cand_type or "abbrev"
+                            local abbrev_cand =
+                                Candidate(final_type, seg and seg.start or 0, seg and seg._end or #input_code, p, "")
+
+                            count = count + 1
+
+                            if count <= rule.always_qty then
+                                abbrev_cand.quality = 999
+                                always_cands[#always_cands + 1] =
+                                    { cand = abbrev_cand, index = rule.always_idx + (count - 1) }
+                            else
+                                abbrev_cand.quality = 98
+                                lazy_cands[#lazy_cands + 1] = abbrev_cand
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    table.sort(always_cands, function(a, b)
+        return a.index < b.index
+    end)
+
+    -- 标准吐词函数（含精准定位插队）
+    ---@param cand Candidate
+    local function output_cand(cand)
+        local processed_cands = process_rules(cand)
+        for _, pc in ipairs(processed_cands) do
+            while #always_cands > 0 and (yield_count + 1) >= always_cands[1].index do
+                local ac = table.remove(always_cands, 1)
+                local ac_processed = process_rules(ac.cand)
+                for _, apc in ipairs(ac_processed) do
+                    if not global_yielded[apc.text] then
+                        global_yielded[apc.text] = true
+                        yield(apc)
+                        yield_count = yield_count + 1
+                    end
+                end
+            end
+            if not global_yielded[pc.text] then
+                global_yielded[pc.text] = true
+                yield(pc)
+                yield_count = yield_count + 1
+            end
+        end
+    end
+
+    -- 清空候车室机制
+    local function flush_buffer()
+        if has_exact_phrase then
+            -- 正常有词,执行定位插队，替补直接销毁
+            for _, cand in ipairs(top_buffer) do
+                output_cand(cand)
+            end
+        else
+            -- 空码救场
+            for _, cand in ipairs(top_buffer) do
+                local processed_cands = process_rules(cand)
+                for _, pc in ipairs(processed_cands) do
+                    if not global_yielded[pc.text] then
+                        global_yielded[pc.text] = true
+                        yield(pc)
+                        yield_count = yield_count + 1
+                    end
+                end
+            end
+
+            -- 立刻倾泻所有主力简码（无视设定的 index 坑位了，紧紧跟在后面）
+            while #always_cands > 0 do
+                local ac = table.remove(always_cands, 1)
+                local ac_processed = process_rules(ac.cand)
+                for _, apc in ipairs(ac_processed) do
+                    if not global_yielded[apc.text] then
+                        global_yielded[apc.text] = true
+                        yield(apc)
+                        yield_count = yield_count + 1
+                    end
+                end
+            end
+
+            -- 立刻倾泻所有替补简码
+            for _, lc in ipairs(lazy_cands) do
+                local lc_processed = process_rules(lc)
+                for _, lpc in ipairs(lc_processed) do
+                    if not global_yielded[lpc.text] then
+                        global_yielded[lpc.text] = true
+                        yield(lpc)
+                        yield_count = yield_count + 1
+                    end
+                end
+            end
+            lazy_cands = {}
+        end
+        top_buffer = {}
+    end
+
+    -- 第二步：遍历底层流
+    for cand in input:iter() do
+        if cand.type == "phrase" or cand.type == "user_phrase" then
+            has_exact_phrase = true
+        end
+        local q = cand.quality or 0
+
+        if not quality_dropped then
+            if q >= 99 then
+                top_buffer[#top_buffer + 1] = cand
+            else
+                quality_dropped = true
+                flush_buffer()
+                output_cand(cand)
+            end
+        else
+            output_cand(cand)
+        end
+    end
+
+    -- 第三步：如果流从头到尾都没跌破 99（很短的流），做最后的兜底收尾
+    if not quality_dropped then
+        flush_buffer()
+    end
+
+    -- 清理残余（应对 index 设定极大，流长度不够的情况）
+    while #always_cands > 0 do
+        local ac = table.remove(always_cands, 1)
+        local ac_processed = process_rules(ac.cand)
+        for _, apc in ipairs(ac_processed) do
+            if not global_yielded[apc.text] then
+                global_yielded[apc.text] = true
+                yield(apc)
+                yield_count = yield_count + 1
+            end
+        end
+    end
+end
+
+return M
