@@ -46,6 +46,7 @@
 ---@field db WrappedUserDb?
 
 ---@class UserPredictFilterState
+---@field last_commit string
 ---@field reorder_map table<string, integer>
 ---@field db WrappedUserDb?
 
@@ -378,9 +379,14 @@ local function get_predictions(prev_commit, db, config)
 
     -- 小于等于2先找上文组合查 2-Gram
     if #shared_state.history >= 2 then
+        local u0 = shared_state.history[#shared_state.history - 1]
         local u1 = shared_state.history[#shared_state.history]
-        if #get_utf8_chars(u1) <= 2 then
-            fetch_and_clean("2\t" .. shared_state.history[#shared_state.history - 1] .. "\t" .. u1 .. "\t", 10000)
+        local len_u0 = #get_utf8_chars(u0)
+        local len_u1 = #get_utf8_chars(u1)
+
+        -- 对齐写入时的条件：u1不超过4，且总和不超过5
+        if len_u1 <= 4 and (len_u0 + len_u1) <= 5 then
+            fetch_and_clean("2\t" .. u0 .. "\t" .. u1 .. "\t", 10000)
         end
     end
 
@@ -1036,19 +1042,26 @@ function F.func(input, env)
         return
     end
 
-    -- 独立生命周期管理与“缓存白嫖”机制
-    if shared_state.last_commit ~= shared_state.last_commit then
-        shared_state.last_commit = shared_state.last_commit
+    if state.last_commit ~= shared_state.last_commit then
+        state.last_commit = shared_state.last_commit
         state.reorder_map = {}
 
-        -- 严格判断调频开关是否开启，没开绝不查库
-        if shared_state.last_commit ~= "" and config.enable_context_reorder then
+        if config.enable_context_reorder then
+            local context_len = 0
+            if #shared_state.history >= 2 then
+                local u0_len = #get_utf8_chars(shared_state.history[#shared_state.history - 1])
+                local u1_len = #get_utf8_chars(shared_state.history[#shared_state.history])
+                context_len = u0_len + u1_len
+            end
+
             -- 优先白嫖 P 模块查好的全局缓存，如果 P 模块没查（比如没开联想），F 就自己查一次作为兜底
-            local preds = shared_state.pending_cands or get_predictions(shared_state.last_commit, state.db, config)
-            if preds then
-                state.reorder_map = {}
-                for rank, p in ipairs(preds) do
-                    state.reorder_map[p.word] = rank
+            if context_len >= 3 then
+                local preds = shared_state.pending_cands or get_predictions(shared_state.last_commit, state.db, config)
+                if preds then
+                    state.reorder_map = {}
+                    for rank, p in ipairs(preds) do
+                        state.reorder_map[p.word] = rank
+                    end
                 end
             end
         end

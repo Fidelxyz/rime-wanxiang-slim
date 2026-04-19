@@ -1,18 +1,20 @@
 patch:
   speller/algebra:
     __patch:
-      # 该选项由切换方案命令写入。如不了解原理，请勿手动修改。
+      # ** 该选项由切换方案命令写入。如不了解原理，请勿手动修改。 **
       # 可选输入方案名称："全拼", "自然码", "智能ABC", "小鹤双拼", "微软双拼", "搜狗双拼", "紫光双拼", "国标双拼", "拼音加加", "乱序17", "万象双拼", "自然龙", "汉心龙"
       - wanxiang_algebra:/pro/全拼
 
-      # 该选项由切换方案命令写入。如不了解原理，请勿手动修改。
+      # ** 该选项由切换方案命令写入。如不了解原理，请勿手动修改。 **
       # 可选辅助码引导方案名称："直接辅助", "间接辅助"
       - wanxiang_algebra:/pro/直接辅助
 
-      # 启用后，可在下方对应部分配置具体条目。
-      #- 模糊音
-      #- 自然码提权
-      #- 小鹤双拼提权
+      # 取消注释以开启模糊音。具体规则见 wanxiang_algebra.yaml。
+      #- wanxiang_algebra:/模糊音
+
+      # 取消注释以启用特定方案优化。部分音节字极少，几乎不参与构词，对此类编码提升对应四码字的优先级。
+      #- wanxiang_algebra:/自然码提权
+      #- wanxiang_algebra:/小鹤双拼提权
 
   # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
   #custom_phrase/user_dict: user_custom_phrase
@@ -24,57 +26,10 @@ patch:
   # 每页候选词数量。
   menu/page_size: 6
 
+  # 自动无词频造词（默认开启）。
+  # add_user_dict/enable_auto_phrase: true
+
   # [For Weasel 小狼毫] 前端图标。
   # schema/+:
   #   icon: "icons/zhong.ico"
   #   ascii_icon: "icons/ying.ico"
-
-  # 自动无词频造词（默认开启）。
-  # add_user_dict/enable_auto_phrase: true
-
-#下面的数据有需要的可以patch引用
-
-#特殊优化：部分音节字极少，几乎不参与构词，则提升对应四码字的优先级，仅对小鹤双拼有效，其他双拼方案需作对应修改）
-小鹤双拼提权:
-  __append:
-    - derive/^(.*?)(\d?);(bl|dx|df|eg|fn|kw|ny|tw|vw|yd|rx|fs|ix)$/$1$3/
-    - derive/^(.*?)(\d?);.*?,(bl|dx|df|eg|fn|kw|ny|tw|vw|yd|rx|fs|ix)$/$1$3/
-
-#特殊优化：部分音节字极少，几乎不参与构词，则提升对应四码字的优先级，仅对自然码有效，其他双拼方案需作对应修改）
-自然码提权:
-  __append:
-    - derive/^(.*?)(\d?);(jb|wq|aq|av|dn|xh|bv|jz|hm|sn|cd|iw|xl|ak|zy|fy|uz|yx|wb|wr|yw|dz|qz|ms|at|xf|gi|gn|or|ux|ww|nw|fs|qk|rl|cq|sw|jv|cy|sq|dd|fp|ae|ix|td|ep|ar|wm|pd|et|yz|eh|ct|os|hx|zq|ew|fm|ab|kc|tf|fx|we|sz|wx|bq|ic|ez|bs|ej|oh|ps|pw|fr|pq|au|wc|wp|dt|qf|zc|vx|im|br|mw|un|qb|fi|zm|vn|oz|kt|rq|ay|fn|yc|um|eq|eu|cz|yq|tq|oi|ek|az|fv|zx|ut|vz|ry|ac|ws|af|qv|ea|qj|al|ol|on|sx|ap|df|eg|rz|ey|em|ag|hi|iz|ki|xz|xj|ad|ft|pt|op|vt|oj|kn|pr|hq|eb|ev|cx|zd|am|ov|oq|ym|ef|ot|mr|rd|sy|oc|rc|oe|fq|cn|ok|rn|bp|yv|uc|wk|oy|bt|je|ow|xg|jj|rw|pp|ja|wt|lf|xe|wy|kx|sm|qe|fw|gc|xa|cw|zn|tn|cc|jo|md|sd|ql|kq|it|bd|sc|wv|fc|dw|ob|vm|ed|jl|xo|fl|gq|gt|of|pv|wd|qa|xk|yd|fe|og|iq|oa|uq|om|xv|mv|as|ox|km|zt|od|ht|el|hn|st|wn|mt|wi|tz|aj|yg|bw|jf|jg|kz|es|xb|ax|rt|gx|bb|qo|yf|ex|rx|tt|us|qg|pe|zw|mp|qh|rm|hc|np|jh|cm|yl|eo|ra|vc|aw|tw|fk|gm|ec|be|vq|fd|jk|in)$/$1$3/
-    - derive/^(.*?)(\d?);.*?,(jb|wq|aq|av|dn|xh|bv|jz|hm|sn|cd|iw|xl|ak|zy|fy|uz|yx|wb|wr|yw|dz|qz|ms|at|xf|gi|gn|or|ux|ww|nw|fs|qk|rl|cq|sw|jv|cy|sq|dd|fp|ae|ix|td|ep|ar|wm|pd|et|yz|eh|ct|os|hx|zq|ew|fm|ab|kc|tf|fx|we|sz|wx|bq|ic|ez|bs|ej|oh|ps|pw|fr|pq|au|wc|wp|dt|qf|zc|vx|im|br|mw|un|qb|fi|zm|vn|oz|kt|rq|ay|fn|yc|um|eq|eu|cz|yq|tq|oi|ek|az|fv|zx|ut|vz|ry|ac|ws|af|qv|ea|qj|al|ol|on|sx|ap|df|eg|rz|ey|em|ag|hi|iz|ki|xz|xj|ad|ft|pt|op|vt|oj|kn|pr|hq|eb|ev|cx|zd|am|ov|oq|ym|ef|ot|mr|rd|sy|oc|rc|oe|fq|cn|ok|rn|bp|yv|uc|wk|oy|bt|je|ow|xg|jj|rw|pp|ja|wt|lf|xe|wy|kx|sm|qe|fw|gc|xa|cw|zn|tn|cc|jo|md|sd|ql|kq|it|bd|sc|wv|fc|dw|ob|vm|ed|jl|xo|fl|gq|gt|of|pv|wd|qa|xk|yd|fe|og|iq|oa|uq|om|xv|mv|as|ox|km|zt|od|ht|el|hn|st|wn|mt|wi|tz|aj|yg|bw|jf|jg|kz|es|xb|ax|rt|gx|bb|qo|yf|ex|rx|tt|us|qg|pe|zw|mp|qh|rm|hc|np|jh|cm|yl|eo|ra|vc|aw|tw|fk|gm|ec|be|vq|fd|jk|in)$/$1$3/
-
-模糊音:
-  __append:
-    # n - l
-    - derive/^l/n
-    - derive/^n/l
-    # r - y     开头
-    - derive/^y/r
-    - derive/^r/y
-    # h - f     开头
-    - derive/^h/f
-    - derive/^f/h
-    # r - l     开头
-    - derive/^r/l
-    - derive/^l/r
-    # k - g     开头
-    - derive/^k/g
-    - derive/^g/k
-    # en - eng
-    - derive/(ē|é|ě|è|e)ng(.*)$/$1n$2
-    - derive/(ē|é|ě|è|e)n(.*)$/$1ng$2
-    # in - ing
-    - derive/(ī|í|ǐ|ì|i)ng(.*)$/$1n$2
-    - derive/(ī|í|ǐ|ì|i)n(.*)$/$1ng$2
-    # c - ch
-    - derive/^c([^h]*)/ch$1
-    - derive/^ch/c
-    # z - zh
-    - derive/^z([^h]*)/zh$1
-    - derive/^zh/z
-    # s - sh
-    - derive/^s([^h]*)/sh$1
-    - derive/^sh/s

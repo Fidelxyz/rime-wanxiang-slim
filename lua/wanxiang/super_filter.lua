@@ -240,7 +240,7 @@ function M.func(input, env)
     local seg_len = last_seg and (last_seg._end - last_seg.start) or code_len
 
     -- 及时清理兜底数据
-    if seg_len < 2 or seg_len > 3 then
+    if seg_len < 2 then
         state.last_2code_char = nil
     end
 
@@ -294,7 +294,9 @@ function M.func(input, env)
                     start_pos = 0
                 end
                 local end_pos = last_seg and last_seg._end or #code
-                local new_cand = Candidate("fallback", start_pos, end_pos, fallback_text, "")
+                local new_cand =
+                    Candidate("fallback", start_pos, end_pos, fallback_text, config.cand_type_symbols["fallback"] or "")
+
                 -- 分割预编辑区，例如输入 "abc" -> 显示 "ab c"
                 local seg_str = code:sub(start_pos + 1, end_pos)
                 if #seg_str >= 3 then
@@ -302,6 +304,7 @@ function M.func(input, env)
                 else
                     new_cand.preedit = seg_str
                 end
+
                 yield(new_cand)
             end
         end

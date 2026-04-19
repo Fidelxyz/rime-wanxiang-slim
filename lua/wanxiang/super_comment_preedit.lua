@@ -1,4 +1,4 @@
----Enhances candidate display by dynamically generating and appending character decomposition info or corrected Pinyin tones to the candidate comments.
+---Enhances candidate display by dynamically generating and appending corrected Pinyin tones to the candidate comments.
 ---@module "wanxiang.super_comment_preedit"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
@@ -7,25 +7,13 @@
 ---@field auto_delimiter string
 ---@field min_candidate_length integer
 
----@class SuperCommentDecompositorConfig
----@field format string
-
----@class SuperCommentDecompositorState
----@field decomp_dict ReverseLookup?
-
 ---@class SuperCommentCorrectorConfig
 ---@field enabled boolean
 ---@field format string
 
----@class SuperCommentCorrectorState
----@field corrections_cache table<string, {text: string, comment: string}>
-
 ---@class Env
 ---@field super_comment_config SuperCommentConfig?
----@field super_comment_decompositor_config SuperCommentDecompositorConfig?
----@field super_comment_decompositor_state SuperCommentDecompositorState?
 ---@field super_comment_corrector_config SuperCommentCorrectorConfig?
----@field super_comment_corrector_state SuperCommentCorrectorState?
 
 local wanxiang = require("wanxiang.wanxiang")
 
@@ -79,75 +67,19 @@ local is_format_valid = function(format)
 end
 
 -- ----------------------
--- # 辅助码拆分提示模块
--- PRO 专用
--- ----------------------
-local decompositor = {}
-
----@param state SuperCommentDecompositorState
----@return ReverseLookup
-function decompositor.get_dict(state)
-    if not state.decomp_dict then
-        state.decomp_dict = ReverseLookup("wanxiang_chaifen")
-    end
-    return state.decomp_dict
-end
-
----@param cand Candidate
----@param config SuperCommentDecompositorConfig
----@param state SuperCommentDecompositorState
----@return string
-function decompositor.get_comment(cand, config, state)
-    local dict = decompositor.get_dict(state)
-
-    local raw = dict:lookup(cand.text)
-    if raw == "" then
-        return ""
-    end
-
-    return config.format:format(raw)
-end
-
----@param env Env
-function decompositor.init(env)
-    local rime_config = env.engine.schema.config
-
-    local format = rime_config:get_string("super_comment/decomposition_format") or "〔%s〕"
-    if not is_format_valid(format) then
-        log.error(("Invalid config value super_comment/decomposition_format: %s"):format(format))
-        format = "〔%s〕"
-    end
-
-    env.super_comment_decompositor_config = {
-        format = format,
-    }
-
-    env.super_comment_decompositor_state = {
-        decomp_dict = nil,
-    }
-
-    if wanxiang.is_pro_schema(env) then
-        decompositor.get_dict(env.super_comment_decompositor_state)
-    end
-end
-
----@param env Env
-function decompositor.fini(env)
-    env.super_comment_decompositor_state = nil
-end
-
--- ----------------------
 -- # 错音错字提示模块
 -- ----------------------
 
-local corrector = {}
+local corrector = {
+    ---@type table<string, {text: string, comment: string}>?
+    corrections_cache = nil,
+}
 
 ---@param cand Candidate
 ---@param config SuperCommentCorrectorConfig
----@param state SuperCommentCorrectorState
 ---@return string?
-function corrector.get_comment(cand, config, state)
-    local correction = state.corrections_cache[cand.comment]
+function corrector.get_comment(cand, config)
+    local correction = corrector.corrections_cache[cand.comment]
     if not correction or cand.text ~= correction.text then
         return nil
     end
@@ -163,7 +95,7 @@ function corrector.init(env)
 
     local format = config:get_string("super_comment/correction_format") or "〔%s〕"
     if not is_format_valid(format) then
-        log.error(("Invalid config value super_comment/correction_format: %s"):format(format))
+        log.warning(("Invalid config value super_comment/correction_format: %s"):format(format))
         format = "〔%s〕"
     end
 
@@ -172,46 +104,41 @@ function corrector.init(env)
         format = format,
     }
 
-    env.super_comment_corrector_state = {
-        corrections_cache = {},
-    }
+    -- Load corrections dictionary
+    if not corrector.corrections_cache then
+        local file = wanxiang.load_file_with_fallback("dicts/cuoyin.dict.yaml")
+        if file then
+            corrector.corrections_cache = {}
 
-    local auto_delimiter = env.super_comment_config.auto_delimiter
+            local auto_delimiter = env.super_comment_config.auto_delimiter
+            for line in file:lines() do
+                if not line:match("^#") then
+                    ---@type string, string, string, string?
+                    local text, code, _, comment = line:match("^(.-)\t(.-)\t(.-)\t(.-)$")
+                    if text and code then
+                        ---@type string
+                        text = text:match("^%s*(.-)%s*$")
+                        ---@type string
+                        code = code:match("^%s*(.-)%s*$")
+                        ---@type string
+                        comment = comment and comment:match("^%s*(.-)%s*$") or ""
 
-    local dict_path = wanxiang.is_pro_schema(env) and "dicts/cuoyin.pro.dict.yaml" or "dicts/cuoyin.dict.yaml"
-    local file, err = wanxiang.load_file_with_fallback(dict_path)
-    if not file then
-        log.error(("[super_comment]: 加载失败 %s，错误: %s"):format(dict_path, err))
-        return
-    end
+                        comment = comment:gsub("%s+", auto_delimiter)
+                        code = code:gsub("%s+", auto_delimiter)
 
-    for line in file:lines() do
-        if not line:match("^#") then
-            ---@type string, string, string, string?
-            local text, code, _, comment = line:match("^(.-)\t(.-)\t(.-)\t(.-)$")
-            if text and code then
-                ---@type string
-                text = text:match("^%s*(.-)%s*$")
-                ---@type string
-                code = code:match("^%s*(.-)%s*$")
-                ---@type string
-                comment = comment and comment:match("^%s*(.-)%s*$") or ""
-
-                comment = comment:gsub("%s+", auto_delimiter)
-                code = code:gsub("%s+", auto_delimiter)
-
-                env.super_comment_corrector_state.corrections_cache[code] = { text = text, comment = comment }
+                        corrector.corrections_cache[code] = { text = text, comment = comment }
+                    end
+                end
             end
+
+            file:close()
         end
     end
-
-    file:close()
 end
 
 ---@param env Env
 function corrector.fini(env)
     env.super_comment_corrector_config = nil
-    env.super_comment_corrector_state = nil
 end
 
 -- ----------------------
@@ -225,9 +152,6 @@ local function get_charset_label(text)
     end
 
     local code = utf8.codepoint(text)
-    if not code then
-        return nil
-    end
 
     -- 按照 Unicode 区块频率排序
     if code >= 0x4E00 and code <= 0x9FFF then
@@ -415,13 +339,11 @@ function M.init(env)
         min_candidate_length = min_candidate_length,
     }
 
-    decompositor.init(env)
     corrector.init(env)
 end
 
 ---@param env Env
 function M.fini(env)
-    decompositor.fini(env)
     corrector.fini(env)
 end
 
@@ -430,14 +352,8 @@ end
 function M.func(input, env)
     local config = env.super_comment_config
     assert(config)
-    local decompositor_config = env.super_comment_decompositor_config
-    assert(decompositor_config)
-    local decompositor_state = env.super_comment_decompositor_state
-    assert(decompositor_state)
     local corrector_config = env.super_comment_corrector_config
     assert(corrector_config)
-    local corrector_state = env.super_comment_corrector_state
-    assert(corrector_state)
 
     local context = env.engine.context
     local input_str = context.input or ""
@@ -446,14 +362,11 @@ function M.func(input, env)
     local is_tone_comment = env.engine.context:get_option("tone_hint")
     local is_toneless_comment = env.engine.context:get_option("toneless_hint")
     local is_comment_hint = env.engine.context:get_option("fuzhu_hint")
-    local is_decomp_enabled = env.engine.context:get_option("chaifen_switch")
-    local index = 0
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
         local initial_comment = genuine_cand.comment
         local final_comment = initial_comment
-        index = index + 1
 
         -- preedit相关处理只跳过 preedit，不影响注释
         if is_reverse_lookup_mode then
@@ -467,7 +380,7 @@ function M.func(input, env)
         end
 
         -- 进入注释处理阶段
-        -- ① 辅助码注释或者声调注释
+        -- 辅助码注释或者声调注释
         if is_comment_hint then
             local aux_comment = get_aux_comment(cand, initial_comment, config, context)
             if aux_comment then
@@ -492,23 +405,15 @@ function M.func(input, env)
             end
         end
 
-        -- ② 拆分注释
-        if is_decomp_enabled then
-            local decomp_comment = decompositor.get_comment(cand, decompositor_config, decompositor_state)
-            if decomp_comment and decomp_comment ~= "" then --不为空很重要
-                final_comment = decomp_comment
-            end
-        end
-
-        -- ③ 错音错字提示
+        -- 错音错字提示
         if env.super_comment_corrector_config.enabled then
-            local correction_comment = corrector.get_comment(cand, corrector_config, corrector_state)
+            local correction_comment = corrector.get_comment(cand, corrector_config)
             if correction_comment and correction_comment ~= "" then
                 final_comment = correction_comment
             end
         end
 
-        -- ④ 反查模式提示
+        -- 反查模式提示
         if is_reverse_lookup_mode then
             local reverse_lookup_comment = get_reverse_lookup_comment(cand, initial_comment)
             if reverse_lookup_comment and reverse_lookup_comment ~= "" then

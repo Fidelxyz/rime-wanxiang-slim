@@ -184,7 +184,8 @@ end
 -- 按照优先顺序加载文件：用户目录 > 系统目录
 ---@param filename string 相对路径
 ---@param mode string?
----@return file*?,  string?
+---@return file*? file
+---@return string? err
 function M.load_file_with_fallback(filename, mode)
     mode = mode or "r" -- 默认读取模式
 

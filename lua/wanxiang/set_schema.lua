@@ -6,18 +6,19 @@
 local wanxiang = require("wanxiang.wanxiang")
 
 local SCHEMA_MAP = {
+    ["/pinyin"] = "全拼",
+    ["/zrm"] = "自然码",
+    ["/znabc"] = "智能ABC",
     ["/flypy"] = "小鹤双拼",
     ["/mspy"] = "微软双拼",
-    ["/zrm"] = "自然码",
     ["/sogou"] = "搜狗双拼",
-    ["/znabc"] = "智能ABC",
     ["/ziguang"] = "紫光双拼",
-    ["/pyjj"] = "拼音加加",
     ["/gbpy"] = "国标双拼",
+    ["/pyjj"] = "拼音加加",
     ["/lxsq"] = "乱序17",
+    ["/wxsp"] = "万象双拼",
     ["/zrlong"] = "自然龙",
     ["/hxlong"] = "汉心龙",
-    ["/pinyin"] = "全拼",
 }
 
 ---@param src string

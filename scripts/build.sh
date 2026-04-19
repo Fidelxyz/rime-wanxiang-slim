@@ -83,7 +83,7 @@ package_schema_pro() {
         "${root_dir}/dicts/" "${out_dir}/dicts/"
 
     # Copy chaifen dict to ${out_dir}/
-    cp "${root_dir}/custom/wanxiang_chaifen_${schema}.dict.yaml" "${out_dir}/wanxiang_chaifen.dict.yaml"
+    cp "${root_dir}/custom/${schema}_chaifen.txt" "${out_dir}/lua/data/chaifen.txt"
 
     # Copy ${root_dir}/custom/ to ${out_dir}/custom/
     rsync -av \

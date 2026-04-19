@@ -543,14 +543,21 @@ base:
       - xform/^(.)ei$/$1Ⓑ/
       - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⒿⓀⓁⓏⓍⒸⓋⒷⓃⓂ/qwrtyuiopsdfghjklzxcvbnm/
 
-  万象双拼:
+  万象双拼:  # https://github.com/amzxyz/RIME-LMDG/tree/wanxiang/%E4%B8%87%E8%B1%A1%E5%8F%8C%E6%8B%BC%E5%BE%97%E7%94%B1%E6%9D%A5
     __append:
-      - xform/Ⅸ//  #用于Lua判断输入类型的标记
+      - xform/Ⅹ//  #用于Lua判断输入类型的标记
       - xlit/āáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜü/aaaaooooeeeeiiiiuuuuvvvvv/
       - xform/^ng$/eng/
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
+      - derive/^qiang$/fiang/  # 单飞
+      - derive/^qie$/zie/  # 单飞
+      - derive/^xie$/xei/  # 单飞
+      - derive/^xin$/win/  # 单飞
+      - derive/^tie$/tue/  # 单飞
+      - derive/^yun$/bun/  # 单飞
+      - derive/^deng$/den/  # 单飞
       - derive/^([jqxy])u$/$1v/
       - derive/^([aoe])([ioun])$/$1$1$2/
       - xform/^([aoe])(ng)?$/$1$1$2/
@@ -558,29 +565,29 @@ base:
       - xform/[uv]an$/Ⓡ/
       - xform/er$/Ⓡ/
       - xform/[uv]e$/Ⓣ/
-      - xform/[uv]n$/Ⓨ/
-      - xform/i?ong$/Ⓦ/
+      - xform/[uv]n$/Ⓑ/
+      - xform/i?ong$/Ⓗ/
+      - xform/uo$/Ⓞ/
+      - xform/[iu]ang$/Ⓕ/
+      - xform/ang$/Ⓨ/
+      - xform/ing$/Ⓚ/
+      - xform/uai$/Ⓚ/
+      - xform/[iu]a$/Ⓖ/
+      - xform/ui$/Ⓥ/
+      - xform/in$/Ⓦ/
+      - xform/iao$/Ⓟ/
+      - xform/ian$/Ⓜ/
+      - xform/ie$/Ⓩ/
+      - xform/eng$/Ⓓ/
+      - xform/^(.+)en$/$1Ⓢ/
+      - xform/^(.+)ao$/$1Ⓝ/
+      - xform/^(.+)ai$/$1Ⓛ/
+      - xform/^(.+)ei$/$1Ⓧ/
+      - xform/^(.+)ou$/$1Ⓒ/
+      - xform/^(.+)an$/$1Ⓙ/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
-      - xform/uo$/Ⓞ/
-      - xform/[iu]ang$/Ⓓ/
-      - xform/ang$/Ⓢ/
-      - xform/ing$/Ⓖ/
-      - xform/uai$/Ⓖ/
-      - xform/[iu]a$/Ⓧ/
-      - xform/ui$/Ⓥ/
-      - xform/in$/Ⓑ/
-      - xform/iao$/Ⓝ/
-      - xform/ian$/Ⓜ/
-      - xform/ie$/Ⓟ/
-      - xform/eng$/Ⓙ/
-      - xform/^(.)en$/$1Ⓗ/
-      - xform/^(.)ao$/$1Ⓚ/
-      - xform/^(.)ai$/$1Ⓛ/
-      - xform/^(.)ei$/$1Ⓩ/
-      - xform/^(.)ou$/$1Ⓒ/
-      - xform/^(.)an$/$1Ⓕ/
       - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⓂⒿⒸⓀⓁⓏⓍⓋⒷⓃ/qwrtyuiopsdfghmjcklzxvbn/
 
   乱序17:
@@ -657,35 +664,42 @@ pro:
       - xform/ńg|ňg|ǹg/eng/
       - xform/ń|ň|ǹ/en/
       - xform/ḿ/me/
+      - derive/^qiang;/fiang;/  # 单飞
+      - derive/^qie;/zie;/  # 单飞
+      - derive/^xie;/xei;/  # 单飞
+      - derive/^xin;/win;/  # 单飞
+      - derive/^tie;/tue;/  # 单飞
+      - derive/^yun;/bun;/  # 单飞
+      - derive/^deng;/den;/  # 单飞
       - derive/^([jqxy])u;/$1v;/
       - derive/^([aoe])([ioun]);/$1$1$2;/
       - xform/^([aoe])(ng)?;/$1$1$2;/
       - xform/iu;/Ⓠ;/
+      - xform/[iu]a;/Ⓖ;/
       - xform/[uv]an;/Ⓡ;/
       - xform/[uv]e;/Ⓣ;/
-      - xform/[uv]n;/Ⓨ;/
-      - xform/i?ong;/Ⓦ;/
+      - xform/[uv]n;/Ⓑ;/
+      - xform/i?ong;/Ⓗ;/
+      - xform/uo;/Ⓞ;/
+      - xform/[iu]ang;/Ⓕ;/
+      - xform/ang;/Ⓨ;/
+      - xform/(ing|uai);/Ⓚ;/
+      - xform/ui;/Ⓥ;/
+      - xform/iao;/Ⓟ;/
+      - xform/ian;/Ⓜ;/
+      - xform/ie;/Ⓩ;/
+      - xform/eng;/Ⓓ;/
+      - xform/in;/Ⓦ;/
+      - xform/^(.+)en;/$1Ⓢ;/
+      - xform/^(.+)ao;/$1Ⓝ;/
+      - xform/^(.+)ai;/$1Ⓛ;/
+      - xform/^(.+)ei;/$1Ⓧ;/
+      - xform/^(.+)ou;/$1Ⓒ;/
+      - xform/^(.+)an;/$1Ⓙ;/
       - xform/^sh/Ⓤ/
       - xform/^ch/ⓛ/
       - xform/^zh/Ⓥ/
-      - xform/uo;/Ⓞ;/
-      - xform/[iu]ang;/Ⓓ;/
-      - xform/ang;/Ⓢ;/
-      - xform/(ing|uai);/Ⓖ;/
-      - xform/[iu]a;/Ⓧ;/
-      - xform/ui;/Ⓥ;/
-      - xform/iao;/Ⓝ;/
-      - xform/ian;/Ⓜ;/
-      - xform/ie;/Ⓟ;/
-      - xform/eng;/Ⓙ;/
-      - xform/in;/Ⓑ;/
-      - xform/^(.)en;/$1Ⓗ;/
-      - xform/^(.)ao;/$1Ⓚ;/
-      - xform/^(.)ai;/$1Ⓛ;/
-      - xform/^(.)ei;/$1Ⓩ;/
-      - xform/^(.)ou;/$1Ⓒ;/
-      - xform/^(.)an;/$1Ⓕ;/
-      - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⓂⒿⒸⓀⓁⓏⓍⓋⒷⓃ/qwrtyuiopsdfghmjcklzxvbn/
+      - xlit/ⓆⓌⓇⓉⓎⓊⓛⓄⓅⓈⒹⒻⒼⒽⒿⓀⓁⓏⓍⒸⓋⒷⓃⓂ/qwrtyuiopsdfghjklzxcvbnm/
       #- xform/^(aj|ak|al|ob|ez|ef)(;.*)$//
 
   自然码:
@@ -1168,7 +1182,7 @@ pro:
     __append:
       - xform/ⅲ//  # 用于Lua判断是否处于间接辅助的标记
       # 纯双拼与声调
-      - derive/^([a-z◯]+)\d?;.*$/$1/  # 纯双拼
+      - derive/^([a-z◯]+);.*$/$1/  # 纯双拼
       # 分号后第一组辅助码
       - derive|^([a-z◯]+);([a-z]).*$|$1/$2|  # 双拼+/1位辅码
       - derive|^([a-z◯]+);([a-z])([a-z]).*$|$1/$2$3|  # 双拼+/2位辅码
@@ -2458,10 +2472,6 @@ english:
     # s - sh
     - derive/^s([^h]*)/sh$1
     - derive/^sh/s
-
-# ==========================================
-# 细分模糊音模块 (供 UI 独立勾选挂载)
-# ==========================================
 
 模糊音_nl:
   __append:

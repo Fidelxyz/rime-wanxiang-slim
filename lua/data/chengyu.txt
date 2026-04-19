@@ -650,6 +650,7 @@ bgbw	不管不问
 bgcf	不甘雌伏
 bgdt	不共戴天
 bgdy	半个多月
+bgeb	不告而别
 bgee	不过尔尔
 bgeq	不告而取
 bggl	不敢告劳
@@ -3338,7 +3339,7 @@ dhby	低回不已
 dhij	短褐穿结
 dhik	打诨插科
 dhis	当行出色
-dhdj	鼎镬刀锯|大喊大叫
+dhdj	大喊大叫|鼎镬刀锯
 dhdl	大红大绿
 dhdu	大行大市
 dhdz	大红大紫
@@ -3347,6 +3348,7 @@ dhfu	胆寒发竖
 dhgf	单鹄寡凫
 dhgz	断还归宗
 dhhh	灯火辉煌
+hhhh	红红火火
 dhhu	大好河山
 dhjl	灯红酒绿
 dhjq	独鹤鸡群
@@ -3355,7 +3357,7 @@ dhjv	刁滑奸诈
 dhlg	德厚流光|雕蚶镂蛤
 dhll	打虎牢龙
 dhlu	调虎离山
-dhlv	大海捞针|东海捞针
+dhlv	大海捞针
 dhql	惮赫千里
 dhqu	大获全胜
 dhry	鼎镬如饴
@@ -23321,3 +23323,4 @@ vzvy	濯足濯缨
 ubvgbj	神不知鬼不觉
 imyyjci	柴米油盐酱醋茶
 ukrubkr	是可忍孰不可忍
+ylxuh	一力降十会

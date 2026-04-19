@@ -624,12 +624,7 @@ function M.func(input, env)
 
         if #shared_comments > 0 then
             local comment_str = table.concat(shared_comments, " ")
-            local fmt = config.comment_format:format(comment_str)
-            if current_main_comment and current_main_comment ~= "" then
-                current_main_comment = current_main_comment .. fmt
-            else
-                current_main_comment = fmt
-            end
+            current_main_comment = config.comment_format:format(comment_str)
         end
 
         if show_main then

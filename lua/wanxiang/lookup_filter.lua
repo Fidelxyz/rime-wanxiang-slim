@@ -551,9 +551,9 @@ function F.init(env)
     }
 end
 
----@param input Translation
+---@param translation Translation
 ---@param env Env
-function F.func(input, env)
+function F.func(translation, env)
     local context = env.engine.context
 
     local config = env.lookup_filter_config
@@ -563,30 +563,23 @@ function F.func(input, env)
 
     local seg = context.composition:back()
     if not seg or not matches_tags(seg, config) then
-        for cand in input:iter() do
+        for cand in translation:iter() do
             yield(cand)
         end
         return
     end
 
     if #config.data_sources == 0 then
-        for cand in input:iter() do
+        for cand in translation:iter() do
             yield(cand)
         end
         return
     end
 
-    local ctx_input = env.engine.context.input
-    -- 传入 env.bypass_prefix
-    local _, aux_code, s_start, _ = split_lookup_input(ctx_input, config.trigger_str, config.bypass_prefix)
-    if not s_start then
-        for cand in input:iter() do
-            yield(cand)
-        end
-        return
-    end
+    local input = env.engine.context.input
+    local _, aux_code, _, _ = split_lookup_input(input, config.trigger_str, config.bypass_prefix)
     if not aux_code or aux_code == "" then
-        for cand in input:iter() do
+        for cand in translation:iter() do
             yield(cand)
         end
         return
@@ -594,11 +587,8 @@ function F.func(input, env)
 
     local if_single_char_first = env.engine.context:get_option("char_priority")
 
-    ---@type table<integer, table<integer, Candidate[]>>
+    ---@type table<integer, Candidate[]>
     local buckets = {}
-    for i = 1, #config.data_sources do
-        buckets[i] = {}
-    end
 
     ---@type Candidate[]
     local long_word_cands = {}
@@ -612,18 +602,20 @@ function F.func(input, env)
     local db_cache = state.db_cache
     local comment_cache = state.comment_cache
 
-    for cand in input:iter() do
+    for cand in translation:iter() do
         if cand.type == "sentence" then
-            goto skip
+            goto continue
         end
+
         local cand_text = cand.text
         local cand_len = utf8.len(cand_text)
         if not cand_len or cand_len == 0 then
-            goto skip
+            goto continue
         end
+
         local b = cand_text:byte(1)
         if b and b < 128 then
-            goto skip
+            goto continue
         end
 
         ---@type table<"aux"|"db", string[][]>
@@ -683,51 +675,39 @@ function F.func(input, env)
             end
         end
 
-        local matched_idx = nil
-
-        for i, source_type in ipairs(config.data_sources) do
+        ---@type boolean
+        local matched = false
+        for _, source_type in ipairs(config.data_sources) do
             local codes_seq = raw_data[source_type]
             if codes_seq then
-                local is_match = false
                 if source_type == "aux" then
                     if cand_len == 1 then
-                        if any_starts_with(codes_seq[1], aux_code) then
-                            is_match = true
-                        end
+                        matched = any_starts_with(codes_seq[1], aux_code)
                     else
-                        local memo = {}
-                        if match_fuzzy_recursive(codes_seq, 1, aux_code, 1, memo, false) then
-                            is_match = true
-                        end
+                        matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, false)
                     end
                 elseif source_type == "db" then
                     if cand_len == 1 then
-                        if any_starts_with(codes_seq[1], aux_code) then
-                            is_match = true
-                        end
+                        matched = any_starts_with(codes_seq[1], aux_code)
                     else
-                        local memo = {}
-                        if match_fuzzy_recursive(codes_seq, 1, aux_code, 1, memo, true) then
-                            is_match = true
-                        end
+                        matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, true)
                     end
                 end
 
-                if is_match then
-                    matched_idx = i
+                if matched then
                     break
                 end
             end
         end
 
-        if matched_idx then
+        if matched then
             if if_single_char_first and cand_len > 1 then
                 long_word_cands[#long_word_cands + 1] = cand
             else
-                if not buckets[matched_idx][cand_len] then
-                    buckets[matched_idx][cand_len] = {}
+                if not buckets[cand_len] then
+                    buckets[cand_len] = {}
                 end
-                local cand_list = buckets[matched_idx][cand_len]
+                local cand_list = buckets[cand_len]
                 cand_list[#cand_list + 1] = cand
 
                 if cand_len > max_len then
@@ -735,33 +715,28 @@ function F.func(input, env)
                 end
             end
         end
-        ::skip::
+
+        ::continue::
     end
 
     if if_single_char_first then
-        for i = 1, #config.data_sources do
-            if buckets[i][1] then
-                for _, c in ipairs(buckets[i][1]) do
-                    yield(c)
-                end
+        if buckets[1] then
+            for _, c in ipairs(buckets[1]) do
+                yield(c)
             end
         end
         for l = max_len, 2, -1 do
-            for i = 1, #config.data_sources do
-                if buckets[i][l] then
-                    for _, c in ipairs(buckets[i][l]) do
-                        yield(c)
-                    end
+            if buckets[l] then
+                for _, c in ipairs(buckets[l]) do
+                    yield(c)
                 end
             end
         end
     else
         for l = max_len, 1, -1 do
-            for i = 1, #config.data_sources do
-                if buckets[i][l] then
-                    for _, c in ipairs(buckets[i][l]) do
-                        yield(c)
-                    end
+            if buckets[l] then
+                for _, c in ipairs(buckets[l]) do
+                    yield(c)
                 end
             end
         end

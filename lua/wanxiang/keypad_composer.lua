@@ -5,7 +5,7 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class KeypadComposerConfig
----@field mode "auto"|"compose"
+---@field mode "auto"|"compose"|"select"
 
 ---@class KeypadComposerState
 ---@field is_composing boolean
@@ -18,20 +18,6 @@
 
 local wanxiang = require("wanxiang.wanxiang")
 
----@type table<integer, integer>
-local KP_MAP = {
-    [0xFFB0] = 0,
-    [0xFFB1] = 1,
-    [0xFFB2] = 2,
-    [0xFFB3] = 3,
-    [0xFFB4] = 4,
-    [0xFFB5] = 5,
-    [0xFFB6] = 6,
-    [0xFFB7] = 7,
-    [0xFFB8] = 8,
-    [0xFFB9] = 9,
-}
-
 local P = {}
 
 ---@param env Env
@@ -39,10 +25,10 @@ function P.init(env)
     local rime_config = env.engine.schema.config
 
     local mode = rime_config:get_string("keypad_composer/keypad_mode")
-    if mode ~= "auto" and mode ~= "compose" then
-        mode = "auto"
+    if mode ~= "auto" and mode ~= "compose" and mode ~= "select" then
+        mode = "select"
     end
-    ---@cast mode "auto"|"compose"
+    ---@cast mode "auto"|"compose"|"select"
 
     local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
         local state = env.keypad_composer_state
@@ -72,31 +58,34 @@ end
 ---@param env Env
 ---@return integer
 function P.func(key, env)
-    if key:ctrl() or key:alt() or key:super() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
-    end
-
-    local kp_num = KP_MAP[key.keycode]
-    -- Skip keypad intercept for mobile devices
-    if not kp_num or wanxiang.is_mobile_device() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
-    end
-
     local config = env.keypad_composer_config
     assert(config)
+
+    -- Keep the default behavior in select mode
+    if config.mode == "select" then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    -- Only process keypad keys without modifiers
+    local keycode = key.keycode
+    if (keycode < 0xFFB0 or 0xFFB9 < keycode) or key:ctrl() or key:alt() or key:super() then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
     local state = env.keypad_composer_state
     assert(state)
 
-    local ch = tostring(kp_num)
+    -- keycode 0xFFB0-0xFFB9 -> keypad 0-9
+    local ch = tostring(keycode - 0xFFB0)
 
-    -- 模式处理
     if config.mode == "compose" or (config.mode == "auto" and state.is_composing) then
         -- Compose mode or auto mode with active composition: always process
         env.engine.context:push_input(ch)
-        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     else
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        -- Auto mode with inactive composition: commit directly
+        env.engine:commit_text(ch)
     end
+    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
 end
 
 return P

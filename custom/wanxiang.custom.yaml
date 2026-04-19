@@ -1,12 +1,12 @@
 patch:
   speller/algebra:
     __patch:
-      # 该选项由切换方案命令写入。如不了解原理，请勿手动修改。
+      # ** 该选项由切换方案命令写入。如不了解原理，请勿手动修改。 **
       # 可选输入方案名称："全拼", "自然码", "智能ABC", "小鹤双拼", "微软双拼", "搜狗双拼", "紫光双拼", "国标双拼", "拼音加加", "乱序17", "万象双拼", "自然龙", "汉心龙"
       - wanxiang_algebra:/base/全拼
 
-      # 启用后，可在下方对应部分配置具体条目。
-      #- 模糊音
+      # 取消注释以开启模糊音。具体规则见 wanxiang_algebra.yaml。
+      #- wanxiang_algebra:/模糊音
 
   # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
   #custom_phrase/user_dict: user_custom_phrase
@@ -29,40 +29,7 @@ patch:
   # 自动无词频造词。
   #add_user_dict/enable_auto_phrase: true
 
-  # [For Weasel 小狼毫] 修改前端图标。
+  # [For Weasel 小狼毫] 前端图标。
   #schema/+:
   #  icon: "icons/zhong.ico"
   #  ascii_icon: "icons/ying.ico"
-
-模糊音:
-  __append:
-    # n - l
-    - derive/^l/n
-    - derive/^n/l
-    # r - y     开头
-    - derive/^y/r
-    - derive/^r/y
-    # h - f     开头
-    - derive/^h/f
-    - derive/^f/h
-    # r - l     开头
-    - derive/^r/l
-    - derive/^l/r
-    # k - g     开头
-    - derive/^k/g
-    - derive/^g/k
-    # en - eng
-    - derive/(ē|é|ě|è|e)ng(.*)$/$1n$2
-    - derive/(ē|é|ě|è|e)n(.*)$/$1ng$2
-    # in - ing
-    - derive/(ī|í|ǐ|ì|i)ng(.*)$/$1n$2
-    - derive/(ī|í|ǐ|ì|i)n(.*)$/$1ng$2
-    # c - ch
-    - derive/^c([^h]*)/ch$1
-    - derive/^ch/c
-    # z - zh
-    - derive/^z([^h]*)/zh$1
-    - derive/^zh/z
-    # s - sh
-    - derive/^s([^h]*)/sh$1
-    - derive/^sh/s
