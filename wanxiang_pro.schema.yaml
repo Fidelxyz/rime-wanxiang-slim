@@ -1,6 +1,6 @@
 # Rime schema
 # encoding: utf-8
-# 方案说明
+
 schema:
   schema_id: wanxiang_pro
   name: 万象拼音PRO
@@ -138,9 +138,13 @@ keypad_composer:
   # select: 按下小键盘数字键时，若处于选词状态，则选择对应候选词，否则输入数字。等同于主键盘数字键行为。
   keypad_mode: auto
 
-character_selector:  # 以词定字
-  select_first_key: "["  # 选择首个字符的按键。支持按键表达式（如 bracketleft）。
-  select_last_key: "]"  # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
+# 以词定字
+character_selector:
+  # 选择候选首个字符的按键。支持按键表达式（如 bracketleft）。
+  select_first_key: "["
+
+  # 选择候选末尾字符的按键。支持按键表达式（如 bracketleft）。
+  select_last_key: "]"
 
 user_predict:
   db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
