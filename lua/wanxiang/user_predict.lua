@@ -1,4 +1,5 @@
----Implements an advanced predictive text engine featuring n-gram models, time-decayed ranking, cross-device synchronization, and context-aware candidate prediction and filtering.
+---Implements an advanced predictive text engine featuring n-gram models, time-decayed ranking, cross-device
+---synchronization, and context-aware candidate prediction and filtering.
 ---@module "wanxiang.user_predict"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
@@ -198,8 +199,6 @@ local function reset_memory_chain(state)
     state.need_push = false
 end
 
--- 语境分割算法 (纯汉字白名单)
-
 ---@param text string
 ---@return boolean
 local function is_valid_commit_text(text)
@@ -219,7 +218,6 @@ local function is_valid_commit_text(text)
     return true
 end
 
--- 分词聚集算法
 ---@param str string
 ---@return string[]
 local function get_utf8_chars(str)
@@ -255,6 +253,7 @@ end
 
 --全局过期数据回收
 local _last_sweep_memory = 0
+
 ---@param db WrappedUserDb
 ---@param config UserPredictConfig
 local function sweep_expired_data(db, config)
@@ -997,7 +996,6 @@ function T.func(input, seg, env)
     end
 end
 
--- Filter (F): 负责输入生命周期内的极速实时调频
 local F = {}
 
 ---@param env Env
