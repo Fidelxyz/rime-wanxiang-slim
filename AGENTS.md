@@ -2,108 +2,59 @@
 
 ## Project Overview
 
-Rime input method schema for Chinese pinyin input. **Not a compiled software project** — it is a
-collection of YAML configuration files, Lua extensions, and dictionary data for the
-[Rime Input Method Engine](https://rime.im/). Author: `amzxyz`.
+Rime input method schema for Chinese pinyin input. **Not a compiled software project** — it is a collection of YAML
+configuration files, Lua extensions, and dictionary data for the [Rime Input Method Engine](https://rime.im/).
 
 ### Directory Structure
 
 ```
-├── lua/wanxiang/            # Lua plugin modules (core logic)
-├── lua/data/                # Data files for Lua plugins (emoji, charset, OpenCC)
-├── dicts/                   # Dictionary data files (.dict.yaml)
-├── custom/                  # Custom configuration templates, pro schema variants
-├── .github/workflows/       # CI/CD (GitHub Actions)
-├── wanxiang.schema.yaml     # Main input schema definition for standard version
-├── wanxiang_pro.schema.yaml # Main input schema definition for pro version
-├── wanxiang_algebra.yaml    # Spelling algebra rules (1391+ lines, 12+ pinyin schemes)
-└── default.yaml             # Rime global settings
+├── lua/wanxiang/                # Lua plugin modules
+├── lua/data/                    # Data files for Lua plugins (emoji, charset, OpenCC)
+├── dicts/                       # Dictionary data files (.dict.yaml)
+├── custom/                      # Custom configuration templates, data files
+├── .github/workflows/           # CI/CD (GitHub Actions)
+├── default.yaml                 # Rime global settings
+├── punctuation.yaml             # Punctuation mappings
+├── wanxiang.dict.yaml           # Main dictionary file
+├── wanxiang.schema.yaml         # Main input schema definition for standard version
+├── wanxiang_pro.schema.yaml     # Main input schema definition for pro version
+├── wanxiang_english.dict.yaml   # Dictionary for English input
+├── wanxiang_english.schema.yaml # Sub-schema for English input
+├── wanxiang_mixcode.dict.yaml   # Dictionary for Chinese and English mixed input
+├── wanxiang_mixcode.schema.yaml # Sub-schema for Chinese and English mixed input
+├── wanxiang_reverse.dict.yaml   # Dictionary for reverse lookup
+├── wanxiang_reverse.schema.yaml # Sub-schema for reverse lookup
+└── wanxiang_algebra.yaml        # Spelling algebra rules
 ```
 
 ## Build / Release / Test Commands
 
-There is **no traditional build system** (no Makefile, npm, cargo, etc.) and **no test framework**.
+There is **no traditional build system** and **no test framework**.
 
-## Lua Code Style
+## Lua Scripts
 
-All Lua source files are in `lua/wanxiang/`. They are loaded by the Rime engine as processor,
-filter, or translator plugins.
+All Lua source files are in `lua/wanxiang/`. They are loaded by the Rime engine as processor, filter, or translator
+plugins.
 
-### Module Pattern
-```lua
--- Module table at top of file, returned at end
-local M = {}       -- or: local F = {}, local AP = {}, etc.
+### Rime's Lua API
 
-function M.init(env)   -- Rime lifecycle: called on schema load
-function M.func(input, env)  -- Rime lifecycle: main processing function
-function M.fini(env)   -- Rime lifecycle: cleanup on schema unload
+`lua/librime.lua` is a full `---@meta rime` type stub file (not meant to be required at runtime).
 
-return M
-```
-Some simpler modules return a single function directly (`return translator`, `return unicode`).
-
-### Imports / Requires
-```lua
-local wanxiang = require("wanxiang.wanxiang")  -- shared utilities
-local userdb = require("wanxiang.userdb")      -- database utilities
-```
-- The shared module `wanxiang.lua` provides utility functions, version constant, and device detection.
-
-### Formatting
-- **Strings**: Double quotes `"string"` is dominant. Single quotes appear in table keys and
-  symbol definitions.
-- **Blank lines**: Separate logical sections. Major function groups separated by comment headers.
+Documentation for Rime's Lua API can be found in the librime-lua documentation:
+- https://github.com/hchunhui/librime-lua/wiki/Scripting
+- https://github.com/hchunhui/librime-lua/wiki/API
+- https://github.com/hchunhui/librime-lua/wiki/Objects
 
 ### Comments
-- **Single-line** `-- comment` is the standard. Chinese-language comments dominate.
-- **Section headers**: `-- 1. 全局常量定义 (Constants)`, `-- 2. 核心辅助函数 (Utilities)`
+- **EmmyLua/LuaLS annotations** are used.
 - **File headers**: Feature description at the top.
-- **EmmyLua/LuaLS annotations** are used in `wanxiang.lua` and `librime.lua`:
-  ```lua
-  ---@param env Env
-  ---@return boolean
-  ---@diagnostic disable: undefined-global
-  ```
-  `librime.lua` is a full `---@meta rime` type stub file (not meant to be required at runtime).
-
-### Error Handling
-- `pcall` for Rime API calls that may fail (config access, key iteration):
-  ```lua
-  local ok_map, map = pcall(function() return config:get_map("path") end)
-  ```
-- Guard clauses with early returns:
-  ```lua
-  if not context or not context.composition or context.composition:empty() then
-      return false
-  end
-  ```
-- `io.open` checked for nil before use; files always closed after use.
-- No `assert()` or `error()` usage — Lua errors crash the input method, so defensive coding
-  with nil checks is preferred.
-
-### Rime-Specific Patterns
-- `yield(Candidate(...))` to output candidates from translators/filters.
-- `env.engine.schema.config:get_string(...)` / `get_bool(...)` / `get_int(...)` for config access.
-- `env.engine.context` for input context, composition, and segments.
-- Process results: `0` (kRejected), `1` (kAccepted), `2` (kNoop).
-- Segment tags: `seg:has_tag("unicode")`, `seg:has_tag("wanxiang_reverse")`, etc.
-
-## YAML Style
-
-- **Indentation**: 2 spaces.
-- **Comments**: Chinese-language. Inline `# comment` with whitespace alignment padding.
-  Full-line `#` comments for section headers. Commented-out config preserved with `#`.
-- **Quoting**: Double quotes for version strings and special values. Single quotes for symbol
-  definitions. Unquoted for simple identifiers.
-- **Flow style**: `states: [ 中文, 英文 ]`, `{ when: has_menu, accept: minus, send: Page_Up }`.
-- **Block style**: `description: |` for multiline strings.
-- **Modular composition**: Heavy use of `__patch`, `__include`, `__append` directives.
 
 ## Documentation
 
-- **README.md**: The primary project documentation, containing installation instructions,
-  configuration guides, and a high-level feature overview.
+- **README.md**: The primary project documentation, containing installation instructions, configuration guides,
+  and a high-level feature overview.
 - **FEATURES.md**: A detailed mapping of project features to their implementation files.
+- **PATCH_GUIDE.md**: Instructions for `*.custom.yaml` patch syntax and `__include`, `__patch`, `__append` directives.
 
 When modifying functional code (Lua) or configuration (YAML), always check if the changes
 impact the features described in `README.md` or the implementation mappings in `FEATURES.md`.
@@ -147,16 +98,8 @@ clarity and readability before finalizing the merge result.
 ## Key Warnings for Agents
 
 1. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
-2. **Rime globals** — `rime_api`, `yield`, `Candidate`, `log`, `utf8` are provided by the Rime
-   engine runtime and will show as undefined in static analysis.
-3. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire
-   dictionary files; they can be tens of thousands of lines.
-4. **Chinese documentation** — README, comments, and commit messages are in Chinese. This is
-   intentional and should be maintained.
-5. **Conventional commits** — Use the format: `feat:`, `fix:`, `dict:`, `perf:`, `refactor:`,
-   `docs:`, `chore:`, `ci:`. Messages may be in Chinese.
-6. **Release file exclusions** — Markdown (`*.md`) and image (`*.jpg`, `*.png`) files are
-   excluded from release ZIP packages in `release-build.sh`. When adding or renaming
-   documentation or image files, update the `--exclude` and `--include` patterns in the rsync
-   calls within that script to ensure the new files are properly excluded from (or included in)
-   the release packages.
+2. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire dictionary files; they can be
+   tens of thousands of lines.
+3. **Chinese documentation** — README and comments are in Chinese. This is intentional and should be maintained.
+4. **Conventional commits** — Use the format: `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`,
+   `test:`.
