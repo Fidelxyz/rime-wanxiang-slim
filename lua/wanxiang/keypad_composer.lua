@@ -68,7 +68,7 @@ function P.func(key, env)
 
     -- Only process keypad keys without modifiers
     local keycode = key.keycode
-    if (keycode < 0xFFB0 or 0xFFB9 < keycode) or key:ctrl() or key:alt() or key:super() then
+    if (keycode < 0xFFB0 or 0xFFB9 < keycode) or key:ctrl() or key:alt() or key:super() or key:release() then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
