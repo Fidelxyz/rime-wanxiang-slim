@@ -389,7 +389,6 @@ lookup_filter:
 
 # 处理符合特定规则的输入码，如网址、反查
 recognizer:
-  import_preset: default
   patterns:
     wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 radical_lookup/prefix 匹配
     add_user_dict: "^``[A-Za-z/`']*$"  #自造词

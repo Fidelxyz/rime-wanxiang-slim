@@ -44,20 +44,20 @@ speller:
   algebra:
     __include: wanxiang_algebra:/english/通用规则
     __patch: wanxiang_algebra:/english/全拼
+
 translator:
   dictionary: wanxiang_english
   enable_user_dict: false
   initial_quality: 2
   comment_format:
     - xform/^~.+$//
+
 key_binder:
   import_preset: default
   bindings:
   # - {when: always, accept: Shift+space, select: wanxiang}  #直接跳转指定方案
   # - {when: always, accept: Shift+space, select: wanxiang_pro}  #直接跳转指定方案
   # - {when: always, accept: Shift+space, select: .next}  #下一个方案
-recognizer:
-  import_preset: default
 
 wanxiang_english:
   dictionary: wanxiang_english
