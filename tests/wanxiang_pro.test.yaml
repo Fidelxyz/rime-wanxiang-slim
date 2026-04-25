@@ -1,0 +1,8 @@
+schema: wanxiang_pro
+source_dir: ../dist/rime-wanxiang-zrm-fuzhu
+
+deploy:
+  default:
+    tests:
+      - send: nihao
+        assert: cand[1].text == "你好"

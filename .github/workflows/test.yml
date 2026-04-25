@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - tests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Download Mira
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: rimeinn/mira
+          latest: true
+          fileName: mira-linux-x86_64
+          out-file-path: tests
+
+      - name: Rename Mira binary
+        working-directory: tests
+        run: |
+          mv mira-linux-x86_64 mira
+          chmod +x mira
+
+      - name: Build
+        run: bash scripts/build.sh --no-archive
+
+      - name: Run tests for wanxiang
+        working-directory: tests
+        run: ./mira wanxiang.test.yaml
+
+      - name: Run tests for wanxiang_pro
+        working-directory: tests
+        run: ./mira wanxiang_pro.test.yaml

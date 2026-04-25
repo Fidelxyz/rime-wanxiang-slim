@@ -1,0 +1,8 @@
+schema: wanxiang
+source_dir: ../dist/rime-wanxiang-base
+
+deploy:
+  default:
+    tests:
+      - send: nihao
+        assert: cand[1].text == "你好"
