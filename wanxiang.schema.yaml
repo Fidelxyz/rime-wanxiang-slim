@@ -471,8 +471,7 @@ speller:
   delimiter: " '"  # 系统配置，第一位<空格>是拼音之间的分隔符；第二位<'>表示可以手动输入单引号来分割拼音。
   algebra:
     __patch:
-      #- 模糊音             #模糊音选择性开启
-      - wanxiang_algebra:/base/全拼  #拼音转双拼码
+      - wanxiang_algebra:/base/全拼
 
 user_dict_set:
   dictionary: wanxiang
