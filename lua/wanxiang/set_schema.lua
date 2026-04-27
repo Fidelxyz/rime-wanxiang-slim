@@ -21,6 +21,11 @@ local SCHEMA_MAP = {
     ["/hxlong"] = "汉心龙",
 }
 
+local AUX_MAP = {
+    ["/zjf"] = "直接辅助",
+    ["/jjf"] = "间接辅助",
+}
+
 ---@param src string
 ---@param dest string
 ---@return boolean
@@ -124,6 +129,20 @@ end
 ---@param seg Segment
 ---@param env Env
 local function translator(input, seg, env)
+    if input:sub(1, 1) ~= "/" then
+        return
+    end
+
+    local target_aux = AUX_MAP[input]
+    if not target_aux then
+        return
+    end
+
+    local target_schema = SCHEMA_MAP[input]
+    if not target_schema then
+        return
+    end
+
     local user_dir = rime_api.get_user_data_dir()
     local shared_dir = rime_api.get_shared_data_dir()
 
@@ -132,10 +151,7 @@ local function translator(input, seg, env)
     local main_custom_file_path = user_dir .. "/" .. main_custom_file
     local main_custom_file_exists = wanxiang.file_exists(main_custom_file_path)
 
-    -- 处理直接辅助/间接辅助切换
-    if input == "/zjf" or input == "/jjf" then
-        local target_aux = (input == "/zjf") and "直接辅助" or "间接辅助"
-
+    if target_aux then
         local success = set_aux_schema(main_custom_file_path, target_aux)
 
         local msg = success and ("已切换到〔" .. target_aux .. "〕，请重新部署。")
@@ -144,7 +160,6 @@ local function translator(input, seg, env)
         return
     end
 
-    local target_schema = SCHEMA_MAP[input]
     if target_schema then
         local files = {
             main_custom_file,
