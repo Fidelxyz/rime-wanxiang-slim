@@ -16,23 +16,16 @@ jobs:
     runs-on: ubuntu-slim
 
     steps:
-      - uses: googleapis/release-please-action@v4
+      - uses: googleapis/release-please-action@v5
         id: release
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
 
-  build:
-    needs: [release-please]
-    if: needs.release-please.outputs.release_created == 'true'
-    uses: ./.github/workflows/build.yml
-    with:
-      tag_name: ${{ needs.release-please.outputs.tag_name }}
-
   release:
-    runs-on: ubuntu-22.04
-    needs: [release-please, build]
+    runs-on: ubuntu-latest
+    needs: [release-please]
     if: needs.release-please.outputs.release_created == 'true'
     env:
       TAG_NAME: ${{ needs.release-please.outputs.tag_name }}
@@ -40,10 +33,51 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/download-artifact@v8
+      - uses: actions/setup-python@v6
         with:
-          name: rime-wanxiang-dist-${{ github.ref_name }}
-          path: artifact
+          python-version: "3.x"
+
+      - name: Build
+        run: bash scripts/build.sh
+
+      - name: Commit and force push per-scheme branches
+        run: |-
+          set -euxo pipefail
+
+          schemes=("base" "zrm-fuzhu" "flypy-fuzhu" "moqi-fuzhu" "hanxin-fuzhu" "wubi-fuzhu" "tiger-fuzhu" "shouyou-fuzhu" "shyplus-fuzhu" "wx-fuzhu")
+
+          for scheme in "${schemes[@]}"; do
+            branch="wanxiang-${scheme}"
+            src_dir="dist/rime-wanxiang-${scheme}"
+
+            echo "=== Building branch ${branch} from ${src_dir} ==="
+
+            if [ ! -d "${src_dir}" ]; then
+              echo "Warning: ${src_dir} not found, skip ${branch}."
+              continue
+            fi
+
+            git worktree add --orphan "${branch}"
+
+            # Copy the built files from dist/ to the branch
+            cp -a "${src_dir}/." "${branch}/"
+
+            (
+              cd "${branch}"
+
+              # Generate Plum recipes
+              bash ../scripts/generate-plum-recipes.sh "${scheme}" "${branch}"
+
+              git add .
+              git status
+
+              git config user.name "github-actions[bot]"
+              git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+              git commit -m "chore(${branch}): release for ${TAG_NAME}"
+              git push -f origin "${branch}"
+            )
+          done
 
       - name: Generate release note
         id: release-note
@@ -51,11 +85,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/generate-release-note.sh > release-note.md
 
-      - uses: ncipollo/release-action@v1
+      - uses: softprops/action-gh-release@v3
         with:
-          tag: ${{ env.TAG_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
           name: "${{ env.TAG_NAME }} Rime 万象拼音输入方案精简版"
-          bodyFile: release-note.md
-          artifacts: artifact/rime-wanxiang-*.zip
-          draft: false
-          allowUpdates: true
+          body_path: release-note.md
+          files: dist/rime-wanxiang-*.zip
