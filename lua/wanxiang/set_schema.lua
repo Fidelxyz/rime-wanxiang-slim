@@ -70,8 +70,6 @@ local function set_pinyin_schema(custom_file, schema_name)
         content = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
     elseif custom_file:find("wanxiang_mixedcode") then
         content = content:gsub("(%s*__patch:%s*wanxiang_algebra:/mixed/)%S+", "%1" .. schema_name)
-    elseif custom_file:find("wanxiang_english") then
-        content = content:gsub("(%s*__patch:%s*wanxiang_algebra:/english/)%S+", "%1" .. schema_name)
     elseif custom_file:find("wanxiang%.custom") then
         content = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
             return prefix .. new_schema_name(suffix)

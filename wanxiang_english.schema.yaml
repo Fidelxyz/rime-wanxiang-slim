@@ -42,8 +42,7 @@ speller:
   alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA\
   delimiter: " '"
   algebra:
-    __include: wanxiang_algebra:/english/通用规则
-    __patch: wanxiang_algebra:/english/全拼
+    __include: wanxiang_algebra:/english
 
 translator:
   dictionary: wanxiang_english

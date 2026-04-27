@@ -6,3 +6,5 @@ deploy:
     tests:
       - send: nihao
         assert: cand[1].text == "你好"
+      - send: english
+        assert: cand[1].text == "English"
