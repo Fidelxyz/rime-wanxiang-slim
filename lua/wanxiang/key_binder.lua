@@ -1,4 +1,5 @@
----Provides context-aware key bindings by evaluating regular expressions against the current input string to determine if a key sequence should be redirected.
+---Provides context-aware key bindings by evaluating regular expressions against the current input string to determine
+---if a key sequence should be redirected.
 ---@module "wanxiang.key_binder"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
@@ -101,7 +102,8 @@ function M.func(key_event, env)
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    if not env.engine.context.composition:back():has_tag("abc") then
+    local segment = env.engine.context.composition:back()
+    if not segment or not segment:has_tag("abc") then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
