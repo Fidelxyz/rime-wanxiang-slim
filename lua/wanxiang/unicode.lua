@@ -1,31 +1,61 @@
 ---Generates Unicode character candidates by parsing a hexadecimal code entered after a specific trigger prefix.
----@module "wanxiang.unicode"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
---- @param input string
---- @param seg Segment
---- @param env Env
-local function unicode(input, seg, env)
-    -- Extract the second character of the configured trigger as the trigger key.
-    env.unicode_trigger = env.unicode_trigger
-        or env.engine.schema.config:get_string("recognizer/patterns/unicode"):sub(2, 2)
+---@class UnicodeConfig
+---@field trigger string
 
-    if (not seg:has_tag("unicode")) or env.unicode_trigger == "" or input:sub(1, 1) ~= env.unicode_trigger then
+---@diagnostic disable-next-line: duplicate-type
+---@class Env
+---@field unicode_config UnicodeConfig?
+
+local T = {}
+
+---@param env Env
+function T.init(env)
+    -- Extract the second character of the configured trigger as the trigger key.
+    local pattern = env.engine.schema.config:get_string("recognizer/patterns/unicode")
+    local trigger = pattern and pattern:sub(2, 2) or ""
+
+    env.unicode_config = {
+        trigger = trigger,
+    }
+end
+
+---@param env Env
+function T.fini(env)
+    env.unicode_config = nil
+end
+
+---@param input string
+---@param seg Segment
+---@param env Env
+function T.func(input, seg, env)
+    local config = env.unicode_config
+    assert(config)
+
+    if not seg:has_tag("unicode") or config.trigger == "" then
+        return
+    end
+    if input:sub(1, 1) ~= config.trigger then
         return
     end
 
-    local ucodestr = input:match(env.unicode_trigger .. "(%x+)")
+    local ucodestr = input:match(config.trigger .. "(%x+)")
     if not ucodestr or #ucodestr <= 1 then
         return
     end
 
     local segment = env.engine.context.composition:back()
     if segment then
+        ---@diagnostic disable-next-line: assign-type-mismatch
         segment.tags = segment.tags + Set({ "unicode" })
     end
 
     local code = tonumber(ucodestr, 16)
+    if not code then
+        return
+    end
 
     -- Out of Unicode range
     if code > 0x10FFFF then
@@ -56,4 +86,4 @@ local function unicode(input, seg, env)
     end
 end
 
-return unicode
+return T

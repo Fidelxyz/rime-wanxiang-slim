@@ -1,5 +1,4 @@
 ---Provides a utility to dynamically switch the active Pinyin schema by rewriting the configuration file with the selected schema rules.
----@module "wanxiang.set_schema"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 

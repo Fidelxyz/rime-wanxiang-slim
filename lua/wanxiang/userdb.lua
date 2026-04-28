@@ -1,5 +1,5 @@
----Provides a memory-safe wrapper and object pool for Rime UserDb, offering utility methods for meta-data operations and memory-managed queries.
----@module "wanxiang.userdb"
+---Provides a memory-safe wrapper and object pool for Rime UserDb, offering utility methods for meta-data operations
+---and memory-managed queries.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -34,14 +34,13 @@ end
 ---@param prefix string
 ---@param handler fun(key: string, value: string)
 function WrappedUserDb:query_with(prefix, handler)
-    ---@type DbAccessor
     local da = self._db:query(prefix)
     if da then
         for key, value in da:iter() do
             handler(key, value)
         end
     end
-    da = nil ---@diagnostic disable-line: cast-local-type
+    da = nil
     collectgarbage() -- Release DbAccessor
 end
 

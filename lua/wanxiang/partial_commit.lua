@@ -1,6 +1,5 @@
 ---Ctrl + number keys to commit the first n characters of the current candidate,
 ---and keep the rest in the input box for further editing.
----@module "wanxiang.partial_commit"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -9,6 +8,7 @@
 ---
 ---@field update_notifier Connection
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field partial_commit_state PartialCommitState?
 
@@ -79,9 +79,7 @@ function P.init(env)
         state.pending_rest = nil
 
         ctx.input = rest
-        if ctx.clear_non_confirmed_composition then
-            ctx:clear_non_confirmed_composition()
-        end
+        ctx:clear_non_confirmed_composition()
         if ctx.caret_pos ~= nil then
             ctx.caret_pos = #rest
         end
@@ -95,6 +93,7 @@ end
 
 ---@param env Env
 function P.fini(env)
+    assert(env.partial_commit_state)
     env.partial_commit_state.update_notifier:disconnect()
     env.partial_commit_state = nil
 end
@@ -141,7 +140,7 @@ function P.func(key, env)
     -- 利用 vertices 拿到第 n 个音节的精确字节偏移量
     local cut_byte = spans.vertices[n + 1]
     -- 截取剩余的 raw_input
-    local rest = context.input:sub(cut_byte + 1)
+    local rest = cut_byte and context.input:sub(cut_byte + 1) or ""
     -- 如果剩余输入首字符是手动输入的分隔符（比如 ' ），顺手切掉保证清爽
     if rest:sub(1, 1) == "'" or rest:sub(1, 1) == " " then
         rest = rest:sub(2)

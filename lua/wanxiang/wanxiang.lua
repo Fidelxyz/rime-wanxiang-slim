@@ -1,5 +1,4 @@
 ---Provides core shared utilities, constants, and environment variables used across the various Lua modules in the Wanxiang schema.
----@module "wanxiang.wanxiang"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -15,10 +14,6 @@ M.RIME_PROCESS_RESULTS = {
     kAccepted = 1, -- 表示处理器成功处理了这个按键，停止处理链并返回 true
     kNoop = 2, -- 表示处理器没有处理这个按键，继续传递给下一个处理器
 }
-
----@class Env
----@field unicode_trigger string? Trigger key for Unicode input
----@field page_size integer? Number of candidates per page (menu/page_size)
 
 -- 整个生命周期内不变，缓存判断结果
 ---@type boolean?
@@ -183,15 +178,15 @@ end
 
 -- 按照优先顺序加载文件：用户目录 > 系统目录
 ---@param filename string 相对路径
----@param mode string?
----@return file*? file
+---@param mode iolib.OpenMode
+---@return file? file
 ---@return string? err
 function M.load_file_with_fallback(filename, mode)
     mode = mode or "r" -- 默认读取模式
 
     local _filename = M.get_filename_with_fallback(filename)
 
-    ---@type file*?, string?
+    ---@type file?, string?
     local file, err
 
     if _filename then
@@ -207,6 +202,7 @@ local USER_ID_DEFAULT = "unknown"
 ---详见：
 ---1. https://github.com/rime/weasel/pull/1649
 ---2. https://github.com/rime/librime/issues/1038
+---TODO: Fixed in https://github.com/rime/weasel/pull/1653. Remove this workaround when next release includes that fix.
 ---@return string
 function M.get_user_id()
     local user_id = rime_api.get_user_id()
@@ -222,7 +218,6 @@ function M.get_user_id()
     end
 
     for line in installation_file:lines() do
-        ---@type string?, string?
         local key, value = line:match('^([^#:]+):%s+"?([^"]%S+[^"])"?')
         if key == "installation_id" and value then
             user_id = value
@@ -287,8 +282,11 @@ local function expand_optional(pattern_list)
     for _, pattern in ipairs(pattern_list) do
         -- 寻找第一个未转义的 ? (Regex量词)
         -- 我们需要找到 ? 的位置，并判断它修饰的前一个原子是什么
+        ---@type integer?
         local q_idx = nil
+        ---@type integer?
         local atom_start = nil
+        ---@type integer?
         local atom_end = nil
 
         local i = 1
@@ -336,7 +334,7 @@ local function expand_optional(pattern_list)
             end
         end
 
-        if q_idx then
+        if q_idx and atom_start and atom_end then
             has_expansion = true
             -- 1. 保留原子 (去掉 ?)
             result[#result + 1] = pattern:sub(1, atom_end) .. pattern:sub(q_idx + 1)
@@ -433,7 +431,10 @@ function RegexParser.expand_groups(str_list)
     ---@type string[]
     local expanded = {}
     for _, str in ipairs(str_list) do
-        local s_idx, e_idx = nil, nil
+        ---@type integer?
+        local s_idx = nil
+        ---@type integer?
+        local e_idx = nil
         local depth = 0
         for i = 1, #str do
             local char = str:sub(i, i)

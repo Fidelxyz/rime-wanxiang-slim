@@ -1,5 +1,4 @@
 ---Enhances input processing by limiting repeated keystrokes and enforcing backspace limits.
----@module "wanxiang.super_processor"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -26,6 +25,7 @@
 ---
 ---@field update_notifier Connection
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field super_processor_config SuperProcessorConfig?
 ---@field super_processor_state SuperProcessorState?
@@ -54,9 +54,9 @@ end
 ---@param ctx Context
 ---@param msg string
 local function prompt(ctx, msg)
-    local comp = ctx.composition
-    if not comp:empty() then
-        comp:back().prompt = msg
+    local segment = ctx.composition:back()
+    if segment then
+        segment.prompt = msg
     end
 end
 
@@ -179,10 +179,9 @@ function P.init(env)
         end
     elseif type(limit_repeated) == "string" then
         local str_trim = limit_repeated:match("^%s*(.-)%s*$") -- Strip whitespace
-        if str_trim == "" or str_trim:lower() == "false" then
+        if not str_trim or str_trim == "" or str_trim:lower() == "false" then
             limit_repeated_enabled = false
         else
-            ---@type string?, string?
             local max_repeat_str, max_segments_str = str_trim:match("^(%d+)%s*,%s*(%d+)$")
             if max_repeat_str and max_segments_str then
                 local max_repeat_num = tonumber(max_repeat_str)
@@ -227,6 +226,7 @@ end
 
 ---@param env Env
 function P.fini(env)
+    assert(env.super_processor_state)
     env.super_processor_state.update_notifier:disconnect()
     env.super_processor_config = nil
     env.super_processor_state = nil

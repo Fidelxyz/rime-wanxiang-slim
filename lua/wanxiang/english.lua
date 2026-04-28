@@ -1,5 +1,5 @@
----Enhances English input by applying smart casing and spacing, limiting candidate count for performance, ensuring single-letter candidates are available, and providing fallback English word derivation based on typing history.
----@module "wanxiang.english"
+---Enhances English input by applying smart casing and spacing, limiting candidate count for performance, ensuring
+---single-letter candidates are available, and providing fallback English word derivation based on typing history.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -30,6 +30,7 @@
 ---@field update_notifier Connection
 ---@field commit_notifier Connection
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field english_config EnglishConfig?
 ---@field english_state EnglishState?
@@ -37,7 +38,7 @@
 ---@class CodeContext
 ---@field raw_input string
 ---@field spacing_mode string|"off"|"smart"|"before"|"after"
----@field prev_is_eng boolean
+---@field is_prev_commit_english boolean
 
 local wanxiang = require("wanxiang.wanxiang")
 
@@ -175,7 +176,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     local p = 1
     for _, target in ipairs(targets) do
         local s, e = find_subsequence(text, p, target)
-        if not s then
+        if not s or not e then
             return cand
         end
         starts[#starts + 1] = s
@@ -184,7 +185,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
 
     ---@type string[]
     local parts = {}
-    if starts[1] > 1 then
+    if starts[1] and starts[1] > 1 then
         parts[#parts + 1] = text:sub(1, starts[1] - 1)
     end
     for i = 1, #starts do
@@ -213,7 +214,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     end
 
     local new_cand = Candidate(cand.type, cand.start, cand._end, new_text, cand.comment)
-    new_cand.preedit = cand.preedit
+    new_cand.preedit = guide
     return new_cand
 end
 
@@ -278,17 +279,15 @@ local function apply_formatting(cand, code_ctx)
     end
 
     if is_english_phrase(text) then
-        if code_ctx.raw_input then
-            local new_text = apply_segment_formatting(text, code_ctx.raw_input)
-            if new_text ~= text then
-                text = new_text
-                changed = true
-            end
+        local new_text = apply_segment_formatting(text, code_ctx.raw_input)
+        if new_text ~= text then
+            text = new_text
+            changed = true
         end
         if code_ctx.spacing_mode and code_ctx.spacing_mode ~= "off" then
             local mode = code_ctx.spacing_mode
             if mode == "smart" then
-                if code_ctx.prev_is_eng then
+                if code_ctx.is_prev_commit_english then
                     if not text:find("^%s") then
                         text = " " .. text
                         changed = true
@@ -434,6 +433,7 @@ end
 
 ---@param env Env
 function F.fini(env)
+    assert(env.english_state)
     env.english_state.update_notifier:disconnect()
     env.english_state.commit_notifier:disconnect()
     env.english_config = nil
@@ -473,7 +473,10 @@ function F.func(input, env)
         local raw_text = code:sub(1, code_len - 2)
         if is_english_phrase(raw_text) then
             if context.composition and not context.composition:empty() then
-                context.composition:back().prompt = "〔英文造词〕"
+                local segment = context.composition:back()
+                if segment then
+                    segment.prompt = "〔英文造词〕"
+                end
             end
             local cand = Candidate("english", 0, code_len, raw_text, "")
             cand.preedit = raw_text
@@ -491,6 +494,7 @@ function F.func(input, env)
         end
     end
 
+    ---@type CodeContext
     local code_ctx = {
         raw_input = code,
         spacing_mode = config.english_spacing_mode,
@@ -499,7 +503,6 @@ function F.func(input, env)
 
     ---@type Candidate[]
     local single_chars = {}
-    local has_single_chars = false
     local single_char_injected = false
 
     if code_len == 1 then
@@ -518,7 +521,7 @@ function F.func(input, env)
 
     local eng_yield_count = 0
     -- 如果存在单字母派生，预先将这两个候选计入配额
-    if has_single_chars then
+    if next(single_chars) ~= nil then
         eng_yield_count = 2
     end
 
@@ -549,7 +552,7 @@ function F.func(input, env)
 
         if skip_cand then
             -- 即使当前的词被丢弃，也要确保单字母（若存在）成功插队输出
-            if has_single_chars and not single_char_injected then
+            if single_chars[1] and not single_char_injected then
                 if not best_candidate_saved then
                     state.memory[code] = { text = single_chars[1].text, preedit = code }
                     best_candidate_saved = true
@@ -600,7 +603,7 @@ function F.func(input, env)
         end
 
         -- 允许单字母插队到前面
-        if has_single_chars and not single_char_injected then
+        if single_chars[1] and not single_char_injected then
             if not best_candidate_saved then
                 state.memory[code] = { text = single_chars[1].text, preedit = code }
                 best_candidate_saved = true

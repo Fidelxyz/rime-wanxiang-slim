@@ -1,5 +1,5 @@
----Provides flexible text replacement for candidates (such as emoji insertion or Traditional/Simplified Chinese conversion) serving as an alternative to OpenCC with configurable replacement pipelines.
----@module "wanxiang.super_replacer"
+---Provides flexible text replacement for candidates (such as emoji insertion or Traditional/Simplified Chinese
+---conversion) serving as an alternative to OpenCC with configurable replacement pipelines.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -13,6 +13,7 @@
 ---@field fmm_cache table<string, string|false>
 ---@field db WrappedUserDb?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field super_replacer_config SuperReplacerConfig?
 ---@field super_replacer_state SuperReplacerState?
@@ -22,8 +23,8 @@
 ---@field prefix string
 
 ---@class Rule
----@field triggers (boolean|string)[]
----@field tags string[]
+---@field triggers (string|true)[]
+---@field tags table<string, boolean>
 ---@field prefix string
 ---@field mode string
 ---@field always_qty integer
@@ -75,7 +76,7 @@ local function generate_files_signature(tasks)
             local mid = ""
             local tail = ""
 
-            if size > 0 then
+            if size and size > 0 then
                 -- 截取头 64 字节
                 f:seek("set", 0)
                 head = f:read(64) or ""
@@ -123,14 +124,12 @@ local function rebuild(tasks, db, delimiter)
                 goto continue_line
             end
 
-            ---@type string?, string?
             local k, v = line:match("^([^\t]+)\t+(.+)")
             if not k or not v then
                 goto continue_line
             end
 
             -- 转换完成后，再和 prefix 组合
-            ---@type string
             v = v:match("^%s*(.-)%s*$")
 
             local db_key = prefix .. k
@@ -411,8 +410,8 @@ function M.init(env)
                 local abbrev_rule = abbrev_rule_val and abbrev_rule_val:get_string() or "1,1"
 
                 local qty_str, idx_str = abbrev_rule:match("^(%d+)%s*,%s*(%d+)$")
-                always_qty = tonumber(qty_str) or 1
-                always_idx = tonumber(idx_str) or 1
+                always_qty = math.tointeger(tonumber(qty_str)) or 1
+                always_idx = math.tointeger(tonumber(idx_str)) or 1
             end
 
             rules[#rules + 1] = {

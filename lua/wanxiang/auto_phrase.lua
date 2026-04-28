@@ -1,5 +1,4 @@
 ---Automatically add new phrases to user dictionaries.
----@module "wanxiang.auto_phrase"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -16,6 +15,7 @@
 ---@field commit_notifier Connection?
 ---@field delete_notifier Connection?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field auto_phrase_config AutoPhraseConfig?
 ---@field auto_phrase_state AutoPhraseState?
@@ -27,7 +27,7 @@ local wanxiang = require("wanxiang.wanxiang")
 ---@return boolean
 local function is_english_phrase(text)
     -- consists of ASCII characters & contains at least one letter
-    return text:match("^[%z\1-\127]+$") and text:match("[A-Za-z]") ~= nil
+    return text:match("^[%z\1-\127]+$") ~= nil and text:match("[A-Za-z]") ~= nil
 end
 
 ---@param text string
@@ -127,7 +127,7 @@ local function commit_handler(ctx, env)
     -- 遍历所有词段收集编码
     for i = 1, segments_count do
         local seg = segments[i]
-        local cand = seg:get_selected_candidate()
+        local cand = seg and seg:get_selected_candidate()
 
         -- 无候选：可能是符号段
         if not cand then
@@ -241,6 +241,9 @@ end
 
 ---@param env Env
 function F.fini(env)
+    assert(env.auto_phrase_state)
+    assert(env.auto_phrase_config)
+
     if env.auto_phrase_state.zh_memory then
         env.auto_phrase_state.zh_memory:disconnect()
     end
@@ -254,6 +257,7 @@ function F.fini(env)
     if env.auto_phrase_state.delete_notifier then
         env.auto_phrase_state.delete_notifier:disconnect()
     end
+
     env.auto_phrase_config = nil
     env.auto_phrase_state = nil
 end

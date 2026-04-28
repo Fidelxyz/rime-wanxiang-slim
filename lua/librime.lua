@@ -189,7 +189,7 @@ function Set(values) end
 ---@field close fun(self: self)
 ---@field reopen fun(self: self, caret_pos: integer)
 ---@field has_tag fun(self: self, tag: string): boolean
----@field get_candidate_at fun(self: self, index: integer): Candidate
+---@field get_candidate_at fun(self: self, index: integer): Candidate?
 ---@field get_selected_candidate fun(self: self): Candidate
 ---@field active_text fun(self: self, text: string): string
 ---@field spans fun(self: self): Spans
@@ -697,7 +697,7 @@ function Switcher(engine) end
 ---@field open fun(self: self): boolean
 ---@field open_read_only fun(self: self): boolean
 ---@field close fun(self: self): boolean
----@field query fun(self: self, prefix: string): DbAccessor
+---@field query fun(self: self, prefix: string): DbAccessor?
 ---@field fetch fun(self: self, key: string): string|nil
 ---@field update fun(self: self, key: string, value: string): boolean
 ---@field erase fun(self: self, key: string): boolean

@@ -1,13 +1,12 @@
----Filters candidates by matching secondary auxiliary codes (entered after a trigger character) against reverse lookup dictionaries or candidate comments, supporting fuzzy matching and multiple data sources.
----@module "wanxiang.lookup_filter"
+---Filters candidates by matching secondary auxiliary codes (entered after a trigger character) against reverse lookup
+---dictionaries or candidate comments, supporting fuzzy matching and multiple data sources.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class LookupFilterConfig
 ---@field data_sources (string|"aux"|"db")[]
 ---@field has_db boolean
----@field has_comment boolean
----@field db_table ReverseLookup[]
+---@field db_table ReverseLookup[]?
 ---@field main_projection Projection?
 ---@field xlit_projection Projection?
 ---@field comment_split_pattern string?
@@ -22,6 +21,7 @@
 ---
 ---@field select_notifier Connection
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field lookup_filter_config LookupFilterConfig?
 ---@field lookup_filter_state LookupFilterState?
@@ -53,7 +53,8 @@ local function parse_schema_rules(schema_id)
     ---@type string[]
     local xlit_rules = {}
     for i = 0, algebra_list.size - 1 do
-        local rule = algebra_list:get_value_at(i).value
+        local rule_val = algebra_list:get_value_at(i)
+        local rule = rule_val and rule_val:get_string()
         if rule and #rule > 0 then
             if rule:match("^xlit/HSPZN/") then
                 xlit_rules[#xlit_rules + 1] = rule
@@ -177,11 +178,11 @@ end
 local function build_reverse_group(main_projection, xlit_projection, db_table, text)
     ---@type string[]
     local group_main = {}
-    ---@type boolean[]
+    ---@type table<string, boolean>
     local seen_main = {}
     ---@type string[]
     local group_xlit = {}
-    ---@type boolean[]
+    ---@type table<string, boolean>
     local seen_xlit = {}
 
     for _, db in ipairs(db_table) do
@@ -307,7 +308,10 @@ local function split_lookup_input(input, key, bypass_prefix)
         scan_from = #bypass_prefix + 1
     end
 
-    local s_start, s_end = nil, nil
+    ---@type integer?
+    local s_start = nil
+    ---@type integer?
+    local s_end = nil
     local from = scan_from
     while true do
         local s, e = input:find(key, from, true)
@@ -318,7 +322,7 @@ local function split_lookup_input(input, key, bypass_prefix)
         from = s + 1
     end
 
-    if not s_start then
+    if not s_start or not s_end then
         return nil
     end
 
@@ -332,7 +336,7 @@ end
 ---@param target_len integer
 ---@return string[][]?
 local function parse_comment_codes(comment, pattern, target_len)
-    if not comment or comment == "" then
+    if comment == "" then
         return nil
     end
 
@@ -421,7 +425,7 @@ function F.init(env)
     -- 核心逻辑：只要配置了 aux 源，就必须解析注释
     local has_comment = has_aux_source
 
-    ---@type ReverseLookup[]
+    ---@type ReverseLookup[]?
     local db_table = nil
     ---@type Projection?
     local main_projection = nil
@@ -516,7 +520,6 @@ function F.init(env)
     env.lookup_filter_config = {
         data_sources = data_sources,
         has_db = has_db_source,
-        has_comment = has_comment,
         db_table = db_table,
         main_projection = main_projection,
         xlit_projection = xlit_projection,
@@ -559,7 +562,7 @@ function F.func(translation, env)
         return
     end
 
-    local input = env.engine.context.input
+    local input = context.input
     local _, aux_code, _, _ = split_lookup_input(input, config.trigger, config.bypass_prefix)
     if not aux_code or aux_code == "" then
         for cand in translation:iter() do
@@ -568,7 +571,7 @@ function F.func(translation, env)
         return
     end
 
-    local if_single_char_first = env.engine.context:get_option("char_priority")
+    local if_single_char_first = context:get_option("char_priority")
 
     ---@type table<integer, Candidate[]>
     local buckets = {}
@@ -605,7 +608,7 @@ function F.func(translation, env)
         local raw_data = {}
 
         -- 数据加载 A: Aux Data (From Comment)
-        if config.has_comment then
+        if config.comment_split_pattern then
             local genuine = cand:get_genuine()
             local comment_text = genuine and genuine.comment or ""
             if comment_text ~= "" then
@@ -630,7 +633,7 @@ function F.func(translation, env)
                 local char_str = utf8.char(code_point)
 
                 -- 1. 查缓存，如果没有就调用底层函数，拿到分离后的两种数据
-                if not db_cache[char_str] then
+                if not db_cache[char_str] and config.db_table then
                     local main_codes, xlit_codes =
                         build_reverse_group(config.main_projection, config.xlit_projection, config.db_table, char_str)
                     db_cache[char_str] = {
@@ -732,6 +735,7 @@ end
 
 ---@param env Env
 function F.fini(env)
+    assert(env.lookup_filter_state)
     env.lookup_filter_state.select_notifier:disconnect()
     env.lookup_filter_config = nil
     env.lookup_filter_state = nil

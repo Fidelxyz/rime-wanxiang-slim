@@ -1,5 +1,4 @@
 ---Provides manual candidate sorting and synchronization across devices by managing a local sequence database with tombstones for deleted items.
----@module "wanxiang.sequencer"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -24,6 +23,7 @@ local userdb = require("wanxiang.userdb")
 ---@class SequencerFilterState
 ---@field db WrappedUserDb?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field sequencer_config SequencerConfig?
 ---@field sequencer_processor_state SequencerProcessorState?
@@ -60,7 +60,7 @@ end
 ---@return boolean
 local function is_absolute_path(p)
     p = normalize_path(p)
-    return p:sub(1, 2) == "//" or p:match("^[A-Za-z]:/")
+    return p:sub(1, 2) == "//" or p:match("^[A-Za-z]:/") ~= nil
 end
 
 ---@param a string
@@ -144,15 +144,11 @@ local function read_installation_yaml()
     local installation_id = nil
     ---@type string?
     local sync_dir = nil
-    ---@type string
     for line in f:lines() do
-        ---@type string
         local cleaned = line:gsub("%s+#.*$", "")
-        ---@type string?, string?
         local key, val = cleaned:match("^%s*([%w_]+)%s*:%s*(.+)$")
         if key and val then
             val = val:gsub('^%s*"(.*)"%s*$', "%1"):gsub("^%s*'(.*)'%s*$", "%1")
-            ---@type string
             val = val:gsub("^%s+", ""):gsub("%s+$", "")
             if key == "installation_id" then
                 installation_id = val
@@ -256,10 +252,8 @@ local function init_db(env)
     if db_name and db_name ~= "" then
         db_name = db_name:gsub("\\", "/"):gsub("^/+", "")
         while db_name:match("%.%./") do
-            ---@type string
             db_name = db_name:gsub("%.%./", "")
         end
-        ---@type string
         db_name = db_name:gsub("%./", "")
     end
     if not db_name or db_name == "" then
@@ -302,18 +296,17 @@ end
 ---@return string? item
 ---@return Adjustment? adjustment
 local function parse_adjustment_item(str)
-    ---@type string?, string?, string?, string?
     local item, p, o, updated_at = str:match("i=(.+) p=(%S+) o=(%S*) t=(%S+)")
     if not item then
         return
     end
 
-    local fixed_position = p and tonumber(p)
+    local fixed_position = p and math.tointeger(tonumber(p))
     if fixed_position == 0 then
         fixed_position = nil
     end
 
-    local offset = o and tonumber(o) or 0
+    local offset = o and math.tointeger(tonumber(o)) or 0
 
     ---@type Adjustment
     local adjustment = {
@@ -436,9 +429,7 @@ function seq_data.ensure_export_file()
             return false
         end
         local user_id = wanxiang.get_user_id()
-        if user_id then
-            f:write("\001/user_id\t", user_id, "\n")
-        end
+        f:write("\001/user_id\t", user_id, "\n")
         f:write("\001/device_name\t", seq_data.device_name or "device", "\n")
         f:close()
     end
@@ -558,9 +549,7 @@ local function write_adjustments_to_sync_files(adjustments)
     local lines = {}
 
     local user_id = wanxiang.get_user_id()
-    if user_id then
-        lines[#lines + 1] = "\001/user_id\t" .. user_id
-    end
+    lines[#lines + 1] = "\001/user_id\t" .. user_id
     lines[#lines + 1] = "\001/device_name\t" .. device_name
 
     -- Get a sorted list of codes
@@ -717,7 +706,6 @@ local function read_adjustments_from_all_sources(db)
                 goto continue_line
             end
 
-            ---@type string?, string?
             local code, adj_str = line:match("^(%S+)\t(.+)$")
             if not code or not adj_str then
                 goto continue_line
@@ -923,10 +911,8 @@ function P.func(key_event, env)
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    if new_adjustment then
-        adjustments[item] = new_adjustment
-        save_adjustment(code, item, new_adjustment, state.db, false)
-    end
+    adjustments[item] = new_adjustment
+    save_adjustment(code, item, new_adjustment, state.db, false)
 
     if RUNTIME_EXPORT then
         seq_data.try_export()
@@ -1076,7 +1062,7 @@ function F.func(input, env)
             cand.comment = cand.comment .. mark
         end
 
-        if cand.text == shared_state.highlight_candidate then
+        if item == shared_state.highlight_candidate then
             shared_state.highlight_index = curr_pos - 1
         end
 

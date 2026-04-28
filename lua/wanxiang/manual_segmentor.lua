@@ -1,5 +1,4 @@
 ---Providing a manual mechanism to cycle through alternative Pinyin syllable segmentations.
----@module "wanxiang.manual_segmentor"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -13,6 +12,7 @@
 ---@field seg_patterns integer[][]?
 ---@field pattern_idx integer?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field manual_segmentor_config ManualSegmentorConfig?
 ---@field manual_segmentor_state ManualSegmentorState?
@@ -74,11 +74,9 @@ end
 ---@return string
 local function strip_delims(s, manual_delim, auto_delim)
     if manual_delim ~= "" then
-        ---@type string
         s = s:gsub(escp(manual_delim), "")
     end
     if auto_delim ~= "" then
-        ---@type string
         s = s:gsub(escp(auto_delim), "")
     end
     return s
@@ -108,9 +106,9 @@ end
 ---@param input string
 ---@param manual_delim string
 ---@param auto_delim string
----@return number[]
+---@return integer[]
 local function parse_segmentation(input, manual_delim, auto_delim)
-    ---@type number[]
+    ---@type integer[]
     local segments = {}
 
     local seg_len = 0

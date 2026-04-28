@@ -1,5 +1,4 @@
 ---Enhances candidate display by dynamically generating and appending corrected Pinyin tones to the candidate comments.
----@module "wanxiang.super_comment"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -11,6 +10,7 @@
 ---@field enabled boolean
 ---@field format string
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field super_comment_config SuperCommentConfig?
 ---@field super_comment_corrector_config SuperCommentCorrectorConfig?
@@ -79,6 +79,10 @@ local corrector = {
 ---@param config SuperCommentCorrectorConfig
 ---@return string?
 function corrector.get_comment(cand, config)
+    if not corrector.corrections_cache then
+        return nil
+    end
+
     local correction = corrector.corrections_cache[cand.comment]
     if not correction or cand.text ~= correction.text then
         return nil
@@ -89,6 +93,8 @@ end
 
 ---@param env Env
 function corrector.init(env)
+    assert(env.super_comment_config)
+
     local config = env.engine.schema.config
 
     local enabled = config:get_bool("super_comment/correction_enabled") or true
@@ -113,14 +119,10 @@ function corrector.init(env)
             local auto_delimiter = env.super_comment_config.auto_delimiter
             for line in file:lines() do
                 if not line:match("^#") then
-                    ---@type string, string, string, string?
                     local text, code, _, comment = line:match("^(.-)\t(.-)\t(.-)\t(.-)$")
                     if text and code then
-                        ---@type string
                         text = text:match("^%s*(.-)%s*$")
-                        ---@type string
                         code = code:match("^%s*(.-)%s*$")
-                        ---@type string
                         comment = comment and comment:match("^%s*(.-)%s*$") or ""
 
                         comment = comment:gsub("%s+", auto_delimiter)
@@ -359,9 +361,9 @@ function M.func(input, env)
     local input_str = context.input or ""
     local is_reverse_lookup_mode = wanxiang.is_reverse_lookup_mode(env)
     local should_skip_candidate_comment = wanxiang.is_function_mode_active(context) or input_str == ""
-    local is_tone_comment = env.engine.context:get_option("tone_hint")
-    local is_toneless_comment = env.engine.context:get_option("toneless_hint")
-    local is_comment_hint = env.engine.context:get_option("fuzhu_hint")
+    local is_tone_comment = context:get_option("tone_hint")
+    local is_toneless_comment = context:get_option("toneless_hint")
+    local is_comment_hint = context:get_option("fuzhu_hint")
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
@@ -376,21 +378,11 @@ function M.func(input, env)
         -- 进入注释处理阶段
         -- 辅助码注释或者声调注释
         if is_comment_hint then
-            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
-            if aux_comment then
-                final_comment = aux_comment
-            end
+            final_comment = get_aux_comment(cand, initial_comment, config, context)
         elseif is_tone_comment then
-            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
-            if aux_comment then
-                final_comment = aux_comment
-            end
+            final_comment = get_aux_comment(cand, initial_comment, config, context)
         elseif is_toneless_comment then
-            local aux_comment = get_aux_comment(cand, initial_comment, config, context)
-            if aux_comment then
-                -- 获取到带调拼音后，调用 remove_pinyin_tone 去掉声调
-                final_comment = remove_pinyin_tone(aux_comment)
-            end
+            final_comment = remove_pinyin_tone(get_aux_comment(cand, initial_comment, config, context))
         else
             if initial_comment and initial_comment:find("~") or initial_comment:find("\226\152\175") then --保留尾部临时英文标记和太极标记
                 final_comment = initial_comment
@@ -400,7 +392,7 @@ function M.func(input, env)
         end
 
         -- 错音错字提示
-        if env.super_comment_corrector_config.enabled then
+        if corrector_config.enabled then
             local correction_comment = corrector.get_comment(cand, corrector_config)
             if correction_comment and correction_comment ~= "" then
                 final_comment = correction_comment

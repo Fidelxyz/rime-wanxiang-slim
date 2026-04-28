@@ -1,6 +1,5 @@
 ---Provides context-aware key bindings by evaluating regular expressions against the current input string to determine
 ---if a key sequence should be redirected.
----@module "wanxiang.key_binder"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -17,6 +16,7 @@ local wanxiang = require("wanxiang.wanxiang")
 ---@class KeyBinderState
 ---@field redirecting boolean
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field key_binder_config KeyBinderConfig?
 ---@field key_binder_state KeyBinderState?

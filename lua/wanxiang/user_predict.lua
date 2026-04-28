@@ -1,6 +1,5 @@
 ---Implements an advanced predictive text engine featuring n-gram models, time-decayed ranking, cross-device
 ---synchronization, and context-aware candidate prediction and filtering.
----@module "wanxiang.user_predict"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -51,6 +50,7 @@
 ---@field reorder_map table<string, integer>
 ---@field db WrappedUserDb?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field user_predict_config UserPredictConfig?
 ---@field user_predict_processor_state UserPredictProcessorState?
@@ -145,7 +145,7 @@ local function load_config(env)
 
     local db_name = rime_config:get_string("user_predict/db_name") or "lua/predict"
 
-    local page_size = rime_config:get_int("user_predict/page_size") or 6
+    local page_size = rime_config:get_int("menu/page_size") or 6
 
     ---@type UserPredictConfig
     local config = {
@@ -238,6 +238,7 @@ local function get_utf8_chars(str)
 end
 
 -- 模糊查询降级参数 (现在统一供 1 和 P 使用)
+---@return integer[]
 local function get_suffix_lengths(len)
     if len >= 4 then
         return { 4, 3, 2 }
@@ -252,6 +253,7 @@ local function get_suffix_lengths(len)
 end
 
 --全局过期数据回收
+---@type number
 local _last_sweep_memory = 0
 
 ---@param db WrappedUserDb
@@ -272,23 +274,26 @@ local function sweep_expired_data(db, config)
     end
 
     -- 开启全库扫描
-    for k, v in db:query(""):iter() do
-        if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
-            local _, ts_str = v:match("^([^|]+)|?(.*)$")
-            local ts = tonumber(ts_str) or 0
+    local da = db:query("")
+    if da then
+        for k, v in da:iter() do
+            if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
+                local _, ts_str = v:match("^([^|]+)|?(.*)$")
+                local ts = tonumber(ts_str) or 0
 
-            -- 区分 P 记录和正式记录的寿命
-            local is_p_gram = (k:sub(1, 2) == "P\t")
-            local current_limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
-            if ts == 0 then
-                ts = now - current_limit - 1
-            end
-            if (now - ts) > current_limit then
-                db:erase(k)
+                -- 区分 P 记录和正式记录的寿命
+                local is_p_gram = (k:sub(1, 2) == "P\t")
+                local current_limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
+                if ts == 0 then
+                    ts = now - current_limit - 1
+                end
+                if (now - ts) > current_limit then
+                    db:erase(k)
+                end
             end
         end
     end
-
+    da = nil
     collectgarbage() -- Release DbAccessor
 
     db:update("\0_last_sweep", tostring(now))
@@ -320,54 +325,56 @@ local function get_predictions(prev_commit, db, config)
         ---@type Prediction[]
         local prefix_cands = {}
 
-        for k, v in da:iter() do
-            if scan_count >= SCAN_LIMIT or not k:find(query_key, 1, true) then
-                break
-            end
-
-            if k:sub(1, 1) ~= "\1" then
-                local word = k:sub(query_key:len() + 1)
-                local c_str, ts_str = v:match("^([^|]+)|?(.*)$")
-                local count = tonumber(c_str) or 0
-                local ts = tonumber(ts_str) or 0
-
-                local is_p_gram = (k:sub(1, 2) == "P\t")
-                local limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
-
-                if ts == 0 then
-                    ts = now - limit - 1
+        if da then
+            for k, v in da:iter() do
+                if scan_count >= SCAN_LIMIT or not k:find(query_key, 1, true) then
+                    break
                 end
 
-                if (now - ts) > limit then
-                    db:erase(k)
-                elseif count > 0 then
-                    local age_days = (now - ts) / 86400.0
-                    local score = count * (config.decay_rate ^ age_days) * multiplier
-                    if score > 0.05 and word ~= "" then
-                        prefix_cands[#prefix_cands + 1] = { word = word, weight = score, db_key = k }
+                if k:sub(1, 1) ~= "\1" then
+                    local word = k:sub(query_key:len() + 1)
+                    local c_str, ts_str = v:match("^([^|]+)|?(.*)$")
+                    local count = tonumber(c_str) or 0
+                    local ts = tonumber(ts_str) or 0
+
+                    local is_p_gram = (k:sub(1, 2) == "P\t")
+                    local limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
+
+                    if ts == 0 then
+                        ts = now - limit - 1
+                    end
+
+                    if (now - ts) > limit then
+                        db:erase(k)
+                    elseif count > 0 then
+                        local age_days = (now - ts) / 86400.0
+                        local score = count * (config.decay_rate ^ age_days) * multiplier
+                        if score > 0.05 and word ~= "" then
+                            prefix_cands[#prefix_cands + 1] = { word = word, weight = score, db_key = k }
+                        end
+                    end
+                end
+                scan_count = scan_count + 1
+            end
+
+            if #prefix_cands > 0 then
+                table.sort(prefix_cands, function(a, b)
+                    return a.weight > b.weight
+                end)
+                for i, c in ipairs(prefix_cands) do
+                    if i <= config.max_memory_branches then
+                        if not seen[c.word] then
+                            cands[#cands + 1] = c
+                            seen[c.word] = true
+                        end
+                    else
+                        db:update(c.db_key, "0|" .. tostring(now))
                     end
                 end
             end
-            scan_count = scan_count + 1
         end
 
-        if #prefix_cands > 0 then
-            table.sort(prefix_cands, function(a, b)
-                return a.weight > b.weight
-            end)
-            for i, c in ipairs(prefix_cands) do
-                if i <= config.max_memory_branches then
-                    if not seen[c.word] then
-                        cands[#cands + 1] = c
-                        seen[c.word] = true
-                    end
-                else
-                    db:update(c.db_key, "0|" .. tostring(now))
-                end
-            end
-        end
-
-        da = nil ---@diagnostic disable-line: cast-local-type
+        da = nil
         collectgarbage() -- Release DbAccessor
     end
 
@@ -434,7 +441,6 @@ local P = {}
 function P.init(env)
     env.user_predict_config = load_config(env)
     local config = env.user_predict_config
-    assert(config)
 
     local db = userdb.LevelDb(config.db_name)
     if db then
@@ -604,6 +610,8 @@ function P.init(env)
                             end
                         end
                     end
+                    da = nil
+
                     if is_known_prefix then
                         break
                     end
@@ -678,11 +686,15 @@ function P.init(env)
             local sync_path = rime_api.get_user_data_dir() .. "/predict_export.txt"
             local f = io.open(sync_path, "w")
             if f then
-                for k, v in db:query(""):iter() do
-                    if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
-                        f:write(k .. "\t" .. v .. "\n")
+                local da = db:query("")
+                if da then
+                    for k, v in da:iter() do
+                        if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
+                            f:write(k .. "\t" .. v .. "\n")
+                        end
                     end
                 end
+                da = nil
                 collectgarbage() -- Release DbAccessor
                 f:close()
             end
@@ -696,7 +708,6 @@ function P.init(env)
             local f = io.open(sync_path, "r")
             if f then
                 for line in f:lines() do
-                    ---@type string?, string?
                     local k, v = line:match("^(.*)\t([^\t]+)$")
                     if k and v then
                         local old_v = db:fetch(k)
@@ -767,6 +778,7 @@ end
 
 ---@param env Env
 function P.fini(env)
+    assert(env.user_predict_processor_state)
     env.user_predict_processor_state.commit_notifier:disconnect()
     env.user_predict_processor_state.update_notifier:disconnect()
     env.user_predict_config = nil
@@ -839,31 +851,31 @@ function P.func(key, env)
         -- 根据选词范围分流数字键
         if repr:match("^[0-9]$") or repr:match("^KP_[0-9]$") then
             local digit_str = repr:match("%d")
-            local digit = tonumber(digit_str)
-            if digit == 0 then
-                digit = 10
-            end
-
-            local is_valid_candidate = false
-            local seg = context.composition:back()
-            if seg then
-                local current_page = math.floor(seg.selected_index / config.page_size)
-                local target_index = current_page * config.page_size + (digit - 1)
-                if seg:get_candidate_at(target_index) then
-                    is_valid_candidate = true
+            local digit = math.tointeger(tonumber(digit_str))
+            if digit_str and digit then
+                if digit == 0 then
+                    digit = 10
                 end
-            end
 
-            if digit > config.page_size or not is_valid_candidate then
-                context:clear()
-                if reset_memory_chain then
+                local is_valid_candidate = false
+                local seg = context.composition:back()
+                if seg then
+                    local current_page = math.floor(seg.selected_index / config.page_size)
+                    local target_index = current_page * config.page_size + (digit - 1)
+                    if seg:get_candidate_at(target_index) then
+                        is_valid_candidate = true
+                    end
+                end
+
+                if digit > config.page_size or not is_valid_candidate then
+                    context:clear()
                     reset_memory_chain(state) -- 非选词数字打断联想并上屏
+                    env.engine:commit_text(digit_str)
+                    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+                else
+                    -- 选词范围内的数字（如 1-6）：放行，让 super_processor 去执行正常的选词
+                    return wanxiang.RIME_PROCESS_RESULTS.kNoop
                 end
-                env.engine:commit_text(digit_str)
-                return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-            else
-                -- 选词范围内的数字（如 1-6）：放行，让 super_processor 去执行正常的选词
-                return wanxiang.RIME_PROCESS_RESULTS.kNoop
             end
         end
 
@@ -918,6 +930,7 @@ function P.func(key, env)
             local word = cand.text
             local db = state.db
 
+            ---@type string?
             local exact_key = nil
             if shared_state.pending_cands then
                 for _, c in ipairs(shared_state.pending_cands) do
@@ -953,7 +966,6 @@ local T = {}
 function T.init(env)
     env.user_predict_config = load_config(env)
     local config = env.user_predict_config
-    assert(config)
 
     local db = userdb.LevelDb(config.db_name)
     if db then
@@ -1002,7 +1014,6 @@ local F = {}
 function F.init(env)
     env.user_predict_config = load_config(env)
     local config = env.user_predict_config
-    assert(config)
 
     local db = userdb.LevelDb(config.db_name)
     if db then
@@ -1044,22 +1055,20 @@ function F.func(input, env)
         state.last_commit = shared_state.last_commit
         state.reorder_map = {}
 
-        if config.enable_context_reorder then
-            local context_len = 0
-            if #shared_state.history >= 2 then
-                local u0_len = #get_utf8_chars(shared_state.history[#shared_state.history - 1])
-                local u1_len = #get_utf8_chars(shared_state.history[#shared_state.history])
-                context_len = u0_len + u1_len
-            end
+        local context_len = 0
+        if #shared_state.history >= 2 then
+            local u0_len = #get_utf8_chars(shared_state.history[#shared_state.history - 1])
+            local u1_len = #get_utf8_chars(shared_state.history[#shared_state.history])
+            context_len = u0_len + u1_len
+        end
 
-            -- 优先白嫖 P 模块查好的全局缓存，如果 P 模块没查（比如没开联想），F 就自己查一次作为兜底
-            if context_len >= 3 then
-                local preds = shared_state.pending_cands or get_predictions(shared_state.last_commit, state.db, config)
-                if preds then
-                    state.reorder_map = {}
-                    for rank, p in ipairs(preds) do
-                        state.reorder_map[p.word] = rank
-                    end
+        -- 优先白嫖 P 模块查好的全局缓存，如果 P 模块没查（比如没开联想），F 就自己查一次作为兜底
+        if state.db and context_len >= 3 then
+            local preds = shared_state.pending_cands or get_predictions(shared_state.last_commit, state.db, config)
+            if preds then
+                state.reorder_map = {}
+                for rank, p in ipairs(preds) do
+                    state.reorder_map[p.word] = rank
                 end
             end
         end

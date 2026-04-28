@@ -1,5 +1,5 @@
----Filters candidates based on configurable character sets, removing single characters outside the allowed sets and attempting to replace phrases containing unallowed characters with valid historical input of the same length.
----@module "wanxiang.charset_filter"
+---Filters candidates based on configurable character sets, removing single characters outside the allowed sets and
+---attempting to replace phrases containing unallowed characters with valid historical input of the same length.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -17,6 +17,7 @@
 ---@field db_memo table<string, string>
 ---@field phrase_history_dict table<integer, string>
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field charset_filter_config CharsetFilterConfig?
 ---@field charset_Filter_state CharsetFilterState?
@@ -346,7 +347,6 @@ function M.func(input, env)
         -- 构造兜底候选
         local preedit_text = cand.preedit or code
         if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
-            ---@type string
             preedit_text = preedit_text:sub(1, -2) .. " " .. preedit_text:sub(-1)
         end
 

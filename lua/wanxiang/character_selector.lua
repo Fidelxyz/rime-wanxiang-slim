@@ -1,5 +1,5 @@
----Selects and commits only the first or last character of the current candidate phrase based on configured shortcut keys.
----@module "wanxiang.character_selector"
+---Selects and commits only the first or last character of the current candidate phrase based on configured shortcut
+---keys.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -7,6 +7,7 @@
 ---@field select_first_key string?
 ---@field select_last_key string?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field character_selector_config CharacterSelectorConfig?
 

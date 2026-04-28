@@ -1,5 +1,4 @@
 ---Reorders candidates to prioritize table/user-dictionary entries, formats escape sequences within candidate text, and filters out unwanted sentence derivations to improve mixed Chinese-English input experience.
----@module "wanxiang.super_filter"
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -15,12 +14,14 @@
 --      权重设置与主翻译器不可相差太大
 
 ---@class SuperFilterConfig
+---@field page_size integer
 ---@field enable_taichi_filter boolean
 ---@field cand_type_symbols table<string, string>
 
 ---@class SuperFilterState
 ---@field last_2code_char string?
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field super_filter_config SuperFilterConfig?
 ---@field super_filter_state SuperFilterState?
@@ -33,7 +34,6 @@
 
 ---@class EmitContext
 ---@field suppress_set table<string, boolean>?
----@field unify_tail_span fun(c: Candidate): Candidate
 ---@field enable_taichi_filter boolean
 ---@field drop_sentence_after_completion boolean
 
@@ -165,7 +165,6 @@ local function emit_with_pipeline(wrapper, ctxs, config)
 
     -- 5. 格式化与修饰
     cand = format_and_autocap(cand, config)
-    cand = ctxs.unify_tail_span(cand)
 
     yield(cand)
     return true
@@ -177,8 +176,7 @@ local M = {}
 function M.init(env)
     local rime_config = env.engine.schema.config
 
-    -- PageSize & TablePosition
-    env.page_size = rime_config and rime_config:get_int("menu/page_size")
+    local page_size = rime_config:get_int("menu/page_size") or 6
 
     local schema_id = env.engine.schema.schema_id
     local enable_taichi_filter = schema_id == "wanxiang" or schema_id == "wanxiang_pro"
@@ -189,14 +187,16 @@ function M.init(env)
     local map = rime_config:get_map("super_comment/cand_type")
     if map then
         for _, key in ipairs(map:keys()) do
-            local val = map:get_value(key):get_string()
-            if val and val ~= "" then
-                cand_type_symbols[key] = val
+            local val = map:get_value(key)
+            local val_str = val and val:get_string()
+            if val_str and val_str ~= "" then
+                cand_type_symbols[key] = val_str
             end
         end
     end
 
     env.super_filter_config = {
+        page_size = page_size,
         enable_taichi_filter = enable_taichi_filter,
         cand_type_symbols = cand_type_symbols,
     }
@@ -244,32 +244,15 @@ function M.func(input, env)
         state.last_2code_char = nil
     end
 
-    -- 3. 成对符号包裹功能已移除
-    local fully_consumed = false
-
     local do_group = code_len >= 2 and code_len <= 6
-
-    -- 闭包上下文 (Context)
-    ---@param c Candidate
-    ---@return Candidate
-    local function unify_tail_span(c)
-        if fully_consumed and last_seg and c and c._end ~= last_seg._end then
-            local new_cand = Candidate(c.type, c.start, last_seg._end, c.text, c.comment)
-            new_cand.preedit = c.preedit
-            return new_cand
-        end
-        return c
-    end
 
     ---@type EmitContext
     local emit_ctx = {
         suppress_set = nil,
-        unify_tail_span = unify_tail_span,
         enable_taichi_filter = config.enable_taichi_filter,
         drop_sentence_after_completion = false, -- 初始化为 false
     }
 
-    local page_size = env.page_size
     local sort_window = 30
     local visual_idx = 0
 
@@ -354,6 +337,7 @@ function M.func(input, env)
 
     ---@param force_all boolean
     local function try_flush_page_sort(force_all)
+        local page_size = config.page_size
         while true do
             local next_pos = visual_idx + 1
             local current_idx_in_page = ((next_pos - 1) % page_size) + 1
@@ -399,9 +383,7 @@ function M.func(input, env)
                 end
             end
 
-            if w_to_emit then
-                try_process_wrapper(w_to_emit)
-            end
+            try_process_wrapper(w_to_emit)
         end
     end
 

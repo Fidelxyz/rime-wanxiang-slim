@@ -1,6 +1,4 @@
----Intercept keypad keys and compose them directly in composing mode, or always
----if configured to do so.
----@module "wanxiang.keypad_composer"
+---Intercept keypad keys and compose them directly in composing mode, or always if configured to do so.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -12,6 +10,7 @@
 ---
 ---@field update_notifier Connection
 
+---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field keypad_composer_config KeypadComposerConfig?
 ---@field keypad_composer_state KeypadComposerState?
@@ -32,8 +31,8 @@ function P.init(env)
 
     local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
         local state = env.keypad_composer_state
+        assert(state)
 
-        -- 缓存状态
         state.is_composing = ctx:is_composing()
     end)
 
@@ -49,6 +48,7 @@ end
 
 ---@param env Env
 function P.fini(env)
+    assert(env.keypad_composer_state)
     env.keypad_composer_state.update_notifier:disconnect()
     env.keypad_composer_config = nil
     env.keypad_composer_state = nil
