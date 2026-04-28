@@ -9,6 +9,9 @@ on:
       - '**/*.md'
   pull_request:
 
+permissions:
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -37,10 +40,20 @@ jobs:
       - name: Build
         run: bash scripts/build.sh --no-archive
 
-      - name: Run tests for wanxiang
+      - name: Run tests
         working-directory: tests
-        run: ./mira wanxiang.test.yaml
+        run: python mira_report.py ./mira wanxiang.test.yaml wanxiang_pro.test.yaml --report-dir reports
 
-      - name: Run tests for wanxiang_pro
-        working-directory: tests
-        run: ./mira wanxiang_pro.test.yaml
+      - uses: ctrf-io/github-test-reporter@v1
+        if: ${{ !cancelled() }}
+        with:
+          report-path: ./tests/reports/*.json
+          github-report: true
+
+      - uses: ctrf-io/github-test-reporter@v1
+        if: ${{ !cancelled() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          report-path: ./tests/reports/*.json
+          pull-request-report: true
