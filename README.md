@@ -1,5 +1,7 @@
 # 万象拼音输入方案精简版
 
+[![Test](https://github.com/Fidelxyz/rime-wanxiang-slim/actions/workflows/test.yml/badge.svg)](https://github.com/Fidelxyz/rime-wanxiang-slim/actions/workflows/test.yml) _测试由 [Mira / 韻鏡](https://github.com/rimeinn/mira) 驱动_
+
 <blockquote>
 <p align="center"><em><strong>You don't pay for what you don't use.</strong></em></p>
 
