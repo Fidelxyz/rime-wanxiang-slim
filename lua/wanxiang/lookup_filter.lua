@@ -221,7 +221,7 @@ local function any_starts_with(list, prefix)
     end
 
     for i = 1, #list do
-        if string.find(list[i], prefix, 1, true) == 1 then
+        if list[i]:find(prefix, 1, true) == 1 then
             return true
         end
     end

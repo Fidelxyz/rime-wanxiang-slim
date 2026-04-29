@@ -61,11 +61,13 @@ function M.is_mobile_device()
         end
 
         -- 特定平台判断（Android/Linux）
+        ---@diagnostic disable: undefined-global
         if jit and jit.os then
             if jit.os:lower():find("android") then
                 return true
             end
         end
+        ---@diagnostic enable: undefined-global
 
         -- 所有检查未通过则默认为桌面设备
         return false
