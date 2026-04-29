@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang_mixedcode
   name: "万象：混合编码"
-  version: "15.8.1"  # x-release-please-version
+  version: "15.9.4"  # x-release-please-version
   author: amzxyz
   description: |
     混合编码子方案，包含中英文混合与携带符号的词组处理。

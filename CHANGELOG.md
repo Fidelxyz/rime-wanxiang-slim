@@ -1,5 +1,33 @@
 # Changelog
 
+## [15.9.4](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.8.1...v15.9.4) (2026-04-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* merge v15.9.4 from upstream
+* remove derivative algebra for wanxiang_english
+* **user_predict:** enable user_predict
+
+### Bug Fixes
+
+* fix linting issues ([b2b6e20](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b2b6e20560c58b4427cc4b332ff1df5467f15550))
+* **key_binder:** add missing nil check ([0a92d88](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0a92d88652540296e433163d02bf81e4d1d54796))
+* **keypad_composer:** fix extra digit committed when release keypad key ([b1ec360](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b1ec3604cfa72ee3d94bb467c6b96352ffcca9b5))
+* remove extra import_preset in schemas ([0ccf0af](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0ccf0af0c39a543128bc16be3afcf5835e2c9961))
+* **user_predict:** enable user_predict ([81ed501](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/81ed5012e449e68b68855feddf64d7d6a466956f))
+
+
+### Performance Improvements
+
+* **set_schema:** early return if input is not a valid command ([d1830b6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/d1830b6a71e468f02ce6234a21abf2662ad7fb61))
+
+
+### Miscellaneous Chores
+
+* merge v15.9.4 from upstream ([648e582](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/648e582058d8f6a3a02a8e488f4efbe6228a83be))
+* remove derivative algebra for wanxiang_english ([09e1b78](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/09e1b788e94faa73e582385ab561eaca6e99269e))
+
 ## [15.8.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.5.2...v15.8.1) (2026-04-19)
 
 
