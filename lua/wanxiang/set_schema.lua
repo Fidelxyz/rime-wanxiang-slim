@@ -15,7 +15,6 @@ local SCHEMA_MAP = {
     ["/gbpy"] = "国标双拼",
     ["/pyjj"] = "拼音加加",
     ["/lxsq"] = "乱序17",
-    ["/wxsp"] = "万象双拼",
     ["/zrlong"] = "自然龙",
     ["/hxlong"] = "汉心龙",
 }

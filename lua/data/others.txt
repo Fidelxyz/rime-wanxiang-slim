@@ -1070,6 +1070,9 @@ eject	⏏
 氯化亚铁	FeCl₂
 氯化铁	FeCl₃
 氯化银	AgCl
+镍氢	NiMH
+镍镉	NiCd
+锂	Li-ion
 硫酸	H₂SO₄
 盐酸	HCl
 硝酸	HNO₃

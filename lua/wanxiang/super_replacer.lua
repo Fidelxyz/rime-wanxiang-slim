@@ -551,8 +551,8 @@ function M.func(input, env)
                     local query_text = config.is_chain and current_text or cand.text
                     local key = rule.prefix .. query_text
                     local val = state.db and state.db:fetch(key)
-                    if not val and string.match(query_text, "[A-Z]") then
-                        local lower_key = rule.prefix .. string.lower(query_text)
+                    if not val and query_text:find("%u") then
+                        local lower_key = rule.prefix .. query_text:lower()
                         val = state.db:fetch(lower_key)
                     end
                     if not val and rule.fmm then

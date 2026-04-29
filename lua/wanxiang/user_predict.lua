@@ -231,13 +231,14 @@ local function get_utf8_chars(str)
 
     ---@type string[]
     local chars = {}
-    for c in str:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        chars[#chars + 1] = c
+    for _, c in utf8.codes(str) do
+        chars[#chars + 1] = utf8.char(c)
     end
     return chars
 end
 
 -- 模糊查询降级参数 (现在统一供 1 和 P 使用)
+---@param len integer
 ---@return integer[]
 local function get_suffix_lengths(len)
     if len >= 4 then
@@ -250,54 +251,6 @@ local function get_suffix_lengths(len)
         return { 1 }
     end
     return {}
-end
-
---全局过期数据回收
----@type number
-local _last_sweep_memory = 0
-
----@param db WrappedUserDb
----@param config UserPredictConfig
-local function sweep_expired_data(db, config)
-    local now = wanxiang.now()
-
-    if (now - _last_sweep_memory) < 86400 then
-        return
-    end
-
-    local last_sweep_str = db:fetch("\0_last_sweep")
-    local db_last_sweep = tonumber(last_sweep_str) or 0
-
-    if (now - db_last_sweep) < 86400 then
-        _last_sweep_memory = db_last_sweep
-        return
-    end
-
-    -- 开启全库扫描
-    local da = db:query("")
-    if da then
-        for k, v in da:iter() do
-            if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
-                local _, ts_str = v:match("^([^|]+)|?(.*)$")
-                local ts = tonumber(ts_str) or 0
-
-                -- 区分 P 记录和正式记录的寿命
-                local is_p_gram = (k:sub(1, 2) == "P\t")
-                local current_limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
-                if ts == 0 then
-                    ts = now - current_limit - 1
-                end
-                if (now - ts) > current_limit then
-                    db:erase(k)
-                end
-            end
-        end
-    end
-    da = nil
-    collectgarbage() -- Release DbAccessor
-
-    db:update("\0_last_sweep", tostring(now))
-    _last_sweep_memory = now
 end
 
 -- 读取层预测核心
@@ -387,8 +340,8 @@ local function get_predictions(prev_commit, db, config)
     if #shared_state.history >= 2 then
         local u0 = shared_state.history[#shared_state.history - 1]
         local u1 = shared_state.history[#shared_state.history]
-        local len_u0 = #get_utf8_chars(u0)
-        local len_u1 = #get_utf8_chars(u1)
+        local len_u0 = utf8.len(u0) or 0
+        local len_u1 = utf8.len(u1) or 0
 
         -- 对齐写入时的条件：u1不超过4，且总和不超过5
         if len_u1 <= 4 and (len_u0 + len_u1) <= 5 then
@@ -445,7 +398,6 @@ function P.init(env)
     local db = userdb.LevelDb(config.db_name)
     if db then
         db:open()
-        sweep_expired_data(db, config)
     end
 
     local commit_notifier = env.engine.context.commit_notifier:connect(function(ctx)
@@ -681,6 +633,44 @@ function P.init(env)
 
         local input = ctx.input
 
+        if input == "/clean" then
+            ctx:clear()
+            local now = os.time()
+            local deleted_count = 0
+
+            local da = db:query("")
+            if da then
+                for k, v in da:iter() do
+                    if k:sub(1, 1) ~= "\1" and k:sub(1, 1) ~= "\0" then
+                        local _, ts_str = v:match("^([^|]+)|?(.*)$")
+                        local ts = tonumber(ts_str) or 0
+                        local is_p_gram = (k:sub(1, 2) == "P\t")
+                        local limit = is_p_gram and config.p_expiry_seconds or config.expiry_seconds
+
+                        if ts == 0 then
+                            ts = now - limit - 1
+                        end
+
+                        if (now - ts) > limit then
+                            if db.erase then
+                                db:erase(k)
+                            else
+                                db:update(k, "")
+                            end
+                            deleted_count = deleted_count + 1
+                        end
+                    end
+                end
+            end
+            da = nil
+            collectgarbage() -- Release DbAccessor
+
+            reset_memory_chain(state) -- 手动清理结束
+            -- 上屏提示信息，让用户知道清理了多少条垃圾
+            env.engine:commit_text("预测数据库清理完成，共清除 " .. deleted_count .. " 条过期记忆。")
+            return
+        end
+
         if input == "/outpredict" then
             ctx:clear()
             local sync_path = rime_api.get_user_data_dir() .. "/predict_export.txt"
@@ -804,9 +794,9 @@ function P.func(key, env)
     if
         state.just_committed
         and repr ~= "BackSpace"
-        and not repr:match("Shift")
-        and not repr:match("Control")
-        and not repr:match("Alt")
+        and not repr:find("Shift", 1, true)
+        and not repr:find("Control", 1, true)
+        and not repr:find("Alt", 1, true)
     then
         state.just_committed = false
     end
@@ -1055,15 +1045,21 @@ function F.func(input, env)
         state.last_commit = shared_state.last_commit
         state.reorder_map = {}
 
-        local context_len = 0
+        -- 防止单字造成的调频异常波动
+        ---@type boolean
+        local is_context_valid
+        local u1_len = utf8.len(shared_state.last_commit) or 0
         if #shared_state.history >= 2 then
-            local u0_len = #get_utf8_chars(shared_state.history[#shared_state.history - 1])
-            local u1_len = #get_utf8_chars(shared_state.history[#shared_state.history])
-            context_len = u0_len + u1_len
+            -- 历史有2个词以上时：前后加起来必须 >= 3 个字
+            local u0_len = utf8.len(shared_state.history[#shared_state.history - 1]) or 0
+            is_context_valid = (u0_len + u1_len) >= 3
+        else
+            -- 历史只有1个词（刚开始输入）：这一个词必须 >= 2 个字
+            is_context_valid = u1_len >= 2
         end
 
         -- 优先白嫖 P 模块查好的全局缓存，如果 P 模块没查（比如没开联想），F 就自己查一次作为兜底
-        if state.db and context_len >= 3 then
+        if config.enable_context_reorder and state.db and is_context_valid then
             local preds = shared_state.pending_cands or get_predictions(shared_state.last_commit, state.db, config)
             if preds then
                 state.reorder_map = {}
@@ -1074,89 +1070,89 @@ function F.func(input, env)
         end
     end
 
-    if next(state.reorder_map) ~= nil or context.input == "" then
+    if next(state.reorder_map) == nil or context.input == "" then
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
 
-    ---@type { cand: Candidate, rank: number }[]
-    local boosted = {}
+    ---@class BoostedCandidate
+    ---@field cand Candidate
+    ---@field rank number
+    ---@field index integer
+
+    ---@param a BoostedCandidate
+    ---@param b BoostedCandidate
+    local function boosted_compare(a, b)
+        if a.rank == b.rank then
+            return a.index < b.index
+        end
+        return a.rank < b.rank
+    end
+
+    ---@param boosted BoostedCandidate[]
+    ---@param normal Candidate[]
+    local function flush_yield(boosted, normal)
+        for i = 1, #boosted do
+            yield(boosted[i].cand)
+        end
+        for i = 1, #normal do
+            yield(normal[i])
+        end
+    end
+
+    ---@type BoostedCandidate[]
+    local boosted_cands = {}
     ---@type Candidate[]
-    local normal = {}
+    local normal_cands = {}
+
     local count = 0
-    local max_scan = 50
-    local stop_scanning = false
+    local max_scan = 20
     local target_len = 0 -- 用于记录首选词的字数
 
     -- 实时匹配与拦截
     for cand in input:iter() do
-        if stop_scanning then
+        count = count + 1
+        local text = cand.text or ""
+
+        local current_len = utf8.len(text) or 0
+
+        if count == 1 then
+            target_len = current_len
+        end
+
+        if
+            cand.type == "raw"
+            or cand.type == "english"
+            or text:find("^[a-zA-Z]+$")
+            or (count > 1 and current_len ~= target_len)
+            or count > max_scan
+        then
+            -- 集中处理已拦截的候选词
+            table.sort(boosted_cands, boosted_compare)
+            flush_yield(boosted_cands, normal_cands)
+
             yield(cand)
+            for rest_cand in input:iter() do
+                yield(rest_cand)
+            end
+
+            return
+        end
+
+        -- 分类逻辑
+        local rank = state.reorder_map[text]
+        if rank and current_len == target_len then
+            local final_rank = rank or 0
+            boosted_cands[#boosted_cands + 1] = { cand = cand, rank = final_rank, index = count }
         else
-            count = count + 1
-            local text = cand.text or ""
-
-            local current_len = #get_utf8_chars(text)
-
-            if count == 1 then
-                target_len = current_len
-            end
-
-            if
-                cand.type == "raw"
-                or cand.type == "english"
-                or text:match("^[a-zA-Z]+$")
-                or (count > 1 and current_len ~= target_len)
-            then
-                stop_scanning = true
-                -- 结算已经收集到的同等字数的词
-                table.sort(boosted, function(a, b)
-                    return a.rank < b.rank
-                end)
-                for _, b in ipairs(boosted) do
-                    yield(b.cand)
-                end
-                for _, n in ipairs(normal) do
-                    yield(n)
-                end
-                yield(cand)
-            else
-                local rank = state.reorder_map[text]
-                if rank then
-                    boosted[#boosted + 1] = { cand = cand, rank = rank }
-                else
-                    normal[#normal + 1] = cand
-                end
-
-                if count >= max_scan then
-                    stop_scanning = true
-                    table.sort(boosted, function(a, b)
-                        return a.rank < b.rank
-                    end)
-                    for _, b in ipairs(boosted) do
-                        yield(b.cand)
-                    end
-                    for _, n in ipairs(normal) do
-                        yield(n)
-                    end
-                end
-            end
+            normal_cands[#normal_cands + 1] = cand
         end
     end
-    -- 兜底排放
-    if not stop_scanning then
-        table.sort(boosted, function(a, b)
-            return a.rank < b.rank
-        end)
-        for _, b in ipairs(boosted) do
-            yield(b.cand)
-        end
-        for _, n in ipairs(normal) do
-            yield(n)
-        end
-    end
+
+    table.sort(boosted_cands, boosted_compare)
+    flush_yield(boosted_cands, normal_cands)
 end
 
 return { P = P, T = T, F = F }
