@@ -157,7 +157,7 @@ character_selector:
 
 user_predict:
   db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
-  enable_post_predict: true  # 上屏后预测
+  enable_post_predict: false  # 上屏后预测
   enable_context_reorder: true  # 输入时调频
   max_candidates: 10  # 屏幕最多显示的联想词数量
   max_predictions: 3  # 连续触发预测的最高次数限制
