@@ -5,7 +5,7 @@ outline: deep
 # 安装
 
 > [!NOTE]
-> 万象拼音输入方案依赖 Rime 前端。关于安装 Rime 的详细步骤，可参考 [oh-my-rime 方案提供的 Rime 安装指南](https://www.mintimate.cc/zh/guide/installRime.html)。
+> 万象拼音输入方案依赖 Rime。关于安装 Rime 前端的详细步骤，可参考 [oh-my-rime 方案提供的 Rime 安装指南](https://www.mintimate.cc/zh/guide/installRime.html)。
 
 ## 方案选择
 
@@ -21,13 +21,25 @@ outline: deep
 > [!IMPORTANT]
 > **进阶版**方案根据辅助码方案的不同分为了多个包体。每一个包体对应一种**辅助码**方案的配置，请根据您使用的辅助码方案下载对应压缩包。每种辅助码方案配置均支持切换**任意拼音方案**。
 
-## 安装方案
+## 安装输入方案
 
 ### 手动安装
 
 1. 从 [Release](https://github.com/Fidelxyz/rime-wanxiang-slim/releases) 页面下载方案文件。
-2. 将解压后的文件放入 Rime **用户目录**。
-3. 在输入法菜单中，点击「重新部署」。
+
+1. 将解压后的文件放入 [Rime **用户目录**](https://github.com/rime/home/wiki/UserData)。
+
+    ::: info 各前端用户目录路径
+
+    - 小狼毫：`%APPDATA%/Rime`。也可以通过「开始菜单 — 小狼毫输入法 —  用户文件夹」打开。
+    - 鼠须管：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠鬚管 — 用户设定…」打开。
+    - IBus：`~/.config/ibus/rime`。
+    - Fcitx：`~/.config/fcitx/rime`。
+    - Fcitx 5：`~/.local/share/fcitx5/rime/`。
+
+    :::
+
+1. 重新部署。
 
 ### 通过东风破（Plum）安装
 

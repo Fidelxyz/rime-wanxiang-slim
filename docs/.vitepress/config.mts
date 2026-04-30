@@ -38,7 +38,7 @@ export default defineConfig({
         text: "功能详解",
         items: [
           { text: "辅助码", link: "/features/auxiliary-code" },
-          { text: "辅助筛选 / 反查", link: "/features/reverse-lookup" },
+          { text: "反查 / 辅助筛选", link: "/features/reverse-lookup" },
           { text: "造词", link: "/features/user-dict" },
           { text: "其他功能", link: "/features/others" },
         ],

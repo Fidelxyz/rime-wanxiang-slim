@@ -14,8 +14,6 @@ outline: deep
 
 **自动调频**：默认关闭，配置项：`translator/enable_user_dict`。
 
-**手动排序**：<kbd>Ctrl</kbd>+<kbd>J</kbd> 提升，<kbd>Ctrl</kbd>+<kbd>K</kbd> 降低，<kbd>Ctrl</kbd>+<kbd>L</kbd> 重置排序，<kbd>Ctrl</kbd>+<kbd>P</kbd> 置顶。支持多设备同步（通过 `/sync` 目录）。配置项：`sequencer`。
-
 ## 字符集过滤
 
 可通过开关切换字符集范围（通用规范、GB2312、GBK、Big5、简繁体等），<kbd>Ctrl</kbd>+<kbd>G</kbd> 快捷切换。支持联动简繁转换开关，对不同开关单独配置字符集范围和黑白名单。配置项：`charset_filter`。

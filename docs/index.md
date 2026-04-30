@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: 安装
       link: /getting-started/installation
+    - theme: alt
+      text: 快速上手
+      link: /getting-started/quick-start
 
 features:
   - title: 专注于输入

@@ -66,9 +66,6 @@ patch:
 >   dict/key:
 > ```
 
-> [!NOTE]
-> `engine` 设定项下的组件列表（`processors`、`segmentors`、`translators`、`filters`）对顺序敏感。
-
 ## 引用指令
 
 关于 `__include`、`__patch` 和 `__append` 引用指令的用法和示例，详见[Rime 配置文件](https://github.com/rime/home/wiki/Configuration)。
