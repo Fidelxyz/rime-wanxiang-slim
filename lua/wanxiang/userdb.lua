@@ -87,7 +87,6 @@ function M.UserDb(db_name, db_class)
 
     local wrapper = {
         _db = db,
-        _pool_key = key,
     }
 
     return setmetatable(wrapper, metatable)

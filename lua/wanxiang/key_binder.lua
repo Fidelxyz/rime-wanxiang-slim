@@ -87,6 +87,12 @@ function M.init(env)
     }
 end
 
+---@param env Env
+function M.fini(env)
+    env.key_binder_config = nil
+    env.key_binder_state = nil
+end
+
 ---@param key_event KeyEvent
 ---@param env Env
 ---@return ProcessResult

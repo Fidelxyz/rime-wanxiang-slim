@@ -216,16 +216,11 @@ end
 ---@param prefix string
 ---@return boolean
 local function any_starts_with(list, prefix)
-    if not list then
-        return false
-    end
-
     for i = 1, #list do
         if list[i]:find(prefix, 1, true) == 1 then
             return true
         end
     end
-
     return false
 end
 
@@ -293,7 +288,7 @@ end
 ---@param input string
 ---@param key string
 ---@param bypass_prefix string?
----@return string? code
+---@return string? base_code
 ---@return string? aux_code
 ---@return integer? key_start
 ---@return integer? key_end
@@ -326,9 +321,9 @@ local function split_lookup_input(input, key, bypass_prefix)
         return nil
     end
 
-    local code = input:sub(1, s_start - 1)
+    local base_code = input:sub(1, s_start - 1)
     local aux_code = input:sub(s_end + 1)
-    return code, aux_code, s_start, s_end
+    return base_code, aux_code, s_start, s_end
 end
 
 ---@param comment string
@@ -402,7 +397,7 @@ function F.init(env)
     local has_aux_source = false
     local sources_list_item = cfg_root and cfg_root:get("data_source")
     local sources_list = sources_list_item and sources_list_item:get_list()
-    if sources_list and sources_list.size > 0 then
+    if sources_list then
         for i = 0, sources_list.size - 1 do
             local source_val = sources_list:get_value_at(i)
             local source = source_val and source_val:get_string()
@@ -417,10 +412,6 @@ function F.init(env)
                 end
             end
         end
-    else
-        data_sources = { "aux", "db" }
-        has_aux_source = true
-        has_db_source = true
     end
     -- 核心逻辑：只要配置了 aux 源，就必须解析注释
     local has_comment = has_aux_source
@@ -495,24 +486,46 @@ function F.init(env)
         tags = { "abc" }
     end
 
+    -- Hook into the context's select_notifier, which fires every time the user
+    -- selects (commits) a candidate from the menu. The purpose is to clean up
+    -- the input buffer after a candidate is chosen while the auxiliary-code
+    -- lookup trigger (e.g. "`") is present.
+    --
+    -- Workflow:
+    --   1. When the user types "pinyin`aux" and picks a candidate, this callback
+    --      runs with the current input still containing the trigger + aux code.
+    --   2. It splits the input at the trigger to recover the base pinyin code
+    --      (everything before the trigger).
+    --   3. It then checks the preedit text (the composed/converted string shown
+    --      to the user) to decide what to do next:
+    --        a. If the preedit still contains unconverted alphanumeric input
+    --           before the trigger, there are remaining syllables to convert,
+    --           so it resets the input to "code`" — keeping the trigger so the
+    --           user can continue auxiliary-code filtering on the next candidate.
+    --        b. If the preedit is fully converted (no remaining raw input),
+    --           the entire phrase is done, so it strips the trigger, sets the
+    --           input to just the base code, and commits the result.
     local select_notifier = env.engine.context.select_notifier:connect(function(ctx)
         local state = env.lookup_filter_state
         assert(state)
 
         local input = ctx.input
-        local code, _ = split_lookup_input(input, trigger, bypass_prefix)
-        if not code or code == "" then
+        -- Split at the last trigger character to get the base code
+        local base_code, _ = split_lookup_input(input, trigger, bypass_prefix)
+        if not base_code or base_code == "" then
             return
         end
 
-        local preedit = ctx:get_preedit()
-        local no_search_string = code
-        local preedit_text = (preedit and preedit.text) or ""
-        local edit = select(1, split_lookup_input(preedit_text, trigger, bypass_prefix))
+        -- Check whether the preedit still has unconverted input before the trigger
+        local edit = select(1, split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix))
         if edit and edit:match("[%w/]") then
-            ctx.input = no_search_string .. trigger
+            -- There are still unconverted syllables remaining — keep the trigger
+            -- appended so the user can continue filtering the next candidate
+            ctx.input = base_code .. trigger
         else
-            ctx.input = no_search_string
+            -- All syllables have been converted — strip the trigger and commit
+            -- the fully composed text
+            ctx.input = base_code
             ctx:commit()
         end
     end)

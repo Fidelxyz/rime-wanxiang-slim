@@ -130,12 +130,8 @@ local function translator(input, seg, env)
     end
 
     local target_aux = AUX_MAP[input]
-    if not target_aux then
-        return
-    end
-
     local target_schema = SCHEMA_MAP[input]
-    if not target_schema then
+    if not target_aux and not target_schema then
         return
     end
 

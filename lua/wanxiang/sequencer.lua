@@ -11,6 +11,8 @@
 -- 清单有什么文件就会读取什么文件
 -- 仅使用 installation.yaml 的 sync_dir；读不到就回退到 user_dir/sync
 
+-- TODO: Sync with UserDb
+
 local wanxiang = require("wanxiang.wanxiang")
 local userdb = require("wanxiang.userdb")
 
@@ -127,9 +129,20 @@ end
 ------------------------------------------------------------
 -- 安装信息 & 同步目录
 ------------------------------------------------------------
+---@class InstallationInfo
+---@field installation_id string?
+---@field sync_dir string?
+
+---@type InstallationInfo?
+local cached_installation_info = nil
+
 ---@return string? installation_id
 ---@return string? sync_dir
 local function read_installation_yaml()
+    if cached_installation_info then
+        return cached_installation_info.installation_id, cached_installation_info.sync_dir
+    end
+
     local user_dir = rime_api.get_user_data_dir()
     if user_dir == "" then
         return nil, nil
@@ -158,6 +171,12 @@ local function read_installation_yaml()
         end
     end
     f:close()
+
+    cached_installation_info = {
+        installation_id = installation_id,
+        sync_dir = sync_dir,
+    }
+
     return installation_id, sync_dir
 end
 
@@ -207,7 +226,7 @@ end
 
 ---@return string
 local function detect_device_name()
-    local installation_id = select(1, read_installation_yaml())
+    local installation_id, _ = read_installation_yaml()
 
     ---Sanitize the installation_id to be safe for filenames
     ---@param s string
@@ -519,10 +538,7 @@ local function write_adjustments_to_sync_files(adjustments)
     end
 
     local dir = sync_dir()
-    local installation_id = select(1, read_installation_yaml())
-    local device_name = (installation_id and installation_id ~= "")
-            and tostring(installation_id):gsub('[%s/\\:%*%?"<>|]', "_")
-        or "device"
+    local device_name = detect_device_name()
     local export_name = ("%s_%s%s"):format(SYNC_FILE_PREFIX, device_name, SYNC_FILE_SUFFIX)
     local export_path = path_join(dir, export_name)
     local manifest = path_join(dir, MANIFEST_FILE)
@@ -830,11 +846,6 @@ end
 function P.func(key_event, env)
     local context = env.engine.context
 
-    local config = env.sequencer_config
-    assert(config)
-    local state = env.sequencer_processor_state
-    assert(state)
-
     -- Adjustment is not allowed in function mode
     if wanxiang.is_function_mode_active(context) then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
@@ -862,6 +873,11 @@ function P.func(key_event, env)
         end
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
+
+    local config = env.sequencer_config
+    assert(config)
+    local state = env.sequencer_processor_state
+    assert(state)
 
     local code = context.input:sub(1, context.caret_pos)
     local item = selected_cand.text
@@ -990,16 +1006,13 @@ end
 ---@param input Translation
 ---@param env Env
 function F.func(input, env)
-    local context = env.engine.context
-
-    local state = env.sequencer_filter_state
-    assert(state)
-
     local function yield_original()
         for cand in input:iter() do
             yield(cand)
         end
     end
+
+    local context = env.engine.context
 
     -- Adjustment is not allowed in function mode
     if wanxiang.is_function_mode_active(context) then
@@ -1012,6 +1025,9 @@ function F.func(input, env)
         yield_original()
         return
     end
+
+    local state = env.sequencer_filter_state
+    assert(state)
 
     -- Fetch previous adjustments for this code from the database
     local adjustments = state.db and get_adjustments_for_code(code, state.db)

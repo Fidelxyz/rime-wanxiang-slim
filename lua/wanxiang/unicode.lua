@@ -81,8 +81,9 @@ function T.func(input, seg, env)
 
             text = utf8.char(new_code)
             yield(Candidate("unicode", seg.start, seg._end, text, ("U%x~%x"):format(code, i)))
+
+            ::continue::
         end
-        ::continue::
     end
 end
 

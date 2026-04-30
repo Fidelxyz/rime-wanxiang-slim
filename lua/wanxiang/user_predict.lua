@@ -538,7 +538,7 @@ function P.init(env)
                 -- 2-Gram
                 if len_u1 <= 4 and #shared_state.history >= 2 then
                     local u0 = shared_state.history[#shared_state.history - 1]
-                    local len_u0 = u0 and #get_utf8_chars(u0) or 0
+                    local len_u0 = utf8.len(u0) or 0
                     if (len_u0 + len_u1) <= 5 then
                         update_memory("2\t" .. u0 .. "\t" .. shared_state.last_commit .. "\t" .. text, text_is_tone)
                     end
@@ -628,6 +628,8 @@ function P.init(env)
             return
         end
 
+        local config = env.user_predict_config
+        assert(config)
         local state = env.user_predict_processor_state
         assert(state)
 

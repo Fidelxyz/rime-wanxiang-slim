@@ -183,8 +183,6 @@ function P.init(env)
 
     env.manual_segmentor_state = {
         code = nil,
-        code_len = nil,
-        input_head = nil,
         pattern_idx = nil,
     }
 end

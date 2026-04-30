@@ -77,7 +77,7 @@ local function apply_escape_fast(text)
         return text, false
     end
 
-    -- 第一步：保护 [[...]]
+    -- 保护 [[...]]
     ---@type string[]
     local blocks = {}
     local s = text:gsub("%[%[(.-)%]%]", function(txt)
@@ -85,10 +85,10 @@ local function apply_escape_fast(text)
         return "\0BLK" .. #blocks .. "\0"
     end)
 
-    -- 第二步：处理基础转义 (\n, \t, \s, \z 等)
+    -- 处理基础转义 (\n, \t, \s, \z 等)
     s = s:gsub("\\[ntrsz]", escape_map)
 
-    -- 第五步：还原 [[...]]
+    -- 还原 [[...]]
     s = s:gsub("\0BLK(%d+)\0", function(i)
         return blocks[tonumber(i)] or ""
     end)
@@ -388,7 +388,6 @@ function M.func(input, env)
     end
 
     local grouped_cnt = 0
-    local window_closed = false
 
     for cand in input:iter() do
         idx2 = idx2 + 1
@@ -425,7 +424,7 @@ function M.func(input, env)
             if mode == "passthrough" then
                 try_process_wrapper(w)
             else
-                if (not window_closed) and (grouped_cnt < sort_window) then
+                if grouped_cnt < sort_window then
                     grouped_cnt = grouped_cnt + 1
                     if w.is_table and not w.has_eng then
                         special_buf[#special_buf + 1] = w
@@ -433,9 +432,6 @@ function M.func(input, env)
                         normal_buf[#normal_buf + 1] = w
                     end
 
-                    if grouped_cnt >= sort_window then
-                        window_closed = true
-                    end
                     try_flush_page_sort(false)
                 else
                     if w.is_table and not w.has_eng then

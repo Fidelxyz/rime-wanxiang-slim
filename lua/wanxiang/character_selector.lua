@@ -48,8 +48,9 @@ local function apply_character_selector(key, config, env, ctx)
 
     -- 执行上屏
     if select_first then
-        -- 上屏第一个字 (sub: 1 到 第二个字偏移量-1)
-        env.engine:commit_text(text:sub(1, utf8.offset(text, 2) - 1))
+        -- 上屏第一个字 (sub: 1 到 第二个字偏移量-1；单字时直接上屏)
+        local second_offset = utf8.offset(text, 2)
+        env.engine:commit_text(second_offset and text:sub(1, second_offset - 1) or text)
         ctx:clear()
         return true
     elseif select_last then

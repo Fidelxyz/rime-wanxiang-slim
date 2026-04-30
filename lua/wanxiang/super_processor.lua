@@ -63,14 +63,20 @@ end
 -- 4. 逻辑分发处理
 
 -- [PredictSpace] 联想空格接力起跑点
+---@param key KeyEvent
 ---@param config SuperProcessorConfig
 ---@param state SuperProcessorState
 ---@param ctx Context
 ---@return boolean
-local function handle_predict_space(config, state, ctx)
+local function handle_predict_space(key, config, state, ctx)
     if not config.predict_space_enabled then
         return false
     end
+
+    if key.keycode ~= 0x20 or key:release() then
+        return false
+    end
+
     if (not ctx:is_composing() or ctx.input == "") and ctx:has_menu() then
         state.pending_predict_space = true
         return true
@@ -119,7 +125,7 @@ local function handle_limit_repeat(key, config, ctx)
     end
 
     local keycode = key.keycode
-    if not (keycode >= 0x61 and keycode <= 0x7A) then
+    if not (0x61 <= keycode and keycode <= 0x7A) then
         return false
     end
 
@@ -243,27 +249,19 @@ function P.func(key_event, env)
     local state = env.super_processor_state
     assert(state)
 
-    local keycode = key_event.keycode
-
     -- [Predict Space] 联想空格
-    if keycode == 0x20 then
-        if handle_predict_space(config, state, context) then
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-        end
+    if handle_predict_space(key_event, config, state, context) then
+        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
 
     -- [BackspaceLimit] 退格防止删除已上屏内容
-    if keycode == 0xFF08 then
-        if handle_backspace(key_event, config, state, context) then
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-        end
+    if handle_backspace(key_event, config, state, context) then
+        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
 
     -- [RepeatLimit] 重复输入限制
-    if keycode >= 0x61 and keycode <= 0x7A then
-        if handle_limit_repeat(key_event, config, context) then
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
-        end
+    if handle_limit_repeat(key_event, config, context) then
+        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
 
     return wanxiang.RIME_PROCESS_RESULTS.kNoop

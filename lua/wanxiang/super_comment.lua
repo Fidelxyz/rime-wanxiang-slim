@@ -97,7 +97,10 @@ function corrector.init(env)
 
     local config = env.engine.schema.config
 
-    local enabled = config:get_bool("super_comment/correction_enabled") or true
+    local enabled = config:get_bool("super_comment/correction_enabled")
+    if enabled == nil then
+        enabled = true
+    end
 
     local format = config:get_string("super_comment/correction_format") or "〔%s〕"
     if not is_format_valid(format) then
@@ -384,7 +387,8 @@ function M.func(input, env)
         elseif is_toneless_comment then
             final_comment = remove_pinyin_tone(get_aux_comment(cand, initial_comment, config, context))
         else
-            if initial_comment and initial_comment:find("~") or initial_comment:find("\226\152\175") then --保留尾部临时英文标记和太极标记
+            -- TODO: Ugly hack
+            if initial_comment:find("~") or initial_comment:find("\226\152\175") then --保留尾部临时英文标记和太极标记
                 final_comment = initial_comment
             else
                 final_comment = ""

@@ -20,7 +20,7 @@
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field charset_filter_config CharsetFilterConfig?
----@field charset_Filter_state CharsetFilterState?
+---@field charset_filter_state CharsetFilterState?
 
 local wanxiang = require("wanxiang.wanxiang")
 
@@ -242,7 +242,7 @@ function M.init(env)
         filters = filters,
     }
 
-    env.charset_Filter_state = {
+    env.charset_filter_state = {
         charset_db = ReverseDb(charset_db),
         db_memo = {},
         phrase_history_dict = {},
@@ -252,7 +252,7 @@ end
 ---@param env Env
 function M.fini(env)
     env.charset_filter_config = nil
-    env.charset_Filter_state = nil
+    env.charset_filter_state = nil
 end
 
 ---@param input Translation
@@ -260,7 +260,7 @@ end
 function M.func(input, env)
     local config = env.charset_filter_config
     assert(config)
-    local state = env.charset_Filter_state
+    local state = env.charset_filter_state
     assert(state)
 
     local context = env.engine.context
@@ -281,11 +281,6 @@ function M.func(input, env)
 
     -- 2. 判断当前是否需要开启字符集过滤
     local charset_active = #config.filters > 0 and not should_skip_filter(context)
-
-    -- Skip filter if the last character is non-alphanumeric, to avoid interfering with punctuation hints and similar features.
-    if #code == 5 and code:sub(-1):find("[^%w]") then
-        charset_active = false
-    end
 
     -- 3. 遍历候选词
     local has_recorded_history = false -- 只有第一个有效产出的词才记入历史

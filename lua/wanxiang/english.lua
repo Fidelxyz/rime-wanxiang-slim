@@ -101,9 +101,9 @@ local function is_english_phrase(s)
 end
 
 ---@param s string
----@return integer?
+---@return boolean
 local function has_letters(s)
-    return s:find("[a-zA-Z]")
+    return s:find("[a-zA-Z]") ~= nil
 end
 
 ---@param text string
@@ -375,7 +375,7 @@ function F.init(env)
 
         local input = ctx.input
 
-        state.block_derivation = (lookup_key and input:find(lookup_key, 1, true)) and true or false
+        state.block_derivation = input:find(lookup_key, 1, true) ~= nil
 
         if input == "" then
             state.comp_start_time = nil
@@ -410,7 +410,10 @@ function F.init(env)
         end
 
         state.is_prev_commit_english = is_english
-        if is_english then
+        -- Track the actual commit time even when sticky suppression forces is_english=false,
+        -- so the spacing_timeout check for the next word uses the correct elapsed time.
+        local is_genuinely_english = is_english_phrase(text_no_space) and not text_no_space:find("[/\\\\]$")
+        if is_genuinely_english then
             state.last_commit_time = wanxiang.now()
         else
             state.last_commit_time = 0

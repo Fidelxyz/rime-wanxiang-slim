@@ -125,17 +125,11 @@ local function commit_handler(ctx, env)
     local codes = {}
 
     -- 遍历所有词段收集编码
-    for i = 1, segments_count do
-        local seg = segments[i]
+    for _, seg in ipairs(segments) do
         local cand = seg and seg:get_selected_candidate()
 
         -- 无候选：可能是符号段
         if not cand then
-            if i == segments_count then
-                -- 最后一个 segment 无候选，允许跳过
-                goto continue
-            end
-
             state.comment_cache = {}
             return
         end
@@ -145,11 +139,6 @@ local function commit_handler(ctx, env)
 
         -- 有候选但无编码
         if not comment or comment == "" then
-            if i == segments_count then
-                -- 最后一个 segment 无编码，允许跳过
-                goto continue
-            end
-
             state.comment_cache = {}
             return
         end
@@ -158,8 +147,6 @@ local function commit_handler(ctx, env)
         for part in comment:gmatch("[^" .. config.escaped_delimiter .. "]+") do
             codes[#codes + 1] = part
         end
-
-        ::continue::
     end
 
     -- 最终至少需要一个编码片段
@@ -198,8 +185,15 @@ function F.init(env)
     local escaped_delimiter = delimiter:gsub("(%W)", "%%%1")
 
     -- 中文自动造词的开关（只控制 add_user_dict）
-    local auto_phrase_enabled = rime_config:get_bool("add_user_dict/enable_auto_phrase") or false
-    local user_dict_enabled = rime_config:get_bool("add_user_dict/enable_user_dict") or false
+    local auto_phrase_enabled = rime_config:get_bool("add_user_dict/enable_auto_phrase")
+    if auto_phrase_enabled == nil then
+        auto_phrase_enabled = false
+    end
+
+    local user_dict_enabled = rime_config:get_bool("add_user_dict/enable_user_dict")
+    if user_dict_enabled == nil then
+        user_dict_enabled = false
+    end
 
     -- 中文：add_user_dict（受 add_* 开关影响）
     local zh_memory = (auto_phrase_enabled and user_dict_enabled)

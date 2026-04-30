@@ -75,7 +75,7 @@ function P.init(env)
         end
 
         -- Take pending rest
-        local rest = state.pending_rest or ""
+        local rest = state.pending_rest
         state.pending_rest = nil
 
         ctx.input = rest
