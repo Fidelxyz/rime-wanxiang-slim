@@ -315,9 +315,9 @@ lookup_filter:
   dicts: [wanxiang_reverse]
 
   # 反查数据来源及顺序。
-  # "aux": 词库携带的辅助码。
-  # "db"：反查方案数据库。
-  data_source: ['aux', 'db']
+  # aux: 词库携带的辅助码。
+  # db: 反查方案数据库。
+  data_source: [aux, db]
 
 # 处理符合特定规则的输入码，如网址、反查
 recognizer:
@@ -428,10 +428,16 @@ add_user_dict:
   dictionary: wanxiang
   initial_quality: -1
   user_dict: zc
-  enable_completion: true  # 提前显示尚未输入完整码的字〔仅 table_translator 有效〕
-  enable_user_dict: false
-  enable_auto_phrase: true  # lua造词功能，在custom开启，相关功能位于auto_phrase.lua，开启后：模型能造的句子不造词，现有的词不造词，只造词库没有的，选词可造词
+  enable_user_dict: true
   spelling_hints: 50
-  comment_format:
+
+  # 手动造词引导符。
   prefix: "``"
-  tips: "〔开始造词〕"
+
+  # 手动造词提示。
+  tips: "〔造词〕"
+
+  ### 自动造词相关配置 ###
+
+  # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
+  enable_auto_phrase: true

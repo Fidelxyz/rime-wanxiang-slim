@@ -1,5 +1,11 @@
 patch:
-  # 只修改下面配置中的输入方案名称，名称与wanxiang.custom.yaml保持一致，这个用于反查
   speller/algebra:
-    __include: wanxiang_algebra:/reverse/全拼  #可选的选项有（全拼, 自然码, 小鹤双拼, 微软双拼, 搜狗双拼, 智能ABC, 紫光双拼, 拼音加加）
-    __patch: wanxiang_algebra:/reverse/hspzn  #笔画类型有hspzn，hupvd及hslzy（适配乱序17）可选
+    # ** 该选项由切换方案命令写入。如不了解原理，请勿手动修改。 **
+    # 可选输入方案："全拼", "自然码", "智能ABC", "小鹤双拼", "微软双拼", "搜狗双拼", "紫光双拼", "国标双拼", "拼音加加", "乱序17", "自然龙", "汉心龙"
+    __include: wanxiang_algebra:/reverse/全拼
+
+    # 可选笔画拆分编码方案：
+    # - "hspzn"
+    # - "hupvd"（双拼编码）
+    # - "hslzy"（乱序17编码）
+    __patch: wanxiang_algebra:/reverse/hspzn

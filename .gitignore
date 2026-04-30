@@ -1,3 +1,8 @@
 dist/
 
 .DS_Store
+
+# Docs
+node_modules
+docs/.vitepress/dist
+docs/.vitepress/cache

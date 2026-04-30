@@ -1,0 +1,21 @@
+{
+  "name": "rime-wanxiang-slim",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "CC-BY-4.0",
+  "packageManager": "pnpm@10.33.2",
+  "devDependencies": {
+    "@types/markdown-it-footnote": "^3.0.4",
+    "markdown-it-footnote": "^4.0.0",
+    "vitepress": "2.0.0-alpha.17"
+  }
+}

@@ -1,0 +1,40 @@
+---
+outline: deep
+---
+
+# 造词
+
+## 手动造词 <Badge type="tip" text="仅 Pro" />
+
+输入造词引导符 ` `` ` 进入手动造词模式，随后提交的词条会被记录到用户词库中。
+
+造词引导符可位于编码**开头**或**末尾**。
+
+```yaml
+add_user_dict:
+  # 手动造词引导符。
+  prefix: "``"
+
+  # 手动造词提示。
+  tips: "〔造词〕"
+```
+
+## 自动造词 <Badge type="tip" text="仅 Pro" />
+
+自动记录词库中不存在的**非句子**词条。
+
+```yaml
+add_user_dict:
+  # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
+  enable_auto_phrase: true
+```
+
+## 英文造词
+
+英文编码末尾输入 `\\` 触发英文造词。
+
+```yaml
+wanxiang_english:
+  # 英文造词触发符号，双击触发造词。
+  user_dict_trigger: "\\"
+```
