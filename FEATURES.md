@@ -152,34 +152,6 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 | `lua/wanxiang/sequencer.lua` | 手动排序模块，LevelDB 数据库 `lua/sequence.userdb` |
 | `wanxiang.schema.yaml` | 排序快捷键配置 |
 
-### 超级替换
-
-替代 OpenCC 的增强组件，支持 append/replace/comment/abbrev 四种模式，链式/并行处理。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_replacer.lua` | 超级替换模块，LevelDB 数据库 `lua/replacer.userdb` |
-| `lua/data/emoji.txt` | Emoji 数据 |
-| `lua/data/abbrev.txt` | 公共简码数据 |
-| `lua/data/STCharacters.txt` | 简繁单字转换 |
-| `lua/data/STPhrases.txt` | 简繁词组转换 |
-| `lua/data/HKVariants.txt` | 香港繁体变体 |
-| `lua/data/TWVariants.txt` | 台湾繁体变体 |
-| `lua/data/others.txt` | 其他替换数据 |
-| `wanxiang.schema.yaml` | `super_replacer` 段配置（rules、chain、db_name 等） |
-
-
-#### 简码系统
-
-公共简码与用户自定义简码，支持 `abbrev_rule` 参数控制简码规则，单开关控制启用/禁用，成语库已合并。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_replacer.lua` | 简码处理逻辑（`abbrev` 类型规则） |
-| `lua/data/abbrev.txt` | 公共简码数据 |
-| `lua/data/chengyu.txt` | 成语数据（约 23k 行） |
-| `wanxiang.schema.yaml` | `abbrev` 开关、`abbrev_rule` 参数配置 |
-| `custom/wanxiang.custom.yaml` 等 | 用户简码配置模板 |
 
 ### 字符集过滤
 
@@ -486,6 +458,22 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 | `lua/wanxiang/super_filter.lua` | 英文句子过滤、模式切换逻辑 |
 | `wanxiang.schema.yaml` | `input_type` 开关配置 |
 | `wanxiang_english.schema.yaml` | 英文方案 Shift+Space 切换配置 |
+
+#### 超级替换
+
+替代 OpenCC 的增强组件，支持 append/replace/comment/abbrev 四种模式，链式/并行处理。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/super_replacer.lua` | 超级替换模块，LevelDB 数据库 `lua/replacer.userdb` |
+| `lua/data/emoji.txt` | Emoji 数据 |
+| `lua/data/abbrev.txt` | 公共简码数据 |
+| `lua/data/STCharacters.txt` | 简繁单字转换 |
+| `lua/data/STPhrases.txt` | 简繁词组转换 |
+| `lua/data/HKVariants.txt` | 香港繁体变体 |
+| `lua/data/TWVariants.txt` | 台湾繁体变体 |
+| `lua/data/others.txt` | 其他替换数据 |
+| `wanxiang.schema.yaml` | `super_replacer` 段配置（rules、chain、db_name 等） |
 
 ### 快捷短语相关
 
