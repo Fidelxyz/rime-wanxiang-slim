@@ -113,7 +113,7 @@ def infer_suite_name(test_path: str) -> str:
 
 def main():
     args = parse_args()
-    cmd: list[str] = [args.mira]
+    cmd: list[str] = [args.mira, "--cache-dir", "cache"]
 
     ret = 0
     for test_file in args.tests:

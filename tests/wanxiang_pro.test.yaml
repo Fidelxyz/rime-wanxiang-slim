@@ -1,10 +1,64 @@
 schema: wanxiang_pro
 source_dir: ../dist/rime-wanxiang-zrm-fuzhu
 
+script: |
+  function eq(actual, expected)
+    print('Actual:   ' .. tostring(actual))
+    print('Expected: ' .. tostring(expected))
+    return actual == expected
+  end
+
 deploy:
   default:
     tests:
       - send: nihao
-        assert: cand[1].text == "你好"
+        assert: eq(cand[1].text, "你好")
+      - send: weishenme
+        assert: eq(cand[1].text, "为什么")
       - send: english
-        assert: cand[1].text == "English"
+        assert: eq(cand[1].text, "English")
+      - send: haha
+        assert: cand[2].text ~= "😄"
+
+  emoji:
+    options:
+      emoji: true
+    tests:
+      - send: haha
+        assert: eq(cand[2].text, "😄") and eq(cand[2].comment, "〔哈哈〕")
+
+  zh-hant:
+    patch:
+      switches/@4/reset: 1
+    # options:
+    #   zh_cn: false
+    #   zn_hant: true
+    tests:
+      - send: weishenme
+        assert: eq(cand[1].text, "爲什麼")
+      - send: zheli
+        assert: eq(cand[1].text, "這裏")
+
+  zh-hk:
+    patch:
+      switches/@4/reset: 2
+    # options:
+    #   zh_cn: false
+    #   zn_hk: true
+    tests:
+      - send: weishenme
+        assert: eq(cand[1].text, "為什麼")
+      - send: zheli
+        assert: eq(cand[1].text, "這裏")
+
+  zh-tw:
+    patch:
+      switches/@4/reset: 3
+    # options:
+    #   zh_cn: false
+    #   zn_tw: true
+    tests:
+      - send: weishenme
+        assert: eq(cand[1].text, "為什麼")
+      - send: zheli
+        assert: eq(cand[1].text, "這裡")
