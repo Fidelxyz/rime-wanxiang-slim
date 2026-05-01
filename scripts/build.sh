@@ -42,6 +42,7 @@ package_schema_base() {
         --exclude='.*' \
         --include='dicts/***' \
         --include='lua/***' \
+        --include='opencc/***' \
         --include='README.md' \
         --include='CHANGELOG.md' \
         --include='LICENSE' \
@@ -67,6 +68,7 @@ package_schema_pro() {
     rsync -av \
         --exclude='.*' \
         --include='lua/***' \
+        --include='opencc/***' \
         --include='README.md' \
         --include='CHANGELOG.md' \
         --include='LICENSE' \

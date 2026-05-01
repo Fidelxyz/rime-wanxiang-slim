@@ -1,0 +1,64 @@
+name: Update OpenCC Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 1 * *"  # Monthly
+
+permissions:
+  contents: write
+
+env:
+  OPENCC_DICTS: "STCharacters STPhrases HKVariants TWVariants"
+
+jobs:
+  update-opencc-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install OpenCC
+        run: |-
+          sudo apt-get update
+          sudo apt-get install -y opencc
+
+      - uses: actions/checkout@v6
+        with:
+          path: ${{ github.event.repository.name }}
+          persist-credentials: true
+
+      - name: Get latest release tag of OpenCC
+        id: opencc-latest-tag
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const { data: release } = await github.rest.repos.getLatestRelease({
+              owner: 'BYVoid',
+              repo: 'OpenCC',
+            });
+            core.setOutput('tag', release.tag_name);
+
+      - name: Checkout OpenCC
+        uses: actions/checkout@v6
+        with:
+          repository: BYVoid/OpenCC
+          ref: ${{ steps.opencc-latest-tag.outputs.tag }}
+          path: opencc
+
+      - name: Remove comment lines from OpenCC dictionary files
+        working-directory: opencc/data/dictionary
+        run: |-
+          for dict in ${OPENCC_DICTS}; do
+            sed -i '/^#/d' "${dict}.txt"
+          done
+
+      - name: Convert OpenCC text data to OCD2
+        run: |-
+          for dict in ${OPENCC_DICTS}; do
+            opencc_dict -i "opencc/data/dictionary/${dict}.txt" -o "${{ github.event.repository.name }}/opencc/dicts/${dict}.ocd2" -f text -t ocd2
+          done
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          repository: ${{ github.event.repository.name }}
+          commit_message: "chore(opencc): Update OpenCC data to ${{ steps.opencc-latest-tag.outputs.tag }}"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
