@@ -48,7 +48,6 @@ switches:
 engine:
   processors:
     - lua_processor@*wanxiang.super_processor  # 重复限制、退格限制
-    - lua_processor@*wanxiang.sequencer*P  #手动排序。默认快捷键：Ctrl+J 左移，Ctrl+K 右移，Ctrl+P 置顶，Ctrl+L 重置
     - ascii_composer  # 处理英文模式及中英文切换
     - recognizer  # 与 matcher 搭配，处理符合特定规则的输入码，如网址、反查等 tags
     - key_binder  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
@@ -95,7 +94,6 @@ engine:
     - simplifier@s2hk
     - simplifier@s2tw
     - simplifier@emoji
-    - lua_filter@*wanxiang.sequencer*F  # 放去重前，接管排序索引固定，手动排序
     - lua_filter@*wanxiang.user_predict*F  # 用于输入编码后的上下文调频
     - uniquifier  # 去重，必须在最后
 
@@ -170,13 +168,6 @@ user_predict:
   # 推荐手机端开启，电脑端关闭。
   enable_predict_space: false
   context_timeout: 5000  # 上文超时时间毫秒
-
-sequencer:  # 手动排序
-  db_name: "lua/sequence"
-  up: "Control+j"  # 上移
-  down: "Control+k"  # 下移
-  reset: "Control+l"  # 重置
-  pin: "Control+p"  # 置顶
 
 emoji:
   option_name: emoji

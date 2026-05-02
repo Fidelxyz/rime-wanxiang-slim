@@ -143,16 +143,6 @@
 | `custom/wanxiang_chaifen.schema.yaml` | 拆分反查方案 |
 | `custom/wanxiang_chaifen_*.dict.yaml` | 7 种辅码拆分字典 |
 
-### 候选排序
-
-Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/sequencer.lua` | 手动排序模块，LevelDB 数据库 `lua/sequence.userdb` |
-| `wanxiang.schema.yaml` | 排序快捷键配置 |
-
-
 ### 字符集过滤
 
 可配置字符集规则，支持多选项并集、黑白名单、简繁联动，二进制滤镜数据库。
@@ -426,7 +416,6 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 | 已删除文件/配置 | 说明 |
 |-----------------|------|
 | `lua/wanxiang/super_filter.lua` | 成对符号包裹逻辑（`wrap_parts` 映射） |
-| `lua/wanxiang/sequencer.lua` | 成对符号触发符读取与兼容缓存路径 |
 | `wanxiang.schema.yaml` | `paired_symbols` 配置段 |
 | `custom/wanxiang_pro.schema.yaml` | `paired_symbols` 配置段 |
 | `custom/wanxiang.custom.yaml` | `paired_symbols` 配置段（模板） |
@@ -474,6 +463,15 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 | `lua/data/TWVariants.txt` | 台湾繁体变体 |
 | `lua/data/others.txt` | 其他替换数据 |
 | `wanxiang.schema.yaml` | `super_replacer` 段配置（rules、chain、db_name 等） |
+
+### 候选排序
+
+Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/sequencer.lua` | 手动排序模块，LevelDB 数据库 `lua/sequence.userdb` |
+| `wanxiang.schema.yaml` | 排序快捷键配置 |
 
 ### 快捷短语相关
 
