@@ -23,7 +23,6 @@
 ---@field is_prev_commit_english boolean
 ---@field last_commit_time number
 ---@field comp_start_time number?
----@field sticky_countdown integer
 ---@field block_derivation boolean
 ---@field memory table<string, { text: string, preedit: string }>
 ---
@@ -42,25 +41,11 @@
 
 local wanxiang = require("wanxiang.wanxiang")
 
-local STICKY_BUFFER_SIZE = 2
-
 ---@param s string
 ---@return string
 local function normalize_word(s)
     return s:gsub("[^a-zA-Z]", ""):lower()
 end
-
----@type table<string, boolean>
-local no_spacing_words = {
-    ["http"] = true,
-    ["https"] = true,
-    ["www"] = true,
-    ["ftp"] = true,
-    ["ssh"] = true,
-    ["mailto"] = true,
-    ["file"] = true,
-    ["tel"] = true,
-}
 
 ---@type table<integer, boolean>
 local allowed_ascii_symbols = {
@@ -327,9 +312,6 @@ local function P(key_event, env)
         if keycode == 0xff0d or keycode == 0xff8d or keycode == 0x20 then
             context:set_property("english_spacing", "true")
         end
-        if keycode == 0x5c or keycode == 0x2f then
-            context:set_property("force_sticky_code", "true")
-        end
     end
 
     return wanxiang.RIME_PROCESS_RESULTS.kNoop
@@ -392,28 +374,8 @@ function F.init(env)
         local text_no_space = commit_text:gsub("%s", "")
         local is_english = is_english_phrase(text_no_space)
 
-        if text_no_space:find("[/\\\\]$") then
-            state.sticky_countdown = STICKY_BUFFER_SIZE
-            is_english = false
-        elseif state.sticky_countdown > 0 then
-            if is_english then
-                state.sticky_countdown = state.sticky_countdown - 1
-                is_english = false
-            else
-                state.sticky_countdown = 0
-            end
-        elseif is_english then
-            local clean = commit_text:gsub("%s+$", ""):lower()
-            if no_spacing_words[clean] then
-                is_english = false
-            end
-        end
-
         state.is_prev_commit_english = is_english
-        -- Track the actual commit time even when sticky suppression forces is_english=false,
-        -- so the spacing_timeout check for the next word uses the correct elapsed time.
-        local is_genuinely_english = is_english_phrase(text_no_space) and not text_no_space:find("[/\\\\]$")
-        if is_genuinely_english then
+        if is_english then
             state.last_commit_time = wanxiang.now()
         else
             state.last_commit_time = 0
@@ -426,7 +388,6 @@ function F.init(env)
         is_prev_commit_english = false,
         last_commit_time = 0,
         comp_start_time = nil,
-        sticky_countdown = 0,
         block_derivation = false,
         memory = {},
         update_notifier = update_notifier,
@@ -452,12 +413,6 @@ function F.func(input, env)
     assert(config)
     local state = env.english_state
     assert(state)
-
-    if context:get_property("force_sticky_code") == "true" then
-        state.sticky_countdown = STICKY_BUFFER_SIZE
-        state.is_prev_commit_english = false
-        context:set_property("force_sticky_code", "")
-    end
 
     local code = context.input
     if not has_letters(code) then
@@ -655,21 +610,7 @@ function F.func(input, env)
         return
     end
 
-    local is_code_mode = code:find("[/\\]") or (state.sticky_countdown > 0)
-    if is_code_mode then
-        local clean_diff = diff
-        if clean_diff:sub(-1) == config.user_dict_trigger then
-            clean_diff = clean_diff:sub(1, -2)
-        end
-        local output_text = anchor.text .. clean_diff
-        local output_preedit = (anchor.preedit or anchor.text) .. diff
-        output_text = apply_segment_formatting(output_text, code)
-
-        local cand = Candidate("fallback", 0, #code, output_text, "~")
-        cand.preedit = output_preedit
-        cand.quality = 999
-        yield(cand)
-    elseif is_english_phrase(anchor.text) then
+    if is_english_phrase(anchor.text) then
         -- 纯英文模式（含逗号等）
         local has_spacing = anchor.text:find(" ")
         local last_word = anchor.text:match("(%S+)%s*$") or ""

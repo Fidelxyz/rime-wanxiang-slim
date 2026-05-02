@@ -196,11 +196,11 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 ##### 英文智能加空格
 
-支持 off/before/after/smart 四种策略，超时销毁、路径优化。
+支持 off/before/after/smart 四种策略，超时销毁。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/english.lua` | 加空格全部逻辑（smart 模式、超时、路径检测） |
+| `lua/wanxiang/english.lua` | 加空格全部逻辑（smart 模式、超时） |
 | `wanxiang.schema.yaml` (`english` 段) | 加空格策略配置项 |
 
 #### 混合词输入
