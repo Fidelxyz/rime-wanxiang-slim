@@ -62,38 +62,21 @@ end
 
 local escape_map = {
     ["\\n"] = "\n", -- 换行
-    ["\\r"] = "\r", -- 回车
     ["\\t"] = "\t", -- 制表符
     ["\\s"] = " ", -- 空格
-    ["\\z"] = "\226\128\139", -- 零宽空格
+    ["\\\\"] = "\\", -- 反斜杠
 }
 
 -- 主入口：全局保护 [[]] 并执行所有转义逻辑
 ---@param text string
 ---@return string result, boolean changed
 local function apply_escape_fast(text)
-    -- 性能护航：不含反斜杠直接返回
-    if not text or not text:find("\\", 1, true) then
+    if not text:find("\\", 1, true) then
         return text, false
     end
 
-    -- 保护 [[...]]
-    ---@type string[]
-    local blocks = {}
-    local s = text:gsub("%[%[(.-)%]%]", function(txt)
-        blocks[#blocks + 1] = txt
-        return "\0BLK" .. #blocks .. "\0"
-    end)
-
-    -- 处理基础转义 (\n, \t, \s, \z 等)
-    s = s:gsub("\\[ntrsz]", escape_map)
-
-    -- 还原 [[...]]
-    s = s:gsub("\0BLK(%d+)\0", function(i)
-        return blocks[tonumber(i)] or ""
-    end)
-
-    return s, s ~= text
+    local escaped = text:gsub("\\[\\ntrsz]", escape_map)
+    return escaped, escaped ~= text
 end
 
 ---@param cand Candidate
