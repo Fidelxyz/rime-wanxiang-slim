@@ -41,7 +41,7 @@ switches:
   - name: char_priority  # 单字与词组编码重合时，单字或词组优先。
     states: [词组先, 单字先]
   # Hints
-  - name: chaifen_switch  # 显示候选辅助码拆分。默认切换快捷键 Ctrl+C。
+  - name: decomposition_hint  # 显示候选辅助码拆分。默认切换快捷键 Ctrl+C。
     states: [拆分关, 拆分开]
   - options: [comment_off, fuzhu_hint, tone_hint]  # 显示候选辅助码或全拼声调。默认切换快捷键 Ctrl+A。
     states: [注释关, 辅助开, 读音开]
@@ -92,6 +92,7 @@ engine:
     - lua_filter@*wanxiang.charset_filter  # 放replacer前面，全方位自定义的字符集过滤器，支持繁体字符集开放
     - lua_filter@*wanxiang.super_comment  # 放其他需要注释处理器后面，会有清空注释的操作，超级注释模块，支持错词提示、辅助码显示，部件组字读音注释
     - lua_filter@*wanxiang.super_filter  # 放replacer前面，先进行字符过滤后简繁转换，这样能繁体继承简体权重
+    - simplifier@decomposition_hint
     - simplifier@s2t
     - simplifier@s2hk
     - simplifier@s2tw
@@ -171,6 +172,16 @@ user_predict:
   enable_predict_space: false
   context_timeout: 5000  # 上文超时时间毫秒
 
+decomposition_hint:
+  option_name: decomposition_hint
+  opencc_config: decomposition.json
+  show_in_comment: true
+  tips: char
+  tags: [abc]
+  comment_format:
+    # Recover the spaces that were converted into colons in build.sh.
+    - xform/:/ /g
+
 emoji:
   option_name: emoji
   opencc_config: emoji.json
@@ -180,19 +191,16 @@ emoji:
 s2t:
   option_name: zh_hant
   opencc_config: s2t.json
-  tips: none
   tags: [abc]
 
 s2hk:
   option_name: zh_hk
   opencc_config: s2hk.json
-  tips: none
   tags: [abc]
 
 s2tw:
   option_name: zh_tw
   opencc_config: s2tw.json
-  tips: none
   tags: [abc]
 
 # 字符集过滤
@@ -352,7 +360,7 @@ key_binder:
     # 分号用于次选，微软、搜狗双拼不可启用
     #- { when: has_menu, accept: semicolon, send: 2 }
     # 使用快捷键Control+c拆分显示
-    - {when: has_menu, accept: "Control+c", toggle: chaifen_switch}
+    - {when: has_menu, accept: "Control+c", toggle: decomposition_hint}
     # 使用快捷键Control+a开启和关闭辅助码显示
     - {when: has_menu, accept: "Control+a", toggle: fuzhu_hint}
     # 通过快捷键Control+g开启字符集过滤
