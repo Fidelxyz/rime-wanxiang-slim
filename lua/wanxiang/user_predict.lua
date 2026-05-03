@@ -29,7 +29,6 @@
 ---@field enable_post_predict boolean
 ---@field enable_context_reorder boolean
 ---@field db_name string
----@field page_size integer
 
 ---@class UserPredictProcessorState
 ---@field need_push boolean
@@ -146,8 +145,6 @@ local function load_config(env)
 
     local db_name = rime_config:get_string("user_predict/db_name") or "lua/predict"
 
-    local page_size = rime_config:get_int("menu/page_size") or 6
-
     ---@type UserPredictConfig
     local config = {
         max_candidates = max_candidates,
@@ -162,7 +159,6 @@ local function load_config(env)
         enable_post_predict = enable_post_predict,
         enable_context_reorder = enable_context_reorder,
         db_name = db_name,
-        page_size = page_size,
     }
 
     return config
@@ -870,17 +866,19 @@ function P.func(key, env)
                     digit = 10
                 end
 
+                local page_size = env.engine.schema.page_size
+
                 local is_valid_candidate = false
                 local seg = context.composition:back()
                 if seg then
-                    local current_page = math.floor(seg.selected_index / config.page_size)
-                    local target_index = current_page * config.page_size + (digit - 1)
+                    local current_page = math.floor(seg.selected_index / page_size)
+                    local target_index = current_page * page_size + (digit - 1)
                     if seg:get_candidate_at(target_index) then
                         is_valid_candidate = true
                     end
                 end
 
-                if digit > config.page_size or not is_valid_candidate then
+                if digit > page_size or not is_valid_candidate then
                     context:clear()
                     reset_memory_chain(state) -- 非选词数字打断联想并上屏
                     env.engine:commit_text(digit_str)
