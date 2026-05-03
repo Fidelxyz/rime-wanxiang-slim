@@ -13,12 +13,18 @@ deploy:
     tests:
       - send: nihao
         assert: eq(cand[1].text, "你好")
+      # Simplifier
       - send: weishenme
         assert: eq(cand[1].text, "为什么")
+      # English
       - send: english
         assert: eq(cand[1].text, "English")
+      # Emoji
       - send: haha
         assert: cand[2].text ~= "😄"
+      # Unicode
+      - send: U4f60
+        assert: "eq(cand[1].text, '你') and eq(cand[1].comment, 'U4F60') and eq(cand[2].text, '\U0004F600') and eq(cand[2].comment, 'U4F60~0')"
 
   emoji:
     options:
