@@ -10,8 +10,12 @@ configuration files, Lua extensions, and dictionary data for the [Rime Input Met
 ```
 ├── lua/wanxiang/                # Lua plugin modules
 ├── lua/data/                    # Data files for Lua plugins (emoji, charset, OpenCC)
+├── lua/librime.lua              # Rime's Lua API type stubs
 ├── dicts/                       # Dictionary data files (.dict.yaml)
+├── opencc/                      # OpenCC data files for simplifier
 ├── custom/                      # Custom configuration templates, data files
+├── scripts/                     # Build and maintenance scripts
+├── tests/                       # Mira test cases
 ├── .github/workflows/           # CI/CD (GitHub Actions)
 ├── default.yaml                 # Rime global settings
 ├── punctuation.yaml             # Punctuation mappings
@@ -27,34 +31,25 @@ configuration files, Lua extensions, and dictionary data for the [Rime Input Met
 └── wanxiang_algebra.yaml        # Spelling algebra rules
 ```
 
-## Build / Release / Test Commands
-
-There is **no traditional build system** and **no test framework**.
-
 ## Lua Scripts
 
-All Lua source files are in `lua/wanxiang/`. They are loaded by the Rime engine as processor, filter, or translator
-plugins.
+All Lua source files are in `lua/wanxiang/`. They are registered as processor, segmentor, translator or filter modules
+and configured in the YAML schema files.
 
 ### Rime's Lua API
 
-`lua/librime.lua` is a full `---@meta rime` type stub file (not meant to be required at runtime).
+`lua/librime.lua` is a full `---@meta rime` type stub file.
 
 Documentation for Rime's Lua API can be found in the librime-lua documentation:
 - https://github.com/hchunhui/librime-lua/wiki/Scripting
 - https://github.com/hchunhui/librime-lua/wiki/API
 - https://github.com/hchunhui/librime-lua/wiki/Objects
 
-### Comments
-- **EmmyLua/LuaLS annotations** are used.
-- **File headers**: Feature description at the top.
-
 ## Documentation
 
 - **README.md**: The primary project documentation, containing installation instructions, configuration guides,
   and a high-level feature overview.
 - **FEATURES.md**: A detailed mapping of project features to their implementation files.
-- **PATCH_GUIDE.md**: Instructions for `*.custom.yaml` patch syntax and `__include`, `__patch`, `__append` directives.
 
 When modifying functional code (Lua) or configuration (YAML), always check if the changes
 impact the features described in `README.md` or the implementation mappings in `FEATURES.md`.
@@ -97,9 +92,8 @@ clarity and readability before finalizing the merge result.
 
 ## Key Warnings for Agents
 
-1. **No test suite** — There are no tests to run. Verify changes by reading code carefully.
-2. **Dictionary files** — `.dict.yaml` files contain large datasets. Avoid reading entire dictionary files; they can be
-   tens of thousands of lines.
-3. **Chinese documentation** — README and comments are in Chinese. This is intentional and should be maintained.
-4. **Conventional commits** — Use the format: `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`,
-   `test:`.
+- Typing annotations: Always add typing annotations for all functions.
+- English comments: Always write comments in English.
+- Defensive coding: Don't add error handling, fallbacks, or validation **for scenarios that can't happen**. Trust
+  internal code and framework guarantees. **Only validate at system boundaries** (user input, external APIs).
+- Conventional commits: Use the format: `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`.
