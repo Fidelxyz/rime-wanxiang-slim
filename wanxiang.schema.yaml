@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang
   name: 万象拼音
-  version: "15.8.1"  # x-release-please-version
+  version: "15.9.4"  # x-release-please-version
   author:
     - amzxyz
   description: |

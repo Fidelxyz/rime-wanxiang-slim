@@ -1,5 +1,63 @@
 # Changelog
 
+## [15.9.4](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.8.1...v15.9.4) (2026-05-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* split super_processor into specialized modules
+* split super_filter into specialized filter modules
+* remove manual_segmentor
+* **sequencer:** remove sequencer
+* **super_filter:** improve custom_phrase escape
+* **english:** remove english path input handling
+* **user_predict:** disable post prediction by default
+* **super_Replacer:** remove super_replacer
+* merge v15.9.4 from upstream
+* remove derivative algebra for wanxiang_english
+* **user_predict:** enable user_predict
+
+### Features
+
+* reintroduce decomposition hint with OpenCC ([ef363f0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ef363f0ff696b6a5383e44b0a9058237683e5d91))
+* support emoji with OpenCC ([0bbb41a](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0bbb41a98201467166291efe208e3716ab29534e))
+* support simplified and traditional Chinese conversion with OpenCC ([f932258](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f932258d2d9b24309557dc311dca40c574b850b0))
+
+
+### Bug Fixes
+
+* **decomposition_hint:** fix inconsistent decomposition hint format for zrm_chaifen.txt ([bc9168d](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bc9168d24d73d81f4f0ff21f898c02a2d1a3f7a0))
+* fix bugs in Lua code ([d427b36](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/d427b36a1ca5c5cd286356d98573f9ce36fddaff))
+* fix linting issues ([b2b6e20](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b2b6e20560c58b4427cc4b332ff1df5467f15550))
+* **key_binder:** add missing nil check ([0a92d88](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0a92d88652540296e433163d02bf81e4d1d54796))
+* **keypad_composer:** fix extra digit committed when release keypad key ([b1ec360](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b1ec3604cfa72ee3d94bb467c6b96352ffcca9b5))
+* remove extra import_preset in schemas ([0ccf0af](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0ccf0af0c39a543128bc16be3afcf5835e2c9961))
+* **user_predict:** enable user_predict ([81ed501](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/81ed5012e449e68b68855feddf64d7d6a466956f))
+
+
+### Performance Improvements
+
+* **set_schema:** early return if input is not a valid command ([d1830b6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/d1830b6a71e468f02ce6234a21abf2662ad7fb61))
+* **unicode:** simplify unicode input pattern recognizing ([f92732b](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f92732bd5a0c275ced6df099723c355e2348369c))
+
+
+### Miscellaneous Chores
+
+* merge v15.9.4 from upstream ([648e582](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/648e582058d8f6a3a02a8e488f4efbe6228a83be))
+* remove derivative algebra for wanxiang_english ([09e1b78](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/09e1b788e94faa73e582385ab561eaca6e99269e))
+* **super_filter:** improve custom_phrase escape ([ee666d2](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ee666d2ce99609f7f5454c7fc1b6ff7c5826245c))
+* **user_predict:** disable post prediction by default ([c21d178](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/c21d178bd3e7e0aa080919b6a22e8c9a224e45f4))
+
+
+### Code Refactoring
+
+* **english:** remove english path input handling ([c8693d5](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/c8693d59cc568fae62d457485c1c098896562a10))
+* remove manual_segmentor ([bf12eb8](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bf12eb8f2fa78c79a805c4c9337ae1f81020fda1))
+* **sequencer:** remove sequencer ([0213bad](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0213bad0431fc5936ae17f82cee1a913a71db44a))
+* split super_filter into specialized filter modules ([85207c5](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/85207c5ef7a7101cd1213a341abfacbb0c8570d0))
+* split super_processor into specialized modules ([1bd00b5](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1bd00b541bd90b3e7714148151510d9d9c513713))
+* **super_Replacer:** remove super_replacer ([070cfdd](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/070cfdd0e78a3284f849237322d3a95509d8a3be))
+
 ## [15.8.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v15.5.2...v15.8.1) (2026-04-19)
 
 
