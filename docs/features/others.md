@@ -40,8 +40,6 @@ outline: deep
 
 **短语格式化**：将 `custom_phrase.txt` 中的 `\n`、`\s`、`\t` 解析为换行、空格、制表符。
 
-**循环切换分词**：多次按下分词键 <kbd>'</kbd> 循环切换分词模式。配置项：`manual_segmentor`。
-
 **小键盘行为**：小键盘不直接上屏。配置项：`keypad_composer`。
 
 **删除键限制**（仅 Weasel 小狼毫生效）：输入中持续删除至编码为空时，阻止删除已上屏内容。配置项：`super_processor/enable_backspace_limit`。
