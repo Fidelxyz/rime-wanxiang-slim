@@ -48,6 +48,7 @@ package_schema_base() {
         --include='CHANGELOG.md' \
         --include='LICENSE' \
         --exclude='wanxiang_pro.schema.yaml' \
+        --exclude='pnpm-lock.yaml' \
         --include="*.yaml" \
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
@@ -74,6 +75,7 @@ package_schema_pro() {
         --include='CHANGELOG.md' \
         --include='LICENSE' \
         --exclude='wanxiang.schema.yaml' \
+        --exclude='pnpm-lock.yaml' \
         --include="*.yaml" \
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
