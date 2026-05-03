@@ -47,7 +47,7 @@ switches:
 # 输入引擎
 engine:
   processors:
-    - lua_processor@*wanxiang.super_processor  # 重复限制、退格限制
+    - lua_processor@*wanxiang.backspace_limiter  # 退格限制
     - ascii_composer  # 处理英文模式及中英文切换
     - recognizer  # 与 matcher 搭配，处理符合特定规则的输入码，如网址、反查等 tags
     - key_binder  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
@@ -88,6 +88,7 @@ engine:
     - lua_filter@*wanxiang.english*F  # 放replacer前面，单词变大写后应该能在替换中命中数据，负责英文方案及中英混输中英文单词格式化，语句流，自动加空格等策略
     - lua_filter@*wanxiang.charset_filter  # 放replacer前面，全方位自定义的字符集过滤器，支持繁体字符集开放
     - lua_filter@*wanxiang.super_comment  # 放其他需要注释处理器后面，会有清空注释的操作，超级注释模块，支持错词提示、辅助码显示，部件组字读音注释
+    # - lua_filter@*wanxiang.taichi_filter
     - lua_filter@*wanxiang.sentence_filter
     - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.fallback_filter
@@ -276,10 +277,11 @@ s2tw:
 
 ### 自定义功能 ###
 
-super_processor:
-  enable_backspace_limit: false  # 开启/关闭退格限制
-  enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想
-  limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+backspace_limiter:
+  # 退格限制。
+  # 开启时，输入中持续删除至编码为空时，阻止删除已上屏内容。
+  # 仅于小狼毫前端生效。
+  enabled: false
 
 super_comment:
   # 显示辅助码注释的最小候选词长度。0 为关闭并清空所有注释。

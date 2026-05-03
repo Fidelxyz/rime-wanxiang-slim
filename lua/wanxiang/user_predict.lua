@@ -37,6 +37,7 @@
 ---@field undo_stack table<string, string>[]
 ---@field just_committed boolean
 ---@field last_action_time number
+---@field pending_predict_space boolean
 ---
 ---@field commit_notifier Connection
 ---@field update_notifier Connection
@@ -733,6 +734,14 @@ function P.init(env)
             return
         end
 
+        -- [PredictSpace] Commit space when pending
+        if state.pending_predict_space then
+            state.pending_predict_space = false
+            ctx:clear()
+            env.engine:commit_text(" ")
+            return
+        end
+
         if input:find(PH_CHAR) then
             if input ~= expected_ph then
                 local clean_text = input:gsub(PH_CHAR, "")
@@ -761,6 +770,7 @@ function P.init(env)
         last_written_keys = {},
         just_committed = false,
         last_action_time = 0,
+        pending_predict_space = false,
         undo_stack = {},
         commit_notifier = commit_notifier,
         update_notifier = update_notifier,
@@ -790,6 +800,17 @@ function P.func(key, env)
 
     if key:release() then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
+    -- [PredictSpace] Intercept space as relay start point for prediction
+    if
+        config.enable_predict_space
+        and key.keycode == 0x20
+        and (not context:is_composing() or context.input == "")
+        and context:has_menu()
+    then
+        state.pending_predict_space = true
+        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
     end
 
     local repr = key:repr()
@@ -865,7 +886,7 @@ function P.func(key, env)
                     env.engine:commit_text(digit_str)
                     return wanxiang.RIME_PROCESS_RESULTS.kAccepted
                 else
-                    -- 选词范围内的数字（如 1-6）：放行，让 super_processor 去执行正常的选词
+                    -- 选词范围内的数字（如 1-6）：放行，让 backspace_limiter 去执行正常的选词
                     return wanxiang.RIME_PROCESS_RESULTS.kNoop
                 end
             end

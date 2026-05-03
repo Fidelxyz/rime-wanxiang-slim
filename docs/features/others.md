@@ -22,7 +22,7 @@ outline: deep
 
 **输入预测**：上屏后弹出预测候选（推荐仅在手机端开启），或置顶预测候选词。配置项：`user_predict`。
 
-**联想空格打断**：空格键打断联想并上屏空格。配置项：`super_processor/enable_predict_space` / `user_predict/enable_predict_space`。
+**联想空格打断**：空格键打断联想并上屏空格。配置项：`user_predict/enable_predict_space`。
 
 ## 非汉字词库输入
 
@@ -42,9 +42,7 @@ outline: deep
 
 **小键盘行为**：小键盘不直接上屏。配置项：`keypad_composer`。
 
-**删除键限制**（仅 Weasel 小狼毫生效）：输入中持续删除至编码为空时，阻止删除已上屏内容。配置项：`super_processor/enable_backspace_limit`。
-
-**输入长度限制**：限制重复按键输入或分词过多的编码。配置项：`super_processor/limit_repeated`。
+**删除键限制**（仅 Weasel 小狼毫生效）：输入中持续删除至编码为空时，阻止删除已上屏内容。配置项：`backspace_limiter/enabled`。
 
 **候选词部分上屏**：<kbd>Ctrl</kbd> + 数字键上屏首选前 N 字，并保留后续编码。
 

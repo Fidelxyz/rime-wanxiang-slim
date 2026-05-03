@@ -167,8 +167,8 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_processor.lua` | `predict_space` 配置与打断逻辑 |
-| `wanxiang.schema.yaml` | `super_processor/enable_predict_space` 配置项 |
+| `lua/wanxiang/user_predict.lua` | `predict_space` 配置与打断逻辑 |
+| `wanxiang.schema.yaml` | `user_predict/enable_predict_space` 配置项 |
 
 ### 非汉字词库输入
 
@@ -257,15 +257,11 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_processor.lua` | Backspace 限制逻辑 |
+| `lua/wanxiang/backspace_limiter.lua` | Backspace 限制逻辑 |
 
-### 输入长度限制
+### 删除键限制
 
-限制重复按键输入或分词过多的编码。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/super_processor.lua` | `MAX_REPEAT` / `MAX_SEGMENTS` 限制逻辑 |
+输入中持续删除至编码为空时，阻止删除已上屏内容。
 
 ### 候选词部分上屏
 
@@ -282,7 +278,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `wanxiang_algebra.yaml` | `/` 相关的转写规则（辅助码聚拢、英文前置） |
-| `lua/wanxiang/super_processor.lua` | 双击斜杠 |
+| `lua/wanxiang/backspace_limiter.lua` | 双击斜杠 |
 | `wanxiang.schema.yaml` | 斜杠相关的 speller/recognizer 配置 |
 
 ### 方案切换
@@ -446,6 +442,16 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `lua/wanxiang/super_processor.lua` | 循环分词处理器 |
+
+#### 输入长度限制
+
+限制重复按键输入或分词过多的编码。
+
+| 已删除配置 | 说明 |
+|------------|------|
+| `lua/wanxiang/super_processor.lua` | `RepeatLimit` 重复声母 / 最大分词数限制逻辑 |
+| `wanxiang.schema.yaml` | `super_processor/limit_repeated` 配置项 |
+| `wanxiang_pro.schema.yaml` | `super_processor/limit_repeated` 配置项 |
 
 #### 输入模式切换
 
