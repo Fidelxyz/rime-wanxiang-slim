@@ -88,7 +88,11 @@ engine:
     - lua_filter@*wanxiang.english*F  # 放replacer前面，单词变大写后应该能在替换中命中数据，负责英文方案及中英混输中英文单词格式化，语句流，自动加空格等策略
     - lua_filter@*wanxiang.charset_filter  # 放replacer前面，全方位自定义的字符集过滤器，支持繁体字符集开放
     - lua_filter@*wanxiang.super_comment  # 放其他需要注释处理器后面，会有清空注释的操作，超级注释模块，支持错词提示、辅助码显示，部件组字读音注释
-    - lua_filter@*wanxiang.super_filter  # 放replacer前面，先进行字符过滤后简繁转换，这样能繁体继承简体权重
+    - lua_filter@*wanxiang.sentence_filter
+    - lua_filter@*wanxiang.reorder_filter
+    - lua_filter@*wanxiang.fallback_filter
+    - lua_filter@*wanxiang.escape_filter  # 放replacer前面，先进行字符过滤后简繁转换，这样能繁体继承简体权重
+    - lua_filter@*wanxiang.candidate_type_marker  # 为候选词注释追加类型符号
     - simplifier@s2t
     - simplifier@s2hk
     - simplifier@s2tw
@@ -287,8 +291,9 @@ super_comment:
   # 错音错字注释格式。%s 表示注释内容。
   correction_format: "〔%s〕"
 
+candidate_type_marker:
   # 各候选类型的注释标记。
-  cand_type:
+  types:
     user_phrase: "⁺"
     sentence: "∞"
     phrase: ""

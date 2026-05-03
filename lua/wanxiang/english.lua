@@ -628,7 +628,7 @@ function F.func(input, env)
         end
 
         output_text = apply_segment_formatting(output_text, code)
-        local cand = Candidate("fallback", 0, #code, output_text, "~")
+        local cand = Candidate("fallback", 0, #code, output_text, "")
         cand.preedit = output_text
         cand.quality = 999
         yield(cand)

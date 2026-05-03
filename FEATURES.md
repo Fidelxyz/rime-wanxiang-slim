@@ -212,7 +212,7 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_filter.lua` | 3 码回退逻辑，空码候选恢复与 `~` 标注 |
+| `lua/wanxiang/fallback_filter.lua` | 3 码回退逻辑，空码候选恢复与 `~` 标注 |
 | `lua/wanxiang/english.lua` | 英文场景的空码补全 |
 
 #### Unicode 输入
@@ -230,8 +230,17 @@
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/super_filter.lua` | 转义序列格式化逻辑 |
+| `lua/wanxiang/escape_filter.lua` | 转义序列格式化逻辑 |
 | `custom_phrase.txt` (用户目录) | 自定义短语数据源 |
+
+#### 候选类型符号
+
+为不同类型的候选词（如 emoji、fallback 等）在注释末尾追加对应符号。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/candidate_type_marker.lua` | 读取配置并追加类型符号逻辑 |
+| `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml` | `candidate_type_marker` 配置项 |
 
 #### 小键盘行为
 
@@ -442,8 +451,8 @@
 
 Shift+Space 在中文/英文/混合候选词之间切换。
 
-| 实现位置 | 说明 |
-|----------|------|
+| 已删除文件/配置 | 说明 |
+|-----------------|------|
 | `lua/wanxiang/super_filter.lua` | 英文句子过滤、模式切换逻辑 |
 | `wanxiang.schema.yaml` | `input_type` 开关配置 |
 | `wanxiang_english.schema.yaml` | 英文方案 Shift+Space 切换配置 |
