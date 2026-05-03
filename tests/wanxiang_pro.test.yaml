@@ -62,3 +62,10 @@ deploy:
         assert: eq(cand[1].text, "為什麼")
       - send: zheli
         assert: eq(cand[1].text, "這裡")
+
+  decomposition-hint:
+    options:
+      decomposition_hint: true
+    tests:
+      - send: ni
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "亻尔 re")
