@@ -99,13 +99,10 @@ engine:
 ### Rime 处理器规则 ###
 
 recognizer:
-  # TODO: Use tag to identify patterns
   patterns:
-    wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 wanxiang_reverse/prefix 匹配
+    wanxiang_reverse: "^`[A-Za-z]*$"
+    #add_user_dict: "^``[A-Za-z/`']*$"
     unicode: "^U[0-9a-fA-F]+"
-    #add_user_dict: "^``[A-Za-z/`']*$"      #自造词引导方式
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"  # email @ 之后不上屏
-    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
 
 # 拼写处理器
 speller:
