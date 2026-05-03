@@ -97,147 +97,53 @@ engine:
     - lua_filter@*wanxiang.user_predict*F  # 用于输入编码后的上下文调频
     - uniquifier  # 去重，必须在最后
 
-grammar:
-  language: wanxiang-lts-zh-hans
-  collocation_max_length: 8
-  collocation_min_length: 3
-  collocation_penalty: -10
-  non_collocation_penalty: -5
-  weak_collocation_penalty: -100
-  rear_penalty: -5
+### Rime 处理器规则 ###
 
-# 超级注释
-super_comment:
-  # 显示辅助码注释的最小候选词长度。0 为关闭并清空所有注释。
-  min_candidate_length: 1
+recognizer:
+  # TODO: Use tag to identify patterns
+  patterns:
+    wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 wanxiang_reverse/prefix 匹配
+    unicode: "^U[a-f0-9]+"  # U 作为触发前缀，响应 lua_translator@unicode，输出 Unicode 字符
+    #add_user_dict: "^``[A-Za-z/`']*$"      #自造词引导方式
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"  # email @ 之后不上屏
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
 
-  # 显示错音错字注释。
-  correction_enabled: true
+# 拼写处理器
+speller:
+  # 参与编码的按键。此处设定的按键将不直接上屏。
+  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`;/\
 
-  # 错音错字注释格式。%s 表示注释内容。
-  correction_format: "〔%s〕"
+  # 首个编码允许的按键。作用同 `alphabet`，但仅作用于首个编码。
+  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/
 
-  # 各候选类型的注释标记。
-  cand_type:
-    user_phrase: "⁺"
-    sentence: "∞"
-    phrase: ""
-    table: ""
-    user_table: ""
-    completion: ""
-    abbrev: ""
-    predict: ""
-    fallback: "~"
+  # 允许的分词符。
+  # 第一个字符 " "（空格）代表拼音之间的分隔符；第二个字符 "'" 代表允许输入单引号手动分词。
+  delimiter: " '"
 
-super_processor:
-  enable_backspace_limit: false  # 开启/关闭退格限制
-  enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想
-  limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+  # 拼音运算规则。该方案中由自定义文件的 patch 控制。
+  algebra:
+    __patch:
+      - wanxiang_algebra:/base/全拼
 
-manual_segmentor:
-  # 启用多次按下分词键切换循环分词模式。
-  enabled: true
+# 标点符号
+punctuator:
+  import_preset: default
 
-keypad_composer:
-  # 小键盘模式。
-  # auto: 按下小键盘数字键时，若存在待上屏内容，则数字不直接上屏；否则数字直接上屏。
-  # compose: 按下小键盘数字键时，数字总是不直接上屏。
-  # select: 按下小键盘数字键时，若处于选词状态，则选择对应候选词，否则输入数字。等同于主键盘数字键行为。
-  keypad_mode: auto
+  # 数字后标点优化。
+  # 指定的数字后的标点将转换为半角标点。
+  #digit_separators: ":,."
 
-# 以词定字
-character_selector:
-  # 选择首个字符的按键。支持按键表达式（如 bracketleft）。
-  select_first_key: "["
+  # 数字后标点优化行为。
+  # commit: 数字后标点直接提交。
+  #digit_separator_action: commit
 
-  # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
-  select_last_key: "]"
+### Rime 翻译器规则 ###
 
-user_predict:
-  db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
-  enable_post_predict: false  # 上屏后预测
-  enable_context_reorder: true  # 输入时调频
-  max_candidates: 10  # 屏幕最多显示的联想词数量
-  max_predictions: 3  # 连续触发预测的最高次数限制
-  expiry_days: 90  # 绝对寿命（天）：不命中则物理销毁
-  activation_days: 7  # 激活期限（天）：冷冻期内输入第2次转正
-  max_memory_branches: 15  # 分支上限：单前缀最多保留15个后续预测
-  decay_rate: 0.85  # 衰减率：单日时间权重打 85 折
-  # true: 按空格键输入空格。
-  # false: 按空格键提交候选，按 Tab 或 Alt 键输入空格。
-  # 推荐手机端开启，电脑端关闭。
-  enable_predict_space: false
-  context_timeout: 5000  # 上文超时时间毫秒
-
-emoji:
-  option_name: emoji
-  opencc_config: emoji.json
-  tips: all
-  inherit_comment: false
-
-s2t:
-  option_name: zh_hant
-  opencc_config: s2t.json
-  tips: none
-  tags: [abc]
-
-s2hk:
-  option_name: zh_hk
-  opencc_config: s2hk.json
-  tips: none
-  tags: [abc]
-
-s2tw:
-  option_name: zh_tw
-  opencc_config: s2tw.json
-  tips: none
-  tags: [abc]
-
-# 字符集过滤
-# base: 基础字符集，可设置多个选项，取并集。
-#   a: 通用规范汉字表
-#   b: GB2312
-#   g: GBK
-#   T: Big5 (台港澳常用)
-#   j: 简体，OpenCC (t2s)
-#   f: 通用繁体，OpenCC (s2t)
-#   h: 香港繁体，OpenCC (s2hk)
-#   t: 台湾繁体，OpenCC (s2tw)
-#   u: 基本区，U+4E00 - U+9FFF
-#   A-I: 扩展 A-I 区，U+3400 及各扩展区 (支持到 Ext-I)
-#   c: 兼容区汉字
-# whitelist / blacklist: 针对字符的白名单 / 黑名单。
-charset_filter:
-  - option: charset_filter
-    base: a
-    whitelist:
-      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
-    blacklist: []
-  - option: s2t
-    base: fa
-    whitelist: []
-    blacklist: []
-  - option: s2hk
-    base: ha
-    whitelist: []
-    blacklist: []
-  - option: s2tw
-    base: ta
-    whitelist: []
-    blacklist: []
-
-# 主翻译器，拼音
+# 主翻译器
 translator:
-  dictionary: wanxiang  # 挂载主词库
-  #  packs: user                  #导入根目录下名称为user.dict.yaml的自定义固定词典
-  #prism: wanxiang             # 多方案共用一个词库时，为避免冲突，需要用 prism 指定一个名字。
+  dictionary: wanxiang
   enable_completion: true  # 启用候选词补全
-  #  user_dict: zrm.userdb       # 用户词典的文件名称
-  #  db_class: tabledb           #开启后就不会产生wanxiang.userdb这样的文件夹，会直接输出文本wanxiang.txt同时无法使用同步能力，可设 tabledb〔文本〕或 userdb〔二进制〕
   enable_user_dict: true  # 是否开启自动调频，即开启用户词典
-  #  enable_sentence: false       #是否开启自动造句
-  #  enable_correction: false     #是否开启自动纠错
-  #  encode_commit_history: true  # 预留历史上屏自动编码成词
   core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
   max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重
   contextual_suggestions: false  #模型用来开启词组权重预测，效果一般关闭
@@ -246,9 +152,17 @@ translator:
   initial_quality: 3  #初始质量拼音的权重应该比英文大
   spelling_hints: 30  #将注释以词典code字符串形式完全暴露，通过super_comment.lua完全接管，灵活配置。
   always_show_comments: true  # Rime 默认在 preedit 等于 comment 时取消显示 comment，这里强制一直显示，供super_comment.lua做判断用。
-  comment_format: {comment: ''}  #将注释以词典字符串形式完全暴露，通过super_preedit.lua完全接管，灵活配置。
   #disable_user_dict_for_patterns:  #如果你开启调频，需要一并考虑这个配置是否需要，基本的6码3字不调频，你可以自定义，目前的逻辑是依然记录用户词但满足规则的不输出不被使用
   #  - "^[a-z]{1,6}"
+
+grammar:
+  language: wanxiang-lts-zh-hans
+  collocation_max_length: 8
+  collocation_min_length: 3
+  collocation_penalty: -10
+  non_collocation_penalty: -5
+  weak_collocation_penalty: -100
+  rear_penalty: -5
 
 # 自定义短语
 custom_phrase:
@@ -304,6 +218,126 @@ wanxiang_reverse:
   prefix: "`"  # 反查前缀（反查时前缀会消失），与 recognizer/patterns/wanxiang_reverse 匹配
   tips: "〔反查：拆分|笔画〕"
 
+user_dict_set:
+  dictionary: wanxiang
+  initial_quality: 0
+  enable_completion: false
+  enable_sentence: false
+  spelling_hints: 50
+  contextual_suggestions: false
+  max_homophones: 8
+  max_homographs: 8
+  comment_format:
+  enable_user_dict: false
+  user_dict: zc
+
+add_user_dict:
+  tag: add_user_dict
+  dictionary: wanxiang
+  initial_quality: -1
+  user_dict: zc
+  enable_user_dict: true
+  spelling_hints: 50
+
+  # 手动造词引导符。
+  prefix: "``"
+
+  # 手动造词提示。
+  tips: "〔造词〕"
+
+  ### 自动造词相关配置 ###
+
+  # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
+  enable_auto_phrase: true
+
+emoji:
+  option_name: emoji
+  opencc_config: emoji.json
+  tips: all
+  inherit_comment: false
+
+s2t:
+  option_name: zh_hant
+  opencc_config: s2t.json
+  tips: none
+  tags: [abc]
+
+s2hk:
+  option_name: zh_hk
+  opencc_config: s2hk.json
+  tips: none
+  tags: [abc]
+
+s2tw:
+  option_name: zh_tw
+  opencc_config: s2tw.json
+  tips: none
+  tags: [abc]
+
+### 自定义功能 ###
+
+super_processor:
+  enable_backspace_limit: false  # 开启/关闭退格限制
+  enable_predict_space: true  # 启用联想空格打断，直接上屏空格并清空联想
+  limit_repeated: "8,40"  #格式："最大重复声母数,最大候选字数"
+
+super_comment:
+  # 显示辅助码注释的最小候选词长度。0 为关闭并清空所有注释。
+  min_candidate_length: 1
+
+  # 显示错音错字注释。
+  correction_enabled: true
+
+  # 错音错字注释格式。%s 表示注释内容。
+  correction_format: "〔%s〕"
+
+  # 各候选类型的注释标记。
+  cand_type:
+    user_phrase: "⁺"
+    sentence: "∞"
+    phrase: ""
+    table: ""
+    user_table: ""
+    completion: ""
+    abbrev: ""
+    predict: ""
+    fallback: "~"
+
+manual_segmentor:
+  # 启用多次按下分词键切换循环分词模式。
+  enabled: true
+
+# 以词定字
+character_selector:
+  # 选择首个字符的按键。支持按键表达式（如 bracketleft）。
+  select_first_key: "["
+
+  # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
+  select_last_key: "]"
+
+keypad_composer:
+  # 小键盘模式。
+  # auto: 按下小键盘数字键时，若存在待上屏内容，则数字不直接上屏；否则数字直接上屏。
+  # compose: 按下小键盘数字键时，数字总是不直接上屏。
+  # select: 按下小键盘数字键时，若处于选词状态，则选择对应候选词，否则输入数字。等同于主键盘数字键行为。
+  keypad_mode: auto
+
+user_predict:
+  db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
+  enable_post_predict: false  # 上屏后预测
+  enable_context_reorder: true  # 输入时调频
+  max_candidates: 10  # 屏幕最多显示的联想词数量
+  max_predictions: 3  # 连续触发预测的最高次数限制
+  expiry_days: 90  # 绝对寿命（天）：不命中则物理销毁
+  activation_days: 7  # 激活期限（天）：冷冻期内输入第2次转正
+  max_memory_branches: 15  # 分支上限：单前缀最多保留15个后续预测
+  decay_rate: 0.85  # 衰减率：单日时间权重打 85 折
+  # true: 按空格键输入空格。
+  # false: 按空格键提交候选，按 Tab 或 Alt 键输入空格。
+  # 推荐手机端开启，电脑端关闭。
+  enable_predict_space: false
+  context_timeout: 5000  # 上文超时时间毫秒
+
 lookup_filter:
   # 检索的标签。将检索带有所选标签的候选。
   tags: [abc, add_user_dict]
@@ -319,26 +353,40 @@ lookup_filter:
   # db: 反查方案数据库。
   data_source: [aux, db]
 
-# 处理符合特定规则的输入码，如网址、反查
-recognizer:
-  patterns:
-    wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 wanxiang_reverse/prefix 匹配
-    unicode: "^U[a-f0-9]+"  # U 作为触发前缀，响应 lua_translator@unicode，输出 Unicode 字符
-    #add_user_dict: "^``[A-Za-z/`']*$"      #自造词引导方式
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"  # email @ 之后不上屏
-    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
+# 字符集过滤
+# base: 基础字符集，可设置多个选项，取并集。
+#   a: 通用规范汉字表
+#   b: GB2312
+#   g: GBK
+#   T: Big5 (台港澳常用)
+#   j: 简体，OpenCC (t2s)
+#   f: 通用繁体，OpenCC (s2t)
+#   h: 香港繁体，OpenCC (s2hk)
+#   t: 台湾繁体，OpenCC (s2tw)
+#   u: 基本区，U+4E00 - U+9FFF
+#   A-I: 扩展 A-I 区，U+3400 及各扩展区 (支持到 Ext-I)
+#   c: 兼容区汉字
+# whitelist / blacklist: 针对字符的白名单 / 黑名单。
+charset_filter:
+  - option: charset_filter
+    base: a
+    whitelist:
+      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
+    blacklist: []
+  - option: s2t
+    base: fa
+    whitelist: []
+    blacklist: []
+  - option: s2hk
+    base: ha
+    whitelist: []
+    blacklist: []
+  - option: s2tw
+    base: ta
+    whitelist: []
+    blacklist: []
 
-# 标点符号
-punctuator:
-  import_preset: default
-
-  # 数字后标点优化。
-  # 指定的数字后的标点将转换为半角标点。
-  #digit_separators: ":,."
-
-  # 数字后标点优化行为。
-  # commit: 数字后标点直接提交。
-  #digit_separator_action: commit
+### 按键设置 ###
 
 key_binder:
   import_preset: default
@@ -395,49 +443,3 @@ navigator:
     Right: right_by_char_no_loop
     Shift+Left: left_by_syllable
     Shift+Right: right_by_syllable
-
-# 拼写设定
-speller:
-  # table_translator翻译器，支持自动上屏。例如 “zmhu”可以自动上屏“怎么回事”
-  #  auto_select: true
-  #  auto_select_pattern: ^[a-z]+/|^[a-df-zA-DF-Z]\w{3}|^e\w{4}
-  # 如果不想让什么标点直接上屏，可以加在 alphabet，或者编辑标点符号为两个及以上的映射，alphabet就是将字符纳入输入编码的范畴
-  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`;/\
-  # initials 定义仅作为始码的按键，排除 ` 让单个的 ` 可以直接上屏
-  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/
-  delimiter: " '"  # 系统配置，第一位<空格>是拼音之间的分隔符；第二位<'>表示可以手动输入单引号来分割拼音。
-  algebra:
-    __patch:
-      - wanxiang_algebra:/base/全拼
-
-user_dict_set:
-  dictionary: wanxiang
-  initial_quality: 0
-  enable_completion: false
-  enable_sentence: false
-  spelling_hints: 50
-  contextual_suggestions: false
-  max_homophones: 8
-  max_homographs: 8
-  comment_format:
-  enable_user_dict: false
-  user_dict: zc
-
-add_user_dict:
-  tag: add_user_dict
-  dictionary: wanxiang
-  initial_quality: -1
-  user_dict: zc
-  enable_user_dict: true
-  spelling_hints: 50
-
-  # 手动造词引导符。
-  prefix: "``"
-
-  # 手动造词提示。
-  tips: "〔造词〕"
-
-  ### 自动造词相关配置 ###
-
-  # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
-  enable_auto_phrase: true
