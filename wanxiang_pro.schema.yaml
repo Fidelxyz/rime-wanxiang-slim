@@ -106,7 +106,7 @@ recognizer:
   patterns:
     wanxiang_reverse: "^`[A-Za-z]*$"  # 响应部件拆字与笔画的反查，与 radical_lookup/prefix 匹配
     add_user_dict: "^``[A-Za-z/`']*$"  #自造词
-    unicode: "^U[a-f0-9]+"  # 脚本将自动获取第 2 个字符 U 作为触发前缀，响应 lua_translator@unicode，输出 Unicode 字符
+    unicode: "^U[0-9a-fA-F]+"
     email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"  # email @ 之后不上屏
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$"  # URL
 
