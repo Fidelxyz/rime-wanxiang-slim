@@ -41,11 +41,8 @@ jobs:
       - name: Build
         run: bash scripts/build.sh --no-archive
 
-      - uses: actions/upload-artifact@v7
-        with:
-          path: dist
-
       - name: Run tests
+        id: run-tests
         working-directory: tests
         run: python mira_report.py ./mira wanxiang.test.yaml wanxiang_pro.test.yaml --report-dir reports
 
@@ -62,3 +59,8 @@ jobs:
         with:
           report-path: ./tests/reports/*.json
           pull-request-report: true
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ steps.run-tests.outcome == 'failure' }}
+        with:
+          path: dist
