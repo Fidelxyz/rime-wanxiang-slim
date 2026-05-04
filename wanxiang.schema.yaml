@@ -184,10 +184,10 @@ wanxiang_english:
   dictionary: wanxiang_english
   user_dict: user_dict_en
   enable_completion: true
-  enable_sentence: true
+  enable_sentence: false
   initial_quality: 2.1
   comment_format:
-    - xform/^~.+$//  # 清除残留带声调字母
+    - xform/^~.+$//
 
   ### Lua 相关配置 ###
 
