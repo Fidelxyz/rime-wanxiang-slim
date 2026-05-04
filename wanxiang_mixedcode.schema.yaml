@@ -1,0 +1,31 @@
+# Rime schema settings
+# encoding: utf-8
+
+schema:
+  schema_id: wanxiang_mixedcode
+  name: "万象：混合编码"
+  version: "15.9.4"  # x-release-please-version
+  author: amzxyz
+  description: |
+    混合编码子方案，包含中英文混合与携带符号的词组处理。
+
+engine:
+  processors:
+    - speller
+  segmentors:
+    - abc_segmentor
+  translators:
+    - table_translator
+  filters:
+    - uniquifier
+
+speller:
+  alphabet: "abcdefghijklmnopqrstuvwxyz;"
+  delimiter: " '"
+  algebra:
+    __include: wanxiang_algebra:/mixed/通用派生规则
+    __patch: wanxiang_algebra:/mixed/全拼
+
+translator:
+  dictionary: wanxiang_mixedcode
+  enable_user_dict: false
