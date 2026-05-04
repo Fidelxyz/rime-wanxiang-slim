@@ -117,7 +117,7 @@ speller:
   alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`;/\
 
   # 首个编码允许的按键。作用同 `alphabet`，但仅作用于首个编码。
-  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/
+  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/`
 
   # 允许的分词符。
   # 第一个字符 " "（空格）代表拼音之间的分隔符；第二个字符 "'" 代表允许输入单引号手动分词。
