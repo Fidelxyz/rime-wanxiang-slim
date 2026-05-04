@@ -182,7 +182,7 @@ custom_phrase:
 
 wanxiang_english:
   dictionary: wanxiang_english
-  user_dict: en
+  user_dict: user_dict_en
   enable_completion: true
   enable_sentence: true
   initial_quality: 2.1
@@ -236,13 +236,13 @@ user_dict:
   max_homographs: 8
   comment_format:
   enable_user_dict: false
-  user_dict: zc
+  user_dict: user_dict
 
 user_dict_appender:
   tag: user_dict_appender
   dictionary: wanxiang
   initial_quality: -1
-  user_dict: zc
+  user_dict: user_dict
   enable_user_dict: true
   spelling_hints: 50
 
