@@ -20,12 +20,17 @@ schema_list=(
 )
 
 archive=true
+include_dicts=true
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --no-archive)
             archive=false
+            shift
+            ;;
+        --no-dicts)
+            include_dicts=false
             shift
             ;;
         *)
@@ -40,9 +45,9 @@ package_schema_base() {
     # Copy ${root_dir}/ to ${out_dir}/
     rsync -av \
         --exclude='.*' \
-        --include='dicts/***' \
         --include='lua/***' \
-        --exclude='opencc/dicts/decomposition.txt' \
+        --exclude='opencc/decomposition.json' \
+        --exclude='opencc/dicts/***' \
         --include='opencc/***' \
         --include='README.md' \
         --include='CHANGELOG.md' \
@@ -53,7 +58,19 @@ package_schema_base() {
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
 
-    # Copy ${root_dir}/dicts/ to ${out_dir}/dicts/
+    if [[ "${include_dicts}" == "true" ]]; then
+        # Copy ${root_dir}/dicts/ to ${out_dir}/dicts/
+        rsync -av \
+            --exclude='.*' \
+            "${root_dir}/dicts/" "${out_dir}/dicts/"
+
+        # Copy ${root_dir}/opencc/dicts/ to ${out_dir}/opencc/dicts/
+        rsync -av \
+            --exclude='.*' \
+            "${root_dir}/opencc/dicts/" "${out_dir}/opencc/dicts/"
+    fi
+
+    # Copy ${root_dir}/custom/ to ${out_dir}/custom/
     rsync -av \
         --include='*/' \
         --exclude='wanxiang_pro.custom.yaml' \
@@ -70,6 +87,7 @@ package_schema_pro() {
     rsync -av \
         --exclude='.*' \
         --include='lua/***' \
+        --exclude='opencc/dicts/***' \
         --include='opencc/***' \
         --include='README.md' \
         --include='CHANGELOG.md' \
@@ -80,21 +98,28 @@ package_schema_pro() {
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
 
-    # Copy ${root_dir}/dicts/ to ${out_dir}/dicts/
-    rsync -av \
-        --include='cn&en.dict.yaml' \
-        --include='en.dict.yaml' \
-        --exclude='*' \
-        "${root_dir}/dicts/" "${out_dir}/dicts/"
+    if [[ "${include_dicts}" == "true" ]]; then
+        # Copy ${root_dir}/dicts/ to ${out_dir}/dicts/
+        rsync -av \
+            --include='cn&en.dict.yaml' \
+            --include='en.dict.yaml' \
+            --exclude='*' \
+            "${root_dir}/dicts/" "${out_dir}/dicts/"
 
-    # Copy decomposition dict to ${out_dir}/
-    cp "${root_dir}/custom/${schema}_chaifen.txt" "${out_dir}/opencc/dicts/decomposition.txt"
+        # Copy ${root_dir}/opencc/dicts/ to ${out_dir}/opencc/dicts/
+        rsync -av \
+            --exclude='.*' \
+            "${root_dir}/opencc/dicts/" "${out_dir}/opencc/dicts/"
 
-    # A hack to replace spaces with colons in decomposition.txt to adapt to OpenCC format,
-    # while allowing fetching the raw chaifen.txt from upstream without modification.
-    # Spaces are later recovered from colons in decomposition.txt by the `comment_format`
-    # of the simplifier config.
-    sed -i 's/ /:/g' "${out_dir}/opencc/dicts/decomposition.txt"
+        # Copy decomposition dict to ${out_dir}/opencc/dicts/
+        cp "${root_dir}/custom/${schema}_chaifen.txt" "${out_dir}/opencc/dicts/decomposition.txt"
+
+        # A hack to replace spaces with colons in decomposition.txt to adapt to OpenCC format,
+        # while allowing fetching the raw chaifen.txt from upstream without modification.
+        # Spaces are later recovered from colons in decomposition.txt by the `comment_format`
+        # of the simplifier config.
+        sed -i 's/ /:/g' "${out_dir}/opencc/dicts/decomposition.txt"
+    fi
 
     # Copy ${root_dir}/custom/ to ${out_dir}/custom/
     rsync -av \
@@ -133,9 +158,13 @@ package_schema() {
 rm -rf "${dist_dir}"
 mkdir -p "${dist_dir}"
 
-echo "=== 生成 PRO 词库"
-python3 "${script_dir}/generate_pro_dicts.py"
-echo "=== 生成 PRO 词库完成"
+if [[ "${include_dicts}" == "true" ]]; then
+    echo "=== 生成 PRO 词库"
+    python3 "${script_dir}/generate_pro_dicts.py"
+    echo "=== 生成 PRO 词库完成"
+else
+    echo "=== 跳过生成 PRO 词库"
+fi
 
 for schema in "${schema_list[@]}"; do
     package_schema "${schema}"

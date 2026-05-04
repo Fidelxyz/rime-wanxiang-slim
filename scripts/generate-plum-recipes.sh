@@ -21,6 +21,7 @@ mkdir -p plum
   echo "  custom/**/*"
   echo "  dicts/**/*"
   echo "  lua/**/*"
+  echo "  opencc/**/*"
   echo "  *.yaml"
   echo "  CHANGELOG.md"
   echo "  README.md"
@@ -40,4 +41,5 @@ mkdir -p plum
   echo "    万象拼音 ${scheme} 版，仅词库（dicts-only）- 分支 ${branch}"
   echo "install_files: >-"
   echo "  dicts/**/*"
+  echo "  opencc/dicts/**/*"
 } > "plum/dicts.recipe.yaml"
