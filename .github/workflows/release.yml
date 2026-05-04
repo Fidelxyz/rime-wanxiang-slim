@@ -85,9 +85,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: bash scripts/generate-release-note.sh > release-note.md
 
-      - uses: softprops/action-gh-release@v3
+      - uses: ncipollo/release-action@v1
         with:
-          tag_name: ${{ env.TAG_NAME }}
+          tag: ${{ env.TAG_NAME }}
           name: "${{ env.TAG_NAME }} Rime 万象拼音输入方案精简版"
-          body_path: release-note.md
-          files: dist/rime-wanxiang-*.zip
+          bodyFile: release-note.md
+          artifacts: dist/rime-wanxiang-*.zip
+          draft: false
+          allowUpdates: true
