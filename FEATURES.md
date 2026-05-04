@@ -102,7 +102,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `custom/wanxiang_pro.schema.yaml` | PRO 方案中用户词配置 |
-| `wanxiang.schema.yaml` | `user_dict_set` 段与 `add_user_dict` 段 |
+| `wanxiang.schema.yaml` | `user_dict` 段与 `user_dict_appender` 段 |
 
 #### 自动造词（仅 PRO）
 
@@ -111,7 +111,7 @@
 | 实现位置 | 说明 |
 |----------|------|
 | `lua/wanxiang/auto_phrase.lua` | 自动造词模块 |
-| `wanxiang.schema.yaml` | `add_user_dict` 段配置 |
+| `wanxiang.schema.yaml` | `user_dict_appender` 段配置 |
 
 #### 英文造词
 

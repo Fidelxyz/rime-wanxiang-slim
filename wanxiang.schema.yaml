@@ -67,7 +67,7 @@ engine:
     - matcher  # 配合 recognizer 标识符合特定规则的段落，如网址、反查等，加上特定 tag
     - abc_segmentor  # 标识常规的文字段落，加上 abc 这个 tag
     - affix_segmentor@wanxiang_reverse  # 反查 tag
-    - affix_segmentor@add_user_dict  # 自造词tag
+    - affix_segmentor@user_dict_appender  # 自造词tag
     - punct_segmentor  # 标识符号段落〔键入标点符号用〕加上 punct 这个 tag
     - fallback_segmentor  # 标识其他未标识段落，必须放在最后帮助tag模式切换后回退重新处理
   translators:
@@ -80,8 +80,8 @@ engine:
     - table_translator@wanxiang_english  # 英文词汇表导入
     - table_translator@wanxiang_mixedcode  # 混合编码词汇表导入
     - reverse_lookup_translator@wanxiang_reverse  # 挂接部件组字和笔画反查
-    - script_translator@add_user_dict  # 按需自造词
-    - script_translator@user_dict_set  # 使用自造词
+    - script_translator@user_dict_appender  # 按需自造词
+    - script_translator@user_dict  # 使用自造词
   filters:
     - lua_filter@*wanxiang.auto_phrase  # 无感造词，英文造词
     - lua_filter@*wanxiang.lookup_filter  # 字词输入中反查辅助筛选
@@ -106,7 +106,7 @@ engine:
 recognizer:
   patterns:
     wanxiang_reverse: "^`[A-Za-z]*$"
-    #add_user_dict: "^``[A-Za-z/`']*$"
+    #user_dict_appender: "^``[A-Za-z/`']*$"
     unicode: "^U[0-9a-fA-F]+"
 
 # 拼写处理器
@@ -219,7 +219,7 @@ wanxiang_reverse:
   prefix: "`"  # 反查前缀（反查时前缀会消失），与 recognizer/patterns/wanxiang_reverse 匹配
   tips: "〔反查：拆分|笔画〕"
 
-user_dict_set:
+user_dict:
   dictionary: wanxiang
   initial_quality: 0
   enable_completion: false
@@ -232,8 +232,8 @@ user_dict_set:
   enable_user_dict: false
   user_dict: zc
 
-add_user_dict:
-  tag: add_user_dict
+user_dict_appender:
+  tag: user_dict_appender
   dictionary: wanxiang
   initial_quality: -1
   user_dict: zc
@@ -339,7 +339,7 @@ user_predict:
 
 lookup_filter:
   # 检索的标签。将检索带有所选标签的候选。
-  tags: [abc, add_user_dict]
+  tags: [abc, user_dict_appender]
 
   # 反查引导符，需添加至 speller/alphabet。
   trigger: "`"

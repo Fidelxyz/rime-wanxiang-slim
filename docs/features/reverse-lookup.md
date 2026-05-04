@@ -134,7 +134,7 @@ patch:
 ```yaml
 lookup_filter:
   # 检索的标签。将检索带有所选标签的候选。
-  tags: [abc, add_user_dict]
+  tags: [abc, user_dict_appender]
 
   # 反查引导符，需添加至 speller/alphabet。
   trigger: "`"

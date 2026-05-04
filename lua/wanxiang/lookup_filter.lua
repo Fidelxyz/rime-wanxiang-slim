@@ -468,7 +468,7 @@ function F.init(env)
     local trigger_val = cfg_root and cfg_root:get_value("trigger")
     local trigger = trigger_val and trigger_val:get_string() or "`"
 
-    local bypass_prefix = rime_config:get_string("add_user_dict/prefix")
+    local bypass_prefix = rime_config:get_string("user_dict_appender/prefix")
 
     ---@type string[]
     local tags = {}

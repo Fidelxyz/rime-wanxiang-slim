@@ -52,8 +52,8 @@ patch:
 ```yaml [wanxiang.custom.yaml]
 patch:
   translator/dictionary: your_user_dict
-  user_dict_set/dictionary: your_user_dict
-  add_user_dict/dictionary: your_user_dict
+  user_dict/dictionary: your_user_dict
+  user_dict_appender/dictionary: your_user_dict
 ```
 
 :::

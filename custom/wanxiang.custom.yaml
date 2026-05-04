@@ -22,12 +22,12 @@ patch:
   #translator/enable_user_dict: true
 
   # 取消注释以启用手动造词功能。
-  #recognizer/patterns/add_user_dict: "^``[A-Za-z/`']*$"  #自造词引导
-  #user_dict_set/enable_user_dict: true
-  #add_user_dict/enable_user_dict: true
+  #recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"  #自造词引导
+  #user_dict/enable_user_dict: true
+  #user_dict_appender/enable_user_dict: true
 
   # 自动无词频造词。
-  #add_user_dict/enable_auto_phrase: true
+  #user_dict_appender/enable_auto_phrase: true
 
   # [For Weasel 小狼毫] 前端图标。
   #schema/+:

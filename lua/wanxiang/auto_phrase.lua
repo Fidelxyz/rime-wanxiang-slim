@@ -184,20 +184,20 @@ function F.init(env)
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local escaped_delimiter = delimiter:gsub("(%W)", "%%%1")
 
-    -- 中文自动造词的开关（只控制 add_user_dict）
-    local auto_phrase_enabled = rime_config:get_bool("add_user_dict/enable_auto_phrase")
+    -- 中文自动造词的开关（只控制 user_dict_appender）
+    local auto_phrase_enabled = rime_config:get_bool("user_dict_appender/enable_auto_phrase")
     if auto_phrase_enabled == nil then
         auto_phrase_enabled = false
     end
 
-    local user_dict_enabled = rime_config:get_bool("add_user_dict/enable_user_dict")
+    local user_dict_enabled = rime_config:get_bool("user_dict_appender/enable_user_dict")
     if user_dict_enabled == nil then
         user_dict_enabled = false
     end
 
-    -- 中文：add_user_dict（受 add_* 开关影响）
+    -- 中文：user_dict_appender（受 add_* 开关影响）
     local zh_memory = (auto_phrase_enabled and user_dict_enabled)
-            and Memory(env.engine, env.engine.schema, "add_user_dict")
+            and Memory(env.engine, env.engine.schema, "user_dict_appender")
         or nil
 
     -- 英文：enuser（不受 add_* 开关影响，始终尝试启用）

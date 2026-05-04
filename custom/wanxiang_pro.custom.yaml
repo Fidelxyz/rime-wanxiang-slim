@@ -27,7 +27,7 @@ patch:
   menu/page_size: 6
 
   # 自动无词频造词（默认开启）。
-  # add_user_dict/enable_auto_phrase: true
+  # user_dict_appender/enable_auto_phrase: true
 
   # [For Weasel 小狼毫] 前端图标。
   # schema/+:
