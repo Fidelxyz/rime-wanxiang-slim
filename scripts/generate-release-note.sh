@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-declare -A display_names=(
-  [zrm]="自然码"
-  [flypy]="小鹤"
-  [moqi]="墨奇"
-  [hanxin]="汉心"
-  [wubi]="五笔前二"
-  [tiger]="虎码首末"
-  [shouyou]="首右"
-  [shyplus]="首右+"
-  [wx]="万象"
+packages=(
+  "zrm:自然码"
+  "flypy:小鹤"
+  "moqi:墨奇"
+  "hanxin:汉心"
+  "wubi:五笔前二"
+  "tiger:虎码首末"
+  "shouyou:首右"
+  "shyplus:首右+"
+  "wx:万象"
 )
 
 repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
@@ -41,8 +41,9 @@ echo ""
 echo "每一个 zip 压缩包对应一种**辅助码**方案的配置，请根据您使用的辅助码方案下载对应压缩包。每种辅助码方案配置均支持切换**任意拼音方案**。"
 echo ""
 
-for type in "${!display_names[@]}"; do
-  name="${display_names[$type]}"
+for entry in "${packages[@]}"; do
+  type="${entry%%:*}"
+  name="${entry##*:}"
   echo "- ${name}辅助码：[rime-wanxiang-${type}-fuzhu.zip](${download_url}/rime-wanxiang-${type}-fuzhu.zip)"
 done
 
