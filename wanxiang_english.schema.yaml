@@ -1,0 +1,30 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: wanxiang_english
+  name: 万象英文
+  version: "15.9.4"  # x-release-please-version
+  author: amzxyz
+  description: |
+    英文输入子方案，支持整句语句流输入、智能加空格和大写策略。
+
+engine:
+  processors:
+    - speller
+  segmentors:
+    - abc_segmentor
+  translators:
+    - table_translator
+  filters:
+    - uniquifier
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA\
+  delimiter: " '"
+  algebra:
+    __include: wanxiang_algebra:/english
+
+translator:
+  dictionary: wanxiang_english
+  enable_user_dict: false
