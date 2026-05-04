@@ -1,0 +1,8 @@
+# Rime dictionary
+# encoding: utf-8
+
+name: wanxiang_mixedcode
+version: "LTS"
+sort: by_weight
+import_tables:
+  - dicts/cn&en  #混合编码词库
