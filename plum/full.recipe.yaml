@@ -1,0 +1,15 @@
+# encoding: utf-8
+---
+recipe:
+  Rx: plum/full
+  args:
+  description: >-
+    万象拼音 tiger-fuzhu 版（整个方案目录）- 分支 wanxiang-tiger-fuzhu
+install_files: >-
+  custom/**/*
+  dicts/**/*
+  lua/**/*
+  *.yaml
+  CHANGELOG.md
+  README.md
+  LICENSE
