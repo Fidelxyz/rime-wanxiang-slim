@@ -7,6 +7,7 @@ schema:
   version: "15.9.4"  # x-release-please-version
   author:
     - amzxyz
+    - Fidel Yin <fidel.yin@hotmail.com>
   description: |
     万象拼音精简版（PRO）。支持拼音及辅助码方案。
   dependencies:
@@ -410,35 +411,39 @@ charset_filter:
 key_binder:
   import_preset: default
   bindings:
-    # Option/Alt + ←/→ 切换光标至下/上一个拼音
-    - {when: always, toggle: ascii_punct, accept: Control+Shift+3}  # 切换中英标点
-    - {when: always, toggle: ascii_punct, accept: Control+Shift+numbersign}  # 切换中英标点
-    - {when: always, toggle: s2t, accept: Control+Shift+4}  # 切换简繁
-    - {when: always, toggle: s2t, accept: Control+Shift+dollar}  # 切换简繁
+    # Ctrl + Shift + 3 切换中英标点。
+    - {when: always, toggle: ascii_punct, accept: Control+Shift+3}
+    - {when: always, toggle: ascii_punct, accept: Control+Shift+numbersign}
+
+    # Ctrl + Shift + 4 切换简繁。
+    - {when: always, toggle: s2t, accept: Control+Shift+4}
+    - {when: always, toggle: s2t, accept: Control+Shift+dollar}
+
+    # Option/Alt + ←/→ 切换光标至下/上一个拼音。
     - {when: composing, accept: Alt+Left, send: Shift+Left}
     - {when: composing, accept: Alt+Right, send: Shift+Right}
     - {when: composing, accept: Control+w, send: Control+BackSpace}
-    # 分号用于次选，微软、搜狗双拼不可启用
+
+    # 分号键选择次选。使用微软双拼或搜狗双拼时，双拼方案占用了分号键，不可启用。
     #- { when: has_menu, accept: semicolon, send: 2 }
-    # 使用快捷键Control+c拆分显示
+
+    # Ctrl + C 拆分提示。
     - {when: has_menu, accept: "Control+c", toggle: decomposition_hint}
-    # 使用快捷键Control+a开启和关闭辅助码显示
+
+    # Ctrl + A 辅助码提示。
     - {when: has_menu, accept: "Control+a", toggle: fuzhu_hint}
-    # 通过快捷键Control+g开启字符集过滤
+
+    # Ctrl + G 字符集过滤。
     - {when: has_menu, accept: "Control+g", toggle: charset_filter}
     - {when: composing, accept: "Control+g", toggle: charset_filter}
-    # 通过快捷键Shift+space开启输入模式切换
-    # - {when: always, accept: Shift+space, select: wanxiang}  #直接跳转指定方案
-    # - {when: always, accept: Shift+space, select: wanxiang_pro}  #直接跳转指定方案
-    # - {when: always, accept: Shift+space, select: .next}  #下一个方案
-    # 使用 tab 在不同音节之间跳转
-    - {when: has_menu, accept: "Tab", send: "Control+Right"}
-    - {when: composing, accept: "Tab", send: "Control+Right"}
-    # 当tab第一个字补码正确后，可以使用Ctrl+tab进行上屏并依次补码
+
+    # 通过 Tab 切换到第一个音节输入辅助码后，Ctrl + Tab 提交并切换至下个音节。
     - {when: composing, accept: "Control+Tab", send_sequence: '{Home}{Shift+Right}{1}{Shift+Right}'}
-    # 当输入编码后发现没有词，则通过双击``进入造词模式而且不需要删除编码，这个功能与``直接引导相呼应相配合
+
+    # 编码中输入 `` 进入造词模式。
     - {match: "^.*`$", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
-    # 斜杠被占用引导符号，因此输入本身设置为双击
+
+    # 双击斜杠键上屏 '/'。
     - {match: "^/$", accept: "/", send_sequence: '{space}',}
 
 editor:

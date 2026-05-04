@@ -8,15 +8,13 @@ outline: deep
 
 **错音错字提示**：输入常见错误读音时提示正确读音。配置项：`super_comment/correction_enabled`。
 
-**辅助码提示（仅 Pro）**：显示候选词的辅助码提示，<kbd>Ctrl</kbd>+<kbd>A</kbd> 循环切换辅助码提示 / 声调全拼提示 / 关闭注释，<kbd>Ctrl</kbd>+<kbd>C</kbd> 开启拆分辅助提示。
-
 ## 候选排序
 
 **自动调频**：默认关闭，配置项：`translator/enable_user_dict`。
 
 ## 字符集过滤
 
-可通过开关切换字符集范围（通用规范、GB2312、GBK、Big5、简繁体等），<kbd>Ctrl</kbd>+<kbd>G</kbd> 快捷切换。支持联动简繁转换开关，对不同开关单独配置字符集范围和黑白名单。配置项：`charset_filter`。
+可通过开关切换字符集范围（通用规范、GB2312、GBK、Big5、简繁体等），`Ctrl` + `G` 快捷切换。支持联动简繁转换开关，对不同开关单独配置字符集范围和黑白名单。配置项：`charset_filter`。
 
 ## 输入预测
 
@@ -32,25 +30,25 @@ outline: deep
 
 **短码英文词前置**：输入编码末尾追加 `/` 可前置短码英文词候选。
 
+**Emoji 输入**：支持通过汉字词汇输入 Emoji。
+
 ## 其他功能
 
 **空码回溯**：输入编码无候选时，显示上一次候选，可直接空格上屏，减少回删操作。
 
 **Unicode 输入**：`U` + Unicode 编码输入对应字符。配置项：`recognizer/patterns/unicode`。
 
-**短语格式化**：将 `custom_phrase.txt` 中的 `\n`、`\s`、`\t` 解析为换行、空格、制表符。
-
-**小键盘行为**：小键盘不直接上屏。配置项：`keypad_composer`。
+**小键盘行为**：可配置小键盘参与编码，不直接上屏。配置项：`keypad_composer`。
 
 **删除键限制**（仅 Weasel 小狼毫生效）：输入中持续删除至编码为空时，阻止删除已上屏内容。配置项：`backspace_limiter/enabled`。
 
-**候选词部分上屏**：<kbd>Ctrl</kbd> + 数字键上屏首选前 N 字，并保留后续编码。
+**候选词部分上屏**：`Ctrl` + 数字键上屏首选前 N 字，并保留后续编码。
 
 ## RIME 内建功能
 
-**用户词删除**：<kbd>Ctrl</kbd>+<kbd>Del</kbd> 软删除用户词。
+**用户词删除**：`Ctrl` + `Del` 软删除用户词。
 
-**循环切换音节**：多次按 <kbd>Tab</kbd> 循环切换分词位置，<kbd>Ctrl</kbd>+<kbd>Tab</kbd> 逐字确认。配置项：`key_binder`。
+**循环切换音节**：多次按 `Tab` 循环切换分词位置，`Ctrl` + `Tab` 逐字确认。配置项：`key_binder`。
 
 **自动上屏**：三四位简码唯一时自动上屏。默认关闭，配置项：`speller/auto_select`。
 

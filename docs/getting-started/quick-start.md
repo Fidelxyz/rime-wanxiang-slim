@@ -34,6 +34,12 @@ outline: deep
 
 关于辅助码引导模式的说明，详见[辅助码](/features/auxiliary-code)章节。
 
+## 切换输入模式或功能开关
+
+按下 `Ctrl` + `` ` ``，可呼出[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)。在方案选单中，可开启或关闭特定的输入模式或功能开关。
+
+具体功能说明及配置方法相见「功能详解」章节。
+
 ## 对方案进行自定义
 
 **自定义文件** `custom.yaml` 是对方案文件 `schema.yaml` 的补丁，用于存放用户对方案配置的修改，更新方案时不会被覆盖。

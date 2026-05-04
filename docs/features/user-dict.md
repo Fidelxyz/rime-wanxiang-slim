@@ -6,9 +6,7 @@ outline: deep
 
 ## 手动造词 <Badge type="tip" text="仅 Pro" />
 
-输入造词引导符 ` `` ` 进入手动造词模式，随后提交的词条会被记录到用户词库中。
-
-造词引导符可位于编码**开头**或**末尾**。
+在编码中**任意位置**输入造词引导符 ` `` ` 进入手动造词模式，随后提交的词条会被记录到用户词库中。
 
 ```yaml
 user_dict_appender:
@@ -17,6 +15,13 @@ user_dict_appender:
 
   # 手动造词提示。
   tips: "〔造词〕"
+```
+
+```yaml
+key_binder:
+  bindings:
+    # 通过 Tab 切换到第一个音节输入辅助码后，Ctrl + Tab 上屏并切换至下个音节。
+    - {when: composing, accept: "Control+Tab", send_sequence: '{Home}{Shift+Right}{1}{Shift+Right}'}
 ```
 
 ## 自动造词 <Badge type="tip" text="仅 Pro" />
