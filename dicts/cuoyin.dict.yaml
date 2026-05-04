@@ -1,0 +1,157 @@
+# Rime dictionary
+# encoding: utf-8
+#https://github.com/amzxyz/RIME-LMDG
+#错音错字对照表
+---
+name: cuoyin
+version: "LTS"
+sort: by_weight
+...
+株木琅玛	zhū;mp mù;md láng;wd mǎ;wv	1	有声
+衾何以堪	qīn;rd hé;rh yǐ;vr kān;tc	36	小说
+墨明棋妙	mò;st míng;ly qí;mc miào;ns	38	乐队
+压力山大	yā;hd lì;lp shān;gs dà;ld	19	网络语
+鸭梨山大	yā;ln lí;em shān;gs dà;ld	48	网络语
+麻麻赖赖	má;xm má;xm lài;hg lài;hg	16	网络语
+绝代双椒	jué;ig dài;rh shuāng;yy jiāo;ms	30	网络语
+毁人不倦	huǐ;pj rén;rd bú;hd juàn;rd	43	歌曲名
+佛教胜地	fó;rg jiào;tw shèng;yp dì;tv	1	佛教(圣)地
+杉杉来吃	shān;mp shān;mp lái;hj chī;kp	42	书名
+食话食说	shí;rd huà;ap shí;rd shuō;ad	25	节目
+零零总总	ling;yd ling;yd zong;dx zong;dx	6	林林总总
+太差劲	tai;ld cha;dh jing;vl	89	jìn
+文绉绉	wen;wd zou;ig zou;ig	16	zhōu
+大栅栏	da;ld zha;mp lan;md	23	dà shí làn
+粘贴	nian;js tie;bs	382	粘(zhān)贴
+曝光	pu;ll guang;sv	410	曝(bào)光
+东庠岛	dong;hx yang;xs dao;pg	10	东庠(xiáng)岛
+视频	shi;ds ping;sh	490	视频(pín)
+剖腹产	pao;wo fu;yp chan;wp	170	剖(pōu)腹产
+阻塞	zu;es sai;bt	20	阻塞(sè)
+着想	zhao;dl xiang;mx	370	着(zhuó)想
+崩溃	ben;gy kui;uk	480	崩(bēng)溃
+句芒	ju;bk mang;cv	320	句(gōu)芒
+烘焙	hong;qc pei;qw	400	hōng bèi
+谄媚	xian;ag mei;nv	300	chǎn mèi
+着落	zhao;dl luo;ck	470	zhuó luò
+胁差	lei;yl cha;dh	430	xié chā
+刚劲	gang;so jin;vl	420	gāng jìng
+井陉	jing;hs jing;ev	420	jǐng xíng
+猇亭	hu;qs ting;ws	340	xiāo tíng
+猇亭区	hu;qs ting;ws qu;hv	130	猇(xiāo)亭区
+屎溺	shi;sm ni;ug	320	shǐ niào
+东庠	dong;hx yang;xs	230	dōng xiáng
+莒县	lü;ck xian;si	440	jǔ xiàn
+浚县	jun;ui xian;si	390	xùn xiàn
+郯城	ye;qe cheng;th	390	tán chéng
+丽水	lì;hd shuǐ;ud	530	lí shuǐ
+珲春	hui;wd chun;hl	460	hún chūn
+甪直	yong;ps zhi;fh	440	lù zhí
+五厍	wu;hh ku;hc	360	wú shè
+台州	tái;ik zhōu;ds	400	tāi zhōu
+膻中	shan;yw zhong;ks	360	膻(dàn)中
+渑池	yin;uk chi;uv	400	miǎn chí
+渑池	sheng;uk chi;uv	400	miǎn chí
+铅山	qian;jj shan;gs	350	yán shān
+铅山县	qian;jj shan;gs xian;si	180	铅(yán)山县
+按耐	an;fb nai;hc	30	按捺(nà)
+甭介	béng;hs jie;rs	60	甭价(jie)
+别介	bié;ko jie;rs	30	别价(jie)
+槟榔	bin;mb lang;md	630	bīng láng
+脖颈	bo;yf jing;vh	480	bó gěng
+草薙	cao;cf zhi;	90	cǎo tì
+掺和	chan;fi he;ek	440	chān huo
+称职	cheng;eg zhi;hk	90	chèn zhí
+龇牙	ci;ss ya;hp	60	zī yá
+凑活	còu;dh huo;up	250	凑合(he)
+道行	dao;dz hang;rh	270	dào héng
+给予	gei;ir yu;vs	350	jǐ yǔ
+厚朴	hou;hz pu;ms	50	hòu pò
+馄饨	hun;sl dun;sh	400	hún tun
+角色	jiao;gs se;gv	200	jué sè
+结扎	jie;it zha;fv	130	jié zā
+钜惠	jù;jh huì;hx	550	(巨)惠
+六安	liu;wb an;bn	110	lù ān
+女主角	nv;nh zhu;dw jiao;gs	200	女主角(jué)
+埋怨	mai;tl yuan;px	140	mán yuàn
+模板	mo;mc ban;mp	467	mú bǎn
+模具	mo;mc ju;sb	194	mú jù
+模样	mo;mc yang;md	519	mú yàng
+木讷	mu;md na;as	470	mù nè
+弄堂	nong;wc tang;st	130	lòng táng
+暖和	nuan;lp he;ek	590	nuǎn huo
+偌大	nuo;rc da;ld	680	偌(ruò)大
+强劲	qiang;gk jin;vl	281	qiáng jìng
+说服	shui;ad fu;yv	564	shuō fú
+似的	si;rv de;pb	700	似(shì)的
+藤蔓	teng;cu man;cy	320	téng wàn
+调换	tiao;ap huan;fg	620	diào huàn
+胴体	tong;ys ti;rm	80	dòng tǐ
+荨麻	xun;cc ma;xm	70	qián má
+亳州	hao;wv zhou;ds	500	bó zhōu
+天秤座	tian;hl ping;eh zuo;xt	100	秤(chèng)
+戛然而止	ga;hd ran;pq er;hs zhi;sh	590	戛(jiá)然而止
+自怨自艾	zi;pl yuan;px zi;pl ai;cc	520	自怨自艾(yì)
+洪洞	hong;uc dong;us	420	hóng tóng
+蔚县	wei;cc xian;si	430	yù xiàn
+嵊州	cheng;gp zhou;ds	382	shèng zhōu
+吱声	zhi;kf sheng;tp	220	zī shēng
+主角	zhu;dw jiao;gs	541	zhǔ jué
+脖颈儿	bo;yf jing;vh er;pv	10	bó gěng er
+草薙剑	cao;cf zhi; jian;ro	20	cǎo tì jiàn
+草薙京	cao;cf zhi; jing;wx	140	cǎo tì jīng
+龇着牙	ci;ss zhe;dl ya;hp	10	zī zhe yá
+大宛马	da;ld wan;bv ma;vh	10	dà yuān mǎ
+独乐乐	du;qo le;px le;px	10	dú yuè lè
+海参崴	hai;up shen;ip wei;gd	300	hǎi shēn wǎi
+贾平凹	jia;sb ping;hf ao;sh	250	jià píng wā
+卡脖子	ka;sd bo;yf zi;zh	310	qiǎ bó zi
+六安市	liu;wb an;bn shi;wj	20	lù ān shì
+六安县	liu;wb an;bn xian;si	10	lù ān xiàn
+六合区	liu;wb he;rk qū;hv	10	lù hé qū
+螺蛳粉	luo;ot shi;os fen;db	650	luó sī fěn
+温庭筠	wen;ul ting;xd jun;gh	210	温庭筠(yún)
+关卡	guan;dl ka;sd	640	guān qiǎ
+牛皮癣	niu;ps pi;vy xian;zs	289	(癣)xuǎn
+三昧真火	san;hh wei;lh zhen;fb huo;qd	440	三昧(mèi)真火
+优惠券	you;rh hui;hx juan;do	420	优惠券(quàn)
+没食子	mei;uj shi;rd zi;zh	70	没(mò)食子
+魔蝎座	mó;xi xiē;ol zuò;xt	10	摩羯(jié)座
+鄱阳湖	pan;pe yang;el hu;uf	134	pó yáng hú
+契科夫	qī;hl kē;ed fū;hl	10	契诃(hē)夫
+荨麻疹	qian;cc ma;xm zhen;zp	200	xún má zhěn
+太行山	tai;ld xing;rh shan;gs	390	tài háng shān
+头皮屑	tou;dl pi;vy xue;sy	530	tóu pi xiè
+万柏林	wàn;hp bó;mp lín;mm	10	万柏(bǎi)林
+雪佛兰	xue;yx fo;rg lan;dh	370	xuě fú lán
+鸭绿江	ya;ln lv;iv jiang;uh	150	yā lù jiāng
+张柏芝	zhang;gp bai;mp zhi;cd	75	zhāng bó zhī
+众乐乐	zhong;rr le;px le;px	20	zhòng yuè lè
+阿弥陀佛	a;eh mi;gg tuo;eb fo;rg	37	ē mí tuó fó
+安徽六安	an;bn hui;rg liu;wb an;bn	2	ān huī lù ān
+按耐不住	àn;fb nài;hc bú;hd zhù;rd	1	按捺(nà)不住
+龇牙咧嘴	ci;ss ya;hp lie;kh zui;ks	17	zī yá liě zuǐ
+大腹便便	da;ld fu;yp bian;rh bian;rh	15	dà fù pián pián
+歇斯底里	jie;lg si;cp di;xd li;lt	88	xiē sī dǐ lǐ
+力能扛鼎	li;lp neng;ip kang;fh ding;lv	3	lì néng gāng dǐng
+模棱两可	mo;mc ling;mt liang;hd ke;hs	85	mó léng liǎng kě
+南京六合	nan;ff jing;wx liu;wb he;rk	1	nán jīng lù hé
+人模狗样	ren;rd mo;mc gou;qb yang;md	15	rén mú góu yàng
+心宽体胖	xin;xd kuan;bv ti;rm pang;yd	4	xīn kūan tǐ pán
+虚与委蛇	xu;sh yu;hh wei;en she;ob	9	xū yǔ wēi yí
+血脉偾张	xuè;ph mài;yd fèn;rf zhāng;gp	1	血脉贲(bēn)张 | 血脉偾(fèn)张
+血脉喷张	xuè;ph mài;yd pēn;kf zhāng;gp	1	血脉贲(bēn)张 | 血脉偾(fèn)张
+一模一样	yi;hq mo;mc yi;hq yang;md	508	yì mú yí yàng
+饮鸩解渴	yin;sg jiu;dn jie;go ke;ul	1	饮鸩(zhèn)解渴
+饮鸩止渴	yin;sg jiu;dn zhi;sh ke;ul	34	饮鸩(zhèn)止渴
+饮鸩解渴	yin;sg zhen;dn jie;go ke;ul	1	饮鸩(zhèn)解渴
+有模有样	you;hy mo;mc you;hy yang;md	28	yǒu mú yǒu yàng
+装模作样	zhuang;dd mo;mc zuo;rp yang;md	49	zhuāng mú zuò yàng
+安徽六安市	an;bn hui;rg liu;wb an;bn shi;wj	1	ān huī lù ān shì
+南京六合区	nan;ff jing;wx liu;wb he;rk qu;hv	1	nán jīng lù hé qū
+安徽省六安市	an;bn hui;rg sheng;xl liu;wb an;bn shi;wj	1	ān huī shěng lù ān shì
+南无阿弥陀佛	na;ff mo;hv a;eh mi;gg tuo;eb fo;rg	4	nā mó ē mí tuó fó
+南京市六合区	nan;ff jing;wx shi;wj liu;wb he;rk qu;hv	1	nán jīng shì lù hé qū
+南无阿弥陀佛	nan;ff wu;hv a;eh mi;gg tuo;eb fo;rg	4	nā mó ē mí tuó fó
+南无阿弥陀佛	nan;ff wu;hv e;eh mi;gg tuo;eb fo;rg	4	nā mó ē mí tuó fó
+蓦然回首	mu;ch ran;pq hui;sk shou;dl	39	蓦(mò)然回首
