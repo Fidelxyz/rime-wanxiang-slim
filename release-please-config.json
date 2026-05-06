@@ -4,6 +4,7 @@
         ".": {
             "release-type": "simple",
             "draft": true,
+            "bump-minor-pre-major": true,
             "extra-files": [
                 "lua/wanxiang/wanxiang.lua",
                 "default.yaml",

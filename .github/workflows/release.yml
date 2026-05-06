@@ -88,7 +88,6 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.TAG_NAME }}
-          name: "${{ env.TAG_NAME }} Rime 万象拼音输入方案精简版"
           bodyFile: release-note.md
           artifacts: dist/rime-wanxiang-*.zip
           draft: false
