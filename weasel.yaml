@@ -1,7 +1,7 @@
 # Weasel settings
 # encoding: utf-8
 
-config_version: "15.9.4"  # x-release-please-version
+config_version: "0.5.0"  # x-release-please-version
 
 app_options:
   cmd.exe:
