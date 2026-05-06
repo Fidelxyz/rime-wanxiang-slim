@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.4.0...v0.5.0) (2026-05-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* change user dictionaries name
+* rename user dict components
+
+### Bug Fixes
+
+* prevent caret moves to the end when backtick is added at the beginning ([7a3cc68](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7a3cc68cde83512e6d7749ca0eebecf0abe88203))
+
+
+### Miscellaneous Chores
+
+* change user dictionaries name ([0503e5c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0503e5c07150b29c10b1efbf4a885363f405a14b))
+
+
+### Code Refactoring
+
+* rename user dict components ([8883806](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8883806657f110cff64660c4f911c879bb621793))
+
 ## [0.4.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.3.0...v0.4.0) (2026-05-03)
 
 
