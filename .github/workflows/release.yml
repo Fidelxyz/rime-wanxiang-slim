@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - stable
 
 permissions:
   contents: write
@@ -18,6 +18,9 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v5
         id: release
+        with:
+          config-file: .github/release-config.json
+          manifest-file: .github/release-manifest.json
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}

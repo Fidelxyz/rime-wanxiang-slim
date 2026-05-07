@@ -1,0 +1,25 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/refs/heads/main/schemas/config.json",
+    "packages": {
+        ".": {
+            "release-type": "simple",
+            "draft": true,
+            "bump-minor-pre-major": true,
+            "extra-files": [
+                {
+                    "type": "json",
+                    "path": ".github/prerelease-manifest.json",
+                    "jsonpath": "$[\".\"]"
+                },
+                "lua/wanxiang/wanxiang.lua",
+                "default.yaml",
+                "wanxiang.schema.yaml",
+                "wanxiang_pro.schema.yaml",
+                "wanxiang_english.schema.yaml",
+                "wanxiang_mixedcode.schema.yaml",
+                "wanxiang_reverse.schema.yaml",
+                "weasel.yaml"
+            ]
+        }
+    }
+}
