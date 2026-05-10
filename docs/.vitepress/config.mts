@@ -43,6 +43,10 @@ export default defineConfig({
           { text: "其他功能", link: "/features/others" },
         ],
       },
+      {
+        text: "开发",
+        items: [{ text: "构建", link: "/development/build" }],
+      },
     ],
 
     socialLinks: [
