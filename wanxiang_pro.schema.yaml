@@ -3,13 +3,13 @@
 
 schema:
   schema_id: wanxiang_pro
-  name: 万象拼音PRO
+  name: 万象拼音精简版——进阶版（PRO）
   version: "15.9.4"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
   description: |
-    万象拼音精简版（PRO）。支持拼音及辅助码方案。
+    支持直接辅助码的 Rime 拼音/双拼输入方案
   dependencies:
     - wanxiang_mixedcode
     - wanxiang_reverse

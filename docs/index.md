@@ -5,7 +5,7 @@ layout: home
 hero:
   name: rime-wanxiang-slim
   text: 万象拼音输入方案精简版
-  tagline: 支持直接辅助码的 RIME 拼音/双拼输入方案
+  tagline: 支持直接辅助码的 Rime 拼音/双拼输入方案
   actions:
     - theme: brand
       text: 简介

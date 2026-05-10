@@ -3,13 +3,13 @@
 
 schema:
   schema_id: wanxiang
-  name: 万象拼音
+  name: 万象拼音精简版——基础版（Base）
   version: "15.9.4"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
   description: |
-    万象拼音精简版（标准版）。支持基础拼音方案，不支持辅助码。
+    Rime 拼音/双拼输入方案
   dependencies:
     - wanxiang_mixedcode
     - wanxiang_reverse
