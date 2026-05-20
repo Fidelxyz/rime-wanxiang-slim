@@ -153,23 +153,6 @@
 | `lua/data/charset.reverse.bin` | 二进制字符集标记数据库 |
 | `wanxiang.schema.yaml` | `charset` 段配置（option、base、whitelist、blacklist） |
 
-### 输入预测
-
-根据上文输入置顶预测词或主动弹出预测词。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/user_predict.lua` | 输入预测模块 |
-
-#### 联想空格打断
-
-空格键打断联想并上屏空格，对齐大厂输入法行为。
-
-| 实现位置 | 说明 |
-|----------|------|
-| `lua/wanxiang/user_predict.lua` | `predict_space` 配置与打断逻辑 |
-| `wanxiang.schema.yaml` | `user_predict/enable_predict_space` 配置项 |
-
 ### 非汉字词库输入
 
 #### 英文输入
@@ -427,6 +410,23 @@
 | `lua/wanxiang/user_predict.lua` | 量词预测逻辑 |
 | `wanxiang.schema.yaml` 等 | 量词数据 |
 
+#### 输入预测
+
+根据上文输入置顶预测词或主动弹出预测词。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/user_predict.lua` | 输入预测模块 |
+
+##### 联想空格打断
+
+空格键打断联想并上屏空格，对齐大厂输入法行为。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/user_predict.lua` | `predict_space` 配置与打断逻辑 |
+| `wanxiang.schema.yaml` | `user_predict/enable_predict_space` 配置项 |
+
 #### 固定已输入语句
 
 按下句号锁定当前候选句子，双击句号锁定上一个N-1长度的候选句子。
@@ -479,7 +479,7 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 | `lua/data/others.txt` | 其他替换数据 |
 | `wanxiang.schema.yaml` | `super_replacer` 段配置（rules、chain、db_name 等） |
 
-### 候选排序
+#### 候选排序
 
 Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 

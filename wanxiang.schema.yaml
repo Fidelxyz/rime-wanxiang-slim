@@ -39,9 +39,6 @@ switches:
   - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
     states: [大字集, 小字集]
   # Features
-  - name: prediction
-    states: [预测关, 预测开]
-    abbrev: [关, 预]
   - name: char_priority  # 单字与词组编码重合时，单字或词组优先。
     states: [词组先, 单字先]
     abbrev: [词, 字]
@@ -59,7 +56,6 @@ engine:
     - key_binder  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
     - lua_processor@*wanxiang.key_binder  # 绑定按键扩展能力，支持正则扩展将按键生效情景更加细化
     - lua_processor@*wanxiang.english*P  # 英文状态处理器，speller 前
-    - lua_processor@*wanxiang.user_predict*P
     - speller  # 拼写处理器，接受字符按键，编辑输入
     - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
     - punctuator  # 符号处理器，将单个字符按键直接映射为标点符号或文字
@@ -81,7 +77,6 @@ engine:
     - script_translator  # 脚本翻译器，用于拼音、粤拼等基于音节表的输入方案
     - lua_translator@*wanxiang.set_schema  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # 通过输入大写U引导，并输入Unicode编码获得汉字输出
-    - lua_translator@*wanxiang.user_predict*T
     - table_translator@custom_phrase  # 自定义短语 custom_phrase.txt，用于置顶自定义编码候选词
     - table_translator@wanxiang_english  # 英文词汇表导入
     - table_translator@wanxiang_mixedcode  # 混合编码词汇表导入
@@ -104,7 +99,6 @@ engine:
     - simplifier@s2hk
     - simplifier@s2tw
     - simplifier@emoji
-    - lua_filter@*wanxiang.user_predict*F  # 用于输入编码后的上下文调频
     - uniquifier  # 去重，必须在最后
 
 ### Rime 处理器规则 ###
@@ -309,7 +303,6 @@ candidate_type_marker:
     user_table: ""
     completion: ""
     abbrev: ""
-    predict: ""
     fallback: "~"
 
 # 以词定字
@@ -326,22 +319,6 @@ keypad_composer:
   # compose: 按下小键盘数字键时，数字总是不直接上屏。
   # select: 按下小键盘数字键时，若处于选词状态，则选择对应候选词，否则输入数字。等同于主键盘数字键行为。
   keypad_mode: auto
-
-user_predict:
-  db_name: lua/predict  # 数据库名称（默认 predict，将生成 predict.userdb 文件夹）
-  enable_post_predict: false  # 上屏后预测
-  enable_context_reorder: true  # 输入时调频
-  max_candidates: 10  # 屏幕最多显示的联想词数量
-  max_predictions: 3  # 连续触发预测的最高次数限制
-  expiry_days: 90  # 绝对寿命（天）：不命中则物理销毁
-  activation_days: 7  # 激活期限（天）：冷冻期内输入第2次转正
-  max_memory_branches: 15  # 分支上限：单前缀最多保留15个后续预测
-  decay_rate: 0.85  # 衰减率：单日时间权重打 85 折
-  # true: 按空格键输入空格。
-  # false: 按空格键提交候选，按 Tab 或 Alt 键输入空格。
-  # 推荐手机端开启，电脑端关闭。
-  enable_predict_space: false
-  context_timeout: 5000  # 上文超时时间毫秒
 
 lookup_filter:
   # 检索的标签。将检索带有所选标签的候选。
