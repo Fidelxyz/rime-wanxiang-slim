@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.5.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.4.0...v0.5.0-beta.1) (2026-05-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* **user_predict:** remove candidate prediction
+* change user dictionaries name
+* rename user dict components
+
+### Features
+
+* **preedit_tone:** reintroduce preedit full pinyin conversion ([2c902b0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2c902b080e36d44cbb929763018db7f00fab5bc1))
+* **preedit_tone:** reintroduce preedit tone display ([61e1c88](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/61e1c88380716a49161a8327ca67772f2ea2a11e))
+* reintroduce tone input from upstream ([530e3a7](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/530e3a7dd1b1168e21ad0692f37375e732ce00ba))
+
+
+### Bug Fixes
+
+* prevent caret moves to the end when backtick is added at the beginning ([7a3cc68](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7a3cc68cde83512e6d7749ca0eebecf0abe88203))
+
+
+### Performance Improvements
+
+* optimize reading page size ([a5e516a](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/a5e516aba38f4807b061707ca11bbf088674b6ba))
+
+
+### Miscellaneous Chores
+
+* change user dictionaries name ([0503e5c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0503e5c07150b29c10b1efbf4a885363f405a14b))
+
+
+### Code Refactoring
+
+* rename user dict components ([8883806](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8883806657f110cff64660c4f911c879bb621793))
+* **user_predict:** remove candidate prediction ([22dcac8](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/22dcac88da02228ea9a7f58417a2af6fad81f9cd))
+
+
+### Continuous Integration
+
+* add prerelease workflow ([9c67425](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c67425dc6d9b50a0da1c4ee683d4d119889c250))
+* change prerelease version suffix to beta ([ec6a0e8](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ec6a0e8ca3dd020b13eb2f7330293c491b00f712))
+
 ## [0.4.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.3.0...v0.4.0) (2026-05-03)
 
 
