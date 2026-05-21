@@ -13,6 +13,16 @@ deploy:
     tests:
       - send: nihao
         assert: eq(cand[1].text, "你好")
+      # Tone Input
+      - send: zhe0shi0
+        assert: eq(cand[1].text, "这是")
+      - send: zhe0shi8
+        assert: eq(cand[1].text, "这时")
+      # Tone Fallback
+      - send: zhe0shi80
+        assert: eq(cand[1].text, "这是")
+      - send: zhe0shi08
+        assert: eq(cand[1].text, "这时")
       # Simplifier
       - send: weishenme
         assert: eq(cand[1].text, "为什么")

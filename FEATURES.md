@@ -83,6 +83,16 @@
 | `lua/wanxiang/lookup_filter.lua` | 候选筛选核心逻辑，支持 aux/db 双数据源 |
 | `wanxiang.schema.yaml` (`lookup_filter` 段) | 反查配置（引导符、tags、数据源优先级） |
 
+#### 声调辅助筛选
+
+7890 数字键代表一二三四声，支持连续按键自动压缩（改正声调）。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
+| `wanxiang.schema.yaml` | `alphabet` 中 7890、`tone_fallback` 配置段 |
+| `lua/wanxiang/tone_fallback.lua` | 连续声调键压缩处理器 |
+
 ### 反查
 
 通过 `` ` `` 引导拆字/笔画模式（如 `` `yu if `` 查找"震"）。
@@ -369,17 +379,6 @@
 ### 输入相关
 
 以下功能已从本仓库中移除。保留记录以便从上游合并时参考。
-
-#### 声调辅助筛选
-
-7890 数字键代表一二三四声，支持与辅助码混合使用。
-
-| 已删除配置 | 说明 |
-|------------|------|
-| `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
-| `wanxiang.schema.yaml` 等 | `alphabet` 中 7890、`tone_display`/`full_pinyin` 开关 |
-| `lua/wanxiang/super_processor.lua` | 声调回退逻辑（在 7890 之间轮巡切换） |
-| `lua/wanxiang/lookup_filter.lua` | 反查中声调筛选与 `tone_map` 表 |
 
 #### 辅筛定点改字
 

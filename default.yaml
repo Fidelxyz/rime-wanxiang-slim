@@ -9,7 +9,8 @@ schema_list:
 
 # 菜单
 menu:
-  page_size: 6  # 候选词个数
+  # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
+  page_size: 6
 
 # 方案选单
 switcher:

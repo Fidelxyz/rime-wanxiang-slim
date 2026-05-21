@@ -59,6 +59,7 @@ engine:
     - key_binder  # 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
     - lua_processor@*wanxiang.key_binder  # 绑定按键扩展能力，支持正则扩展将按键生效情景更加细化
     - lua_processor@*wanxiang.english*P  # 英文状态处理器，speller 前
+    - lua_processor@*wanxiang.tone_fallback  # 声调辅助筛选：连续声调键压缩
     - speller  # 拼写处理器，接受字符按键，编辑输入
     - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
     - punctuator  # 符号处理器，将单个字符按键直接映射为标点符号或文字
@@ -115,7 +116,7 @@ recognizer:
 # 拼写处理器
 speller:
   # 参与编码的按键。此处设定的按键将不直接上屏。
-  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`;/\
+  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA7890`;/\
 
   # 首个编码允许的按键。作用同 `alphabet`，但仅作用于首个编码。
   initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/`

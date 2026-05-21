@@ -23,7 +23,7 @@ patch:
   #translator/packs/+:
   #- userdict
 
-  # 每页候选词数量。
+  # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
   menu/page_size: 6
 
   # 自动无词频造词（默认开启）。
