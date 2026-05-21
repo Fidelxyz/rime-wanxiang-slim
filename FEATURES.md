@@ -94,6 +94,15 @@
 | `lua/wanxiang/tone_fallback.lua` | 连续声调键压缩处理器 |
 | `lua/wanxiang/preedit_tone.lua` | 声调数字转上标显示（7890 → ¹²³⁴） |
 
+#### 编码音调显示
+
+Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全拼。
+
+| 实现位置 | 说明 |
+|----------|------|
+| `lua/wanxiang/preedit_tone.lua` | 编码区拼音转换与声调显示逻辑 |
+| `wanxiang.schema.yaml` | `tone_display`/`full_pinyin` 开关、Ctrl+S 绑定 |
+
 ### 反查
 
 通过 `` ` `` 引导拆字/笔画模式（如 `` `yu if `` 查找"震"）。
@@ -556,15 +565,6 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 | `lua/data/tips_show.txt` | Tips 自带数据 |
 | `lua/data/tips_user.txt预留自定义文件` | Tips 用户自定义数据 |
 | `wanxiang.schema.yaml` 等 | `tips` 段配置（`disabled_types`、`tips_key`）、Ctrl+t 开关、`super_tips` 开关与处理器 |
-
-#### 编码音调显示
-
-Ctrl+S 使输入码实时显示全拼并加音调，Shift+Enter 上屏编码字符串。
-
-| 已删除配置 | 说明 |
-|------------|------|
-| `lua/wanxiang/super_comment.lua` | preedit 音调显示逻辑、`full_pinyin` 上屏功能 |
-| `custom/wanxiang.custom.yaml` 等 | `preedit_tone` 配置段落 |
 
 #### 计算器
 
