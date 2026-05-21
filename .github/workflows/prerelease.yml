@@ -56,5 +56,5 @@ jobs:
           bodyFile: release-note.md
           artifacts: dist/rime-wanxiang-*.zip
           draft: false
+          prerelease: true
           allowUpdates: true
-
