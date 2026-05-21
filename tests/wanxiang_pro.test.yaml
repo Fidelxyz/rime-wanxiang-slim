@@ -36,6 +36,20 @@ deploy:
       - send: U4f60
         assert: "eq(cand[1].text, '你') and eq(cand[1].comment, 'U4F60') and eq(cand[2].text, '\U0004F600') and eq(cand[2].comment, 'U4F60~0')"
 
+  tone-pinyin-code:
+    patch:
+      switches/@10/reset: 1
+    # options:
+    #   raw_code: false
+    #   tone_pinyin_code: true
+    tests:
+      - send: zheshi
+        assert: eq(cand[1].text, "这是") and eq(preedit, "zhè shì")
+      - send: zhe0shi0
+        assert: eq(cand[1].text, "这是") and eq(preedit, "zhè⁴ shì⁴")
+      - send: zhe0shi8
+        assert: eq(cand[1].text, "这时") and eq(preedit, "zhè⁴ shí²")
+
   emoji:
     options:
       emoji: true
