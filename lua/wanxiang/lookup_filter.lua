@@ -26,7 +26,7 @@
 ---@field lookup_filter_config LookupFilterConfig?
 ---@field lookup_filter_state LookupFilterState?
 
----转义正则特殊字符
+---Escape Lua-pattern special characters.
 ---@param s string
 ---@return string
 local function alt_lua_punc(s)
@@ -189,17 +189,17 @@ local function build_reverse_group(main_projection, xlit_projection, db_table, t
         local code = db:lookup(text)
         if code ~= "" then
             for part in code:gmatch("%S+") do
-                -- 接收分离的两种数据
+                -- Receive the two separated data streams.
                 local main_variants, xlit_variants = expand_code_variant(main_projection, xlit_projection, part)
 
-                -- 装填主数据
+                -- Fill main data.
                 for _, v in ipairs(main_variants) do
                     if not seen_main[v] then
                         seen_main[v] = true
                         group_main[#group_main + 1] = v
                     end
                 end
-                -- 装填 xlit 数据
+                -- Fill xlit data.
                 for _, v in ipairs(xlit_variants) do
                     if not seen_xlit[v] then
                         seen_xlit[v] = true
@@ -283,8 +283,10 @@ local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, 
     return result
 end
 
--- 解析输入中的反查分隔点。
--- 兼容动态获取的造词前缀：如果输入以 bypass_prefix 开头，则跳过它，只把后续反查引导符当作筛选分隔点。
+-- Parse the lookup-trigger split point in the input.
+-- Compatible with the dynamic word-creation prefix: if the input starts with
+-- bypass_prefix, skip past it and only treat trailing reverse-lookup triggers
+-- as filter separators.
 ---@param input string
 ---@param key string
 ---@param bypass_prefix string?
@@ -298,7 +300,7 @@ local function split_lookup_input(input, key, bypass_prefix)
     end
 
     local scan_from = 1
-    -- 如果有配置造词前缀，且当前输入是以它开头，就把扫描起点后移
+    -- If a word-creation prefix is configured and matches at the start, advance the scan origin past it.
     if bypass_prefix and bypass_prefix ~= "" and input:sub(1, #bypass_prefix) == bypass_prefix then
         scan_from = #bypass_prefix + 1
     end
@@ -363,7 +365,7 @@ local function parse_comment_codes(comment, pattern, target_len)
 
         ---@type string[]
         local codes_list = {}
-        -- 提取辅码
+        -- Extract auxiliary codes.
         if #codes_part > 0 then
             for c in codes_part:gmatch("[^,]+") do
                 local trimmed = c:gsub("^%s+", ""):gsub("%s+$", "")
@@ -418,7 +420,7 @@ function F.init(env)
             end
         end
     end
-    -- 核心逻辑：只要配置了 aux 源，就必须解析注释
+    -- Core rule: when an `aux` source is configured, comments must be parsed.
     local has_comment = has_aux_source
 
     ---@type ReverseLookup[]?
@@ -625,7 +627,7 @@ function F.func(translation, env)
         ---@type table<"aux"|"db", string[][]>
         local raw_data = {}
 
-        -- 数据加载 A: Aux Data (From Comment)
+        -- Source A: aux data (from candidate comment).
         if config.comment_split_pattern then
             local genuine = cand:get_genuine()
             local comment_text = genuine and genuine.comment or ""
@@ -642,7 +644,7 @@ function F.func(translation, env)
             end
         end
 
-        -- 数据加载 B: DB Data
+        -- Source B: db data (from reverse lookup).
         if config.has_db then
             raw_data.db = {}
             local i = 0
@@ -650,7 +652,7 @@ function F.func(translation, env)
                 i = i + 1
                 local char_str = utf8.char(code_point)
 
-                -- 1. 查缓存，如果没有就调用底层函数，拿到分离后的两种数据
+                -- Check the cache; on miss, call the lookup helper to obtain main + xlit data.
                 if not db_cache[char_str] and config.db_table then
                     local main_codes, xlit_codes =
                         build_reverse_group(config.main_projection, config.xlit_projection, config.db_table, char_str)
@@ -661,7 +663,7 @@ function F.func(translation, env)
                     state.cache_size = state.cache_size + 1
                 end
 
-                -- 2. 核心分配逻辑：控制词组取什么数据
+                -- Decide which slice to use depending on whether this is a phrase or a single character.
                 if cand_len == 1 then
                     ---@type string[]
                     local combined = {}

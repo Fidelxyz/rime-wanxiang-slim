@@ -11,23 +11,7 @@
 ---@class Env
 ---@field fallback_filter_state FallbackFilterState?
 
----Byte-level scan for ASCII letters (A-Z, a-z).
----Returns true as soon as any letter byte is found.
----@param s string
----@return boolean
-local function has_english_token_fast(s)
-    local len = #s
-    for i = 1, len do
-        local b = s:byte(i)
-        if b < 0x80 then
-            -- A-Z (0x41-0x5A) or a-z (0x61-0x7A)
-            if (b >= 0x41 and b <= 0x5A) or (b >= 0x61 and b <= 0x7A) then
-                return true
-            end
-        end
-    end
-    return false
-end
+local wanxiang = require("wanxiang.wanxiang")
 
 local M = {}
 
@@ -55,13 +39,10 @@ function M.func(translation, env)
     assert(state)
 
     local code = context.input
-    local comp = context.composition
-
-    -- Compute current segment length from composition.
-    local seg = comp:back()
+    local seg = context.composition:back()
     local code_len = seg and (seg._end - seg.start) or 0
 
-    -- Clear fallback data and skip when segment is too short.
+    -- Clear fallback data and skip when the segment is too short.
     if code_len <= 1 then
         state.last_2code_char = nil
         for cand in translation:iter() do
@@ -75,9 +56,9 @@ function M.func(translation, env)
     for cand in translation:iter() do
         -- At segment length 2, record the first single Chinese character.
         if count == 0 and code_len == 2 then
-            local txt = cand.text
-            if (utf8.len(txt) or 0) == 1 and not has_english_token_fast(txt) then
-                state.last_2code_char = txt
+            local text = cand.text
+            if (utf8.len(text) or 0) == 1 and not wanxiang.has_ascii_letter(text) then
+                state.last_2code_char = text
             end
         end
 
@@ -94,7 +75,7 @@ function M.func(translation, env)
             local end_pos = seg._end
             local new_cand = Candidate("fallback", start_pos, end_pos, fallback_text, "")
 
-            -- Split preedit: "abc" → "ab c"
+            -- Split preedit: "abc" -> "ab c".
             local seg_str = code:sub(start_pos + 1, end_pos)
             if #seg_str >= 3 then
                 new_cand.preedit = seg_str:sub(1, 2) .. " " .. seg_str:sub(3)

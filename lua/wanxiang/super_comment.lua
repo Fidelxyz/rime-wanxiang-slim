@@ -1,4 +1,5 @@
----Enhances candidate display by dynamically generating and appending corrected Pinyin tones to the candidate comments.
+---Enhances candidate display by dynamically generating and appending corrected
+---Pinyin tones and other annotations to candidate comments.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -18,7 +19,7 @@
 local wanxiang = require("wanxiang.wanxiang")
 
 ---@type table<string, string>
-local tone_map = {
+local TONE_STRIP_MAP = {
     ["ā"] = "a",
     ["á"] = "a",
     ["ǎ"] = "a",
@@ -48,27 +49,25 @@ local tone_map = {
     ["ń"] = "n",
 }
 
+---Strip tone marks from a pinyin string.
 ---@param s string
 ---@return string
 local function remove_pinyin_tone(s)
     ---@type string[]
     local result = {}
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        result[#result + 1] = tone_map[uchar] or uchar
+        result[#result + 1] = TONE_STRIP_MAP[uchar] or uchar
     end
     return table.concat(result)
 end
 
 ---@param format string
 ---@return boolean
-local is_format_valid = function(format)
-    local success, _ = pcall(string.format, format, "test")
-    return success
+local function is_format_valid(format)
+    return (pcall(string.format, format, "test"))
 end
 
--- ----------------------
--- # 错音错字提示模块
--- ----------------------
+-- Mispronunciation/typo hint module
 
 local corrector = {
     ---@type table<string, {text: string, comment: string}>?
@@ -95,14 +94,14 @@ end
 function corrector.init(env)
     assert(env.super_comment_config)
 
-    local config = env.engine.schema.config
+    local rime_config = env.engine.schema.config
 
-    local enabled = config:get_bool("super_comment/correction_enabled")
+    local enabled = rime_config:get_bool("super_comment/correction_enabled")
     if enabled == nil then
         enabled = true
     end
 
-    local format = config:get_string("super_comment/correction_format") or "〔%s〕"
+    local format = rime_config:get_string("super_comment/correction_format") or "〔%s〕"
     if not is_format_valid(format) then
         log.warning(("Invalid config value super_comment/correction_format: %s"):format(format))
         format = "〔%s〕"
@@ -113,7 +112,7 @@ function corrector.init(env)
         format = format,
     }
 
-    -- Load corrections dictionary
+    -- Lazy-load the corrections dictionary; cached across schema reloads.
     if not corrector.corrections_cache then
         local file = wanxiang.load_file_with_fallback("dicts/cuoyin.dict.yaml")
         if file then
@@ -146,9 +145,10 @@ function corrector.fini(env)
     env.super_comment_corrector_config = nil
 end
 
--- ----------------------
--- 部件组字返回的注释
--- ----------------------
+-- Charset annotation for component-composed characters
+
+---Return a short Unicode block label (in Chinese) for the first character of `text`,
+---or nil when the character does not belong to any tracked block.
 ---@param text string
 ---@return string?
 local function get_charset_label(text)
@@ -158,7 +158,7 @@ local function get_charset_label(text)
 
     local code = utf8.codepoint(text)
 
-    -- 按照 Unicode 区块频率排序
+    -- Ordered roughly by frequency.
     if code >= 0x4E00 and code <= 0x9FFF then
         return "基本"
     end
@@ -190,7 +190,7 @@ local function get_charset_label(text)
         return "扩H"
     end
 
-    -- 兼容区
+    -- Compatibility blocks.
     if code >= 0xF900 and code <= 0xFAFF then
         return "兼容"
     end
@@ -201,6 +201,7 @@ local function get_charset_label(text)
     return nil
 end
 
+---Build a reverse-lookup-mode comment showing pinyin, aux code, and charset block.
 ---@param cand Candidate
 ---@param initial_comment string
 ---@return string
@@ -208,7 +209,7 @@ local function get_reverse_lookup_comment(cand, initial_comment)
     ---@type string[]
     local inner_parts = {}
 
-    -- 音形注释拆解逻辑
+    -- Decompose phonetic/aux annotations.
     if initial_comment ~= "" then
         ---@type string[]
         local segments = {}
@@ -238,9 +239,7 @@ local function get_reverse_lookup_comment(cand, initial_comment)
             end
 
             if #pinyins > 0 then
-                local pinyin_str = table.concat(pinyins, ",")
-                inner_parts[#inner_parts + 1] = ("音%s"):format(pinyin_str)
-
+                inner_parts[#inner_parts + 1] = ("音%s"):format(table.concat(pinyins, ","))
                 if aux then
                     inner_parts[#inner_parts + 1] = ("辅%s"):format(aux)
                 end
@@ -256,13 +255,11 @@ local function get_reverse_lookup_comment(cand, initial_comment)
     if #inner_parts == 0 then
         return "〔无〕"
     end
-    -- 使用间隔号连接
     return "〔" .. table.concat(inner_parts, "・") .. "〕"
 end
 
--- ----------------------
--- # 辅助码提示或带调全拼注释模块 (Fuzhu)
--- ----------------------
+-- Aux-code or toned full-pinyin annotation
+
 ---@param cand Candidate
 ---@param initial_comment string
 ---@param config SuperCommentConfig
@@ -282,62 +279,55 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
         segments[#segments + 1] = segment
     end
 
-    -- 根据 option 动态决定是否强制使用 tone
+    -- Tone option overrides aux-code presentation.
     local use_tone = ctx:get_option("tone_hint") or ctx:get_option("toneless_hint")
     local aux_type = use_tone and "tone" or "fuzhu"
 
     local first_segment = segments[1] or ""
     local semicolon_count = select(2, first_segment:gsub(";", ""))
 
-    ---@type string[]
-    local aux_comments = {}
-    -- 没有分号的情况
+    -- No semicolon: fall back to the original comment with delimiters normalised.
     if semicolon_count == 0 then
         return (initial_comment:gsub(auto_delimiter, " "))
-    else
-        -- 有分号：按类型提取
-        for _, segment in ipairs(segments) do
-            if aux_type == "tone" then
-                -- 取第一个分号“前”的内容
-                local before = segment:match("^(.-);")
-                if before and before ~= "" then
-                    aux_comments[#aux_comments + 1] = before
-                end
-            else -- "fuzhu"
-                -- 取第一个分号“后”的内容（到行尾）
-                local after = segment:match(";(.+)$")
-                if after and after ~= "" then
-                    aux_comments[#aux_comments + 1] = after
-                end
+    end
+
+    -- With semicolon: extract per type.
+    ---@type string[]
+    local aux_comments = {}
+    for _, segment in ipairs(segments) do
+        if aux_type == "tone" then
+            -- Take the part before the first semicolon.
+            local before = segment:match("^(.-);")
+            if before and before ~= "" then
+                aux_comments[#aux_comments + 1] = before
+            end
+        else
+            -- Take the part after the first semicolon (to end of segment).
+            local after = segment:match(";(.+)$")
+            if after and after ~= "" then
+                aux_comments[#aux_comments + 1] = after
             end
         end
     end
 
-    -- 最终拼接输出，fuzhu用 `,`，tone用 /连接
-    if #aux_comments > 0 then
-        if aux_type == "tone" then
-            return table.concat(aux_comments, " ")
-        else
-            return table.concat(aux_comments, "/")
-        end
-    else
+    if #aux_comments == 0 then
         return ""
     end
+    -- Tone uses space, fuzhu uses slash.
+    return table.concat(aux_comments, aux_type == "tone" and " " or "/")
 end
 
--- ----------------------
--- 主函数：根据优先级处理候选词的注释
--- ----------------------
---
+-- Main filter: dispatch to the right annotation generator per option set.
+
 local M = {}
 
 ---@param env Env
 function M.init(env)
-    local config = env.engine.schema.config
+    local rime_config = env.engine.schema.config
 
-    local delimiter = config:get_string("speller/delimiter") or " '"
+    local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
-    local min_candidate_length = config:get_int("super_comment/min_candidate_length") or 1
+    local min_candidate_length = rime_config:get_int("super_comment/min_candidate_length") or 1
 
     env.super_comment_config = {
         auto_delimiter = auto_delimiter,
@@ -350,6 +340,7 @@ end
 ---@param env Env
 function M.fini(env)
     corrector.fini(env)
+    env.super_comment_config = nil
 end
 
 ---@param input Translation
@@ -361,36 +352,33 @@ function M.func(input, env)
     assert(corrector_config)
 
     local context = env.engine.context
-    local input_str = context.input or ""
-    local is_reverse_lookup_mode = wanxiang.is_reverse_lookup_mode(env)
-    local should_skip_candidate_comment = wanxiang.is_function_mode_active(context) or input_str == ""
-    local is_tone_comment = context:get_option("tone_hint")
-    local is_toneless_comment = context:get_option("toneless_hint")
-    local is_comment_hint = context:get_option("fuzhu_hint")
+    local input_str = context.input
+    local is_reverse_lookup = wanxiang.is_reverse_lookup_mode(env)
+    local skip_annotations = wanxiang.is_function_mode_active(context) or input_str == ""
+    local tone_hint = context:get_option("tone_hint")
+    local toneless_hint = context:get_option("toneless_hint")
+    local fuzhu_hint = context:get_option("fuzhu_hint")
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
         local initial_comment = genuine_cand.comment
         local final_comment = initial_comment
 
-        if should_skip_candidate_comment then
+        if skip_annotations then
             yield(genuine_cand)
             goto continue
         end
 
-        -- 进入注释处理阶段
-        -- 辅助码注释或者声调注释
-        if is_comment_hint then
+        -- Aux-code or tone annotation.
+        if fuzhu_hint or tone_hint then
             final_comment = get_aux_comment(cand, initial_comment, config, context)
-        elseif is_tone_comment then
-            final_comment = get_aux_comment(cand, initial_comment, config, context)
-        elseif is_toneless_comment then
+        elseif toneless_hint then
             final_comment = remove_pinyin_tone(get_aux_comment(cand, initial_comment, config, context))
         else
             final_comment = ""
         end
 
-        -- 错音错字提示
+        -- Mispronunciation / typo hint takes priority over the aux annotation.
         if corrector_config.enabled then
             local correction_comment = corrector.get_comment(cand, corrector_config)
             if correction_comment and correction_comment ~= "" then
@@ -398,15 +386,14 @@ function M.func(input, env)
             end
         end
 
-        -- 反查模式提示
-        if is_reverse_lookup_mode then
+        -- Reverse-lookup mode replaces everything else.
+        if is_reverse_lookup then
             local reverse_lookup_comment = get_reverse_lookup_comment(cand, initial_comment)
-            if reverse_lookup_comment and reverse_lookup_comment ~= "" then
+            if reverse_lookup_comment ~= "" then
                 final_comment = reverse_lookup_comment
             end
         end
 
-        -- 应用注释
         if final_comment ~= initial_comment then
             genuine_cand.comment = final_comment
         end

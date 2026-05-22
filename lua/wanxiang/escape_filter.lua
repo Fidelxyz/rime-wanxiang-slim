@@ -6,7 +6,7 @@
 ---Lookup table for escape sequence replacement.
 ---Each key is a two-character escape sequence; the value is the literal character.
 ---@type table<string, string>
-local escape_map = {
+local ESCAPE_MAP = {
     ["\\n"] = "\n", -- newline
     ["\\t"] = "\t", -- tab
     ["\\r"] = "\r", -- carriage return
@@ -14,19 +14,18 @@ local escape_map = {
     ["\\\\"] = "\\", -- backslash
 }
 
----Replace recognised escape sequences in text using the escape_map table.
----Returns the (possibly converted) text and whether any replacement occurred.
+---Replace recognised escape sequences in `text` using ESCAPE_MAP.
 ---Short-circuits when the text contains no backslash at all.
 ---@param text string
----@return string result
+---@return string converted
 ---@return boolean changed
-local function apply_escape_fast(text)
+local function convert_escapes(text)
     if not text:find("\\", 1, true) then
         return text, false
     end
 
-    local escaped = text:gsub("\\[\\ntrs]", escape_map)
-    return escaped, escaped ~= text
+    local converted = text:gsub("\\[\\ntrs]", ESCAPE_MAP)
+    return converted, converted ~= text
 end
 
 local M = {}
@@ -36,23 +35,14 @@ local M = {}
 ---@param translation Translation
 function M.func(translation, _)
     for cand in translation:iter() do
-        local text = cand.text
-        if text == "" then
-            yield(cand)
-            goto continue
-        end
-
-        local converted, changed = apply_escape_fast(text)
+        local converted, changed = convert_escapes(cand.text)
         if not changed then
             yield(cand)
-            goto continue
+        else
+            local new_cand = Candidate(cand.type, cand.start, cand._end, converted, cand.comment)
+            new_cand.preedit = cand.preedit
+            yield(new_cand)
         end
-
-        local new_cand = Candidate(cand.type, cand.start, cand._end, converted, cand.comment)
-        new_cand.preedit = cand.preedit
-        yield(new_cand)
-
-        ::continue::
     end
 end
 

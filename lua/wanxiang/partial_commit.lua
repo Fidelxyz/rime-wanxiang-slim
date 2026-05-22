@@ -1,4 +1,4 @@
----Ctrl + number keys to commit the first n characters of the current candidate,
+---Ctrl + number keys commit the first N characters of the current candidate
 ---and keep the rest in the input box for further editing.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
@@ -14,7 +14,8 @@
 
 local wanxiang = require("wanxiang.wanxiang")
 
----Digit keys mapping
+---Mapping from digit key codes to the number of characters to commit.
+---Key `0` is treated as 10.
 ---@type table<integer, integer>
 local NUMKEY_MAP = {
     -- Number keys (top row)
@@ -29,6 +30,7 @@ local NUMKEY_MAP = {
     [0x38] = 8,
     [0x39] = 9,
     -- Numpad keys
+    [0xFFB0] = 10,
     [0xFFB1] = 1,
     [0xFFB2] = 2,
     [0xFFB3] = 3,
@@ -38,10 +40,9 @@ local NUMKEY_MAP = {
     [0xFFB7] = 7,
     [0xFFB8] = 8,
     [0xFFB9] = 9,
-    [0xFFB0] = 10,
 }
 
--- 取候选前 n 个字符
+---Take the first n UTF-8 characters of a string.
 ---@param s string
 ---@param n integer
 ---@return string
@@ -53,19 +54,13 @@ local function utf8_head(s, n)
     return offset and s:sub(1, offset - 1) or s
 end
 
----@param rest string
----@param state PartialCommitState
-local function set_pending(rest, state)
-    state.pending_rest = rest
-end
-
 local P = {}
 
 ---@param env Env
 function P.init(env)
     local context = env.engine.context
 
-    -- 监听器：在上屏动作完成后，立刻将截断后的剩余拼音恢复到输入框
+    -- After commit_text fires, restore the remaining raw input back into the input box.
     local update_notifier = context.update_notifier:connect(function(ctx)
         local state = env.partial_commit_state
         assert(state)
@@ -74,15 +69,12 @@ function P.init(env)
             return
         end
 
-        -- Take pending rest
         local rest = state.pending_rest
         state.pending_rest = nil
 
         ctx.input = rest
         ctx:clear_non_confirmed_composition()
-        if ctx.caret_pos ~= nil then
-            ctx.caret_pos = #rest
-        end
+        ctx.caret_pos = #rest
     end)
 
     env.partial_commit_state = {
@@ -121,13 +113,13 @@ function P.func(key, env)
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    -- 直接调用底层 spans 获取物理切分坐标
+    -- Spans expose the physical syllable boundaries of the input.
     local spans = context.composition:spans()
     if spans.count == 0 or #spans.vertices < 2 then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    -- 防呆保护：取 期望长度(N)、实际拼音音节数、候选词字符数 三者中的最小值
+    -- Clamp n to the smallest of: requested length, available syllables, candidate length.
     local available_syllables = #spans.vertices - 1
     local cand_len = utf8.len(cand.text) or 0
     n = math.min(n, available_syllables, cand_len)
@@ -135,13 +127,14 @@ function P.func(key, env)
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    -- 获取需要上屏的中文候选字串
+    -- The candidate prefix to commit.
     local head = utf8_head(cand.text, n)
-    -- 利用 vertices 拿到第 n 个音节的精确字节偏移量
+    -- vertices[n + 1] is the byte offset where the n-th syllable ends in the raw input.
+    -- Always present because n was clamped to #spans.vertices - 1 above.
     local cut_byte = spans.vertices[n + 1]
-    -- 截取剩余的 raw_input
-    local rest = cut_byte and context.input:sub(cut_byte + 1) or ""
-    -- 如果剩余输入首字符是手动输入的分隔符（比如 ' ），顺手切掉保证清爽
+    assert(cut_byte)
+    local rest = context.input:sub(cut_byte + 1)
+    -- Drop a leading delimiter (manual `'` or auto ` `) so the remaining input stays clean.
     if rest:sub(1, 1) == "'" or rest:sub(1, 1) == " " then
         rest = rest:sub(2)
     end
@@ -149,10 +142,9 @@ function P.func(key, env)
     local state = env.partial_commit_state
     assert(state)
 
-    -- 提交前 n 个字
+    -- Commit the prefix and stash the rest; update_notifier will restore it shortly after.
     env.engine:commit_text(head)
-    -- 挂起剩余拼音，触发 update_notifier 恢复
-    set_pending(rest, state)
+    state.pending_rest = rest
     context:refresh_non_confirmed_composition()
 
     return wanxiang.RIME_PROCESS_RESULTS.kAccepted

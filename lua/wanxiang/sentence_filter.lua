@@ -4,32 +4,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----Check whether a candidate originates from the table, user_table, or fixed
----translators.
----@param cand Candidate
----@return boolean
-local function is_table_type(cand)
-    local t = cand.type
-    return t == "table" or t == "user_table" or t == "fixed"
-end
-
----Byte-level scan for ASCII letters (A-Z, a-z).
----Returns true as soon as any letter byte is found.
----@param s string
----@return boolean
-local function has_english_token_fast(s)
-    local len = #s
-    for i = 1, len do
-        local b = s:byte(i)
-        if b < 0x80 then
-            -- A-Z (0x41-0x5A) or a-z (0x61-0x7A)
-            if (b >= 0x41 and b <= 0x5A) or (b >= 0x61 and b <= 0x7A) then
-                return true
-            end
-        end
-    end
-    return false
-end
+local wanxiang = require("wanxiang.wanxiang")
 
 local M = {}
 
@@ -45,18 +20,14 @@ function M.func(translation, _)
         if not drop_sentence then
             -- First candidate: decide whether to activate sentence dropping.
             local text = cand.text
-            if is_table_type(cand) and #text >= 4 and has_english_token_fast(text) then
+            if wanxiang.is_table_type_candidate(cand) and #text >= 4 and wanxiang.has_ascii_letter(text) then
                 drop_sentence = true
             end
             yield(cand)
-        else
-            -- Subsequent candidates: skip sentence-type when flag is set.
-            if cand.type == "sentence" then
-                -- Drop: sentence derivation suppressed by English first candidate
-            else
-                yield(cand)
-            end
+        elseif cand.type ~= "sentence" then
+            yield(cand)
         end
+        -- else: drop sentence-type candidates suppressed by an English first candidate.
     end
 end
 

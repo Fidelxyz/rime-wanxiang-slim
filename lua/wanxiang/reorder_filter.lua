@@ -6,32 +6,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----Check whether a candidate originates from the table, user_table, or fixed
----translators.
----@param cand Candidate
----@return boolean
-local function is_table_type(cand)
-    local t = cand.type
-    return t == "table" or t == "user_table" or t == "fixed"
-end
-
----Byte-level scan for ASCII letters (A-Z, a-z).
----Returns true as soon as any letter byte is found.
----@param s string
----@return boolean
-local function has_english_token_fast(s)
-    local len = #s
-    for i = 1, len do
-        local b = s:byte(i)
-        if b < 0x80 then
-            -- A-Z (0x41-0x5A) or a-z (0x61-0x7A)
-            if (b >= 0x41 and b <= 0x5A) or (b >= 0x61 and b <= 0x7A) then
-                return true
-            end
-        end
-    end
-    return false
-end
+local wanxiang = require("wanxiang.wanxiang")
 
 -- Maximum number of candidates to buffer for grouping before flushing.
 local SORT_WINDOW = 30
@@ -40,7 +15,7 @@ local M = {}
 
 ---Reorder candidates by grouping non-English table/user_table/fixed entries
 ---before others, using a page-aware flush strategy. When code length is
----outside 2–6 or the second candidate is already table-type, all candidates
+---outside 2-6 or the second candidate is already table-type, all candidates
 ---pass through in their original order.
 ---@param translation Translation
 ---@param env Env
@@ -60,7 +35,7 @@ function M.func(translation, env)
 
     local code_len = #code
 
-    -- Outside the active range (2–6): pass through without reordering.
+    -- Outside the active range (2-6): pass through without reordering.
     if code_len < 2 or code_len > 6 then
         for cand in translation:iter() do
             yield(cand)
@@ -148,7 +123,6 @@ function M.func(translation, env)
     local idx = 0
     ---@type "unknown"|"passthrough"|"grouping"
     local mode = "unknown"
-    local grouped_cnt = 0
 
     for cand in translation:iter() do
         idx = idx + 1
@@ -158,7 +132,7 @@ function M.func(translation, env)
             emit(cand)
         elseif idx == 2 and mode == "unknown" then
             -- Decide mode based on the second candidate's type.
-            if is_table_type(cand) then
+            if wanxiang.is_table_type_candidate(cand) then
                 -- Second candidate is table-type: no reordering needed.
                 mode = "passthrough"
                 emit(cand)
@@ -168,19 +142,16 @@ function M.func(translation, env)
                 normal_buf[#normal_buf + 1] = cand
                 try_flush_page_sort(false)
             end
+        elseif mode == "passthrough" then
+            emit(cand)
         else
-            if mode == "passthrough" then
-                emit(cand)
+            -- Grouping mode: classify and buffer the candidate.
+            if wanxiang.is_table_type_candidate(cand) and not wanxiang.has_ascii_letter(cand.text) then
+                special_buf[#special_buf + 1] = cand
             else
-                -- Grouping mode: classify and buffer the candidate.
-                grouped_cnt = grouped_cnt + 1
-                if is_table_type(cand) and not has_english_token_fast(cand.text) then
-                    special_buf[#special_buf + 1] = cand
-                else
-                    normal_buf[#normal_buf + 1] = cand
-                end
-                try_flush_page_sort(false)
+                normal_buf[#normal_buf + 1] = cand
             end
+            try_flush_page_sort(false)
         end
     end
 

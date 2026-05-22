@@ -6,8 +6,8 @@
 ---@class CharsetFilter
 ---@field options string[]|true
 ---@field base_set table<string, boolean>
----@field add table<integer, boolean>
----@field ban table<integer, boolean>
+---@field blacklist table<integer, boolean>
+---@field whitelist table<integer, boolean>
 
 ---@class CharsetFilterConfig
 ---@field filters CharsetFilter[]
@@ -24,7 +24,7 @@
 
 local wanxiang = require("wanxiang.wanxiang")
 
--- 检查交集
+---Whether any character of `db_attr` is a key in `config_base_set`.
 ---@param db_attr string
 ---@param config_base_set table<string, boolean>
 ---@return boolean
@@ -38,7 +38,8 @@ local function check_intersection(db_attr, config_base_set)
     return false
 end
 
--- 核心判定逻辑：检查单个 codepoint 是否在允许的字符集中（支持多开关并集）
+---Core decision: whether `codepoint` is in any allowed charset, taking the
+---union over all currently active rules (multi-switch support).
 ---@param codepoint integer
 ---@param config CharsetFilterConfig
 ---@param state CharsetFilterState
@@ -51,7 +52,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
     local is_allowed = false
 
     for _, rule in ipairs(config.filters) do
-        -- 检查当前规则开关是否开启
+        -- Check whether this rule's switch is on.
         if rule.options ~= true then
             local is_rule_active = false
             ---@diagnostic disable-next-line: param-type-mismatch
@@ -68,14 +69,13 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
 
         active_options_count = active_options_count + 1
 
-        -- 1. 黑名单一票否决
-        if rule.ban[codepoint] then
+        if rule.whitelist[codepoint] then
             return false
         end
 
-        -- 2. Base 和 白名单取并集
+        -- Take the union of base set and whitelist.
         if not is_allowed then
-            if rule.add[codepoint] then
+            if rule.blacklist[codepoint] then
                 is_allowed = true
             else
                 local attr = state.db_memo[char]
@@ -93,7 +93,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
         ::continue::
     end
 
-    -- 如果没有任何规则开启，默认全放行
+    -- No rule active: pass through by default.
     if active_options_count == 0 then
         return true
     end
@@ -101,7 +101,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
     return is_allowed
 end
 
----严格检查整个文本（单字/词组）是否完全符合字符集
+---Strict check: whether the entire text (single character or phrase) fully matches the active charset.
 ---@param text string
 ---@param config CharsetFilterConfig
 ---@param state CharsetFilterState
@@ -113,14 +113,16 @@ local function is_text_in_charset(text, config, state, ctx)
     end
     for _, codepoint in utf8.codes(text) do
         if wanxiang.is_chinese_codepoint(codepoint) then
+            -- Reject as soon as we hit any uncommon/blacklisted character.
             if not is_codepoint_in_charset(codepoint, config, state, ctx) then
-                return false -- 只要遇到一个生僻字/黑名单字，直接返回 false
+                return false
             end
         end
     end
     return true
 end
 
+---Whether the current segment should bypass charset filtering.
 ---@param context Context
 ---@return boolean
 local function should_skip_filter(context)
@@ -133,9 +135,8 @@ local function should_skip_filter(context)
         return false
     end
 
-    return seg:has_tag("unicode") -- unicode.lua 输出 Unicode 字符 U+小写字母或数字
-        or seg:has_tag("punct") -- 标点符号 全角半角提示
-        or seg:has_tag("wanxiang_reverse")
+    -- Skip Unicode-output, punctuation, and reverse-lookup segments.
+    return seg:has_tag("unicode") or seg:has_tag("punct") or seg:has_tag("wanxiang_reverse")
 end
 
 local M = {}
@@ -212,26 +213,26 @@ function M.init(env)
                 end
 
                 ---@type table<integer, boolean>
-                local rule_add = {}
+                local rule_whitelist = {}
                 local whitelist_cfg = filter_map:get("whitelist")
                 local whitelist_list = whitelist_cfg and whitelist_cfg:get_list()
                 if whitelist_list then
-                    load_list_to_map(whitelist_list, rule_add)
+                    load_list_to_map(whitelist_list, rule_whitelist)
                 end
 
                 ---@type table<integer, boolean>
-                local rule_ban = {}
+                local rule_blacklist = {}
                 local blacklist_cfg = filter_map:get("blacklist")
                 local blacklist_list = blacklist_cfg and blacklist_cfg:get_list()
                 if blacklist_list then
-                    load_list_to_map(blacklist_list, rule_ban)
+                    load_list_to_map(blacklist_list, rule_blacklist)
                 end
 
                 filters[#filters + 1] = {
                     options = always_on or options,
                     base_set = rule_base_set,
-                    add = rule_add,
-                    ban = rule_ban,
+                    whitelist = rule_whitelist,
+                    blacklist = rule_blacklist,
                 }
             end
             ::continue::
@@ -267,7 +268,7 @@ function M.func(input, env)
     local code = context.input
     local comp = context.composition
 
-    -- 1. 维护历史输入字典
+    -- Maintain the input-history dictionary.
     if code == "" or comp:empty() then
         state.phrase_history_dict = {}
     else
@@ -279,13 +280,14 @@ function M.func(input, env)
         end
     end
 
-    -- 2. 判断当前是否需要开启字符集过滤
+    -- Decide whether charset filtering applies to the current input.
     local charset_active = #config.filters > 0 and not should_skip_filter(context)
 
-    -- 3. 遍历候选词
-    local has_recorded_history = false -- 只有第一个有效产出的词才记入历史
+    -- Walk the candidate list.
+    -- Only the first valid candidate is recorded in history.
+    local has_recorded_history = false
 
-    ---记录第一个合法词并推入管道
+    ---Record the first valid candidate and yield it.
     ---@param cand Candidate
     ---@param text string
     local function yield_and_record(cand, text)
@@ -299,35 +301,35 @@ function M.func(input, env)
     for cand in input:iter() do
         local text = cand.text
 
-        -- 如果未开启过滤，直接放行并记录历史
+        -- Filtering disabled: pass through and record.
         if not charset_active or text == "" then
             yield_and_record(cand, text)
             goto continue
         end
 
         local text_length = utf8.len(text)
-        -- 判断文本（无论单字还是词组）是否合规
+        -- Validate the entire text (single character or phrase).
         local is_text_valid = is_text_in_charset(text, config, state, context)
         if text_length < 2 then
-            -- 【单字逻辑】如果不符合就直接丢弃，不执行兜底
+            -- Single character: drop on mismatch, no fallback.
             if is_text_valid then
                 yield_and_record(cand, text)
             end
             goto continue
         end
 
-        -- 【词组逻辑】
+        -- Phrase logic.
         if is_text_valid then
-            -- 不含生僻字，直接放行
+            -- No uncommon characters: pass through.
             yield_and_record(cand, text)
             goto continue
         end
 
-        -- 含有生僻字，开始词组兜底
+        -- Phrase contains an uncommon character: try to substitute from history.
         local fallback_text = nil
         local current_code_length = #code
 
-        -- 从 current_code_length 开始找，否则会错过刚打出来的首选词
+        -- Search starting at current_code_length so the just-typed candidate is also considered.
         for history_length = current_code_length, 1, -1 do
             local history_text = state.phrase_history_dict[history_length]
             if history_text and utf8.len(history_text) == text_length then
@@ -339,7 +341,7 @@ function M.func(input, env)
             goto continue
         end
 
-        -- 构造兜底候选
+        -- Construct the fallback candidate.
         local preedit_text = cand.preedit or code
         if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
             preedit_text = preedit_text:sub(1, -2) .. " " .. preedit_text:sub(-1)
@@ -348,7 +350,7 @@ function M.func(input, env)
         local new_cand = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment or "")
         new_cand.preedit = preedit_text
 
-        -- 验证兜底词自身绝对不含生僻字
+        -- Verify the fallback itself contains no uncommon characters.
         if is_text_in_charset(new_cand.text, config, state, context) then
             yield_and_record(new_cand, new_cand.text)
         end

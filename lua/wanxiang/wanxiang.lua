@@ -10,16 +10,16 @@ M.version = "v0.5.0-beta.1"
 
 ---@alias PROCESS_RESULT ProcessResult
 M.RIME_PROCESS_RESULTS = {
-    kRejected = 0, -- 表示处理器明确拒绝了这个按键，停止处理链但不返回 true
-    kAccepted = 1, -- 表示处理器成功处理了这个按键，停止处理链并返回 true
-    kNoop = 2, -- 表示处理器没有处理这个按键，继续传递给下一个处理器
+    kRejected = 0, -- The processor explicitly rejects this key; halt the chain but do not return true.
+    kAccepted = 1, -- The processor handled this key; halt the chain and return true.
+    kNoop = 2, -- The processor did not handle this key; pass it on to the next processor.
 }
 
--- 整个生命周期内不变，缓存判断结果
+-- Cached for the lifetime of the process; the result never changes.
 ---@type boolean?
 local is_mobile_device = nil
 
----辅助函数：检测路径是否为绝对路径（以 / 或盘符开头）
+---Whether `path` is an absolute path (starts with `/`, `\`, or a Windows drive letter).
 ---@param path string
 ---@return boolean
 local function is_absolute_path(path)
@@ -35,20 +35,20 @@ local function is_absolute_path(path)
     return false
 end
 
--- 判断是否为手机设备
+---Whether the current process is running on a mobile device.
 ---@return boolean
 function M.is_mobile_device()
     local function _is_mobile_device()
         local dist = rime_api.get_distribution_code_name()
         local user_data_dir = rime_api.get_user_data_dir()
 
-        -- 主判断：常见移动端输入法
+        -- Primary signal: well-known mobile distributions.
         local lower_dist = dist:lower()
         if lower_dist == "trime" or lower_dist == "hamster" or lower_dist == "hamster3" then
             return true
         end
 
-        -- 补充判断：路径中包含移动设备特征
+        -- Secondary signal: mobile-flavoured user data paths.
         local lower_path = user_data_dir:lower()
         if
             lower_path:find("/android/")
@@ -60,7 +60,7 @@ function M.is_mobile_device()
             return true
         end
 
-        -- 特定平台判断（Android/Linux）
+        -- Platform check via LuaJIT (Android/Linux).
         ---@diagnostic disable: undefined-global
         if jit and jit.os then
             if jit.os:lower():find("android") then
@@ -69,7 +69,6 @@ function M.is_mobile_device()
         end
         ---@diagnostic enable: undefined-global
 
-        -- 所有检查未通过则默认为桌面设备
         return false
     end
 
@@ -85,7 +84,7 @@ function M.is_pro_schema(env)
     return env.engine.schema.schema_id == "wanxiang_pro"
 end
 
--- 以 `tag` 方式检测是否处于反查模式
+-- `tag`-based detection for reverse-lookup mode.
 ---@param env Env
 ---@return boolean
 function M.is_reverse_lookup_mode(env)
@@ -93,7 +92,7 @@ function M.is_reverse_lookup_mode(env)
     return seg and (seg:has_tag("wanxiang_reverse")) or false
 end
 
----判断是否在命令模式
+---Whether the context is in function/command mode.
 ---@param context Context
 ---@return boolean
 function M.is_function_mode_active(context)
@@ -106,7 +105,27 @@ function M.is_function_mode_active(context)
         return false
     end
 
-    return seg:has_tag("unicode") -- unicode.lua 输出 Unicode 字符 U+小写字母或数字
+    -- The unicode translator emits `U+<hex>` candidates under this tag.
+    return seg:has_tag("unicode")
+end
+
+---Check whether `key` matches `shortcut`.
+---Matches against both `key:repr()` and the literal printable character, so configs can be written
+---either as e.g. `"semicolon"` or `";"`.
+---@param key KeyEvent
+---@param shortcut string?
+---@return boolean
+function M.key_matches(key, shortcut)
+    if not shortcut then
+        return false
+    end
+    if key:repr() == shortcut then
+        return true
+    end
+    if key.keycode >= 0x20 and key.keycode <= 0x7E and string.char(key.keycode) == shortcut then
+        return true
+    end
+    return false
 end
 
 ---@param codepoint integer
@@ -131,12 +150,34 @@ function M.is_chinese_char(char)
     return M.is_chinese_codepoint(utf8.codepoint(char))
 end
 
+---Byte-level scan for ASCII letters (A-Z, a-z).
+---Returns true as soon as any letter byte is found.
+---@param s string
+---@return boolean
+function M.has_ascii_letter(s)
+    for i = 1, #s do
+        local b = s:byte(i)
+        if (b >= 0x41 and b <= 0x5A) or (b >= 0x61 and b <= 0x7A) then
+            return true
+        end
+    end
+    return false
+end
+
+---Check whether a candidate originates from the table, user_table, or fixed translators.
+---@param cand Candidate
+---@return boolean
+function M.is_table_type_candidate(cand)
+    local t = cand.type
+    return t == "table" or t == "user_table" or t == "fixed"
+end
+
 ---@return number
 function M.now()
     return rime_api.get_time_ms() / 1000
 end
 
----判断文件是否存在
+---Whether `filename` exists and is readable.
 ---@param filename string
 ---@return boolean
 function M.file_exists(filename)
@@ -149,7 +190,8 @@ function M.file_exists(filename)
     end
 end
 
----按照优先顺序获取文件：用户目录 > 系统目录
+---Resolve `filename` against the user data dir first, then the shared data dir.
+---Returns the first path that exists, or nil if neither does.
 ---@param filename string
 ---@return string?
 function M.get_filename_with_fallback(filename)
@@ -177,13 +219,13 @@ function M.get_filename_with_fallback(filename)
     return nil
 end
 
--- 按照优先顺序加载文件：用户目录 > 系统目录
----@param filename string 相对路径
----@param mode iolib.OpenMode
+---Open a file searching the user data dir first, then the shared data dir.
+---@param filename string Relative path under the data dir.
+---@param mode? iolib.OpenMode
 ---@return file? file
 ---@return string? err
 function M.load_file_with_fallback(filename, mode)
-    mode = mode or "r" -- 默认读取模式
+    mode = mode or "r"
 
     local _filename = M.get_filename_with_fallback(filename)
 
@@ -199,8 +241,8 @@ end
 
 local USER_ID_DEFAULT = "unknown"
 
----作为「小狼毫」和「仓」 `rime_api.get_user_id()` 的一个 workaround
----详见：
+---Workaround for `rime_api.get_user_id()` returning "unknown" on Weasel and Cang.
+---See:
 ---1. https://github.com/rime/weasel/pull/1649
 ---2. https://github.com/rime/librime/issues/1038
 ---TODO: Fixed in https://github.com/rime/weasel/pull/1653. Remove this workaround when next release includes that fix.

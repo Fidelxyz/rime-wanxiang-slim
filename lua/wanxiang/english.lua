@@ -69,7 +69,7 @@ local allowed_ascii_symbols = {
     [57] = true,
 }
 
--- 必须包含至少一个英文字母，否则纯数字/符号直接返回 false
+-- Must contain at least one English letter; pure digits/symbols return false.
 ---@param s string
 ---@return boolean
 local function is_english_phrase(s)
@@ -426,7 +426,7 @@ function F.func(input, env)
     local best_candidate_saved = false
     local code_len = #code
 
-    -- 强制英文造词
+    -- Forced English word creation: trailing `\\` triggers a raw English commit.
     if code_len > 2 and code:sub(-2) == config.user_dict_trigger .. config.user_dict_trigger then
         local raw_text = code:sub(1, code_len - 2)
         if is_english_phrase(raw_text) then
@@ -478,7 +478,7 @@ function F.func(input, env)
     end
 
     local eng_yield_count = 0
-    -- 如果存在单字母派生，预先将这两个候选计入配额
+    -- If single-letter derivation candidates exist, count them against the quota up front.
     if next(single_chars) ~= nil then
         eng_yield_count = 2
     end
@@ -489,7 +489,7 @@ function F.func(input, env)
         local c_type = cand.type
         local raw_text = cand.text
 
-        -- [垃圾词判定]：保护符号，只去重单字母
+        -- Junk filter: skip raw segments and dedupe single-letter candidates.
         if (c_type == "raw") or (code_len == 1 and has_letters(code) and raw_text:lower() == code:lower()) then
             goto continue
         end
@@ -497,10 +497,10 @@ function F.func(input, env)
         local skip_cand = false
         local is_ascii = is_english_phrase(raw_text)
 
-        -- [前置判断]
+        -- Pre-checks.
         if is_ascii then
             if c_type == "user_phrase" or c_type == "user_table" then
-                -- 命中用户自定义词库(纯英文)，直接放行
+                -- Hits a user-defined dictionary entry (pure English): always pass through.
             elseif config.max_eng_cands > 0 and eng_yield_count >= config.max_eng_cands then
                 skip_cand = true
             else
@@ -509,7 +509,7 @@ function F.func(input, env)
         end
 
         if skip_cand then
-            -- 即使当前的词被丢弃，也要确保单字母（若存在）成功插队输出
+            -- Even when this candidate is dropped, ensure single-letter (if present) gets injected.
             if single_chars[1] and not single_char_injected then
                 if not best_candidate_saved then
                     state.memory[code] = { text = single_chars[1].text, preedit = code }
@@ -548,7 +548,7 @@ function F.func(input, env)
         has_valid_candidate = true
 
         if fmt_cand.type == "user_table" or fmt_cand.type == "fixed" or fmt_cand.type == "phrase" or not is_ascii then
-            -- 直接输出user_table、汉字等，不让单字母插队
+            -- Emit user_table, Chinese candidates etc. directly; do not let single-letter cut in.
             if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
                 state.memory[code] = {
                     text = fmt_cand.text,
@@ -560,7 +560,7 @@ function F.func(input, env)
             goto continue
         end
 
-        -- 允许单字母插队到前面
+        -- Allow single-letter to cut in front of regular ASCII candidates.
         if single_chars[1] and not single_char_injected then
             if not best_candidate_saved then
                 state.memory[code] = { text = single_chars[1].text, preedit = code }
@@ -589,12 +589,12 @@ function F.func(input, env)
         return
     end
 
-    -- 只有在 wanxiang_english 方案下，才进行英文的回溯派生逻辑
+    -- Backtrack-derivation only applies to the wanxiang_english schema.
     if env.engine.schema.schema_id ~= "wanxiang_english" or not has_letters(code) then
         return
     end
 
-    -- 历史回溯构造 & 统一兜底
+    -- History-based reconstruction & generic fallback.
     ---@type { text: string, preedit: string }?
     local anchor = nil
     local diff = ""
@@ -611,7 +611,7 @@ function F.func(input, env)
     end
 
     if is_english_phrase(anchor.text) then
-        -- 纯英文模式（含逗号等）
+        -- Pure English mode (allows commas etc.).
         local has_spacing = anchor.text:find(" ")
         local last_word = anchor.text:match("(%S+)%s*$") or ""
         local last_len = #last_word

@@ -9,19 +9,15 @@ local TONE_DISPLAY = {
     ["0"] = "⁴",
 }
 
---- Replace tone digits with superscript in a preedit string.
---- Only replaces digits that follow non-digit non-space characters.
+---Replace tone digits with superscript in a preedit string.
+---Only digits that follow non-digit, non-space characters are replaced.
 ---@param preedit string
 ---@return string
 local function map_tone_digits(preedit)
-    return (
-        preedit:gsub("([^%d%s]+)(%d+)", function(body, digits)
-            local mapped = digits:gsub("%d", function(d)
-                return TONE_DISPLAY[d] or d
-            end)
-            return body .. mapped
-        end)
-    )
+    local mapped = preedit:gsub("([^%d%s]+)(%d+)", function(body, digits)
+        return body .. (digits:gsub("%d", TONE_DISPLAY))
+    end)
+    return mapped
 end
 
 local F = {}
@@ -29,10 +25,9 @@ local F = {}
 ---@param input Translation
 ---@param env Env
 function F.func(input, env)
-    local context = env.engine.context
-    local input_str = context.input or ""
+    local input_str = env.engine.context.input
 
-    -- Skip if input contains consecutive digits
+    -- Skip if the raw input contains consecutive digits (likely codes, not tone marks).
     if input_str:match("%d%d") then
         for cand in input:iter() do
             yield(cand)
@@ -43,16 +38,13 @@ function F.func(input, env)
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
 
-        -- Skip if candidate is pure English
+        -- Skip pure-English candidates.
         if genuine_cand.text:match("^[%a%p%s]+$") then
             yield(genuine_cand)
-            goto continue
+        else
+            genuine_cand.preedit = map_tone_digits(genuine_cand.preedit)
+            yield(genuine_cand)
         end
-
-        genuine_cand.preedit = map_tone_digits(genuine_cand.preedit)
-
-        yield(genuine_cand)
-        ::continue::
     end
 end
 

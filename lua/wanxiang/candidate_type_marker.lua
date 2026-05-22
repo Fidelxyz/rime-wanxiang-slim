@@ -1,5 +1,5 @@
----Appends candidate type markers to candidate comments. Symbols are defined per candidate type and are appended once
----to the genuine candidate's comment.
+---Appends candidate type markers to candidate comments. Symbols are defined
+---per candidate type and are appended once to the genuine candidate's comment.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -10,22 +10,18 @@
 ---@class Env
 ---@field candidate_type_marker_config CandidateTypeMarkerConfig?
 
----Append the type symbol for a single candidate's type to its genuine comment.
----Skips when the symbol is empty, the comment is "~", or the symbol is already
----present at the end of the comment.
+---Append the configured type symbol for `cand` to its genuine comment.
+---No-op when no symbol is configured for the candidate's type.
 ---@param cand Candidate
 ---@param config CandidateTypeMarkerConfig
----@return Candidate
 local function append_type_symbol(cand, config)
     local symbol = config.types[cand.type]
     if not symbol or symbol == "" then
-        return cand
+        return
     end
 
     local genuine = cand:get_genuine()
     genuine.comment = genuine.comment .. symbol
-
-    return cand
 end
 
 local M = {}
@@ -57,8 +53,6 @@ function M.fini(env)
     env.candidate_type_marker_config = nil
 end
 
----For each candidate, append the configured type symbol to its comment, then
----yield the result.
 ---@param translation Translation
 ---@param env Env
 function M.func(translation, env)
@@ -66,7 +60,8 @@ function M.func(translation, env)
     assert(config)
 
     for cand in translation:iter() do
-        yield(append_type_symbol(cand, config))
+        append_type_symbol(cand, config)
+        yield(cand)
     end
 end
 

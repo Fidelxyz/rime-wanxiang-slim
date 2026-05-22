@@ -1,5 +1,5 @@
----Selects and commits only the first or last character of the current candidate phrase based on configured shortcut
----keys.
+---Selects and commits only the first or last character of the current candidate phrase based on configured
+---shortcut keys.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -27,39 +27,32 @@ local function apply_character_selector(key, config, env, ctx)
         return false
     end
 
-    local repr = key:repr()
-    local ch = (key.keycode >= 0x20 and key.keycode <= 0x7E) and string.char(key.keycode) or nil
-
-    local select_first = config.select_first_key and (repr == config.select_first_key or ch == config.select_first_key)
-    local select_last = config.select_last_key and (repr == config.select_last_key or ch == config.select_last_key)
+    local select_first = wanxiang.key_matches(key, config.select_first_key)
+    local select_last = wanxiang.key_matches(key, config.select_last_key)
     if not select_first and not select_last then
         return false
     end
 
-    local text = ctx.input
     local cand = ctx:get_selected_candidate()
-    if cand then
-        text = cand.text
-    end
-
+    local text = cand and cand.text or ctx.input
     if text == "" then
         return false
     end
 
-    -- 执行上屏
+    ---@type string
+    local commit_text
     if select_first then
-        -- 上屏第一个字 (sub: 1 到 第二个字偏移量-1；单字时直接上屏)
+        -- First character: bytes 1 .. (offset of the 2nd character - 1); single-char text commits whole.
         local second_offset = utf8.offset(text, 2)
-        env.engine:commit_text(second_offset and text:sub(1, second_offset - 1) or text)
-        ctx:clear()
-        return true
-    elseif select_last then
-        -- 上屏最后一个字 (sub: 最后一个字偏移量)
-        env.engine:commit_text(text:sub(utf8.offset(text, -1)))
-        ctx:clear()
-        return true
+        commit_text = second_offset and text:sub(1, second_offset - 1) or text
+    else
+        -- Last character: from the offset of the last character to the end of the string.
+        commit_text = text:sub(utf8.offset(text, -1))
     end
-    return false
+
+    env.engine:commit_text(commit_text)
+    ctx:clear()
+    return true
 end
 
 local P = {}
@@ -91,7 +84,7 @@ end
 
 ---@param key KeyEvent
 ---@param env Env
----@return integer
+---@return ProcessResult
 function P.func(key, env)
     local context = env.engine.context
 

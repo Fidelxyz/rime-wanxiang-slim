@@ -1,16 +1,17 @@
----Provides a memory-safe wrapper and object pool for Rime UserDb, offering utility methods for meta-data operations
----and memory-managed queries.
+---Provides a memory-safe wrapper and object pool for Rime UserDb, offering
+---utility methods for meta-data operations and memory-managed queries.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 local META_KEY_PREFIX = "\001" .. "/"
 
--- UserDb 缓存，使用弱引用表，不阻止垃圾回收并能自动清理
--- Does not need to close manually, as the garbage collector will handle it when there are no more references to the UserDb object.
+-- UserDb cache. Uses a weak-value table so the GC can reclaim entries when
+-- nothing else holds a reference. UserDb instances do not need explicit
+-- closing; the GC closes them on collection.
 ---@type table<string, UserDb>
 local db_pool = setmetatable({}, { __mode = "v" })
 
--- 用于存放包装器对象的自定义方法
+-- Custom methods exposed on the wrapper object.
 ---@class WrappedUserDb: UserDb
 ---@field _db UserDb
 ---@field meta_fetch fun(self: self, key: string): string|nil
@@ -31,6 +32,9 @@ function WrappedUserDb:meta_update(key, value)
     return self._db:update(META_KEY_PREFIX .. key, value)
 end
 
+---Iterate entries with `prefix`, calling `handler(key, value)` for each.
+---Forces a GC cycle afterwards to release the DbAccessor's underlying
+---resources promptly.
 ---@param prefix string
 ---@param handler fun(key: string, value: string)
 function WrappedUserDb:query_with(prefix, handler)
@@ -41,7 +45,7 @@ function WrappedUserDb:query_with(prefix, handler)
         end
     end
     da = nil
-    collectgarbage() -- Release DbAccessor
+    collectgarbage()
 end
 
 local metatable = {
@@ -49,12 +53,13 @@ local metatable = {
     ---@param key string
     ---@return any
     __index = function(wrapper, key)
-        -- 优先使用自定义方法
+        -- Custom methods take precedence.
         if WrappedUserDb[key] then
             return WrappedUserDb[key]
         end
 
-        -- 不是自定义方法，委托给真实的 UserDb 对象
+        -- Otherwise delegate to the underlying UserDb. Methods are rebound to
+        -- the real db so calls like `wrapper:fetch(...)` work transparently.
         local real_db = wrapper._db
         ---@type any
         local value = real_db[key]

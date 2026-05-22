@@ -1,5 +1,6 @@
----Provides context-aware key bindings by evaluating regular expressions against the current input string to determine
----if a key sequence should be redirected.
+---Provides context-aware key bindings by evaluating regular expressions
+---against the current input string to determine if a key sequence should be
+---redirected.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -21,7 +22,7 @@ local wanxiang = require("wanxiang.wanxiang")
 ---@field key_binder_config KeyBinderConfig?
 ---@field key_binder_state KeyBinderState?
 
----解析配置文件中的按键绑定配置
+---Parse a single key-binding entry from the schema config.
 ---@param value ConfigMap
 ---@return Binding?
 local function parse_binding(value)
@@ -43,7 +44,11 @@ local function parse_binding(value)
     end
     local send_sequence = send_sequence_val:get_string()
 
-    return { match = match, accept = KeyEvent(accept), send_sequence = KeySequence(send_sequence) }
+    return {
+        match = match,
+        accept = KeyEvent(accept),
+        send_sequence = KeySequence(send_sequence),
+    }
 end
 
 local M = {}
@@ -54,28 +59,17 @@ function M.init(env)
     local bindings = {}
 
     local cfg_bindings = env.engine.schema.config:get_list("key_binder/bindings")
-    if not cfg_bindings then
-        return
-    end
-
-    for i = 1, cfg_bindings.size do
-        local item = cfg_bindings:get_at(i - 1)
-        if not item then
-            goto continue
+    if cfg_bindings then
+        for i = 0, cfg_bindings.size - 1 do
+            local item = cfg_bindings:get_at(i)
+            local value = item and item:get_map()
+            if value then
+                local binding = parse_binding(value)
+                if binding then
+                    bindings[#bindings + 1] = binding
+                end
+            end
         end
-
-        local value = item:get_map()
-        if not value then
-            goto continue
-        end
-
-        local binding = parse_binding(value)
-        if not binding then
-            goto continue
-        end
-
-        bindings[#bindings + 1] = binding
-        ::continue::
     end
 
     env.key_binder_config = {
@@ -102,19 +96,20 @@ function M.func(key_event, env)
     local state = env.key_binder_state
     assert(state)
 
-    local input = env.engine.context.input
-
+    -- Avoid infinite recursion when we are mid-replay.
     if state.redirecting then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
-    local segment = env.engine.context.composition:back()
+    local context = env.engine.context
+    local segment = context.composition:back()
     if not segment or not segment:has_tag("abc") then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
 
+    local input = context.input
     for _, binding in ipairs(config.bindings) do
-        -- 只有当按键和当前输入的模式都匹配的时候，才起作用
+        -- A binding fires only when both the key and the input pattern match.
         if key_event:eq(binding.accept) and rime_api.regex_match(input, binding.match) then
             state.redirecting = true
             for _, event in ipairs(binding.send_sequence:toKeyEvent()) do
