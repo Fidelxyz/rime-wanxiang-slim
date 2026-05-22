@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0-beta.3](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0-beta.2...v0.5.0-beta.3) (2026-05-22)
+
+
+### Bug Fixes
+
+* fix incorrect `config_version` ([4bb52a7](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/4bb52a791ef702bb3e56bbd3d2679707d8f7fc49))
+
 ## [0.5.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0-beta.1...v0.5.0-beta.2) (2026-05-22)
 
 
