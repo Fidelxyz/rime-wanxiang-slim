@@ -387,12 +387,7 @@ function M.func(input, env)
         elseif is_toneless_comment then
             final_comment = remove_pinyin_tone(get_aux_comment(cand, initial_comment, config, context))
         else
-            -- TODO: Ugly hack
-            if initial_comment:find("~") or initial_comment:find("\226\152\175") then --保留尾部临时英文标记和太极标记
-                final_comment = initial_comment
-            else
-                final_comment = ""
-            end
+            final_comment = ""
         end
 
         -- 错音错字提示
