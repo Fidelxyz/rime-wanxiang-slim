@@ -1,7 +1,10 @@
--- librime-lua 官方类型提示
--- ⚠️ 仅用于类型提升，请勿直接 require 使用
--- from https://github.com/hchunhui/librime-lua/blob/master/contrib/librime.lua
--- Last Change: LTS
+---Copyright (c) 2021, librime-lua Developers
+---SPDX-License-Identifier: Apache-2.0
+---
+---This file is part of librime-lua.
+---Originally from: https://github.com/hchunhui/librime-lua/blob/master/contrib/librime.lua
+
+-- Last Change: 2025-06-18
 ---@meta rime
 
 --- 全局对象
