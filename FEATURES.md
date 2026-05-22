@@ -92,16 +92,16 @@
 | `wanxiang_algebra.yaml` | 声调数字(7890)到拼音声调的转写规则 |
 | `wanxiang.schema.yaml` | `alphabet` 中 7890、`tone_fallback` 配置段 |
 | `lua/wanxiang/tone_fallback.lua` | 连续声调键压缩处理器 |
-| `lua/wanxiang/preedit_tone.lua` | 声调数字转上标显示（7890 → ¹²³⁴） |
+| `lua/wanxiang/preedit_tone_display.lua` | 声调数字转上标显示（7890 → ¹²³⁴） |
 
-#### 编码音调显示
+#### 编码全拼展开
 
 Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全拼。
 
 | 实现位置 | 说明 |
 |----------|------|
-| `lua/wanxiang/preedit_tone.lua` | 编码区拼音转换与声调显示逻辑 |
-| `wanxiang.schema.yaml` | `tone_display`/`full_pinyin` 开关、Ctrl+S 绑定 |
+| `lua/wanxiang/preedit_pinyin_expander.lua` | 编码区全拼展开逻辑 |
+| `wanxiang.schema.yaml` | `tone_pinyin_code`/`toneless_pinyin_code` 开关、Ctrl+S 绑定 |
 
 ### 反查
 

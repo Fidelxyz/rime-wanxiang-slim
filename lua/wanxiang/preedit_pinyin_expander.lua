@@ -1,21 +1,20 @@
----Preedit tone display: maps tone digits to superscript and optionally converts
----raw input codes to full pinyin (with or without tones) in the preedit area.
+---Converts raw input codes in the preedit area to full pinyin (with or without tones).
 ---
 ---Switches:
----  tone_pinyin_code: Show full pinyin with tones in preedit (e.g. "nh" → "nǐ hǎo")
----  toneless_pinyin_code: Show full pinyin without tones in preedit (e.g. "nh" → "ni hao")
+---  tone_pinyin_code: Show full pinyin with tones (e.g. "nh" → "nǐ hǎo")
+---  toneless_pinyin_code: Show full pinyin without tones (e.g. "nh" → "ni hao")
 ---
----When neither switch is active, only tone digit superscript mapping is applied.
+---When neither switch is active, preedit is passed through unchanged.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@type table<string, string>
-local TONE_SUPERSCRIPT = {
-    ["7"] = "¹",
-    ["8"] = "²",
-    ["9"] = "³",
-    ["0"] = "⁴",
-}
+---@class PreeditPinyinExpanderConfig
+---@field auto_delim string
+---@field manual_delim string
+
+---@diagnostic disable-next-line: duplicate-type
+---@class Env
+---@field preedit_pinyin_expander_config PreeditPinyinExpanderConfig?
 
 ---@type table<string, string>
 local TONE_STRIP_MAP = {
@@ -47,21 +46,6 @@ local TONE_STRIP_MAP = {
     ["ň"] = "n",
     ["ǹ"] = "n",
 }
-
---- Replace tone digits with superscript in a preedit string.
---- Only replaces digits that follow non-digit non-space characters.
----@param preedit string
----@return string
-local function map_tone_digits(preedit)
-    return (
-        preedit:gsub("([^%d%s]+)(%d+)", function(body, digits)
-            local mapped = digits:gsub("%d", function(d)
-                return TONE_SUPERSCRIPT[d] or d
-            end)
-            return body .. mapped
-        end)
-    )
-end
 
 --- Remove pinyin tone marks from a string.
 ---@param s string
@@ -161,54 +145,42 @@ local function convert_preedit_to_pinyin(preedit, comment, auto_delim, manual_de
     return table.concat(parts)
 end
 
----@class PreeditToneConfig
----@field auto_delim string
----@field manual_delim string
-
----@diagnostic disable-next-line: duplicate-type
----@class Env
----@field preedit_tone_config PreeditToneConfig?
-
-local M = {}
+local F = {}
 
 ---@param env Env
-function M.init(env)
+function F.init(env)
     local config = env.engine.schema.config
     local delimiter = config:get_string("speller/delimiter") or " '"
     local auto_delim = delimiter:sub(1, 1)
     local manual_delim = delimiter:sub(2, 2)
 
-    env.preedit_tone_config = {
+    env.preedit_pinyin_expander_config = {
         auto_delim = auto_delim,
         manual_delim = manual_delim,
     }
 end
 
 ---@param env Env
-function M.fini(env)
-    env.preedit_tone_config = nil
+function F.fini(env)
+    env.preedit_pinyin_expander_config = nil
 end
 
 ---@param input Translation
 ---@param env Env
-function M.func(input, env)
-    local config = env.preedit_tone_config
+function F.func(input, env)
+    local config = env.preedit_pinyin_expander_config
     assert(config)
 
     local context = env.engine.context
-    local input_str = context.input or ""
+    local is_tone_pinyin = context:get_option("tone_pinyin_code")
+    local is_toneless_pinyin = context:get_option("toneless_pinyin_code")
 
-    -- Skip if input contains consecutive digits
-    if input_str:match("%d%d") then
+    if not is_tone_pinyin and not is_toneless_pinyin then
         for cand in input:iter() do
             yield(cand)
         end
         return
     end
-
-    local is_tone_display = context:get_option("tone_pinyin_code")
-    local is_full_pinyin = context:get_option("toneless_pinyin_code")
-    local do_pinyin_conversion = is_tone_display or is_full_pinyin
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
@@ -220,19 +192,13 @@ function M.func(input, env)
         end
 
         local preedit = genuine_cand.preedit
-        if preedit ~= "" then
-            if do_pinyin_conversion then
-                local comment = genuine_cand.comment
-                if comment ~= "" then
-                    preedit = convert_preedit_to_pinyin(preedit, comment, config.auto_delim, config.manual_delim)
-                    if is_full_pinyin then
-                        preedit = remove_pinyin_tone(preedit)
-                    end
-                end
+        local comment = genuine_cand.comment
+        if preedit ~= "" and comment ~= "" then
+            preedit = convert_preedit_to_pinyin(preedit, comment, config.auto_delim, config.manual_delim)
+            if is_toneless_pinyin then
+                preedit = remove_pinyin_tone(preedit)
             end
-
-            -- Always apply tone digit superscript mapping
-            genuine_cand.preedit = map_tone_digits(preedit)
+            genuine_cand.preedit = preedit
         end
 
         yield(genuine_cand)
@@ -240,4 +206,4 @@ function M.func(input, env)
     end
 end
 
-return M
+return F
