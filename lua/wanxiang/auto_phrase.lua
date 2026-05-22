@@ -81,12 +81,13 @@ local function commit_handler(ctx, env)
     ---------------------------------------------------
     if raw_input ~= "" and raw_input:sub(-1) == "\\" and is_english_phrase(commit_text) then
         local code_body = raw_input:gsub("\\+$", "")
+        local clean_commit_text = commit_text:gsub("\\+$", "")
         code_body = code_body:gsub("%s+$", "")
-
-        if code_body ~= "" and state.en_memory then
+        if code_body ~= "" and clean_commit_text ~= "" and state.en_memory then
+            ---@param code string
             local function save_entry(code)
                 local entry = DictEntry()
-                entry.text = commit_text
+                entry.text = clean_commit_text
                 entry.weight = 1
                 entry.custom_code = code .. " "
                 state.en_memory:update_userdict(entry, 1, "")

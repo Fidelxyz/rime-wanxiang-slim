@@ -1644,6 +1644,7 @@ AIDS	AIDS
 aie	aie
 aiee	aiee
 AIGC	AIGC
+AI agent	AIagent
 AI Generated Content	AIGC
 aigret	aigret
 aiguillette	aiguillette
@@ -3167,6 +3168,7 @@ anxious	anxious
 anxiously	anxiously
 any	any
 anybody	anybody
+AnyDesk	AnyDesk
 anyhow	anyhow
 anymore	anymore
 anyone	anyone
@@ -8939,6 +8941,9 @@ brushy	brushy
 brusque	brusque
 brusquely	brusquely
 Brussels	Brussels
+matplotlib	matplotlib
+numpy	numpy
+scipy	scipy
 brutal	brutal
 brutalities	brutalities
 brutality	brutality
@@ -15710,6 +15715,7 @@ crofter	crofter
 croissant	croissant
 Croix	Croix
 crom	crom
+Cromite	Cromite
 Cromwell	Cromwell
 Cromwellian	Cromwellian
 cron	cron
@@ -16288,6 +16294,7 @@ cyanogen	cyanogen
 cyanosis	cyanosis
 cyanotype	cyanotype
 cyber	cyber
+Cybertruck	Cybertruck
 cyberculture	cyberculture
 cybernation	cybernation
 cybernetic	cybernetic
@@ -27094,6 +27101,7 @@ genuineness	genuineness
 genus	genus
 geo	geo
 GEO	GEO
+GeoSite	GeoSite
 Generative Engine Optimization	GEO
 geobotany	geobotany
 geocentric	geocentric
@@ -29207,6 +29215,7 @@ happiest	happiest
 happily	happily
 happiness	happiness
 happy	happy
+HappyHorse	HappyHorse
 Hapsburg	Hapsburg
 haptical	haptical
 haraka	haraka
@@ -34128,7 +34137,8 @@ irks	irks
 irksome	irksome
 Irma	Irma
 Iron	Iron
-Iron Fe	Iron Fe
+IronFox	IronFox
+Iron Fe	IronFe
 ironbound	ironbound
 ironclad	ironclad
 ironed	ironed
@@ -40423,6 +40433,8 @@ mimicker	mimicker
 mimicking	mimicking
 mimicry	mimicry
 mimics	mimics
+MiMo	MiMo
+MIMO	MIMO
 mimosa	mimosa
 min	min
 mina	mina
@@ -41733,6 +41745,7 @@ mullah	mullah
 Mullen	Mullen
 muller	muller
 mullet	mullet
+Mullvad	Mullvad
 mulligan	mulligan
 mullion	mullion
 mullioned	mullioned
@@ -42757,7 +42770,7 @@ Newmanize	Newmanize
 Newmanizes	Newmanizes
 newness	newness
 Newport	Newport
-NeWS	NeWS
+news	news
 newsboy	newsboy
 newsbreak	newsbreak
 newscast	newscast
@@ -60552,6 +60565,7 @@ starknet	starknet
 Starlark	Starlark
 starless	starless
 starlet	starlet
+Starlink	Starlink
 starlight	starlight
 starlike	starlike
 starling	starling
@@ -71396,6 +71410,7 @@ zen	zen
 Zen	Zen
 zenana	zenana
 zenith	zenith
+Zen Browser	ZenBrowser
 zenithal	zenithal
 Zennist	Zennist
 zeolite	zeolite

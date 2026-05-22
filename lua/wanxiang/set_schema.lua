@@ -1,10 +1,11 @@
----Provides a utility to dynamically switch the active Pinyin schema by rewriting the configuration file with the selected schema rules.
+---Provides a utility to dynamically switch the active Pinyin schema by rewriting the configuration file with the
+---selected schema rules.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 local wanxiang = require("wanxiang.wanxiang")
 
-local SCHEMA_MAP = {
+local PINYIN_SCHEMAS = {
     ["/pinyin"] = "全拼",
     ["/zrm"] = "自然码",
     ["/znabc"] = "智能ABC",
@@ -19,23 +20,24 @@ local SCHEMA_MAP = {
     ["/hxlong"] = "汉心龙",
 }
 
-local AUX_MAP = {
+local AUX_SCHEMAS = {
     ["/zjf"] = "直接辅助",
     ["/jjf"] = "间接辅助",
 }
 
+---Copies a file from `src` to `dest`, returning whether the copy succeeded.
 ---@param src string
 ---@param dest string
 ---@return boolean
 local function copy_file(src, dest)
-    local fi = io.open(src, "r")
+    local fi = io.open(src, "rb")
     if not fi then
         return false
     end
     local content = fi:read("*a")
     fi:close()
 
-    local fo = io.open(dest, "w")
+    local fo = io.open(dest, "wb")
     if not fo then
         return false
     end
@@ -44,83 +46,119 @@ local function copy_file(src, dest)
     return true
 end
 
+---Ensures a custom file exists in the user data directory, copying its template
+---from the shared (or user) `custom/` directory when missing.
+---@param filename string
+---@param user_dir string
+---@param shared_dir string
+---@return boolean ok true if the destination file exists after this call
+local function ensure_custom_file(filename, user_dir, shared_dir)
+    local dest = user_dir .. "/" .. filename
+    if wanxiang.file_exists(dest) then
+        return true
+    end
+
+    local src = shared_dir .. "/custom/" .. filename
+    if not wanxiang.file_exists(src) then
+        src = user_dir .. "/custom/" .. filename
+    end
+
+    if not wanxiang.file_exists(src) then
+        log.warning("Template custom file not found: " .. src)
+        return false
+    end
+
+    return copy_file(src, dest)
+end
+
+---Reads `custom_file`, applies `transform` to its content, and writes the result
+---back. The write is skipped when `transform` returns `nil`.
 ---@param custom_file string
----@param schema_name string
----@return boolean
-local function set_pinyin_schema(custom_file, schema_name)
+---@param transform fun(content: string): string?
+---@return boolean ok true if the file was successfully updated
+local function update_custom_file(custom_file, transform)
     local f = io.open(custom_file, "r")
     if not f then
         return false
     end
-    ---@type string
     local content = f:read("*a")
     f:close()
 
-    local function new_schema_name(name)
-        if name == "直接辅助" or name == "间接辅助" then
-            return name
-        end
-        return schema_name
-    end
-
-    -- 根据文件名决定替换模式
-    if custom_file:find("wanxiang_reverse") then
-        content = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
-    elseif custom_file:find("wanxiang_mixedcode") then
-        content = content:gsub("(%s*__patch:%s*wanxiang_algebra:/mixed/)%S+", "%1" .. schema_name)
-    elseif custom_file:find("wanxiang%.custom") then
-        content = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
-            return prefix .. new_schema_name(suffix)
-        end)
-    elseif custom_file:find("wanxiang_pro%.custom") then
-        content = content:gsub("(%s*%-%s*wanxiang_algebra:/pro/)(%S+)", function(prefix, suffix)
-            return prefix .. new_schema_name(suffix)
-        end)
+    local new_content = transform(content)
+    if not new_content then
+        return false
     end
 
     f = io.open(custom_file, "w")
     if not f then
         return false
     end
-    f:write(content)
+    f:write(new_content)
     f:close()
     return true
 end
 
+---Rewrites the pinyin algebra reference in a custom file to the given schema.
 ---@param custom_file string
 ---@param schema_name string
----@return boolean
-local function set_aux_schema(custom_file, schema_name)
-    local f = io.open(custom_file, "r")
-    if not f then
-        return false
+---@return boolean ok true if a substitution was made and written
+local function set_pinyin_schema(custom_file, schema_name)
+    ---Returns `name` unchanged when it is an auxiliary schema name; otherwise
+    ---returns the target pinyin schema name.
+    ---@param name string
+    ---@return string
+    local function preserve_aux(name)
+        for _, aux_name in pairs(AUX_SCHEMAS) do
+            if name == aux_name then
+                return name
+            end
+        end
+        return schema_name
     end
 
-    ---@type string
-    local content = f:read("*a")
-    f:close()
+    return update_custom_file(custom_file, function(content)
+        local n = 0
+        if custom_file:find("wanxiang_reverse") then
+            content, n = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
+        elseif custom_file:find("wanxiang_mixedcode") then
+            content, n = content:gsub("(%s*__patch:%s*wanxiang_algebra:/mixed/)%S+", "%1" .. schema_name)
+        elseif custom_file:find("wanxiang%.custom") then
+            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
+                return prefix .. preserve_aux(suffix)
+            end)
+        elseif custom_file:find("wanxiang_pro%.custom") then
+            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/pro/)(%S+)", function(prefix, suffix)
+                return prefix .. preserve_aux(suffix)
+            end)
+        end
 
-    local n1 = 0
-    local n2 = 0
-    content, n1 = content:gsub("(%-+%s*wanxiang_algebra:/pro/)直接辅助(%s*#?.*)", "%1" .. schema_name .. "%2")
-    content, n2 = content:gsub("(%-+%s*wanxiang_algebra:/pro/)间接辅助(%s*#?.*)", "%1" .. schema_name .. "%2")
-    local n = n1 + n2
-
-    if n == 0 then
-        return false
-    end
-
-    local w = io.open(custom_file, "w")
-    if not w then
-        return false
-    end
-
-    w:write(content)
-    w:close()
-    return true
+        if n == 0 then
+            return nil
+        end
+        return content
+    end)
 end
 
----translator 主函数
+---Rewrites the auxiliary code algebra reference in a custom file to the given
+---schema, replacing both direct and indirect aux entries.
+---@param custom_file string
+---@param schema_name string
+---@return boolean ok true if a substitution was made and written
+local function set_aux_schema(custom_file, schema_name)
+    return update_custom_file(custom_file, function(content)
+        local n1, n2
+        content, n1 = content:gsub("(%-+%s*wanxiang_algebra:/pro/)直接辅助(%s*#?.*)", "%1" .. schema_name .. "%2")
+        content, n2 = content:gsub("(%-+%s*wanxiang_algebra:/pro/)间接辅助(%s*#?.*)", "%1" .. schema_name .. "%2")
+
+        if n1 + n2 == 0 then
+            return nil
+        end
+        return content
+    end)
+end
+
+---Rime translator that handles `/`-prefixed schema-switch commands by
+---rewriting the relevant `*.custom.yaml` files and yielding a status candidate.
 ---@param input string
 ---@param seg Segment
 ---@param env Env
@@ -129,9 +167,9 @@ local function translator(input, seg, env)
         return
     end
 
-    local target_aux = AUX_MAP[input]
-    local target_schema = SCHEMA_MAP[input]
-    if not target_aux and not target_schema then
+    local target_aux_schema = AUX_SCHEMAS[input]
+    local target_pinyin_schema = PINYIN_SCHEMAS[input]
+    if not target_aux_schema and not target_pinyin_schema then
         return
     end
 
@@ -143,51 +181,72 @@ local function translator(input, seg, env)
     local main_custom_file_path = user_dir .. "/" .. main_custom_file
     local main_custom_file_exists = wanxiang.file_exists(main_custom_file_path)
 
-    if target_aux then
-        local success = set_aux_schema(main_custom_file_path, target_aux)
+    if target_aux_schema then
+        if not ensure_custom_file(main_custom_file, user_dir, shared_dir) then
+            yield(Candidate("switch", seg.start, seg._end, "〔警告〕未找到模板配置文件。", ""))
+            return
+        end
 
-        local msg = success and ("已切换到〔" .. target_aux .. "〕，请重新部署。")
-            or "未找到可切换的条目。"
+        local success = set_aux_schema(main_custom_file_path, target_aux_schema)
+
+        ---@type string
+        local msg
+        if success then
+            msg = main_custom_file_exists
+                    and ("已切换至〔" .. target_aux_schema .. "〕方案，请重新部署。")
+                or ("已创建新配置并切换至〔" .. target_aux_schema .. "〕方案，请重新部署。")
+        else
+            msg = "〔警告〕未找到可切换的条目。"
+        end
         yield(Candidate("switch", seg.start, seg._end, msg, ""))
         return
     end
 
-    if target_schema then
+    if target_pinyin_schema then
         local files = {
             main_custom_file,
             "wanxiang_mixedcode.custom.yaml",
             "wanxiang_reverse.custom.yaml",
-            "wanxiang_english.custom.yaml",
         }
 
+        ---@type string[]
+        local missing = {}
+        ---@type string[]
+        local unmatched = {}
         for _, filename in ipairs(files) do
-            local src = shared_dir .. "/custom/" .. filename
-            if not wanxiang.file_exists(src) then
-                src = user_dir .. "/custom/" .. filename
+            if not ensure_custom_file(filename, user_dir, shared_dir) then
+                missing[#missing + 1] = filename
+            elseif not set_pinyin_schema(user_dir .. "/" .. filename, target_pinyin_schema) then
+                unmatched[#unmatched + 1] = filename
             end
-
-            local dest = user_dir .. "/" .. filename
-
-            -- Copy custom files from src if they does not exist in the destination
-            if not wanxiang.file_exists(dest) then
-                if not wanxiang.file_exists(src) then
-                    log.warning("Template custom file not found: " .. src)
-                    goto continue
-                end
-
-                if not copy_file(src, dest) then
-                    goto continue
-                end
-            end
-
-            set_pinyin_schema(dest, target_schema)
-
-            ::continue::
         end
 
-        local msg = main_custom_file_exists
-                and ("检测到已有配置，已切换到〔" .. target_schema .. "〕，请手动重新部署。")
-            or ("已创建新配置并切换到〔" .. target_schema .. "〕，请手动重新部署。")
+        ---@type string[]
+        local messages = {}
+        if #missing > 0 then
+            messages[#messages + 1] = "〔警告〕未找到以下模板配置文件：\n"
+                .. table.concat(missing, "\n")
+        end
+        if #unmatched > 0 then
+            messages[#messages + 1] = "〔警告〕在以下配置文件中未找到可切换的条目：\n"
+                .. table.concat(unmatched, "\n")
+        end
+
+        if main_custom_file_exists then
+            messages[#messages + 1] = (
+                "检测到已有配置，已切换至〔"
+                .. target_pinyin_schema
+                .. "〕方案，请手动重新部署。"
+            )
+        else
+            messages[#messages + 1] = (
+                "已创建新配置并切换至〔"
+                .. target_pinyin_schema
+                .. "〕方案，请手动重新部署。"
+            )
+        end
+
+        local msg = table.concat(messages, "\n")
         yield(Candidate("switch", seg.start, seg._end, msg, ""))
     end
 end

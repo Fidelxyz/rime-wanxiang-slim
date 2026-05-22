@@ -171,11 +171,11 @@ translator:
 grammar:
   language: wanxiang-lts-zh-hans
   collocation_max_length: 8
-  collocation_min_length: 3
-  collocation_penalty: -10
-  non_collocation_penalty: -5
+  collocation_min_length: 2
+  collocation_penalty: -15
+  non_collocation_penalty: -1
   weak_collocation_penalty: -100
-  rear_penalty: -5
+  rear_penalty: -10
 
 # 自定义短语
 custom_phrase:
@@ -313,7 +313,6 @@ candidate_type_marker:
     table: ""
     user_table: ""
     completion: ""
-    abbrev: ""
     fallback: "~"
 
 # 以词定字
@@ -374,7 +373,7 @@ charset_filter:
   - option: charset_filter
     base: a
     whitelist:
-      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙"
+      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙頔"
     blacklist: []
   - option: s2t
     base: fa
