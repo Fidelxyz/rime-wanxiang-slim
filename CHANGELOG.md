@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0-beta.1...v0.5.0-beta.2) (2026-05-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* merge v15.11.0 from upstream
+
+### Miscellaneous Chores
+
+* merge v15.11.0 from upstream ([73d188f](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/73d188f76a773e9eaf032a0466bb577a0af717aa))
+
 ## [0.5.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.4.0...v0.5.0-beta.1) (2026-05-21)
 
 
