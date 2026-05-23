@@ -30,11 +30,11 @@
 
 #### 声调辅助筛选
 
-7890 数字键代表一二三四声，支持连续按键自动压缩（改正声调）。
+7890 数字键代表一二三四声，支持连续按键修正声调。
 
 - `wanxiang_algebra.yaml`：声调数字(7890)到拼音声调的转写规则
-- `wanxiang.schema.yaml`：`alphabet` 中 7890、`tone_fallback` 配置段
-- `lua/wanxiang/tone_fallback.lua`：连续声调键压缩处理器
+- `wanxiang.schema.yaml`：`alphabet` 中 7890、`tone_corrector` 配置段
+- `lua/wanxiang/tone_corrector.lua`：声调修正处理器
 - `lua/wanxiang/preedit_tone_display.lua`：声调数字转上标显示（7890 → ¹²³⁴）
 
 #### 编码全拼展开
