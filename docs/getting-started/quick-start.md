@@ -12,7 +12,7 @@ outline: deep
 
 | 命令 | 方案 |
 | --- | --- |
-| `/pinyin` | 全拼 |
+| `/pinyin` | 全拼（不支持辅助码） |
 | `/zrm` | 自然码 |
 | `/znabc` | 智能ABC |
 | `/flypy` | 小鹤双拼 |
