@@ -1,5 +1,5 @@
 ---Copyright (c) 2021, librime-lua Developers
----SPDX-License-Identifier: Apache-2.0
+---SPDX-License-Identifier: BSD-3-Clause
 ---
 ---This file is part of librime-lua.
 ---Originally from: https://github.com/hchunhui/librime-lua/blob/master/contrib/librime.lua
