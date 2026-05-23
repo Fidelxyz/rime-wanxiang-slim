@@ -9,12 +9,10 @@
 -- 3. [Memory] 全量历史缓存，完美解决回删乱码问题
 -- 4. [Construct] 原生优先构造策略 (短词无分词则重置为原生输入)
 -- 5. [Order] 单字母(a/A) 智能插队排序,补齐单字母候选
--- 6. [Limit] 纯英文数量限制，并增加极速防卡顿熔断机制
 
 ---@class EnglishConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field spacing_timeout number
----@field max_eng_cands integer
 ---@field user_dict_trigger string
 ---@field split_pattern string
 ---@field delim_check_pattern string
@@ -326,7 +324,6 @@ function F.init(env)
     local english_spacing_mode = config:get_string("wanxiang_english/english_spacing") or "off"
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
     local lookup_key = config:get_string("lookup_filter/trigger") or "`"
-    local max_eng_cands = config:get_int("wanxiang_english/max_candidates") or 0
 
     local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
     if not user_dict_trigger or user_dict_trigger == "" then
@@ -345,7 +342,6 @@ function F.init(env)
     env.english_config = {
         english_spacing_mode = english_spacing_mode,
         spacing_timeout = spacing_timeout,
-        max_eng_cands = max_eng_cands,
         user_dict_trigger = user_dict_trigger,
         split_pattern = split_pattern,
         delim_check_pattern = delim_check_pattern,
@@ -501,9 +497,6 @@ function F.func(input, env)
         if is_ascii then
             if c_type == "user_phrase" or c_type == "user_table" then
                 -- Hits a user-defined dictionary entry (pure English): always pass through.
-            elseif config.max_eng_cands > 0 and eng_yield_count >= config.max_eng_cands then
-                skip_cand = true
-            else
                 eng_yield_count = eng_yield_count + 1
             end
         end
