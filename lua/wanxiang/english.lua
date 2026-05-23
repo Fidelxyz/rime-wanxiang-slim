@@ -4,7 +4,7 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 -- 核心功能清单:
--- 1. [Format] 语句级英文大写格式化,逐词大小写对应 (look HELLO -> look HELLO)
+-- 1. [Format] 英文大小写格式化，根据首两个字母决定全大写、首字母大写或全小写
 -- 2. [Spacing] 智能语句空格切分，智能单词上屏加空格 (Smart Spacing) 与无损分词还原
 -- 3. [Memory] 全量历史缓存，完美解决回删乱码问题
 -- 4. [Construct] 原生优先构造策略 (短词无分词则重置为原生输入)
@@ -204,44 +204,14 @@ end
 ---@param text string
 ---@param input_code string
 ---@return string
-local function apply_segment_formatting(text, input_code)
-    if input_code == "" then
-        return text
+local function apply_casing(text, input_code)
+    if input_code:find("^%u%u") then
+        return text:upper()
+    elseif input_code:find("^%u") then
+        return (text:gsub("^%a", string.upper))
     end
 
-    ---@type string[]
-    local parts = {}
-    local p_code = 1
-    for word in text:gmatch("%S+") do
-        local out_word = word
-        local clean_word = normalize_word(word)
-        local w_len = #clean_word
-        if w_len > 0 then
-            if word:find("[\128-\255]") then
-                local input_remain = #input_code - p_code + 1
-                if input_remain > 0 then
-                    local check_len = (w_len < input_remain) and w_len or input_remain
-                    p_code = p_code + check_len
-                end
-            else
-                local input_remain = #input_code - p_code + 1
-                if input_remain > 0 then
-                    local check_len = (w_len < input_remain) and w_len or input_remain
-                    local segment = input_code:sub(p_code, p_code + check_len - 1)
-                    local is_pure_alpha = not word:find("[^a-zA-Z]")
-                    if segment:find("^%u%u") and is_pure_alpha then
-                        out_word = word:lower()
-                    elseif segment:find("^%u") then
-                        out_word = word:gsub("^%a", string.upper)
-                    end
-                    ---@type integer
-                    p_code = p_code + check_len
-                end
-            end
-        end
-        parts[#parts + 1] = out_word
-    end
-    return table.concat(parts, " ")
+    return text
 end
 
 ---@param cand Candidate
@@ -262,7 +232,7 @@ local function apply_formatting(cand, code_ctx)
     end
 
     if is_english_phrase(text) then
-        local new_text = apply_segment_formatting(text, code_ctx.raw_input)
+        local new_text = apply_casing(text, code_ctx.raw_input)
         if new_text ~= text then
             text = new_text
             changed = true
@@ -620,7 +590,7 @@ function F.func(input, env)
             output_text = code
         end
 
-        output_text = apply_segment_formatting(output_text, code)
+        output_text = apply_casing(output_text, code)
         local cand = Candidate("fallback", 0, #code, output_text, "")
         cand.preedit = output_text
         cand.quality = 999
