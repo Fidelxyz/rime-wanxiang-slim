@@ -16,7 +16,7 @@
 ---@param config CandidateTypeMarkerConfig
 local function append_type_symbol(cand, config)
     local symbol = config.types[cand.type]
-    if not symbol or symbol == "" then
+    if not symbol then
         return
     end
 
