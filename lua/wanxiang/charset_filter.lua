@@ -5,7 +5,7 @@
 
 ---@class CharsetFilter
 ---@field options string[]|true
----@field base_set table<string, boolean>
+---@field charset table<string, boolean>
 ---@field blacklist table<integer, boolean>
 ---@field whitelist table<integer, boolean>
 
@@ -84,7 +84,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
                     state.db_memo[char] = attr
                 end
 
-                if check_intersection(attr, rule.base_set) then
+                if check_intersection(attr, rule.charset) then
                     is_allowed = true
                 end
             end
@@ -126,10 +126,6 @@ end
 ---@param context Context
 ---@return boolean
 local function should_skip_filter(context)
-    if context.composition:empty() then
-        return false
-    end
-
     local seg = context.composition:back()
     if not seg then
         return false
@@ -189,12 +185,12 @@ function M.init(env)
 
             if always_on or #options > 0 then
                 ---@type table<string, boolean>
-                local rule_base_set = {}
-                local base_val = filter_map:get_value("base")
-                local base = base_val and base_val:get_string()
-                if base then
-                    for j = 1, #base do
-                        rule_base_set[base:sub(j, j)] = true
+                local rule_charset = {}
+                local charset_val = filter_map:get_value("charset")
+                local charset = charset_val and charset_val:get_string()
+                if charset then
+                    for j = 1, #charset do
+                        rule_charset[charset:sub(j, j)] = true
                     end
                 end
 
@@ -230,7 +226,7 @@ function M.init(env)
 
                 filters[#filters + 1] = {
                     options = always_on or options,
-                    base_set = rule_base_set,
+                    charset = rule_charset,
                     whitelist = rule_whitelist,
                     blacklist = rule_blacklist,
                 }
@@ -342,12 +338,12 @@ function M.func(input, env)
         end
 
         -- Construct the fallback candidate.
-        local preedit_text = cand.preedit or code
+        local preedit_text = cand.preedit
         if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
             preedit_text = preedit_text:sub(1, -2) .. " " .. preedit_text:sub(-1)
         end
 
-        local new_cand = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment or "")
+        local new_cand = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment)
         new_cand.preedit = preedit_text
 
         -- Verify the fallback itself contains no uncommon characters.

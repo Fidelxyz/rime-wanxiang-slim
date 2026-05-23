@@ -352,7 +352,7 @@ lookup_filter:
   data_source: [aux, db]
 
 # 字符集过滤
-# base: 基础字符集，可设置多个选项，取并集。
+# charset: 启用的字符集，可设置多个选项，取并集。
 #   a: 通用规范汉字表
 #   b: GB2312
 #   g: GBK
@@ -367,20 +367,20 @@ lookup_filter:
 # whitelist / blacklist: 针对字符的白名单 / 黑名单。
 charset_filter:
   - option: charset_filter
-    base: a
+    charset: a
     whitelist:
       - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙頔"
     blacklist: []
   - option: s2t
-    base: fa
+    charset: fa
     whitelist: []
     blacklist: []
   - option: s2hk
-    base: ha
+    charset: ha
     whitelist: []
     blacklist: []
   - option: s2tw
-    base: ta
+    charset: ta
     whitelist: []
     blacklist: []
 
