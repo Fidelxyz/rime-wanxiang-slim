@@ -95,7 +95,6 @@ engine:
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开（需在 super_comment 前读取原始 comment）
     - lua_filter@*wanxiang.preedit_tone_display  # 声调数字转上标显示
     - lua_filter@*wanxiang.super_comment  # 放其他需要注释处理器后面，会有清空注释的操作，超级注释模块，支持错词提示、辅助码显示，部件组字读音注释
-    - lua_filter@*wanxiang.sentence_filter
     - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.fallback_filter
     - lua_filter@*wanxiang.escape_filter  # 放replacer前面，先进行字符过滤后简繁转换，这样能繁体继承简体权重
