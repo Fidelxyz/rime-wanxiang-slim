@@ -174,7 +174,12 @@ end
 
 ---@return number
 function M.now()
-    return rime_api.get_time_ms() / 1000
+    if rime_api.get_time_ms then
+        return rime_api.get_time_ms() / 1000
+    end
+    -- Fallback to `os.time()` for Weasel which hasn't updated its librime-lua to include `rime_api.get_time_ms()`.
+    -- TODO: Remove this fallback on Weasel's next release.
+    return os.time()
 end
 
 ---Whether `filename` exists and is readable.
