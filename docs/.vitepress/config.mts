@@ -28,19 +28,19 @@ export default defineConfig({
         ],
       },
       {
-        text: "自定义",
-        items: [
-          { text: "Rime 定制指南", link: "/customization/rime" },
-          { text: "自定义词库", link: "/customization/dictionaries" },
-        ],
-      },
-      {
         text: "功能详解",
         items: [
           { text: "辅助码", link: "/features/auxiliary-code" },
           { text: "反查 / 辅助筛选", link: "/features/reverse-lookup" },
           { text: "造词", link: "/features/user-dict" },
           { text: "其他功能", link: "/features/others" },
+        ],
+      },
+      {
+        text: "自定义",
+        items: [
+          { text: "Rime 定制指南", link: "/customization/rime" },
+          { text: "自定义词库", link: "/customization/dictionaries" },
         ],
       },
       {
