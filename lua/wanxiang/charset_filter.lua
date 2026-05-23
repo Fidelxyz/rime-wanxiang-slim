@@ -6,8 +6,8 @@
 ---@class CharsetFilter
 ---@field options string[]|true
 ---@field charset table<string, boolean>
----@field blacklist table<integer, boolean>
 ---@field whitelist table<integer, boolean>
+---@field blacklist table<integer, boolean>
 
 ---@class CharsetFilterConfig
 ---@field filters CharsetFilter[]
@@ -69,13 +69,13 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
 
         active_options_count = active_options_count + 1
 
-        if rule.whitelist[codepoint] then
+        if rule.blacklist[codepoint] then
             return false
         end
 
         -- Take the union of base set and whitelist.
         if not is_allowed then
-            if rule.blacklist[codepoint] then
+            if rule.whitelist[codepoint] then
                 is_allowed = true
             else
                 local attr = state.db_memo[char]
