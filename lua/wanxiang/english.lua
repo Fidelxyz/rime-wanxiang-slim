@@ -268,10 +268,20 @@ local function apply_formatting(cand, code_ctx)
     return new_cand
 end
 
+local P = {}
+
 ---@param key_event KeyEvent
 ---@param env Env
 ---@return ProcessResult
-local function P(key_event, env)
+function P.func(key_event, env)
+    -- Ignore key release events. Otherwise, when Space/Enter selects an English candidate,
+    -- the press event sees a non-empty composition (skipped), the speller commits and clears
+    -- the composition, and the release event would then incorrectly mark the standalone
+    -- Space/Enter as a chain-breaker, suppressing the next smart spacing.
+    if key_event:release() then
+        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    end
+
     local context = env.engine.context
     local keycode = key_event.keycode
 
