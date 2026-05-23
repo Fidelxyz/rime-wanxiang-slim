@@ -104,9 +104,9 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 英文输入
 
-整句英文输入、自动句中空格、首字母/全大写格式化、空码补全（`~` 标记）。
+整句英文输入、自动句中空格、首字母/全大写格式化。
 
-- `lua/wanxiang/english.lua`：英文全能过滤器：格式化、智能加空格、大小写、空码补全
+- `lua/wanxiang/english.lua`：英文全能过滤器：格式化、智能加空格、大小写
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
 - `dicts/en.dict.yaml`：英文词条
@@ -135,7 +135,6 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 前面编码有候选但继续输入无候选时，显示上一次候选并标注 `~`。
 
 - `lua/wanxiang/fallback_filter.lua`：3 码回退逻辑，空码候选恢复与 `~` 标注
-- `lua/wanxiang/english.lua`：英文场景的空码补全
 
 #### Unicode 输入
 

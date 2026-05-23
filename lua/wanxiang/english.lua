@@ -1,14 +1,15 @@
----Enhances English input by applying smart casing and spacing, limiting candidate count for performance, ensuring
----single-letter candidates are available, and providing fallback English word derivation based on typing history.
+---Enhances English input by applying smart casing and spacing, and ensuring single-letter candidates are available.
+---
+---Core features:
+--- 1. Casing formatting driven by the first two input letters: ALL CAPS when both are uppercase, Title Case when only
+---    the first is uppercase, otherwise lowercase.
+--- 2. Smart sentence spacing: adds spaces around committed English words (Smart Spacing) and losslessly restores word
+---    splits from the preedit guide.
+--- 3. Single-letter cut-in ordering: ensures single-letter candidates are available and promoted ahead of regular
+---    ASCII candidates.
+---
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
-
--- 核心功能清单:
--- 1. [Format] 英文大小写格式化，根据首两个字母决定全大写、首字母大写或全小写
--- 2. [Spacing] 智能语句空格切分，智能单词上屏加空格 (Smart Spacing) 与无损分词还原
--- 3. [Memory] 全量历史缓存，完美解决回删乱码问题
--- 4. [Construct] 原生优先构造策略 (短词无分词则重置为原生输入)
--- 5. [Order] 单字母(a/A) 智能插队排序,补齐单字母候选
 
 ---@class EnglishConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
@@ -21,8 +22,6 @@
 ---@field is_prev_commit_english boolean
 ---@field last_commit_time number
 ---@field comp_start_time number?
----@field block_derivation boolean
----@field memory table<string, { text: string, preedit: string }>
 ---
 ---@field update_notifier Connection
 ---@field commit_notifier Connection
@@ -293,7 +292,6 @@ function F.init(env)
 
     local english_spacing_mode = config:get_string("wanxiang_english/english_spacing") or "off"
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
-    local lookup_key = config:get_string("lookup_filter/trigger") or "`"
 
     local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
     if not user_dict_trigger or user_dict_trigger == "" then
@@ -323,8 +321,6 @@ function F.init(env)
 
         local input = ctx.input
 
-        state.block_derivation = input:find(lookup_key, 1, true) ~= nil
-
         if input == "" then
             state.comp_start_time = nil
         elseif state.comp_start_time == nil then
@@ -347,15 +343,12 @@ function F.init(env)
             state.last_commit_time = 0
         end
         ctx:set_property("english_spacing", "")
-        state.block_derivation = false
     end)
 
     env.english_state = {
         is_prev_commit_english = false,
         last_commit_time = 0,
         comp_start_time = nil,
-        block_derivation = false,
-        memory = {},
         update_notifier = update_notifier,
         commit_notifier = commit_notifier,
     }
@@ -388,8 +381,6 @@ function F.func(input, env)
         return
     end
 
-    local has_valid_candidate = false
-    local best_candidate_saved = false
     local code_len = #code
 
     -- Forced English word creation: trailing `\\` triggers a raw English commit.
@@ -443,14 +434,6 @@ function F.func(input, env)
         single_char_injected = true
     end
 
-    local eng_yield_count = 0
-    -- If single-letter derivation candidates exist, count them against the quota up front.
-    if next(single_chars) ~= nil then
-        eng_yield_count = 2
-    end
-
-    local consecutive_skips = 0
-
     for cand in input:iter() do
         local c_type = cand.type
         local raw_text = cand.text
@@ -460,141 +443,28 @@ function F.func(input, env)
             goto continue
         end
 
-        local skip_cand = false
         local is_ascii = is_english_phrase(raw_text)
-
-        -- Pre-checks.
-        if is_ascii then
-            if c_type == "user_phrase" or c_type == "user_table" then
-                -- Hits a user-defined dictionary entry (pure English): always pass through.
-                eng_yield_count = eng_yield_count + 1
-            end
-        end
-
-        if skip_cand then
-            -- Even when this candidate is dropped, ensure single-letter (if present) gets injected.
-            if single_chars[1] and not single_char_injected then
-                if not best_candidate_saved then
-                    state.memory[code] = { text = single_chars[1].text, preedit = code }
-                    best_candidate_saved = true
-                end
-                for _, c in ipairs(single_chars) do
-                    yield(c)
-                end
-                single_char_injected = true
-                has_valid_candidate = true
-            end
-
-            consecutive_skips = consecutive_skips + 1
-            if consecutive_skips > 50 then
-                break
-            end
-
-            goto continue
-        end
-
-        consecutive_skips = 0
 
         local good_cand = restore_sentence_spacing(cand, config.split_pattern, config.delim_check_pattern)
         local fmt_cand = apply_formatting(good_cand, code_ctx)
 
-        if
-            env.engine.schema.schema_id == "wanxiang_english"
-            and fmt_cand.comment
-            and fmt_cand.comment:find("\226\152\175")
-        then
-            local new_cand = Candidate(fmt_cand.type, fmt_cand.start, fmt_cand._end, fmt_cand.text, "")
-            new_cand.preedit = fmt_cand.preedit
-            fmt_cand = new_cand
-        end
-
-        has_valid_candidate = true
-
         if fmt_cand.type == "user_table" or fmt_cand.type == "fixed" or fmt_cand.type == "phrase" or not is_ascii then
             -- Emit user_table, Chinese candidates etc. directly; do not let single-letter cut in.
-            if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
-                state.memory[code] = {
-                    text = fmt_cand.text,
-                    preedit = code,
-                }
-                best_candidate_saved = true
-            end
             yield(fmt_cand)
             goto continue
         end
 
         -- Allow single-letter to cut in front of regular ASCII candidates.
-        if single_chars[1] and not single_char_injected then
-            if not best_candidate_saved then
-                state.memory[code] = { text = single_chars[1].text, preedit = code }
-                best_candidate_saved = true
-            end
+        if next(single_chars) ~= nil and not single_char_injected then
             for _, c in ipairs(single_chars) do
                 yield(c)
             end
             single_char_injected = true
-            has_valid_candidate = true
         end
 
-        if not best_candidate_saved and fmt_cand.comment ~= "~" and not state.block_derivation then
-            state.memory[code] = {
-                text = fmt_cand.text,
-                preedit = code,
-            }
-            best_candidate_saved = true
-        end
         yield(fmt_cand)
 
         ::continue::
-    end
-
-    if state.block_derivation or has_valid_candidate then
-        return
-    end
-
-    -- Backtrack-derivation only applies to the wanxiang_english schema.
-    if env.engine.schema.schema_id ~= "wanxiang_english" or not has_letters(code) then
-        return
-    end
-
-    -- History-based reconstruction & generic fallback.
-    ---@type { text: string, preedit: string }?
-    local anchor = nil
-    local diff = ""
-    for i = #code - 1, 1, -1 do
-        local prefix = code:sub(1, i)
-        if state.memory[prefix] then
-            anchor = state.memory[prefix]
-            diff = code:sub(i + 1)
-            break
-        end
-    end
-    if not anchor or diff == "" then
-        return
-    end
-
-    if is_english_phrase(anchor.text) then
-        -- Pure English mode (allows commas etc.).
-        local has_spacing = anchor.text:find(" ")
-        local last_word = anchor.text:match("(%S+)%s*$") or ""
-        local last_len = #last_word
-        local spacer = " "
-        if anchor.text:sub(-1) == " " then
-            spacer = ""
-        end
-
-        local output_text = ""
-        if has_spacing or last_len > 3 then
-            output_text = anchor.text .. spacer .. diff
-        else
-            output_text = code
-        end
-
-        output_text = apply_casing(output_text, code)
-        local cand = Candidate("fallback", 0, #code, output_text, "")
-        cand.preedit = output_text
-        cand.quality = 999
-        yield(cand)
     end
 end
 
