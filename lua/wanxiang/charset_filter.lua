@@ -1,5 +1,4 @@
----Filters candidates based on configurable character sets, removing single characters outside the allowed sets and
----attempting to replace phrases containing unallowed characters with valid historical input of the same length.
+---Filters candidates based on configurable character sets, removing characters and phrases outside the allowed sets.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -14,8 +13,7 @@
 
 ---@class CharsetFilterState
 ---@field charset_db ReverseDb
----@field db_memo table<string, string>
----@field phrase_history_dict table<integer, string>
+---@field charset_db_cache table<string, string>
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
@@ -38,26 +36,25 @@ local function check_intersection(db_attr, config_base_set)
     return false
 end
 
----Core decision: whether `codepoint` is in any allowed charset, taking the
----union over all currently active rules (multi-switch support).
+---Return whether `codepoint` is in any allowed charset, taking the union over all currently active rules
+---(multi-switch support).
 ---@param codepoint integer
 ---@param config CharsetFilterConfig
 ---@param state CharsetFilterState
 ---@param ctx Context
 ---@return boolean
-local function is_codepoint_in_charset(codepoint, config, state, ctx)
+local function is_codepoint_allowed(codepoint, config, state, ctx)
     local char = utf8.char(codepoint)
 
-    local active_options_count = 0
+    local has_active_rule = false
     local is_allowed = false
 
     for _, rule in ipairs(config.filters) do
         -- Check whether this rule's switch is on.
         if rule.options ~= true then
             local is_rule_active = false
-            ---@diagnostic disable-next-line: param-type-mismatch
-            for _, opt in ipairs(rule.options) do
-                if ctx:get_option(opt) then
+            for _, option in ipairs(rule.options) do
+                if ctx:get_option(option) then
                     is_rule_active = true
                     break
                 end
@@ -67,7 +64,7 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
             end
         end
 
-        active_options_count = active_options_count + 1
+        has_active_rule = true
 
         if rule.blacklist[codepoint] then
             return false
@@ -78,10 +75,10 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
             if rule.whitelist[codepoint] then
                 is_allowed = true
             else
-                local attr = state.db_memo[char]
-                if attr == nil then
+                local attr = state.charset_db_cache[char]
+                if not attr then
                     attr = state.charset_db:lookup(char)
-                    state.db_memo[char] = attr
+                    state.charset_db_cache[char] = attr
                 end
 
                 if check_intersection(attr, rule.charset) then
@@ -94,27 +91,24 @@ local function is_codepoint_in_charset(codepoint, config, state, ctx)
     end
 
     -- No rule active: pass through by default.
-    if active_options_count == 0 then
+    if not has_active_rule then
         return true
     end
 
     return is_allowed
 end
 
----Strict check: whether the entire text (single character or phrase) fully matches the active charset.
+---Return whether the entire text (single character or phrase) fully matches the active charset.
 ---@param text string
 ---@param config CharsetFilterConfig
 ---@param state CharsetFilterState
 ---@param ctx Context
 ---@return boolean
-local function is_text_in_charset(text, config, state, ctx)
-    if text == "" then
-        return true
-    end
+local function is_text_allowed(text, config, state, ctx)
     for _, codepoint in utf8.codes(text) do
         if wanxiang.is_chinese_codepoint(codepoint) then
-            -- Reject as soon as we hit any uncommon/blacklisted character.
-            if not is_codepoint_in_charset(codepoint, config, state, ctx) then
+            -- Reject as soon as we hit any unallowed character.
+            if not is_codepoint_allowed(codepoint, config, state, ctx) then
                 return false
             end
         end
@@ -122,17 +116,12 @@ local function is_text_in_charset(text, config, state, ctx)
     return true
 end
 
----Whether the current segment should bypass charset filtering.
----@param context Context
+---Return whether the current segment should be subject to charset filtering, based on its tags.
+---@param segment Segment
 ---@return boolean
-local function should_skip_filter(context)
-    local seg = context.composition:back()
-    if not seg then
-        return false
-    end
-
+local function should_filter(segment)
     -- Skip Unicode-output, punctuation, and reverse-lookup segments.
-    return seg:has_tag("unicode") or seg:has_tag("punct") or seg:has_tag("wanxiang_reverse")
+    return not segment:has_tag("unicode") and not segment:has_tag("punct") and not segment:has_tag("wanxiang_reverse")
 end
 
 local M = {}
@@ -241,8 +230,7 @@ function M.init(env)
 
     env.charset_filter_state = {
         charset_db = ReverseDb(charset_db),
-        db_memo = {},
-        phrase_history_dict = {},
+        charset_db_cache = {},
     }
 end
 
@@ -261,94 +249,23 @@ function M.func(input, env)
     assert(state)
 
     local context = env.engine.context
-    local code = context.input
-    local comp = context.composition
-
-    -- Maintain the input-history dictionary.
-    if code == "" or comp:empty() then
-        state.phrase_history_dict = {}
-    else
-        local current_code_length = #code
-        for key_length in pairs(state.phrase_history_dict) do
-            if key_length > current_code_length then
-                state.phrase_history_dict[key_length] = nil
-            end
-        end
-    end
+    local seg = context.composition:back()
 
     -- Decide whether charset filtering applies to the current input.
-    local charset_active = #config.filters > 0 and not should_skip_filter(context)
-
-    -- Walk the candidate list.
-    -- Only the first valid candidate is recorded in history.
-    local has_recorded_history = false
-
-    ---Record the first valid candidate and yield it.
-    ---@param cand Candidate
-    ---@param text string
-    local function yield_and_record(cand, text)
-        if not has_recorded_history and text ~= "" then
-            state.phrase_history_dict[#code] = text
-            has_recorded_history = true
-        end
-        yield(cand)
-    end
+    local charset_active = #config.filters > 0 and seg and should_filter(seg)
 
     for cand in input:iter() do
         local text = cand.text
 
-        -- Filtering disabled: pass through and record.
+        -- Filtering disabled: pass through.
         if not charset_active or text == "" then
-            yield_and_record(cand, text)
+            yield(cand)
             goto continue
         end
 
-        local text_length = utf8.len(text)
-        -- Validate the entire text (single character or phrase).
-        local is_text_valid = is_text_in_charset(text, config, state, context)
-        if text_length < 2 then
-            -- Single character: drop on mismatch, no fallback.
-            if is_text_valid then
-                yield_and_record(cand, text)
-            end
-            goto continue
-        end
-
-        -- Phrase logic.
-        if is_text_valid then
-            -- No uncommon characters: pass through.
-            yield_and_record(cand, text)
-            goto continue
-        end
-
-        -- Phrase contains an uncommon character: try to substitute from history.
-        local fallback_text = nil
-        local current_code_length = #code
-
-        -- Search starting at current_code_length so the just-typed candidate is also considered.
-        for history_length = current_code_length, 1, -1 do
-            local history_text = state.phrase_history_dict[history_length]
-            if history_text and utf8.len(history_text) == text_length then
-                fallback_text = history_text
-                break
-            end
-        end
-        if not fallback_text then
-            goto continue
-        end
-
-        -- Construct the fallback candidate.
-        local preedit_text = cand.preedit
-        if #preedit_text > 1 and preedit_text:sub(-1):match("[%w%p]") then
-            preedit_text = preedit_text:sub(1, -2) .. " " .. preedit_text:sub(-1)
-        end
-
-        local new_cand = Candidate(cand.type, cand.start, cand._end, fallback_text, cand.comment)
-        new_cand.preedit = preedit_text
-
-        -- Verify the fallback itself contains no uncommon characters.
-        if is_text_in_charset(new_cand.text, config, state, context) then
-            yield_and_record(new_cand, new_cand.text)
+        -- Drop any candidate (single character or phrase) that contains an uncommon character.
+        if is_text_allowed(text, config, state, context) then
+            yield(cand)
         end
 
         ::continue::
