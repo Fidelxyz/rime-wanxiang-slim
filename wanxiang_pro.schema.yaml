@@ -229,26 +229,25 @@ wanxiang_reverse:
 
 user_dict:
   dictionary: wanxiang
+  user_dict: user_dict
   initial_quality: 2.5
   enable_completion: false
   enable_sentence: false
+  contextual_suggestions: false
   core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
   max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重
-  contextual_suggestions: false
   max_homophones: 8
   max_homographs: 8
   spelling_hints: 50
-  comment_format:
-  enable_user_dict: true
-  user_dict: user_dict
+  always_show_comments: true
 
 user_dict_appender:
   tag: user_dict_appender
   dictionary: wanxiang
-  initial_quality: -1
   user_dict: user_dict
-  enable_user_dict: true
+  initial_quality: -1
   spelling_hints: 50
+  always_show_comments: true
 
   # 手动造词引导符。
   prefix: "``"
