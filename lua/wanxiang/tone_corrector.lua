@@ -3,7 +3,7 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class ToneCorrectorConfig
----@field lookup_trigger string
+---@field lookup_trigger string?
 
 ---@class ToneCorrectorState
 ---Set in `func` to request the notifier to compress on the next input update.
@@ -44,7 +44,10 @@ function P.init(env)
     local rime_config = env.engine.schema.config
     local context = env.engine.context
 
-    local lookup_trigger = rime_config:get_string("lookup_filter/trigger") or "`"
+    local lookup_trigger = rime_config:get_string("lookup_filter/trigger")
+    if lookup_trigger == "" then
+        lookup_trigger = nil
+    end
 
     -- Compress the prefix up to caret_pos when the previous keystroke set the flag.
     local update_notifier = context.update_notifier:connect(function(ctx)
@@ -116,7 +119,7 @@ function P.func(key, env)
     assert(config)
 
     -- Skip in reverse-lookup mode and function mode.
-    if input:find(config.lookup_trigger, 1, true) then
+    if config.lookup_trigger and input:find(config.lookup_trigger, 1, true) then
         return wanxiang.RIME_PROCESS_RESULTS.kNoop
     end
     if wanxiang.is_function_mode_active(context) then

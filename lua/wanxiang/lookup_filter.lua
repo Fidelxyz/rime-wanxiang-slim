@@ -10,7 +10,7 @@
 ---@field main_projection Projection?
 ---@field xlit_projection Projection?
 ---@field comment_split_pattern string?
----@field trigger string
+---@field trigger string?
 ---@field bypass_prefix string?
 ---@field tags string[]
 
@@ -288,14 +288,14 @@ end
 -- bypass_prefix, skip past it and only treat trailing reverse-lookup triggers
 -- as filter separators.
 ---@param input string
----@param key string
+---@param trigger string?
 ---@param bypass_prefix string?
 ---@return string? base_code
 ---@return string? aux_code
 ---@return integer? key_start
 ---@return integer? key_end
-local function split_lookup_input(input, key, bypass_prefix)
-    if input == "" or key == "" then
+local function split_lookup_input(input, trigger, bypass_prefix)
+    if not trigger or input == "" then
         return nil
     end
 
@@ -306,7 +306,7 @@ local function split_lookup_input(input, key, bypass_prefix)
     end
 
     local input_body = input:sub(scan_from)
-    if input_body:sub(1, #key) == key and not key:match("^%w+$") then
+    if input_body:sub(1, #trigger) == trigger and not trigger:match("^%w+$") then
         return nil
     end
 
@@ -316,7 +316,7 @@ local function split_lookup_input(input, key, bypass_prefix)
     local s_end = nil
     local from = scan_from
     while true do
-        local s, e = input:find(key, from, true)
+        local s, e = input:find(trigger, from, true)
         if not s then
             break
         end
@@ -473,7 +473,10 @@ function F.init(env)
     end
 
     local trigger_val = cfg_root and cfg_root:get_value("trigger")
-    local trigger = trigger_val and trigger_val:get_string() or "`"
+    local trigger = trigger_val and trigger_val:get_string()
+    if trigger == "" then
+        trigger = nil
+    end
 
     local bypass_prefix = rime_config:get_string("user_dict_appender/prefix")
 
