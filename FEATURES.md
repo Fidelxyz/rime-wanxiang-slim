@@ -176,6 +176,13 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 - `lua/wanxiang/partial_commit.lua`：部分上屏处理器
 
+### 候选置顶
+
+<kbd>Ctrl</kbd>+<kbd>P</kbd> 置顶当前候选，<kbd>Ctrl</kbd>+<kbd>L</kbd> 取消置顶。置顶记录写入独立的用户数据库 `wanxiang_pinned.userdb`，下次输入相同编码时被置顶的候选会排在最前。
+
+- `lua/wanxiang/candidate_pinner.lua`：置顶处理器与过滤器
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_pinner` 段配置，processors 中 `candidate_pinner*P`
+
 ### 万能键斜杠 `/`
 
 辅助码聚拢、间接辅助码引导、短码英文前置、双击上屏斜杠。

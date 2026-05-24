@@ -68,6 +68,7 @@ engine:
     - selector  # 选字处理器，处理数字选字键、上下候选定位、换页
     - navigator  # 处理输入栏内的光标移动
     - express_editor  # 编辑器，处理空格、回车上屏、回退键
+    - lua_processor@*wanxiang.candidate_pinner*P  # 候选置顶
     - lua_processor@*wanxiang.auto_phrase  # 自动造词、英文造词
   segmentors:
     - ascii_segmentor  # 标识英文段落〔譬如在英文模式下〕字母直接上屛
@@ -86,6 +87,7 @@ engine:
     - table_translator@wanxiang_english  # 英文词汇表导入
     - table_translator@wanxiang_mixedcode  # 混合编码词汇表导入
     - reverse_lookup_translator@wanxiang_reverse  # 挂接部件组字和笔画反查
+    - table_translator@candidate_pinner  # 候选置顶记录
     - script_translator@user_dict_appender  # 按需自造词
     - script_translator@user_dict  # 使用自造词
   filters:
@@ -93,6 +95,7 @@ engine:
     - lua_filter@*wanxiang.lookup_filter  # 字词输入中反查辅助筛选
     - lua_filter@*wanxiang.english*F  # 放replacer前面，单词变大写后应该能在替换中命中数据，负责英文方案及中英混输中英文单词格式化，语句流，自动加空格等策略
     - lua_filter@*wanxiang.charset_filter  # 放replacer前面，全方位自定义的字符集过滤器，支持繁体字符集开放
+    - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开（需在 super_comment 前读取原始 comment）
     - lua_filter@*wanxiang.preedit_tone_display  # 声调数字转上标显示
     - lua_filter@*wanxiang.super_comment  # 放其他需要注释处理器后面，会有清空注释的操作，超级注释模块，支持错词提示、辅助码显示，部件组字读音注释
@@ -304,6 +307,7 @@ candidate_type_marker:
     user_table: ""
     completion: ""
     fallback: "~"
+    pinned: "·"
 
 # 以词定字
 character_selector:
@@ -312,6 +316,23 @@ character_selector:
 
   # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
   select_last_key: "]"
+
+# 候选置顶
+candidate_pinner:
+  dictionary: ""
+  user_dict: pinned
+  initial_quality: -1
+
+  ### 候选置顶相关配置 ###
+
+  # 启用候选置顶功能。
+  enabled: true
+
+  # 置顶当前候选的按键。
+  pin_key: "Control+p"
+
+  # 取消置顶当前候选的按键。
+  unpin_key: "Control+l"
 
 keypad_composer:
   # 小键盘模式。

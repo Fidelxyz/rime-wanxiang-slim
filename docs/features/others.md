@@ -12,7 +12,7 @@ outline: deep
 
 ## 候选排序
 
-**自动调频**：默认关闭，配置项：`translator/enable_user_dict`。
+**候选置顶**：`Ctrl` + `P` 置顶所选候选，`Ctrl` + `L` 取消置顶。配置项：`candidate_pinner`。
 
 ## 字符集过滤
 
