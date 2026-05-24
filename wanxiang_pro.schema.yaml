@@ -71,6 +71,7 @@ engine:
     - selector  # 选字处理器，处理数字选字键、上下候选定位、换页
     - navigator  # 处理输入栏内的光标移动
     - express_editor  # 编辑器，处理空格、回车上屏、回退键
+    - lua_processor@*wanxiang.auto_phrase  # 自动造词、英文造词
   segmentors:
     - ascii_segmentor  # 标识英文段落〔如英文模式下〕字母直接上屛
     - matcher  # 配合 recognizer 标识符合特定规则的段落，如网址、反查等，加上特定 tag
@@ -91,7 +92,7 @@ engine:
     - script_translator@user_dict  # 自造词之使用词汇入口
     - script_translator@user_dict_appender  # 自造词之制造词汇入口
   filters:
-    - lua_filter@*wanxiang.auto_phrase  # 无感造词，英文造词
+    - lua_filter@*wanxiang.candidate_code_recorder*F
     - lua_filter@*wanxiang.lookup_filter  # 字词输入中反查辅助筛选
     - lua_filter@*wanxiang.english*F  # 放replacer前面，单词变大写后应该能在替换中命中数据，负责英文方案及中英混输中英文单词格式化，语句流，自动加空格等策略
     - lua_filter@*wanxiang.charset_filter  # 放replacer前面，全方位自定义的字符集过滤器，支持繁体字符集开放

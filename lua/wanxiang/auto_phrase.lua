@@ -1,4 +1,9 @@
 ---Automatically add new phrases to user dictionaries.
+---
+---Dependencies:
+---  filters:
+---    - lua_filter@*wanxiang.candidate_code_recorder*F
+---
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -8,12 +13,8 @@
 ---@class AutoPhraseState
 ---@field zh_memory Memory?
 ---@field en_memory Memory?
----Comment cache: text -> comment (Chinese only).
----Invariant: no empty string.
----@field comment_cache table<string, string>
 ---
 ---@field commit_notifier Connection?
----@field delete_notifier Connection?
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
@@ -21,6 +22,7 @@
 ---@field auto_phrase_state AutoPhraseState?
 
 local wanxiang = require("wanxiang.wanxiang")
+local candidate_code_recorder = require("wanxiang.candidate_code_recorder")
 
 ---Return if the text is a non-empty ASCII word.
 ---@param text string
@@ -48,18 +50,6 @@ local function is_chinese_phrase(text)
     end
 
     return true
-end
-
----@param cand Candidate
----@param genuine Candidate
----@param state AutoPhraseState
-local function save_comment_cache(cand, genuine, state)
-    local text = cand.text
-    local comment = genuine.comment
-
-    if text ~= "" and comment ~= "" then
-        state.comment_cache[text] = comment
-    end
 end
 
 -- Phrase creation handler.
@@ -98,23 +88,19 @@ local function commit_handler(ctx, env)
             end
         end
 
-        state.comment_cache = {}
         return
     end
 
     -- Chinese auto phrase creation.
     if not state.zh_memory then
-        state.comment_cache = {}
         return
     end
 
     -- Basic checks.
     if segments_count <= 1 or utf8.len(commit_text) <= 1 then
-        state.comment_cache = {}
         return
     end
-    if not is_chinese_phrase(commit_text) or state.comment_cache[commit_text] then
-        state.comment_cache = {}
+    if not is_chinese_phrase(commit_text) then
         return
     end
 
@@ -127,54 +113,46 @@ local function commit_handler(ctx, env)
 
         -- No candidate: likely a punctuation segment.
         if not cand then
-            state.comment_cache = {}
             return
         end
 
-        -- Look up this candidate's comment (its code) from the cache.
-        local comment = state.comment_cache[cand.text]
+        -- Look up this candidate's comment (its code).
+        local code = candidate_code_recorder.get(cand.text)
 
         -- Candidate present but no code recorded.
-        if not comment or comment == "" then
-            state.comment_cache = {}
+        if not code then
             return
         end
 
         -- Code present: split and append.
-        for part in comment:gmatch("[^" .. config.escaped_delimiter .. "]+") do
+        for part in code:gmatch("[^" .. config.escaped_delimiter .. "]+") do
             codes[#codes + 1] = part
         end
     end
 
     -- We need at least one code piece.
     if #codes == 0 then
-        state.comment_cache = {}
         return
     end
 
     -- Number of code pieces must equal the number of characters in commit_text.
     local total_chars = utf8.len(commit_text)
     if #codes ~= total_chars then
-        state.comment_cache = {}
         return
     end
 
     -- Write to the user dictionary.
-    local dictEntry = DictEntry()
-    dictEntry.text = commit_text
-    dictEntry.weight = 1
-    dictEntry.custom_code = table.concat(codes, " ") .. " "
-    state.zh_memory:update_userdict(dictEntry, 1, "")
-
-    if raw_input == "" then
-        state.comment_cache = {}
-    end
+    local entry = DictEntry()
+    entry.text = commit_text
+    entry.weight = 1
+    entry.custom_code = table.concat(codes, " ") .. " "
+    state.zh_memory:update_userdict(entry, 1, "")
 end
 
-local F = {}
+local P = {}
 
 ---@param env Env
-function F.init(env)
+function P.init(env)
     local rime_config = env.engine.schema.config
     local context = env.engine.context
 
@@ -196,6 +174,9 @@ function F.init(env)
     local zh_memory = (auto_phrase_enabled and user_dict_enabled)
             and Memory(env.engine, env.engine.schema, "user_dict_appender")
         or nil
+    if zh_memory then
+        candidate_code_recorder.enable()
+    end
 
     -- English: enuser memory, always enabled regardless of add_* switches.
     local en_memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
@@ -209,12 +190,6 @@ function F.init(env)
         commit_notifier = context.commit_notifier:connect(function(ctx)
             commit_handler(ctx, env)
         end)
-        delete_notifier = context.delete_notifier:connect(function(_)
-            local state = env.auto_phrase_state
-            assert(state)
-
-            state.comment_cache = {}
-        end)
     end
 
     env.auto_phrase_config = {
@@ -224,14 +199,13 @@ function F.init(env)
     env.auto_phrase_state = {
         zh_memory = zh_memory,
         en_memory = en_memory,
-        comment_cache = {},
         commit_notifier = commit_notifier,
         delete_notifier = delete_notifier,
     }
 end
 
 ---@param env Env
-function F.fini(env)
+function P.fini(env)
     assert(env.auto_phrase_state)
     assert(env.auto_phrase_config)
 
@@ -245,32 +219,13 @@ function F.fini(env)
     if env.auto_phrase_state.commit_notifier then
         env.auto_phrase_state.commit_notifier:disconnect()
     end
-    if env.auto_phrase_state.delete_notifier then
-        env.auto_phrase_state.delete_notifier:disconnect()
-    end
 
     env.auto_phrase_config = nil
     env.auto_phrase_state = nil
 end
 
----@param input Translation
----@param env Env
-function F.func(input, env)
-    local state = env.auto_phrase_state
-    assert(state)
-
-    -- Comments are only cached for the Chinese phrase-creation path.
-    local use_comment_cache = state.zh_memory ~= nil
-
-    for cand in input:iter() do
-        local genuine_cand = cand:get_genuine()
-
-        if use_comment_cache then
-            save_comment_cache(cand, genuine_cand, state)
-        end
-
-        yield(cand)
-    end
+function P.func(_, _)
+    return wanxiang.RIME_PROCESS_RESULTS.kNoop
 end
 
-return F
+return P
