@@ -21,6 +21,7 @@ jobs:
         with:
           config-file: .github/prerelease-config.json
           manifest-file: .github/prerelease-manifest.json
+          target-branch: ${{ github.ref_name }}
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}

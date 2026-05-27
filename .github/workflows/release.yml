@@ -21,6 +21,7 @@ jobs:
         with:
           config-file: .github/release-config.json
           manifest-file: .github/release-manifest.json
+          target-branch: ${{ github.ref_name }}
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
