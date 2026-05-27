@@ -1,5 +1,58 @@
 # Changelog
 
+## [0.5.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.4.0...v0.5.0) (2026-05-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **charset_filter:** rename `base` option to `charset`
+* merge v15.11.0 from upstream
+* **user_predict:** remove candidate prediction
+* change user dictionaries name
+* rename user dict components
+
+### Features
+
+* **preedit_tone:** reintroduce preedit full pinyin conversion ([2c902b0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2c902b080e36d44cbb929763018db7f00fab5bc1))
+* **preedit_tone:** reintroduce preedit tone display ([61e1c88](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/61e1c88380716a49161a8327ca67772f2ea2a11e))
+* reintroduce tone input from upstream ([530e3a7](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/530e3a7dd1b1168e21ad0692f37375e732ce00ba))
+
+
+### Bug Fixes
+
+* **charset:** fix flipped whitelist and blacklist in charset filter ([d339a81](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/d339a81d667c2364d4d82b3a3788d70e8a066037))
+* **english:** fix English candidate casing ([2e17717](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2e177170852e6b5e702384dc14fdc1fc87cdd6e1))
+* **english:** ignore key release events in chain-breaker processor ([123dfba](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/123dfba858f0e1d77e8a158983939a77e084b6c1))
+* fix copyright information in librime.lua ([36a2c00](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/36a2c005722186d79f45a4c6472b1c2535a9bfef))
+* fix incorrect `config_version` ([4bb52a7](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/4bb52a791ef702bb3e56bbd3d2679707d8f7fc49))
+* prevent caret moves to the end when backtick is added at the beginning ([7a3cc68](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7a3cc68cde83512e6d7749ca0eebecf0abe88203))
+* provide fallback for `rime_api.get_time_ms` for compatibility with Weasel ([5c73ac2](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5c73ac28cb896117587cd52ca96c2952fffea1eb))
+
+
+### Performance Improvements
+
+* optimize reading page size ([a5e516a](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/a5e516aba38f4807b061707ca11bbf088674b6ba))
+
+
+### Miscellaneous Chores
+
+* change user dictionaries name ([0503e5c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0503e5c07150b29c10b1efbf4a885363f405a14b))
+* merge v15.11.0 from upstream ([73d188f](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/73d188f76a773e9eaf032a0466bb577a0af717aa))
+
+
+### Code Refactoring
+
+* **charset_filter:** rename `base` option to `charset` ([5c55b2d](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5c55b2d5f18805d58c9b422cd5bb900bf951e0c3))
+* rename user dict components ([8883806](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8883806657f110cff64660c4f911c879bb621793))
+* **user_predict:** remove candidate prediction ([22dcac8](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/22dcac88da02228ea9a7f58417a2af6fad81f9cd))
+
+
+### Continuous Integration
+
+* add prerelease workflow ([9c67425](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c67425dc6d9b50a0da1c4ee683d4d119889c250))
+* change prerelease version suffix to beta ([ec6a0e8](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ec6a0e8ca3dd020b13eb2f7330293c491b00f712))
+* fix multi-branch release workflow ([162771f](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/162771fe5f9b343196655b4fa935255539ccd70d))
+
 ## [0.5.0-beta.3](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0-beta.2...v0.5.0-beta.3) (2026-05-22)
 
 
