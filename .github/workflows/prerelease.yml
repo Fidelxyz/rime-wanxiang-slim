@@ -48,8 +48,7 @@ jobs:
         id: release-note
         env:
           GH_TOKEN: ${{ github.token }}
-          PRERELEASE: true
-        run: bash scripts/generate-release-note.sh > release-note.md
+        run: bash scripts/generate-release-note.sh --prerelease > release-note.md
 
       - uses: ncipollo/release-action@v1
         with:

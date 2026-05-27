@@ -13,6 +13,20 @@ packages=(
     "wx:万象"
 )
 
+prerelease=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --prerelease)
+            prerelease=true
+            shift
+            ;;
+        *)
+            shift
+            ;;
+    esac
+done
+
 repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 download_url="${repo_url}/releases/download/${TAG_NAME}"
 
@@ -22,7 +36,7 @@ changes="$(gh release view --json body -t "{{.body}}" "${TAG_NAME}" | sed '1d; /
 # Print the release note #
 ##########################
 
-if [[ -n "${PRERELEASE}" ]]; then
+if [[ "${prerelease}" == "true" ]]; then
     echo "> [!WARNING]"
     echo "> 这是一个**预发布版本**，其功能可能尚未稳定，配置和行为可能随时发生变化。除非您明确了解您在做什么，否则不建议日常使用该版本。"
     echo ">"
