@@ -177,7 +177,7 @@ local function translator(input, seg, env)
     local shared_dir = rime_api.get_shared_data_dir()
 
     -- Check existing main custom file
-    local main_custom_file = wanxiang.is_pro_schema(env) and "wanxiang_pro.custom.yaml" or "wanxiang.custom.yaml"
+    local main_custom_file = env.engine.schema.schema_id .. ".custom.yaml"
     local main_custom_file_path = user_dir .. "/" .. main_custom_file
     local main_custom_file_exists = wanxiang.file_exists(main_custom_file_path)
 
@@ -230,8 +230,7 @@ local function translator(input, seg, env)
         local messages_len = 0
         if #missing > 0 then
             messages_len = messages_len + 1
-            messages[messages_len] = "〔警告〕未找到以下模板配置文件：\n"
-                .. table.concat(missing, "\n")
+            messages[messages_len] = "〔警告〕未找到以下模板配置文件：\n" .. table.concat(missing, "\n")
         end
         if #unmatched > 0 then
             messages_len = messages_len + 1

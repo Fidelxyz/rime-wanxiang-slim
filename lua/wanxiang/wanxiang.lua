@@ -5,7 +5,7 @@
 local M = {}
 
 -- x-release-please-start-version
-M.version = "v0.6.0-beta.1"
+M.VERSION = "v0.6.0-beta.1"
 -- x-release-please-end
 
 ---@alias PROCESS_RESULT ProcessResult
@@ -76,12 +76,6 @@ function M.is_mobile_device()
         is_mobile_device = _is_mobile_device()
     end
     return is_mobile_device
-end
-
----@param env Env
----@return boolean
-function M.is_pro_schema(env)
-    return env.engine.schema.schema_id == "wanxiang_pro"
 end
 
 -- `tag`-based detection for reverse-lookup mode.
@@ -276,21 +270,5 @@ function M.get_user_id()
     installation_file:close()
     return user_id
 end
-
-M.INPUT_METHOD_MARKERS = {
-    ["Ⅰ"] = "pinyin", --全拼
-    ["Ⅱ"] = "zrm", --自然码双拼
-    ["Ⅲ"] = "flypy", --小鹤双拼
-    ["Ⅳ"] = "mspy", --微软双拼
-    ["Ⅴ"] = "sogou", --搜狗双拼
-    ["Ⅵ"] = "abc", --智能abc双拼
-    ["Ⅶ"] = "ziguang", --紫光双拼
-    ["Ⅷ"] = "pyjj", --拼音加加
-    ["Ⅸ"] = "gbpy", --国标双拼
-    ["Ⅺ"] = "zrlong", --自然龙
-    ["Ⅻ"] = "hxlong", --汉心龙
-    ["Ⅼ"] = "lxsq", --乱序17
-    ["ⅲ"] = "ⅲ", -- 间接辅助标记：命中则额外返回 md="ⅲ"
-}
 
 return M
