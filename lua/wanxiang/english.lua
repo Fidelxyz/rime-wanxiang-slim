@@ -143,10 +143,12 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
 
     ---@type string[]
     local targets = {}
+    local targets_len = 0
     for seg in guide:gmatch(split_pattern) do
         local t = normalize_word(seg)
         if t ~= "" then
-            targets[#targets + 1] = t
+            targets_len = targets_len + 1
+            targets[targets_len] = t
         end
     end
     if next(targets) == nil then
@@ -155,26 +157,31 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
 
     ---@type integer[]
     local starts = {}
+    local starts_len = 0
     local p = 1
     for _, target in ipairs(targets) do
         local s, e = find_subsequence(text, p, target)
         if not s or not e then
             return cand
         end
-        starts[#starts + 1] = s
+        starts_len = starts_len + 1
+        starts[starts_len] = s
         p = e + 1
     end
 
     ---@type string[]
     local parts = {}
+    local parts_len = 0
     if starts[1] and starts[1] > 1 then
-        parts[#parts + 1] = text:sub(1, starts[1] - 1)
+        parts_len = parts_len + 1
+        parts[parts_len] = text:sub(1, starts[1] - 1)
     end
     for i = 1, #starts do
         local current_s = starts[i]
         local next_s = starts[i + 1]
         local chunk_end = next_s and (next_s - 1) or #text
-        parts[#parts + 1] = text:sub(current_s, chunk_end)
+        parts_len = parts_len + 1
+        parts[parts_len] = text:sub(current_s, chunk_end)
     end
 
     local new_text = ""
@@ -428,6 +435,7 @@ function F.func(input, env)
 
     ---@type Candidate[]
     local single_chars = {}
+    local single_chars_len = 0
     local single_char_injected = false
 
     if code_len == 1 then
@@ -437,8 +445,10 @@ function F.func(input, env)
         if is_upper or is_lower then
             local t1 = code
             local t2 = is_upper and code:lower() or code:upper()
-            single_chars[#single_chars + 1] = Candidate("completion", 0, 1, t1, "")
-            single_chars[#single_chars + 1] = Candidate("completion", 0, 1, t2, "")
+            single_chars_len = single_chars_len + 1
+            single_chars[single_chars_len] = Candidate("completion", 0, 1, t1, "")
+            single_chars_len = single_chars_len + 1
+            single_chars[single_chars_len] = Candidate("completion", 0, 1, t2, "")
         end
     else
         single_char_injected = true

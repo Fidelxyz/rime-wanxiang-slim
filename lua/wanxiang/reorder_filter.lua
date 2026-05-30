@@ -49,8 +49,10 @@ function M.func(translation, env)
 
     ---@type Candidate[] -- non-English table/user_table/fixed entries
     local special_buf = {}
+    local special_buf_len = 0
     ---@type Candidate[] -- all other entries
     local normal_buf = {}
+    local normal_buf_len = 0
 
     ---Yield a single candidate and increment the visual index.
     ---@param cand Candidate
@@ -78,16 +80,20 @@ function M.func(translation, env)
             local cand_to_emit = nil
             if force_all then
                 if allow_special then
-                    if #special_buf > 0 then
+                    if special_buf_len > 0 then
                         cand_to_emit = table.remove(special_buf, 1)
-                    elseif #normal_buf > 0 then
+                        special_buf_len = special_buf_len - 1
+                    elseif normal_buf_len > 0 then
                         cand_to_emit = table.remove(normal_buf, 1)
+                        normal_buf_len = normal_buf_len - 1
                     end
                 else
-                    if #normal_buf > 0 then
+                    if normal_buf_len > 0 then
                         cand_to_emit = table.remove(normal_buf, 1)
-                    elseif #special_buf > 0 then
+                        normal_buf_len = normal_buf_len - 1
+                    elseif special_buf_len > 0 then
                         cand_to_emit = table.remove(special_buf, 1)
+                        special_buf_len = special_buf_len - 1
                     end
                 end
                 if not cand_to_emit then
@@ -95,21 +101,24 @@ function M.func(translation, env)
                 end
             else
                 if allow_special then
-                    if #special_buf > 0 then
+                    if special_buf_len > 0 then
                         cand_to_emit = table.remove(special_buf, 1)
+                        special_buf_len = special_buf_len - 1
                     else
                         -- Only flush normal entries when the buffer exceeds
                         -- the sort window, to leave room for late-arriving
                         -- special entries.
-                        if #normal_buf > SORT_WINDOW then
+                        if normal_buf_len > SORT_WINDOW then
                             cand_to_emit = table.remove(normal_buf, 1)
+                            normal_buf_len = normal_buf_len - 1
                         else
                             break
                         end
                     end
                 else
-                    if #normal_buf > 0 then
+                    if normal_buf_len > 0 then
                         cand_to_emit = table.remove(normal_buf, 1)
+                        normal_buf_len = normal_buf_len - 1
                     else
                         break
                     end
@@ -139,7 +148,8 @@ function M.func(translation, env)
             else
                 -- Second candidate is not table-type: enter grouping mode.
                 mode = "grouping"
-                normal_buf[#normal_buf + 1] = cand
+                normal_buf_len = normal_buf_len + 1
+                normal_buf[normal_buf_len] = cand
                 try_flush_page_sort(false)
             end
         elseif mode == "passthrough" then
@@ -147,9 +157,11 @@ function M.func(translation, env)
         else
             -- Grouping mode: classify and buffer the candidate.
             if wanxiang.is_table_type_candidate(cand) and not wanxiang.has_ascii_letter(cand.text) then
-                special_buf[#special_buf + 1] = cand
+                special_buf_len = special_buf_len + 1
+                special_buf[special_buf_len] = cand
             else
-                normal_buf[#normal_buf + 1] = cand
+                normal_buf_len = normal_buf_len + 1
+                normal_buf[normal_buf_len] = cand
             end
             try_flush_page_sort(false)
         end

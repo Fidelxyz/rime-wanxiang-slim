@@ -136,6 +136,7 @@ function M.init(env)
 
     ---@type CharsetFilter[]
     local filters = {}
+    local filters_len = 0
     local filters_cfg = rime_config:get_list("charset_filter")
     if filters_cfg then
         for i = 0, filters_cfg.size - 1 do
@@ -147,6 +148,7 @@ function M.init(env)
 
             ---@type string[]
             local options = {}
+            local options_len = 0
             ---@type boolean
             local always_on = false
 
@@ -159,7 +161,8 @@ function M.init(env)
                         local option_val = options_list:get_value_at(k)
                         local option = option_val and option_val:get_string()
                         if option and option ~= "" then
-                            options[#options + 1] = option
+                            options_len = options_len + 1
+                            options[options_len] = option
                         end
                     end
                 elseif options_value and options_value:get_bool() == true then
@@ -167,7 +170,8 @@ function M.init(env)
                 else
                     local option = options_value and options_value:get_string()
                     if option and option ~= "" then
-                        options[#options + 1] = option
+                        options_len = options_len + 1
+                        options[options_len] = option
                     end
                 end
             end
@@ -213,7 +217,8 @@ function M.init(env)
                     load_list_to_map(blacklist_list, rule_blacklist)
                 end
 
-                filters[#filters + 1] = {
+                filters_len = filters_len + 1
+                filters[filters_len] = {
                     options = always_on or options,
                     charset = rule_charset,
                     whitelist = rule_whitelist,

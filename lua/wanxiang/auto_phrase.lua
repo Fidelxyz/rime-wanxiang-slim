@@ -106,6 +106,7 @@ local function commit_handler(ctx, env)
 
     ---@type string[]
     local codes = {}
+    local codes_len = 0
 
     -- Walk all segments and collect their codes.
     for _, seg in ipairs(segments) do
@@ -126,7 +127,8 @@ local function commit_handler(ctx, env)
 
         -- Code present: split and append.
         for part in code:gmatch("[^" .. config.escaped_delimiter .. "]+") do
-            codes[#codes + 1] = part
+            codes_len = codes_len + 1
+            codes[codes_len] = part
         end
     end
 

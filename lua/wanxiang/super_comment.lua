@@ -55,8 +55,10 @@ local TONE_STRIP_MAP = {
 local function remove_pinyin_tone(s)
     ---@type string[]
     local result = {}
+    local result_len = 0
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        result[#result + 1] = TONE_STRIP_MAP[uchar] or uchar
+        result_len = result_len + 1
+        result[result_len] = TONE_STRIP_MAP[uchar] or uchar
     end
     return table.concat(result)
 end
@@ -208,26 +210,31 @@ end
 local function get_reverse_lookup_comment(cand, initial_comment)
     ---@type string[]
     local inner_parts = {}
+    local inner_parts_len = 0
 
     -- Decompose phonetic/aux annotations.
     if initial_comment ~= "" then
         ---@type string[]
         local segments = {}
+        local segments_len = 0
         for segment in initial_comment:gmatch("[^%s]+") do
-            segments[#segments + 1] = segment
+            segments_len = segments_len + 1
+            segments[segments_len] = segment
         end
 
         if #segments > 0 then
             local semicolon_count = select(2, segments[1]:gsub(";", ""))
             ---@type string[]
             local pinyins = {}
+            local pinyins_len = 0
             ---@type string?
             local aux = nil
 
             for _, segment in ipairs(segments) do
                 local pinyin = segment:match("^[^;~]+")
                 if pinyin then
-                    pinyins[#pinyins + 1] = pinyin
+                    pinyins_len = pinyins_len + 1
+                    pinyins[pinyins_len] = pinyin
                 end
 
                 if not aux then
@@ -239,9 +246,11 @@ local function get_reverse_lookup_comment(cand, initial_comment)
             end
 
             if #pinyins > 0 then
-                inner_parts[#inner_parts + 1] = ("音%s"):format(table.concat(pinyins, ","))
+                inner_parts_len = inner_parts_len + 1
+                inner_parts[inner_parts_len] = ("音%s"):format(table.concat(pinyins, ","))
                 if aux then
-                    inner_parts[#inner_parts + 1] = ("辅%s"):format(aux)
+                    inner_parts_len = inner_parts_len + 1
+                    inner_parts[inner_parts_len] = ("辅%s"):format(aux)
                 end
             end
         end
@@ -249,7 +258,8 @@ local function get_reverse_lookup_comment(cand, initial_comment)
 
     local label = get_charset_label(cand.text)
     if label then
-        inner_parts[#inner_parts + 1] = label
+        inner_parts_len = inner_parts_len + 1
+        inner_parts[inner_parts_len] = label
     end
 
     if #inner_parts == 0 then
@@ -275,8 +285,10 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
 
     ---@type string[]
     local segments = {}
+    local segments_len = 0
     for segment in initial_comment:gmatch("[^" .. auto_delimiter .. "]+") do
-        segments[#segments + 1] = segment
+        segments_len = segments_len + 1
+        segments[segments_len] = segment
     end
 
     -- Tone option overrides aux-code presentation.
@@ -294,18 +306,21 @@ local function get_aux_comment(cand, initial_comment, config, ctx)
     -- With semicolon: extract per type.
     ---@type string[]
     local aux_comments = {}
+    local aux_comments_len = 0
     for _, segment in ipairs(segments) do
         if aux_type == "tone" then
             -- Take the part before the first semicolon.
             local before = segment:match("^(.-);")
             if before and before ~= "" then
-                aux_comments[#aux_comments + 1] = before
+                aux_comments_len = aux_comments_len + 1
+                aux_comments[aux_comments_len] = before
             end
         else
             -- Take the part after the first semicolon (to end of segment).
             local after = segment:match(";(.+)$")
             if after and after ~= "" then
-                aux_comments[#aux_comments + 1] = after
+                aux_comments_len = aux_comments_len + 1
+                aux_comments[aux_comments_len] = after
             end
         end
     end

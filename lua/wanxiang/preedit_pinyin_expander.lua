@@ -53,8 +53,10 @@ local TONE_STRIP_MAP = {
 local function remove_pinyin_tone(s)
     ---@type string[]
     local result = {}
+    local result_len = 0
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        result[#result + 1] = TONE_STRIP_MAP[uchar] or uchar
+        result_len = result_len + 1
+        result[result_len] = TONE_STRIP_MAP[uchar] or uchar
     end
     return table.concat(result)
 end
@@ -67,20 +69,24 @@ end
 local function split_preedit(preedit, auto_delim, manual_delim)
     ---@type string[]
     local parts = {}
+    local parts_len = 0
     local current = ""
     for char in preedit:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
         if char == auto_delim or char == manual_delim then
             if #current > 0 then
-                parts[#parts + 1] = current
+                parts_len = parts_len + 1
+                parts[parts_len] = current
                 current = ""
             end
-            parts[#parts + 1] = char
+            parts_len = parts_len + 1
+            parts[parts_len] = char
         else
             current = current .. char
         end
     end
     if #current > 0 then
-        parts[#parts + 1] = current
+        parts_len = parts_len + 1
+        parts[parts_len] = current
     end
     return parts
 end
@@ -93,12 +99,14 @@ end
 local function extract_pinyin_from_comment(comment, auto_delim, manual_delim)
     ---@type string[]
     local pinyins = {}
+    local pinyins_len = 0
     local pattern = "[^" .. auto_delim:gsub("(%W)", "%%%1") .. manual_delim:gsub("(%W)", "%%%1") .. "]+"
     for segment in comment:gmatch(pattern) do
         local pinyin = segment:match("^[^;]+")
         if pinyin then
             pinyin = pinyin:gsub("[%[%]]", "") -- Strip brackets from English entries
-            pinyins[#pinyins + 1] = pinyin
+            pinyins_len = pinyins_len + 1
+            pinyins[pinyins_len] = pinyin
         end
     end
     return pinyins

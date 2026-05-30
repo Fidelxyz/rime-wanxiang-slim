@@ -57,6 +57,7 @@ local M = {}
 function M.init(env)
     ---@type Binding[]
     local bindings = {}
+    local bindings_len = 0
 
     local cfg_bindings = env.engine.schema.config:get_list("key_binder/bindings")
     if cfg_bindings then
@@ -66,7 +67,8 @@ function M.init(env)
             if value then
                 local binding = parse_binding(value)
                 if binding then
-                    bindings[#bindings + 1] = binding
+                    bindings_len = bindings_len + 1
+                    bindings[bindings_len] = binding
                 end
             end
         end

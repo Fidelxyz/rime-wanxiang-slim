@@ -50,16 +50,20 @@ local function parse_schema_rules(schema_id)
 
     ---@type string[]
     local main_rules = {}
+    local main_rules_len = 0
     ---@type string[]
     local xlit_rules = {}
+    local xlit_rules_len = 0
     for i = 0, algebra_list.size - 1 do
         local rule_val = algebra_list:get_value_at(i)
         local rule = rule_val and rule_val:get_string()
         if rule and #rule > 0 then
             if rule:match("^xlit/HSPZN/") then
-                xlit_rules[#xlit_rules + 1] = rule
+                xlit_rules_len = xlit_rules_len + 1
+                xlit_rules[xlit_rules_len] = rule
             else
-                main_rules[#main_rules + 1] = rule
+                main_rules_len = main_rules_len + 1
+                main_rules[main_rules_len] = rule
             end
         end
     end
@@ -74,10 +78,12 @@ end
 local function expand_code_variant(main_projection, xlit_projection, part)
     ---@type string[]
     local out = {}
+    local out_len = 0
     ---@type table<string, boolean>
     local seen = {}
     ---@type string[]
     local out_xlit = {}
+    local out_xlit_len = 0
     ---@type table<string, boolean>
     local seen_xlit = {}
 
@@ -85,7 +91,8 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     local function add(s)
         if #s > 0 and not seen[s] then
             seen[s] = true
-            out[#out + 1] = s
+            out_len = out_len + 1
+            out[out_len] = s
         end
     end
 
@@ -93,7 +100,8 @@ local function expand_code_variant(main_projection, xlit_projection, part)
     local function add_xlit(s)
         if #s > 0 and not seen_xlit[s] then
             seen_xlit[s] = true
-            out_xlit[#out_xlit + 1] = s
+            out_xlit_len = out_xlit_len + 1
+            out_xlit[out_xlit_len] = s
         end
     end
 
@@ -178,10 +186,12 @@ end
 local function build_reverse_group(main_projection, xlit_projection, db_table, text)
     ---@type string[]
     local group_main = {}
+    local group_main_len = 0
     ---@type table<string, boolean>
     local seen_main = {}
     ---@type string[]
     local group_xlit = {}
+    local group_xlit_len = 0
     ---@type table<string, boolean>
     local seen_xlit = {}
 
@@ -196,14 +206,16 @@ local function build_reverse_group(main_projection, xlit_projection, db_table, t
                 for _, v in ipairs(main_variants) do
                     if not seen_main[v] then
                         seen_main[v] = true
-                        group_main[#group_main + 1] = v
+                        group_main_len = group_main_len + 1
+                        group_main[group_main_len] = v
                     end
                 end
                 -- Fill xlit data.
                 for _, v in ipairs(xlit_variants) do
                     if not seen_xlit[v] then
                         seen_xlit[v] = true
-                        group_xlit[#group_xlit + 1] = v
+                        group_xlit_len = group_xlit_len + 1
+                        group_xlit[group_xlit_len] = v
                     end
                 end
             end
@@ -344,12 +356,14 @@ local function parse_comment_codes(comment, pattern, target_len)
 
     ---@type string[]
     local parts = {}
+    local parts_len = 0
 
     if target_len == 1 then
         parts = { comment }
     else
         for seg in comment:gmatch(pattern) do
-            parts[#parts + 1] = seg
+            parts_len = parts_len + 1
+            parts[parts_len] = seg
         end
         if #parts ~= target_len then
             return nil
@@ -365,12 +379,14 @@ local function parse_comment_codes(comment, pattern, target_len)
 
         ---@type string[]
         local codes_list = {}
+        local codes_list_len = 0
         -- Extract auxiliary codes.
         if #codes_part > 0 then
             for c in codes_part:gmatch("[^,]+") do
                 local trimmed = c:gsub("^%s+", ""):gsub("%s+$", "")
                 if #trimmed > 0 then
-                    codes_list[#codes_list + 1] = trimmed
+                    codes_list_len = codes_list_len + 1
+                    codes_list[codes_list_len] = trimmed
                 end
             end
         end
@@ -400,6 +416,7 @@ function F.init(env)
 
     ---@type string[]
     local data_sources = {}
+    local data_sources_len = 0
     local has_db_source = false
     local has_aux_source = false
     local sources_list_item = cfg_root and cfg_root:get("data_source")
@@ -409,7 +426,8 @@ function F.init(env)
             local source_val = sources_list:get_value_at(i)
             local source = source_val and source_val:get_string()
             if source and source ~= "" then
-                data_sources[#data_sources + 1] = source
+                data_sources_len = data_sources_len + 1
+                data_sources[data_sources_len] = source
 
                 if source == "aux" then
                     has_aux_source = true
@@ -435,14 +453,18 @@ function F.init(env)
         if db_list_cfg and db_list_cfg.size > 0 then
             ---@type string[]
             local db_names = {}
+            local db_names_len = 0
             ---@type ReverseLookup[]
             db_table = {}
+            local db_table_len = 0
             for i = 0, db_list_cfg.size - 1 do
                 local db_name_val = db_list_cfg:get_value_at(i)
                 local db_name = db_name_val and db_name_val:get_string()
                 if db_name and db_name ~= "" then
-                    db_names[#db_names + 1] = db_name
-                    db_table[#db_table + 1] = ReverseLookup(db_name)
+                    db_names_len = db_names_len + 1
+                    db_names[db_names_len] = db_name
+                    db_table_len = db_table_len + 1
+                    db_table[db_table_len] = ReverseLookup(db_name)
                 end
             end
 
@@ -482,6 +504,7 @@ function F.init(env)
 
     ---@type string[]
     local tags = {}
+    local tags_len = 0
     local tags_item = cfg_root and cfg_root:get("tags")
     local tags_cfg = tags_item and tags_item:get_list()
     if tags_cfg and tags_cfg.size > 0 then
@@ -489,7 +512,8 @@ function F.init(env)
             local tag_val = tags_cfg:get_value_at(i)
             local tag = tag_val and tag_val:get_string()
             if tag and tag ~= "" then
-                tags[#tags + 1] = tag
+                tags_len = tags_len + 1
+                tags[tags_len] = tag
             end
         end
     else
@@ -598,9 +622,12 @@ function F.func(translation, env)
 
     ---@type table<integer, Candidate[]>
     local buckets = {}
+    ---@type table<integer, integer>
+    local bucket_lengths = {}
 
     ---@type Candidate[]
     local long_word_cands = {}
+    local long_word_cands_len = 0
     local max_len = 0
 
     if state.cache_size > 2000 then
@@ -670,11 +697,14 @@ function F.func(translation, env)
                 if cand_len == 1 then
                     ---@type string[]
                     local combined = {}
+                    local combined_len = 0
                     for _, v in ipairs(db_cache[char_str].main) do
-                        combined[#combined + 1] = v
+                        combined_len = combined_len + 1
+                        combined[combined_len] = v
                     end
                     for _, v in ipairs(db_cache[char_str].xlit) do
-                        combined[#combined + 1] = v
+                        combined_len = combined_len + 1
+                        combined[combined_len] = v
                     end
                     raw_data.db[i] = (#combined > 0) and combined or nil
                 else
@@ -711,13 +741,17 @@ function F.func(translation, env)
 
         if matched then
             if if_single_char_first and cand_len > 1 then
-                long_word_cands[#long_word_cands + 1] = cand
+                long_word_cands_len = long_word_cands_len + 1
+                long_word_cands[long_word_cands_len] = cand
             else
                 if not buckets[cand_len] then
                     buckets[cand_len] = {}
+                    bucket_lengths[cand_len] = 0
                 end
                 local cand_list = buckets[cand_len]
-                cand_list[#cand_list + 1] = cand
+                local cand_list_len = bucket_lengths[cand_len] + 1
+                bucket_lengths[cand_len] = cand_list_len
+                cand_list[cand_list_len] = cand
 
                 if cand_len > max_len then
                     max_len = cand_len

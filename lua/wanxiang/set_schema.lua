@@ -211,35 +211,44 @@ local function translator(input, seg, env)
 
         ---@type string[]
         local missing = {}
+        local missing_len = 0
         ---@type string[]
         local unmatched = {}
+        local unmatched_len = 0
         for _, filename in ipairs(files) do
             if not ensure_custom_file(filename, user_dir, shared_dir) then
-                missing[#missing + 1] = filename
+                missing_len = missing_len + 1
+                missing[missing_len] = filename
             elseif not set_pinyin_schema(user_dir .. "/" .. filename, target_pinyin_schema) then
-                unmatched[#unmatched + 1] = filename
+                unmatched_len = unmatched_len + 1
+                unmatched[unmatched_len] = filename
             end
         end
 
         ---@type string[]
         local messages = {}
+        local messages_len = 0
         if #missing > 0 then
-            messages[#messages + 1] = "〔警告〕未找到以下模板配置文件：\n"
+            messages_len = messages_len + 1
+            messages[messages_len] = "〔警告〕未找到以下模板配置文件：\n"
                 .. table.concat(missing, "\n")
         end
         if #unmatched > 0 then
-            messages[#messages + 1] = "〔警告〕在以下配置文件中未找到可切换的条目：\n"
+            messages_len = messages_len + 1
+            messages[messages_len] = "〔警告〕在以下配置文件中未找到可切换的条目：\n"
                 .. table.concat(unmatched, "\n")
         end
 
         if main_custom_file_exists then
-            messages[#messages + 1] = (
+            messages_len = messages_len + 1
+            messages[messages_len] = (
                 "检测到已有配置，已切换至〔"
                 .. target_pinyin_schema
                 .. "〕方案，请手动重新部署。"
             )
         else
-            messages[#messages + 1] = (
+            messages_len = messages_len + 1
+            messages[messages_len] = (
                 "已创建新配置并切换至〔"
                 .. target_pinyin_schema
                 .. "〕方案，请手动重新部署。"
