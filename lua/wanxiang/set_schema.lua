@@ -183,7 +183,7 @@ local function translator(input, seg, env)
 
     if target_aux_schema then
         if not ensure_custom_file(main_custom_file, user_dir, shared_dir) then
-            yield(Candidate("switch", seg.start, seg._end, "〔警告〕未找到模板配置文件。", ""))
+            yield(Candidate("message", seg.start, seg._end, "〔警告〕未找到模板配置文件。", ""))
             return
         end
 
@@ -198,7 +198,7 @@ local function translator(input, seg, env)
         else
             msg = "〔警告〕未找到可切换的条目。"
         end
-        yield(Candidate("switch", seg.start, seg._end, msg, ""))
+        yield(Candidate("message", seg.start, seg._end, msg, ""))
         return
     end
 
@@ -255,7 +255,7 @@ local function translator(input, seg, env)
         end
 
         local msg = table.concat(messages, "\n")
-        yield(Candidate("switch", seg.start, seg._end, msg, ""))
+        yield(Candidate("message", seg.start, seg._end, msg, ""))
     end
 end
 

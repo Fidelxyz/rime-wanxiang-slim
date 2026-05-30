@@ -92,6 +92,12 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `custom/wanxiang_chaifen.schema.yaml`：拆分反查方案
 - `custom/wanxiang_chaifen_*.dict.yaml`：7 种辅码拆分字典
 
+#### 版本显示
+
+`/version` 触发显示输入方案及 Rime 版本。
+
+- `lua/wanxiang/version_displayer.lua`：版本显示翻译器
+
 ### 字符集过滤
 
 可配置字符集规则，支持多选项并集、黑白名单、简繁联动，二进制滤镜数据库。
@@ -415,12 +421,6 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 统计用户输入字数等数据。
 
 - `lua/wanxiang/input_statistics.lua`：输入统计模块
-
-#### 版本显示
-
-`/wx` 触发显示万象版本号。
-
-- `lua/wanxiang/version_display.lua`：版本显示翻译器
 
 ### 特殊布局相关
 

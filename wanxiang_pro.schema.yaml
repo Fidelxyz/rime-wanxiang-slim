@@ -84,6 +84,7 @@ engine:
   translators:
     - punct_translator  # 配合 punct_segmentor 转换标点符号
     - script_translator  # 脚本翻译器，用于拼音、粤拼等基于音节表的输入方案
+    - lua_translator@*wanxiang.version_displayer  # 版本显示
     - lua_translator@*wanxiang.set_schema  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # 通过输入大写U引导，并输入Unicode编码获得汉字输出
     - table_translator@custom_phrase  # 自定义短语 custom_phrase.txt，用于置顶自定义编码候选词
@@ -314,6 +315,7 @@ candidate_type_marker:
     completion: ""  # 补全候选，启用 enable_completion 时生成。
     fallback: "~"  # 回退候选，由 fallback_filter 生成。
     pinned: "·"  # 置顶候选，由 candidate_pinner 生成。
+    message: "ℹ"  # Lua 脚本产生的信息输出。
 
 # 以词定字
 character_selector:

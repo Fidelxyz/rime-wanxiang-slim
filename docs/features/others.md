@@ -49,3 +49,5 @@ outline: deep
 **自动上屏**：三四位简码唯一时自动上屏。默认关闭，配置项：`speller/auto_select`。
 
 **数字后自动半角**：中文状态下数字后输入符号自动转换为半角标点。默认关闭，配置项：`punctuator/digit_separators`、`punctuator/digit_separator_action`。
+
+**版本显示**：输入 `/version` 显示输入方案及 Rime 版本信息。
