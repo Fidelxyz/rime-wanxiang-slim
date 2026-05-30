@@ -300,14 +300,14 @@ super_comment:
 candidate_type_marker:
   # 各候选类型的注释标记。
   types:
-    user_phrase: "⁺"
-    sentence: "∞"
-    phrase: ""
-    table: ""
-    user_table: ""
-    completion: ""
-    fallback: "~"
-    pinned: "·"
+    phrase: ""  # 来自 script_translator（包含主翻译器）的候选词。
+    user_phrase: "⁺"  # 来自 script_translator（包含主翻译器）用户词典的候选词。
+    table: ""  # 来自 table_translator 的候选词。
+    user_table: ""  # 来自 table_translator 用户词典的候选词。
+    sentence: "∞"  # 造句候选，启用 enable_sentence 时生成。
+    completion: ""  # 补全候选，启用 enable_completion 时生成。
+    fallback: "~"  # 回退候选，由 fallback_filter 生成。
+    pinned: "·"  # 置顶候选，由 candidate_pinner 生成。
 
 # 以词定字
 character_selector:

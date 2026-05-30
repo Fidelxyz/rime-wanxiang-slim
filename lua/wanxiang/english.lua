@@ -468,7 +468,7 @@ function F.func(input, env)
         local good_cand = restore_sentence_spacing(cand, config.split_pattern, config.delim_check_pattern)
         local fmt_cand = apply_formatting(good_cand, code_ctx)
 
-        if fmt_cand.type == "user_table" or fmt_cand.type == "fixed" or fmt_cand.type == "phrase" or not is_ascii then
+        if fmt_cand.type == "user_table" or fmt_cand.type == "phrase" or not is_ascii then
             -- Emit user_table, Chinese candidates etc. directly; do not let single-letter cut in.
             yield(fmt_cand)
             goto continue

@@ -36,7 +36,6 @@ local candidate_code_recorder = require("wanxiang.candidate_code_recorder")
 local PINNABLE_TYPES = {
     phrase = true,
     table = true,
-    fixed = true,
 }
 
 ---Construct a user dictionary entry for the candidate.
