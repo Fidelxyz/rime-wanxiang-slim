@@ -81,6 +81,8 @@ Files contain the following sections in order if applicable:
 - **Early returns**: Prefer early returns for validation and edge cases
 - **Guard clauses**: Use assertions (`assert()`) to validate required state/config
 - **Table construction**: Initialize tables with explicit types when non-empty (e.g., `---@type string[]`)
+- **List appending**: Use cached local variables for list length when appending in loops
+- **String manipulation**: Use method syntax for string operations (e.g., `str:sub()`, `str:len()`) for readability
 
 #### Defensive coding
 Don't add error handling, fallbacks, or validation **for scenarios that can't happen**. Trust internal code and framework guarantees. **Only validate at system boundaries** (user input, external APIs).
