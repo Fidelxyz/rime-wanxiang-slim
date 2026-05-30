@@ -1,0 +1,22 @@
+name: 功能请求
+description: 希望添加新的功能
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请在标题中**简短概括**您希望添加的功能。详细描述请在下方填写，请勿填写至标题中。
+
+        讨论或疑问请移步至 [Discussions](https://github.com/Fidelxyz/rime-wanxiang-slim/discussions)。
+
+  - type: textarea
+    attributes:
+      label: 问题描述
+      description: 您的功能请求是否某个具体问题相关？请详细描述这个问题。
+
+  - type: textarea
+    attributes:
+      label: 功能描述
+      description: 请清晰、简洁地说明您希望实现的目标或结果。
+    validations:
+      required: true

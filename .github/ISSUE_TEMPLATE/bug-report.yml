@@ -1,0 +1,56 @@
+name: Bug 报告
+description: 功能未按预期运行
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请在标题中**简短概括**您遇到的问题。详细描述请在下方填写，请勿填写至标题中。
+
+        讨论或疑问请移步至 [Discussions](https://github.com/Fidelxyz/rime-wanxiang-slim/discussions)。
+
+  - type: textarea
+    attributes:
+      label: 问题描述
+      description: 用一两句话清晰简洁地描述您遇到的问题。
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 复现步骤
+      description: 产生问题的详细步骤。
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 预期行为
+      description: 清晰简洁地描述您预期会发生什么。
+
+  - type: textarea
+    attributes:
+      label: 版本信息
+      description: 请在 Rime 输入法中输入 `/version` 命令，将输出的版本信息输入至此处。
+      render: plain
+
+  - type: textarea
+    attributes:
+      label: 错误日志
+      description: 如日志中存在相关错误，请将其粘贴至此处。
+      render: plain
+
+  - type: textarea
+    attributes:
+      label: 配置文件
+      description: 如果您认为问题与您的配置文件（`custom.yaml`）相关，请将其内容粘贴至此处。
+      render: plain
+
+  - type: textarea
+    attributes:
+      label: 补充信息
+      description: 任何关于该问题的其他信息。
