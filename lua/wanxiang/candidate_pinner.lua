@@ -40,18 +40,6 @@ local PINNABLE_TYPES = {
     table = true,
 }
 
----Construct a user dictionary entry for the candidate.
----@param text string
----@param code string
----@return DictEntry
-local function make_entry(text, code)
-    local entry = DictEntry()
-    entry.text = text
-    entry.custom_code = code .. " "
-    entry.weight = 1
-    return entry
-end
-
 local P = {}
 
 ---@param env Env
@@ -145,12 +133,12 @@ function P.func(key, env)
 
     if pin then
         -- Positive commits add or strengthen the entry.
-        state.memory:update_userdict(make_entry(genuine.text, code), 1, "")
+        state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), 1, "")
         log.info(("Pinned candidate '%s' with code '%s'"):format(genuine.text, code))
     else
         if state.memory:user_lookup(code, false) then
             -- Negative commits soft-delete the entry.
-            state.memory:update_userdict(make_entry(genuine.text, code), -1, "")
+            state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), -1, "")
             log.info(("Unpinned candidate '%s' with code '%s'"):format(genuine.text, code))
         end
     end

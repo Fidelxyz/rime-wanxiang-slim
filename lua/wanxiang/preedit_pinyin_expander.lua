@@ -9,8 +9,9 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class PreeditPinyinExpanderConfig
----@field auto_delim string
----@field manual_delim string
+---@field auto_delimiter string
+---@field manual_delimiter string
+---@field split_code_pattern string
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
@@ -20,16 +21,15 @@ local utils = require("utils.utils")
 
 --- Split preedit into segments by delimiters, preserving delimiters as separate entries.
 ---@param preedit string
----@param auto_delim string
----@param manual_delim string
+---@param config PreeditPinyinExpanderConfig
 ---@return string[]
-local function split_preedit(preedit, auto_delim, manual_delim)
+local function split_preedit(preedit, config)
     ---@type string[]
     local parts = {}
     local parts_len = 0
     local current = ""
     for char in preedit:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        if char == auto_delim or char == manual_delim then
+        if char == config.auto_delimiter or char == config.manual_delimiter then
             if #current > 0 then
                 parts_len = parts_len + 1
                 parts[parts_len] = current
@@ -50,15 +50,13 @@ end
 
 --- Extract pinyin segments from comment string (before any semicolons).
 ---@param comment string
----@param auto_delim string
----@param manual_delim string
+---@param config PreeditPinyinExpanderConfig
 ---@return string[]
-local function extract_pinyin_from_comment(comment, auto_delim, manual_delim)
+local function extract_pinyin_from_comment(comment, config)
     ---@type string[]
     local pinyins = {}
     local pinyins_len = 0
-    local pattern = "[^" .. auto_delim:gsub("(%W)", "%%%1") .. manual_delim:gsub("(%W)", "%%%1") .. "]+"
-    for segment in comment:gmatch(pattern) do
+    for segment in comment:gmatch(config.split_code_pattern) do
         local pinyin = segment:match("^[^;]+")
         if pinyin then
             pinyin = pinyin:gsub("[%[%]]", "") -- Strip brackets from English entries
@@ -74,16 +72,15 @@ end
 --- The last incomplete segment is kept as-is (partial input).
 ---@param preedit string
 ---@param comment string
----@param auto_delim string
----@param manual_delim string
+---@param config PreeditPinyinExpanderConfig
 ---@return string
-local function convert_preedit_to_pinyin(preedit, comment, auto_delim, manual_delim)
-    local parts = split_preedit(preedit, auto_delim, manual_delim)
-    local pinyins = extract_pinyin_from_comment(comment, auto_delim, manual_delim)
+local function convert_preedit_to_pinyin(preedit, comment, config)
+    local parts = split_preedit(preedit, config)
+    local pinyins = extract_pinyin_from_comment(comment, config)
 
     local pinyin_idx = 1
     for i, part in ipairs(parts) do
-        if part == auto_delim or part == manual_delim then
+        if part == config.auto_delimiter or part == config.manual_delimiter then
             -- Keep delimiters as-is
         else
             local py = pinyins[pinyin_idx]
@@ -115,13 +112,16 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local config = env.engine.schema.config
+
     local delimiter = config:get_string("speller/delimiter") or " '"
-    local auto_delim = delimiter:sub(1, 1)
-    local manual_delim = delimiter:sub(2, 2)
+    local auto_delimiter = delimiter:sub(1, 1)
+    local manual_delimiter = delimiter:sub(2, 2)
+    local split_code_pattern = "[^" .. utils.escape_for_pattern(delimiter) .. "]+"
 
     env.preedit_pinyin_expander_config = {
-        auto_delim = auto_delim,
-        manual_delim = manual_delim,
+        auto_delimiter = auto_delimiter,
+        manual_delimiter = manual_delimiter,
+        split_code_pattern = split_code_pattern,
     }
 end
 
@@ -159,7 +159,7 @@ function F.func(input, env)
         local preedit = genuine_cand.preedit
         local comment = genuine_cand.comment
         if preedit ~= "" and comment ~= "" then
-            preedit = convert_preedit_to_pinyin(preedit, comment, config.auto_delim, config.manual_delim)
+            preedit = convert_preedit_to_pinyin(preedit, comment, config)
             if is_toneless_pinyin then
                 preedit = utils.remove_pinyin_tone(preedit)
             end

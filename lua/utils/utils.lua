@@ -304,4 +304,23 @@ function M.get_user_id()
     return user_id
 end
 
+---Construct a user dictionary entry for the candidate.
+---@param text string
+---@param code string
+---@return DictEntry
+function M.make_dict_entry(text, code)
+    local entry = DictEntry()
+    entry.text = text
+    entry.custom_code = code .. " "
+    return entry
+end
+
+---Escape a string for use in a Lua pattern.
+---@param str string
+function M.escape_for_pattern(str)
+    -- Add a `%` before magic characters: . % * + - ? ^ $ [ ] ( ).
+    -- See https://www.lua.org/pil/20.2.html.
+    return str:gsub("(%.%%%*%+%-%?%^%$%[%]%(%))", "%%%1")
+end
+
 return M

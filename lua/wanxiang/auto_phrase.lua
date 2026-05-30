@@ -8,7 +8,8 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class AutoPhraseConfig
----@field escaped_delimiter string
+---@field en_user_dict_trigger string?
+---@field split_code_pattern string
 
 ---@class AutoPhraseState
 ---@field zh_memory Memory?
@@ -61,94 +62,72 @@ local function commit_handler(ctx, env)
     local state = env.auto_phrase_state
     assert(state)
 
-    local segments = ctx.composition:toSegmentation():get_segments()
-    local segments_count = #segments
     local commit_text = ctx:get_commit_text()
     local raw_input = ctx.input
 
-    -- English phrase creation (kept as-is, hardcoded "\").
-    if raw_input ~= "" and raw_input:sub(-1) == "\\" and is_english_phrase(commit_text) then
-        local code_body = raw_input:gsub("\\+$", "")
-        local clean_commit_text = commit_text:gsub("\\+$", "")
-        code_body = code_body:gsub("%s+$", "")
-        if code_body ~= "" and clean_commit_text ~= "" and state.en_memory then
-            ---@param code string
-            local function save_entry(code)
-                local entry = DictEntry()
-                entry.text = clean_commit_text
-                entry.weight = 1
-                entry.custom_code = code .. " "
-                state.en_memory:update_userdict(entry, 1, "")
-            end
+    if raw_input ~= "" and raw_input:sub(-1) == config.en_user_dict_trigger and is_english_phrase(commit_text) then
+        -- English phrase creation.
 
-            save_entry(code_body)
+        -- Strip trigger and trailing whitespace from raw input to get the code body.
+        local code_body = raw_input:gsub(config.en_user_dict_trigger .. "+$", ""):gsub("%s+$", "")
+        -- Strip trigger from commit text to get the clean phrase.
+        local clean_commit_text = commit_text:gsub(config.en_user_dict_trigger .. "+$", "")
+        if code_body ~= "" and clean_commit_text ~= "" and state.en_memory then
+            state.en_memory:update_userdict(utils.make_dict_entry(clean_commit_text, code_body), 1, "")
+
             local lower_code = code_body:lower()
             if lower_code ~= code_body then
-                save_entry(lower_code)
+                state.en_memory:update_userdict(utils.make_dict_entry(clean_commit_text, lower_code), 1, "")
             end
         end
+    elseif state.zh_memory then
+        -- Chinese auto phrase creation.
 
-        return
-    end
+        local segments = ctx.composition:toSegmentation():get_segments()
+        local segments_count = #segments
 
-    -- Chinese auto phrase creation.
-    if not state.zh_memory then
-        return
-    end
-
-    -- Basic checks.
-    if segments_count <= 1 or utf8.len(commit_text) <= 1 then
-        return
-    end
-    if not is_chinese_phrase(commit_text) then
-        return
-    end
-
-    ---@type string[]
-    local codes = {}
-    local codes_len = 0
-
-    -- Walk all segments and collect their codes.
-    for _, seg in ipairs(segments) do
-        local cand = seg and seg:get_selected_candidate()
-
-        -- No candidate: likely a punctuation segment.
-        if not cand then
+        if segments_count <= 1 or utf8.len(commit_text) <= 1 or not is_chinese_phrase(commit_text) then
             return
         end
 
-        -- Look up this candidate's comment (its code).
-        local code = candidate_code_recorder.get(cand.text)
+        ---@type string[]
+        local codes = {}
+        local codes_len = 0
 
-        -- Candidate present but no code recorded.
-        if not code then
+        -- Walk all segments and collect their codes.
+        for _, seg in ipairs(segments) do
+            local cand = seg and seg:get_selected_candidate()
+            if not cand then
+                -- No candidate: likely a punctuation segment.
+                return
+            end
+
+            -- Look up this candidate's comment (its code).
+            local code = candidate_code_recorder.get(cand.text)
+            if not code then
+                return
+            end
+
+            -- Code present: split and append.
+            for part in code:gmatch(config.split_code_pattern) do
+                codes_len = codes_len + 1
+                codes[codes_len] = part
+            end
+        end
+        if codes_len == 0 then
             return
         end
 
-        -- Code present: split and append.
-        for part in code:gmatch("[^" .. config.escaped_delimiter .. "]+") do
-            codes_len = codes_len + 1
-            codes[codes_len] = part
+        -- Number of code pieces must equal the number of characters in commit_text.
+        local total_chars = utf8.len(commit_text)
+        if codes_len ~= total_chars then
+            return
         end
-    end
 
-    -- We need at least one code piece.
-    if #codes == 0 then
-        return
+        -- Write to the user dictionary.
+        local code = table.concat(codes, " ")
+        state.zh_memory:update_userdict(utils.make_dict_entry(commit_text, code), 1, "")
     end
-
-    -- Number of code pieces must equal the number of characters in commit_text.
-    local total_chars = utf8.len(commit_text)
-    if #codes ~= total_chars then
-        return
-    end
-
-    -- Write to the user dictionary.
-    local entry = DictEntry()
-    entry.text = commit_text
-    entry.weight = 1
-    entry.custom_code = table.concat(codes, " ") .. " "
-    state.zh_memory:update_userdict(entry, 1, "")
 end
 
 local P = {}
@@ -158,8 +137,16 @@ function P.init(env)
     local rime_config = env.engine.schema.config
     local context = env.engine.context
 
+    local en_user_dict_trigger = rime_config:get_string("wanxiang_english/user_dict_trigger")
+    if en_user_dict_trigger == "" then
+        en_user_dict_trigger = nil
+    end
+    if en_user_dict_trigger and #en_user_dict_trigger > 1 then
+        en_user_dict_trigger = en_user_dict_trigger:sub(1, 1)
+    end
+
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
-    local escaped_delimiter = delimiter:gsub("(%W)", "%%%1")
+    local split_code_pattern = "[^" .. utils.escape_for_pattern(delimiter) .. "]+"
 
     -- Chinese auto-phrase switch (only controls user_dict_appender).
     local auto_phrase_enabled = rime_config:get_bool("user_dict_appender/enable_auto_phrase")
@@ -172,7 +159,7 @@ function P.init(env)
         user_dict_enabled = false
     end
 
-    -- Chinese: user_dict_appender, controlled by the add_* switches above.
+    -- Chinese: user_dict_appender, controlled by the switches above.
     local zh_memory = (auto_phrase_enabled and user_dict_enabled)
             and Memory(env.engine, env.engine.schema, "user_dict_appender")
         or nil
@@ -180,7 +167,7 @@ function P.init(env)
         candidate_code_recorder.enable()
     end
 
-    -- English: enuser memory, always enabled regardless of add_* switches.
+    -- English: always enabled regardless of the switches.
     local en_memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
 
     ---@type Connection?
@@ -195,7 +182,8 @@ function P.init(env)
     end
 
     env.auto_phrase_config = {
-        escaped_delimiter = escaped_delimiter,
+        en_user_dict_trigger = en_user_dict_trigger,
+        split_code_pattern = split_code_pattern,
     }
 
     env.auto_phrase_state = {

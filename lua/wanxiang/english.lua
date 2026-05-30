@@ -14,9 +14,9 @@
 ---@class EnglishConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field spacing_timeout number
----@field user_dict_trigger string
----@field split_pattern string
----@field delim_check_pattern string
+---@field user_dict_trigger string?
+---@field split_code_pattern string
+---@field find_delimiter_pattern string
 
 ---@class EnglishState
 ---@field is_prev_commit_english boolean
@@ -130,12 +130,11 @@ end
 
 ---comment
 ---@param cand Candidate
----@param split_pattern string
----@param check_pattern string
+---@param config EnglishConfig
 ---@return Candidate
-local function restore_sentence_spacing(cand, split_pattern, check_pattern)
+local function restore_sentence_spacing(cand, config)
     local guide = cand.preedit
-    if not guide:find(check_pattern) then
+    if not guide:find(config.find_delimiter_pattern) then
         return cand
     end
 
@@ -144,7 +143,7 @@ local function restore_sentence_spacing(cand, split_pattern, check_pattern)
     ---@type string[]
     local targets = {}
     local targets_len = 0
-    for seg in guide:gmatch(split_pattern) do
+    for seg in guide:gmatch(config.split_code_pattern) do
         local t = normalize_word(seg)
         if t ~= "" then
             targets_len = targets_len + 1
@@ -311,25 +310,24 @@ function F.init(env)
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
 
     local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
-    if not user_dict_trigger or user_dict_trigger == "" then
-        user_dict_trigger = "\\"
+    if user_dict_trigger == "" then
+        user_dict_trigger = nil
     end
-    if #user_dict_trigger > 1 then
+    if user_dict_trigger and #user_dict_trigger > 1 then
         user_dict_trigger = user_dict_trigger:sub(1, 1)
     end
-    ---@cast user_dict_trigger string
 
-    local delimiter_str = config:get_string("speller/delimiter") or " '"
-    local escaped_delims = delimiter_str:gsub("([%%%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
-    local split_pattern = "[^" .. escaped_delims .. "]+"
-    local delim_check_pattern = "[" .. escaped_delims .. "]"
+    local delimiter = config:get_string("speller/delimiter") or " '"
+    local delimiter_pattern = utils.escape_for_pattern(delimiter)
+    local split_code_pattern = "[^" .. delimiter_pattern .. "]+"
+    local find_delimiter_pattern = "[" .. delimiter_pattern .. "]"
 
     env.english_config = {
         english_spacing_mode = english_spacing_mode,
         spacing_timeout = spacing_timeout,
         user_dict_trigger = user_dict_trigger,
-        split_pattern = split_pattern,
-        delim_check_pattern = delim_check_pattern,
+        split_code_pattern = split_code_pattern,
+        find_delimiter_pattern = find_delimiter_pattern,
     }
 
     local update_notifier = env.engine.context.update_notifier:connect(function(ctx)
@@ -401,7 +399,11 @@ function F.func(input, env)
     local code_len = #code
 
     -- Forced English word creation: trailing `\\` triggers a raw English commit.
-    if code_len > 2 and code:sub(-2) == config.user_dict_trigger .. config.user_dict_trigger then
+    if
+        config.user_dict_trigger
+        and code_len > 2
+        and code:sub(-2) == config.user_dict_trigger .. config.user_dict_trigger
+    then
         local raw_text = code:sub(1, code_len - 2)
         if is_english_phrase(raw_text) then
             if context.composition and not context.composition:empty() then
@@ -465,7 +467,7 @@ function F.func(input, env)
 
         local is_ascii = is_english_phrase(raw_text)
 
-        local good_cand = restore_sentence_spacing(cand, config.split_pattern, config.delim_check_pattern)
+        local good_cand = restore_sentence_spacing(cand, config)
         local fmt_cand = apply_formatting(good_cand, code_ctx)
 
         if fmt_cand.type == "user_table" or fmt_cand.type == "phrase" or not is_ascii then
