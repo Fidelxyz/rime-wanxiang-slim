@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0...v0.6.0-beta.1) (2026-05-30)
+
+
+### Features
+
+* **candidate_pinner:** add candidate pinner ([bd4efaa](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bd4efaa59be965d553be5fc5571c6f65020a4b54))
+
+
+### Performance Improvements
+
+* optimize list appending operations ([81e1e32](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/81e1e32f61c2b2af0314d1a9bcdf530c0a11e484))
+
 ## [0.5.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.4.0...v0.5.0) (2026-05-27)
 
 
