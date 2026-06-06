@@ -4,9 +4,7 @@
 
 local M = {}
 
--- x-release-please-start-version
-M.VERSION = "v0.6.0-beta.1"
--- x-release-please-end
+M.VERSION = "v0.6.0-beta.1" -- x-release-please-version
 
 ---@alias PROCESS_RESULT ProcessResult
 M.RIME_PROCESS_RESULTS = {

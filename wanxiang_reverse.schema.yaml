@@ -23,7 +23,7 @@ speller:
   delimiter: " '"
   algebra:
     __include: wanxiang_algebra:/reverse/全拼
-    __patch: wanxiang_algebra:/reverse/hspzn  #笔画类型有hspzn，hupvd及hslzy（适配乱序17）可选
+    __patch: wanxiang_algebra:/reverse/hspzn
 
 translator:
   dictionary: wanxiang_reverse

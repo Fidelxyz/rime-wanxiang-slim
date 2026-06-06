@@ -41,6 +41,7 @@ export default defineConfig({
         items: [
           { text: "Rime 定制指南", link: "/customization/rime" },
           { text: "自定义词库", link: "/customization/dictionaries" },
+          { text: "键盘事件", link: "/customization/key-events" },
         ],
       },
       {
