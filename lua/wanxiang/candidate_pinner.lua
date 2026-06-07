@@ -1,6 +1,8 @@
 ---Pin and unpin candidates that come from compiled dictionaries.
 ---
 ---Dependencies:
+---  translators:
+---    - table_translator@candidate_pinner
 ---  filters:
 ---    - lua_filter@*wanxiang.candidate_code_recorder*F
 ---

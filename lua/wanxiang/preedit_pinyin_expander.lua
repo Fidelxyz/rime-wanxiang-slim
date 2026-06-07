@@ -16,50 +16,7 @@
 ---@class Env
 ---@field preedit_pinyin_expander_config PreeditPinyinExpanderConfig?
 
----@type table<string, string>
-local TONE_STRIP_MAP = {
-    ["ā"] = "a",
-    ["á"] = "a",
-    ["ǎ"] = "a",
-    ["à"] = "a",
-    ["ē"] = "e",
-    ["é"] = "e",
-    ["ě"] = "e",
-    ["è"] = "e",
-    ["ī"] = "i",
-    ["í"] = "i",
-    ["ǐ"] = "i",
-    ["ì"] = "i",
-    ["ō"] = "o",
-    ["ó"] = "o",
-    ["ǒ"] = "o",
-    ["ò"] = "o",
-    ["ū"] = "u",
-    ["ú"] = "u",
-    ["ǔ"] = "u",
-    ["ù"] = "u",
-    ["ǖ"] = "ü",
-    ["ǘ"] = "ü",
-    ["ǚ"] = "ü",
-    ["ǜ"] = "ü",
-    ["ń"] = "n",
-    ["ň"] = "n",
-    ["ǹ"] = "n",
-}
-
---- Remove pinyin tone marks from a string.
----@param s string
----@return string
-local function remove_pinyin_tone(s)
-    ---@type string[]
-    local result = {}
-    local result_len = 0
-    for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
-        result_len = result_len + 1
-        result[result_len] = TONE_STRIP_MAP[uchar] or uchar
-    end
-    return table.concat(result)
-end
+local wanxiang = require("wanxiang.wanxiang")
 
 --- Split preedit into segments by delimiters, preserving delimiters as separate entries.
 ---@param preedit string
@@ -204,7 +161,7 @@ function F.func(input, env)
         if preedit ~= "" and comment ~= "" then
             preedit = convert_preedit_to_pinyin(preedit, comment, config.auto_delim, config.manual_delim)
             if is_toneless_pinyin then
-                preedit = remove_pinyin_tone(preedit)
+                preedit = wanxiang.remove_pinyin_tone(preedit)
             end
             genuine_cand.preedit = preedit
         end

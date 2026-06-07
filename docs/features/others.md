@@ -6,7 +6,7 @@ outline: deep
 
 ## 提示
 
-**错音错字提示**：输入常见错误读音时提示正确读音。配置项：`super_comment/correction_enabled`。
+**错音错字提示**：输入常见错误读音时提示正确读音。配置项：`correction_hint`。
 
 **编码全拼展开**：将拼音编码展开为无声调或带声调的全拼读音。
 

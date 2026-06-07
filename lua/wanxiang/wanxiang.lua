@@ -76,14 +76,6 @@ function M.is_mobile_device()
     return is_mobile_device
 end
 
--- `tag`-based detection for reverse-lookup mode.
----@param env Env
----@return boolean
-function M.is_reverse_lookup_mode(env)
-    local seg = env.engine.context.composition:back()
-    return seg and (seg:has_tag("wanxiang_reverse")) or false
-end
-
 ---Whether the context is in function/command mode.
 ---@param context Context
 ---@return boolean
@@ -97,8 +89,13 @@ function M.is_function_mode_active(context)
         return false
     end
 
-    -- The unicode translator emits `U+<hex>` candidates under this tag.
-    return seg:has_tag("unicode")
+    return M.is_function_mode_active_segment(seg)
+end
+
+---Whether `segment` is in function/command mode.
+---@param segment Segment
+function M.is_function_mode_active_segment(segment)
+    return segment:has_tag("unicode")
 end
 
 ---Check whether `key` matches `shortcut`.
@@ -154,6 +151,51 @@ function M.has_ascii_letter(s)
         end
     end
     return false
+end
+
+---@type table<string, string>
+local TONE_STRIP_MAP = {
+    ["ā"] = "a",
+    ["á"] = "a",
+    ["ǎ"] = "a",
+    ["à"] = "a",
+    ["ē"] = "e",
+    ["é"] = "e",
+    ["ě"] = "e",
+    ["è"] = "e",
+    ["ī"] = "i",
+    ["í"] = "i",
+    ["ǐ"] = "i",
+    ["ì"] = "i",
+    ["ō"] = "o",
+    ["ó"] = "o",
+    ["ǒ"] = "o",
+    ["ò"] = "o",
+    ["ň"] = "n",
+    ["ū"] = "u",
+    ["ú"] = "u",
+    ["ǔ"] = "u",
+    ["ù"] = "u",
+    ["ǹ"] = "n",
+    ["ǖ"] = "ü",
+    ["ǘ"] = "ü",
+    ["ǚ"] = "ü",
+    ["ǜ"] = "ü",
+    ["ń"] = "n",
+}
+
+--- Remove pinyin tone marks from a string.
+---@param s string
+---@return string
+function M.remove_pinyin_tone(s)
+    ---@type string[]
+    local result = {}
+    local result_len = 0
+    for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+        result_len = result_len + 1
+        result[result_len] = TONE_STRIP_MAP[uchar] or uchar
+    end
+    return table.concat(result)
 end
 
 ---Check whether a candidate originates from the table, user_table, or fixed translators.

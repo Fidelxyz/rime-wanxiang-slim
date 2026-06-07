@@ -81,14 +81,15 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 输入常见错读词时提示正确读音（如"给予"提示 `jǐ yǔ`）。
 
-- `lua/wanxiang/super_comment.lua`：错音纠正注释逻辑
+- `lua/wanxiang/comment_hint_displayer.lua`：错音纠正提示逻辑（使用 Memory API 查询）
 - `dicts/cuoyin.dict.yaml`：错音词条数据
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`correction_hint` 配置段
 
 #### 辅助码提示（仅 PRO）
 
 任意长度候选词的辅助码提示，Ctrl+a 循环切换（辅助码/关闭），Ctrl+c 拆分提示。
 
-- `lua/wanxiang/super_comment.lua`：注释显示模块：辅助码提示、拆分提示
+- `lua/wanxiang/comment_hint_displayer.lua`：注释显示模块：辅助码提示、拆分提示
 - `custom/wanxiang_chaifen.schema.yaml`：拆分反查方案
 - `custom/wanxiang_chaifen_*.dict.yaml`：7 种辅码拆分字典
 

@@ -97,9 +97,9 @@ engine:
     - lua_filter@*wanxiang.english*F
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
-    - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，super_comment 前
+    - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，comment_hint_displayer 前
     - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
-    - lua_filter@*wanxiang.super_comment
+    - lua_filter@*wanxiang.comment_hint_displayer
     - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.fallback_filter  # 回退候选
     - lua_filter@*wanxiang.escape_filter  # 转义字符处理
@@ -307,15 +307,13 @@ backspace_limiter:
   # 仅于小狼毫前端生效。
   enabled: false
 
-super_comment:
-  # 显示辅助码注释的最小候选词长度。0 为关闭并清空所有注释。
-  min_candidate_length: 1
+code_hint:
+  # 显示辅助码注释的最大候选词长度。
+  max_candidate_length: 1
 
+correction_hint:
   # 显示错音错字注释。
-  correction_enabled: true
-
-  # 错音错字注释格式。%s 表示注释内容。
-  correction_format: "〔%s〕"
+  enabled: true
 
 candidate_type_marker:
   # 各候选类型的注释标记。

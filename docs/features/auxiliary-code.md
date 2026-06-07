@@ -90,3 +90,11 @@ outline: deep
 <Badge>仅 Pro</Badge> 开启辅助码提示后，将在单字候选的注释中显示该字的辅助码。
 
 开启读音提示后，将在单字候选的注释中显示该字的带音调全拼读音。
+
+### 配置
+
+```yaml
+code_hint:
+  # 显示辅助码注释的最大候选词长度。
+  max_candidate_length: 1
+```
