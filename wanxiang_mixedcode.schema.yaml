@@ -19,8 +19,6 @@ engine:
     - uniquifier
 
 speller:
-  alphabet: "abcdefghijklmnopqrstuvwxyz;"
-  delimiter: " '"
   algebra:
     __include: wanxiang_algebra:/mixed/通用派生规则
     __patch: wanxiang_algebra:/mixed/全拼

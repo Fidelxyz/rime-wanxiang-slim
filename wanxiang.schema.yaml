@@ -152,17 +152,19 @@ punctuator:
 # 主翻译器
 translator:
   dictionary: wanxiang
-  enable_completion: true  # 启用候选词补全
-  enable_user_dict: true  # 是否开启自动调频，即开启用户词典
+  enable_completion: true  # 启用补全。
+  enable_user_dict: true  # 启用自动调频。
   core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
   max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重
-  contextual_suggestions: false  #模型用来开启词组权重预测，效果一般关闭
+  contextual_suggestions: false  # 使用 Rime 内置的语法模型，效果一般，建议关闭。
   max_homophones: 8
   max_homographs: 8
-  initial_quality: 3  #初始质量拼音的权重应该比英文大
-  spelling_hints: 30  #将注释以词典code字符串形式完全暴露，通过super_comment.lua完全接管，灵活配置。
-  always_show_comments: true  # Rime 默认在 preedit 等于 comment 时取消显示 comment，这里强制一直显示，供super_comment.lua做判断用。
-  #disable_user_dict_for_patterns:  #如果你开启调频，需要一并考虑这个配置是否需要，基本的6码3字不调频，你可以自定义，目前的逻辑是依然记录用户词但满足规则的不输出不被使用
+  initial_quality: 3
+  spelling_hints: 99  # 将候选词在词典中的编码显示在注释中，供 Lua 脚本读取。
+  always_show_comments: true  # Rime 默认在 preedit 等于 comment 时取消显示 comment。此处强制显示注释，供 Lua 脚本读取。
+
+  # 为特定输入编码禁用调频。
+  #disable_user_dict_for_patterns:
   #  - "^[a-z]{1,6}"
 
 grammar:
@@ -256,6 +258,23 @@ user_dict_appender:
   # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
   enable_auto_phrase: true
 
+# 候选置顶
+candidate_pinner:
+  dictionary: ""
+  user_dict: pinned
+  initial_quality: -1
+
+  ### 候选置顶相关配置 ###
+
+  # 启用候选置顶功能。
+  enabled: true
+
+  # 置顶当前候选的按键。
+  pin_key: "Control+p"
+
+  # 取消置顶当前候选的按键。
+  unpin_key: "Control+l"
+
 emoji:
   option_name: emoji
   opencc_config: emoji.json
@@ -318,23 +337,6 @@ character_selector:
 
   # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
   select_last_key: "]"
-
-# 候选置顶
-candidate_pinner:
-  dictionary: ""
-  user_dict: pinned
-  initial_quality: -1
-
-  ### 候选置顶相关配置 ###
-
-  # 启用候选置顶功能。
-  enabled: true
-
-  # 置顶当前候选的按键。
-  pin_key: "Control+p"
-
-  # 取消置顶当前候选的按键。
-  unpin_key: "Control+l"
 
 keypad_composer:
   # 小键盘模式。

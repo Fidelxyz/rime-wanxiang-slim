@@ -19,8 +19,6 @@ engine:
     - uniquifier
 
 speller:
-  alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA\
-  delimiter: " '"
   algebra:
     __include: wanxiang_algebra:/english
 
