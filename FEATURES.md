@@ -35,7 +35,7 @@
 - `wanxiang_algebra.yaml`：声调数字(7890)到拼音声调的转写规则
 - `wanxiang.schema.yaml`：`alphabet` 中 7890、`tone_corrector` 配置段
 - `lua/wanxiang/tone_corrector.lua`：声调修正处理器
-- `lua/wanxiang/preedit_tone_display.lua`：声调数字转上标显示（7890 → ¹²³⁴）
+- `lua/wanxiang/preedit_tone_displayer.lua`：声调数字转上标显示（7890 → ¹²³⁴）
 
 #### 编码全拼展开
 

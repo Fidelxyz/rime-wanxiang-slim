@@ -101,7 +101,7 @@ engine:
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，super_comment 前
-    - lua_filter@*wanxiang.preedit_tone_display  # 声调数字转上标显示
+    - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
     - lua_filter@*wanxiang.super_comment
     - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.fallback_filter  # 回退候选
