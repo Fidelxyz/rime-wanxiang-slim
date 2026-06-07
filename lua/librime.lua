@@ -574,7 +574,7 @@ Component = {}
 
 ---@class Translator
 ---@field name_space string
----@field query fun(self: self, input: string, segment: Segment): Translation
+---@field query fun(self: self, input: string, segment: Segment): Translation?
 
 ---@class ScriptTranslator
 ---@field name_space string
@@ -595,7 +595,7 @@ Component = {}
 ---@field dict Dictionary
 ---@field user_dict UserDictionary
 ---@field translator Translator
----@field query fun(self: self, input: string, segment: Segment): Translation
+---@field query fun(self: self, input: string, segment: Segment): Translation?
 ---@field start_session fun(self: self): boolean
 ---@field finish_session fun(self: self): boolean
 ---@field discard_session fun(self: self): boolean
@@ -627,7 +627,7 @@ Component = {}
 ---@field dict Dictionary
 ---@field user_dict UserDictionary
 ---@field translator Translator
----@field query fun(self: self, input: string, segment: Segment): Translation
+---@field query fun(self: self, input: string, segment: Segment): Translation?
 ---@field start_session fun(self: self): boolean
 ---@field finish_session fun(self: self): boolean
 ---@field discard_session fun(self: self): boolean
