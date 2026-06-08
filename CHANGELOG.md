@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.1...v0.6.0-beta.2) (2026-06-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* **comment_hint_displayer:** refactor super_comment
+
+### Features
+
+* **version_displayer:** add version displayer ([055333c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/055333cf96214ee29c2326756a82e2cf35daa1dd))
+
+
+### Bug Fixes
+
+* fix incorrect type annotation in librime contrib ([2bd92ca](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2bd92ca757158a8238d4f05dd854d800155acbff))
+
+
+### Code Refactoring
+
+* **comment_hint_displayer:** refactor super_comment ([9c0f440](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c0f44077e447b633701541fde8699c7c37b7ce2))
+
 ## [0.6.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0...v0.6.0-beta.1) (2026-05-30)
 
 
