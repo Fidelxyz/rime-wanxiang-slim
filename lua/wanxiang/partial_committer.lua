@@ -1,16 +1,16 @@
----Ctrl + number keys commit the first N characters of the current candidate
----and keep the rest in the input box for further editing.
+---Allows Ctrl + number keys to commit the first N characters of the current candidate and keep the rest in the input
+---box for further editing.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@class PartialCommitState
+---@class PartialCommitterState
 ---@field pending_rest string?
 ---
 ---@field update_notifier Connection
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
----@field partial_commit_state PartialCommitState?
+---@field partial_committer_state PartialCommitterState?
 
 local wanxiang = require("wanxiang.wanxiang")
 
@@ -62,7 +62,7 @@ function P.init(env)
 
     -- After commit_text fires, restore the remaining raw input back into the input box.
     local update_notifier = context.update_notifier:connect(function(ctx)
-        local state = env.partial_commit_state
+        local state = env.partial_committer_state
         assert(state)
 
         if not state.pending_rest then
@@ -77,7 +77,7 @@ function P.init(env)
         ctx.caret_pos = #rest
     end)
 
-    env.partial_commit_state = {
+    env.partial_committer_state = {
         pending_rest = nil,
         update_notifier = update_notifier,
     }
@@ -85,9 +85,9 @@ end
 
 ---@param env Env
 function P.fini(env)
-    assert(env.partial_commit_state)
-    env.partial_commit_state.update_notifier:disconnect()
-    env.partial_commit_state = nil
+    assert(env.partial_committer_state)
+    env.partial_committer_state.update_notifier:disconnect()
+    env.partial_committer_state = nil
 end
 
 ---@param key KeyEvent
@@ -139,7 +139,7 @@ function P.func(key, env)
         rest = rest:sub(2)
     end
 
-    local state = env.partial_commit_state
+    local state = env.partial_committer_state
     assert(state)
 
     -- Commit the prefix and stash the rest; update_notifier will restore it shortly after.

@@ -66,8 +66,8 @@ engine:
     - speller
     - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
     - punctuator
-    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector、partial_commit 前
-    - lua_processor@*wanxiang.partial_commit  # 候选词部分上屏
+    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector、partial_committer 前
+    - lua_processor@*wanxiang.partial_committer  # 候选词部分上屏
     - selector
     - navigator
     - express_editor

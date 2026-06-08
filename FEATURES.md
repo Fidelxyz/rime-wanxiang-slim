@@ -175,7 +175,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 <kbd>Ctrl</kbd> + 数字键上屏首选前 N 字，并保留后续编码。
 
-- `lua/wanxiang/partial_commit.lua`：部分上屏处理器
+- `lua/wanxiang/partial_committer.lua`：部分上屏处理器
 
 ### 候选置顶
 
