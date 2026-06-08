@@ -6,7 +6,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 -- Maximum number of candidates to buffer for grouping before flushing.
 local SORT_WINDOW = 30
@@ -141,7 +141,7 @@ function M.func(translation, env)
             emit(cand)
         elseif idx == 2 and mode == "unknown" then
             -- Decide mode based on the second candidate's type.
-            if wanxiang.is_table_type_candidate(cand) then
+            if utils.is_table_type_candidate(cand) then
                 -- Second candidate is table-type: no reordering needed.
                 mode = "passthrough"
                 emit(cand)
@@ -156,7 +156,7 @@ function M.func(translation, env)
             emit(cand)
         else
             -- Grouping mode: classify and buffer the candidate.
-            if wanxiang.is_table_type_candidate(cand) and not wanxiang.has_ascii_letter(cand.text) then
+            if utils.is_table_type_candidate(cand) and not utils.has_ascii_letter(cand.text) then
                 special_buf_len = special_buf_len + 1
                 special_buf[special_buf_len] = cand
             else

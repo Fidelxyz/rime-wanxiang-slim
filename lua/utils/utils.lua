@@ -1,10 +1,8 @@
----Provides core shared utilities, constants, and environment variables used across the various Lua modules in the Wanxiang schema.
+---Provides shared utilities and constants.
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 local M = {}
-
-M.VERSION = "v0.6.0-beta.2" -- x-release-please-version
 
 ---@alias PROCESS_RESULT ProcessResult
 M.RIME_PROCESS_RESULTS = {
@@ -21,9 +19,6 @@ local is_mobile_device = nil
 ---@param path string
 ---@return boolean
 local function is_absolute_path(path)
-    if not path then
-        return false
-    end
     if path:sub(1, 1) == "/" or path:sub(1, 1) == "\\" then
         return true
     end
@@ -278,9 +273,7 @@ function M.load_file_with_fallback(filename, mode)
     return file, err
 end
 
-local USER_ID_DEFAULT = "unknown"
-
----Workaround for `rime_api.get_user_id()` returning "unknown" on Weasel and Cang.
+---Workaround for `rime_api.get_user_id()` returning "unknown" on Weasel and Hamster.
 ---See:
 ---1. https://github.com/rime/weasel/pull/1649
 ---2. https://github.com/rime/librime/issues/1038
@@ -288,7 +281,7 @@ local USER_ID_DEFAULT = "unknown"
 ---@return string
 function M.get_user_id()
     local user_id = rime_api.get_user_id()
-    if user_id ~= USER_ID_DEFAULT then
+    if user_id ~= "unknown" then
         return user_id
     end
 

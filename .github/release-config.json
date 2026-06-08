@@ -11,7 +11,7 @@
                     "path": ".github/prerelease-manifest.json",
                     "jsonpath": "$[\".\"]"
                 },
-                "lua/wanxiang/wanxiang.lua",
+                "lua/meta.lua",
                 "wanxiang.schema.yaml",
                 "wanxiang_pro.schema.yaml",
                 "wanxiang_english.schema.yaml",

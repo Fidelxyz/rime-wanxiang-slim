@@ -9,7 +9,7 @@
             "draft": true,
             "bump-minor-pre-major": true,
             "extra-files": [
-                "lua/wanxiang/wanxiang.lua",
+                "lua/meta.lua",
                 "wanxiang.schema.yaml",
                 "wanxiang_pro.schema.yaml",
                 "wanxiang_english.schema.yaml",

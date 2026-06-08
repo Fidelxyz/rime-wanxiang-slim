@@ -1,7 +1,7 @@
 ---Display version information about the input schema and Rime when the user types "/version".
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local wanxiang = require("wanxiang.wanxiang")
+local meta = require("meta")
 
 ---Pinyin schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
@@ -58,7 +58,7 @@ end
 local function translator(input, segment, env)
     if input == "/version" then
         local messages = {
-            ("%s – %s"):format(env.engine.schema.schema_name, wanxiang.VERSION),
+            ("%s – %s"):format(env.engine.schema.schema_name, meta.VERSION),
             ("Rime 前端：%s（%s）– %s"):format(
                 rime_api.get_distribution_name(),
                 rime_api.get_distribution_code_name(),

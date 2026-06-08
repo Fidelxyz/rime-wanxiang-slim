@@ -11,7 +11,7 @@
 ---@class Env
 ---@field character_selector_config CharacterSelectorConfig?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---@param key KeyEvent
 ---@param config CharacterSelectorConfig
@@ -27,8 +27,8 @@ local function apply_character_selector(key, config, env, ctx)
         return false
     end
 
-    local select_first = wanxiang.key_matches(key, config.select_first_key)
-    local select_last = wanxiang.key_matches(key, config.select_last_key)
+    local select_first = utils.key_matches(key, config.select_first_key)
+    local select_last = utils.key_matches(key, config.select_last_key)
     if not select_first and not select_last then
         return false
     end
@@ -92,10 +92,10 @@ function P.func(key, env)
     assert(config)
 
     if apply_character_selector(key, config, env, context) then
-        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+        return utils.RIME_PROCESS_RESULTS.kAccepted
     end
 
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 return P

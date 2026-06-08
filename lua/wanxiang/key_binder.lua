@@ -4,7 +4,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---@class Binding
 ---@field match string
@@ -100,13 +100,13 @@ function M.func(key_event, env)
 
     -- Avoid infinite recursion when we are mid-replay.
     if state.redirecting then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local context = env.engine.context
     local segment = context.composition:back()
     if not segment or not segment:has_tag("abc") then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local input = context.input
@@ -118,10 +118,10 @@ function M.func(key_event, env)
                 env.engine:process_key(event)
             end
             state.redirecting = false
-            return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+            return utils.RIME_PROCESS_RESULTS.kAccepted
         end
     end
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 return M

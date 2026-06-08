@@ -3,7 +3,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 local PINYIN_SCHEMAS = {
     ["/pinyin"] = "全拼",
@@ -54,16 +54,16 @@ end
 ---@return boolean ok true if the destination file exists after this call
 local function ensure_custom_file(filename, user_dir, shared_dir)
     local dest = user_dir .. "/" .. filename
-    if wanxiang.file_exists(dest) then
+    if utils.file_exists(dest) then
         return true
     end
 
     local src = shared_dir .. "/custom/" .. filename
-    if not wanxiang.file_exists(src) then
+    if not utils.file_exists(src) then
         src = user_dir .. "/custom/" .. filename
     end
 
-    if not wanxiang.file_exists(src) then
+    if not utils.file_exists(src) then
         log.warning("Template custom file not found: " .. src)
         return false
     end
@@ -179,7 +179,7 @@ local function translator(input, seg, env)
     -- Check existing main custom file
     local main_custom_file = env.engine.schema.schema_id .. ".custom.yaml"
     local main_custom_file_path = user_dir .. "/" .. main_custom_file
-    local main_custom_file_exists = wanxiang.file_exists(main_custom_file_path)
+    local main_custom_file_exists = utils.file_exists(main_custom_file_path)
 
     if target_aux_schema then
         if not ensure_custom_file(main_custom_file, user_dir, shared_dir) then

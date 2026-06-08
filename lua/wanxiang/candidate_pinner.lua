@@ -4,7 +4,7 @@
 ---  translators:
 ---    - table_translator@candidate_pinner
 ---  filters:
----    - lua_filter@*wanxiang.candidate_code_recorder*F
+---    - lua_filter@*utils.candidate_code_recorder*F
 ---
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -29,7 +29,7 @@
 ---@field candidate_pinner_filter_config CandidatePinnerFilterConfig?
 ---@field candidate_pinner_translator_state CandidatePinnerTranslatorState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 local candidate_code_recorder = require("wanxiang.candidate_code_recorder")
 
 -- Candidate types that may be pinned.
@@ -101,43 +101,43 @@ end
 ---@return ProcessResult
 function P.func(key, env)
     if key:release() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local config = env.candidate_pinner_processor_config
     assert(config)
 
     if not config.enabled then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
-    local pin = wanxiang.key_matches(key, config.pin_key)
-    local unpin = wanxiang.key_matches(key, config.unpin_key)
+    local pin = utils.key_matches(key, config.pin_key)
+    local unpin = utils.key_matches(key, config.unpin_key)
     if not pin and not unpin then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local context = env.engine.context
     local cand = context:get_selected_candidate()
     if not cand then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Inspect the genuine candidate so wrappers don't hide the underlying type.
     local genuine = cand:get_genuine()
     if genuine.text == "" then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Pinning enforces the dictionary-only policy. Unpinning falls through so resurfaced entries (emitted as `pinned`
     -- by the candidate_pinner filter) can still be removed.
     if pin and not PINNABLE_TYPES[genuine.type] then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local code = candidate_code_recorder.get(genuine.text)
     if not code then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local state = env.candidate_pinner_processor_state
@@ -156,7 +156,7 @@ function P.func(key, env)
     end
 
     context:refresh_non_confirmed_composition()
-    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+    return utils.RIME_PROCESS_RESULTS.kAccepted
 end
 
 local F = {}

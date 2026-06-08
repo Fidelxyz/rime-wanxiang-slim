@@ -14,7 +14,7 @@
 ---@field code_hint_config CodeHintConfig?
 ---@field correction_hint_config CorrectionHintConfig?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---Reverse-lookup hint module, showing pinyin and aux-code for candidates from reverse lookup segments.
 local reverse_lookup_hint = {}
@@ -166,7 +166,7 @@ function code_hint.get_comment(cand, raw_comment, env)
 
     local comment = table.concat(comments, " ")
     if context:get_option("toneless_hint") then
-        comment = wanxiang.remove_pinyin_tone(comment)
+        comment = utils.remove_pinyin_tone(comment)
     end
     return comment
 end
@@ -199,7 +199,7 @@ function correction_hint.init(env)
     -- Parse the correction hint dictionary from text since comment column is not supported by Rime yet.
     -- See https://github.com/rime/librime/issues/538.
     if not correction_hint.dict then
-        local file = wanxiang.load_file_with_fallback(correction_hint.DICT_PATH)
+        local file = utils.load_file_with_fallback(correction_hint.DICT_PATH)
         if file then
             correction_hint.dict = {}
 
@@ -325,7 +325,7 @@ end
 ---@param segment Segment
 ---@return boolean
 function F.tags_match(segment, _)
-    return not wanxiang.is_function_mode_active_segment(segment)
+    return not utils.is_function_mode_active_segment(segment)
 end
 
 return F

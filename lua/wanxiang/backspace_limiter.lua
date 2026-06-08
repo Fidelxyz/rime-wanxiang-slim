@@ -13,7 +13,7 @@
 ---@field backspace_limiter_config BackspaceLimiterConfig?
 ---@field backspace_limiter_state BackspaceLimiterState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---@param key KeyEvent
 ---@param config BackspaceLimiterConfig
@@ -21,7 +21,7 @@ local wanxiang = require("wanxiang.wanxiang")
 ---@param ctx Context
 ---@return boolean
 local function handle_backspace(key, config, state, ctx)
-    if wanxiang.is_mobile_device() or not config.enabled then
+    if utils.is_mobile_device() or not config.enabled then
         return false
     end
 
@@ -82,10 +82,10 @@ function P.func(key_event, env)
     assert(state)
 
     if handle_backspace(key_event, config, state, context) then
-        return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+        return utils.RIME_PROCESS_RESULTS.kAccepted
     end
 
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 return P

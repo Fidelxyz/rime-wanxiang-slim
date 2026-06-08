@@ -12,7 +12,7 @@
 ---@class Env
 ---@field partial_committer_state PartialCommitterState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---Mapping from digit key codes to the number of characters to commit.
 ---Key `0` is treated as 10.
@@ -95,28 +95,28 @@ end
 ---@return ProcessResult
 function P.func(key, env)
     if not key:ctrl() or key:release() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local n = NUMKEY_MAP[key.keycode]
     if not n then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local context = env.engine.context
     if not context:is_composing() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local cand = context:get_selected_candidate()
     if not cand or cand.text == "" then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Spans expose the physical syllable boundaries of the input.
     local spans = context.composition:spans()
     if spans.count == 0 or #spans.vertices < 2 then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Clamp n to the smallest of: requested length, available syllables, candidate length.
@@ -124,7 +124,7 @@ function P.func(key, env)
     local cand_len = utf8.len(cand.text) or 0
     n = math.min(n, available_syllables, cand_len)
     if n <= 0 then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- The candidate prefix to commit.
@@ -147,7 +147,7 @@ function P.func(key, env)
     state.pending_rest = rest
     context:refresh_non_confirmed_composition()
 
-    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+    return utils.RIME_PROCESS_RESULTS.kAccepted
 end
 
 return P

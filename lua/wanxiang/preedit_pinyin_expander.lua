@@ -16,7 +16,7 @@
 ---@class Env
 ---@field preedit_pinyin_expander_config PreeditPinyinExpanderConfig?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 --- Split preedit into segments by delimiters, preserving delimiters as separate entries.
 ---@param preedit string
@@ -161,7 +161,7 @@ function F.func(input, env)
         if preedit ~= "" and comment ~= "" then
             preedit = convert_preedit_to_pinyin(preedit, comment, config.auto_delim, config.manual_delim)
             if is_toneless_pinyin then
-                preedit = wanxiang.remove_pinyin_tone(preedit)
+                preedit = utils.remove_pinyin_tone(preedit)
             end
             genuine_cand.preedit = preedit
         end

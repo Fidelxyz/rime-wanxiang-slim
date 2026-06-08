@@ -2,7 +2,7 @@
 ---
 ---Dependencies:
 ---  filters:
----    - lua_filter@*wanxiang.candidate_code_recorder*F
+---    - lua_filter@*utils.candidate_code_recorder*F
 ---
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
@@ -21,7 +21,7 @@
 ---@field auto_phrase_config AutoPhraseConfig?
 ---@field auto_phrase_state AutoPhraseState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 local candidate_code_recorder = require("wanxiang.candidate_code_recorder")
 
 ---Return if the text is a non-empty ASCII word.
@@ -44,7 +44,7 @@ local function is_chinese_phrase(text)
         if cp <= 127 then
             return false
         end
-        if not wanxiang.is_chinese_codepoint(cp) then
+        if not utils.is_chinese_codepoint(cp) then
             return false
         end
     end
@@ -227,7 +227,7 @@ function P.fini(env)
 end
 
 function P.func(_, _)
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 return P

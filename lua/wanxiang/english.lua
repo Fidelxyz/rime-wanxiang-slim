@@ -36,7 +36,7 @@
 ---@field spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field is_prev_commit_english boolean
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---@param s string
 ---@return string
@@ -286,7 +286,7 @@ function P.func(key_event, env)
     -- the composition, and the release event would then incorrectly mark the standalone
     -- Space/Enter as a chain-breaker, suppressing the next smart spacing.
     if key_event:release() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local context = env.engine.context
@@ -298,7 +298,7 @@ function P.func(key_event, env)
         end
     end
 
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 local F = {}
@@ -341,7 +341,7 @@ function F.init(env)
         if input == "" then
             state.comp_start_time = nil
         elseif state.comp_start_time == nil then
-            state.comp_start_time = wanxiang.now()
+            state.comp_start_time = utils.now()
         end
     end)
 
@@ -355,7 +355,7 @@ function F.init(env)
 
         state.is_prev_commit_english = is_english
         if is_english then
-            state.last_commit_time = wanxiang.now()
+            state.last_commit_time = utils.now()
         else
             state.last_commit_time = 0
         end
@@ -420,7 +420,7 @@ function F.func(input, env)
     if context:get_property("english_spacing") == "true" then
         state.is_prev_commit_english = false
     elseif state.is_prev_commit_english and config.spacing_timeout > 0 then
-        local check_time = state.comp_start_time or wanxiang.now()
+        local check_time = state.comp_start_time or utils.now()
         if (check_time - state.last_commit_time) > config.spacing_timeout then
             state.is_prev_commit_english = false
         end

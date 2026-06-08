@@ -16,7 +16,7 @@
 ---@field tone_corrector_config ToneCorrectorConfig?
 ---@field tone_corrector_state ToneCorrectorState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---@type table<string, true>
 local TONE_DIGITS = { ["7"] = true, ["8"] = true, ["9"] = true, ["0"] = true }
@@ -103,16 +103,16 @@ function P.func(key, env)
     -- Only act when composing.
     local input = context.input
     if input == "" then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Ignore modified keys.
     if key:ctrl() or key:alt() or key:super() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     if not TONE_DIGITS[key:repr()] then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local config = env.tone_corrector_config
@@ -120,21 +120,21 @@ function P.func(key, env)
 
     -- Skip in reverse-lookup mode and function mode.
     if config.lookup_trigger and input:find(config.lookup_trigger, 1, true) then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
-    if wanxiang.is_function_mode_active(context) then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    if utils.is_function_mode_active(context) then
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Skip if the selected candidate contains Latin letters (likely English input).
     local cand = context:get_selected_candidate()
     if cand and cand.text:match("[a-zA-Z]") then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Let the speller append the tone digit; the notifier will compress afterwards.
     state.pending_correction = true
-    return wanxiang.RIME_PROCESS_RESULTS.kNoop
+    return utils.RIME_PROCESS_RESULTS.kNoop
 end
 
 return P

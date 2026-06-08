@@ -15,7 +15,7 @@
 ---@field keypad_composer_config KeypadComposerConfig?
 ---@field keypad_composer_state KeypadComposerState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 local P = {}
 
@@ -63,13 +63,13 @@ function P.func(key, env)
 
     -- Keep the default behavior in select mode
     if config.mode == "select" then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     -- Only process keypad keys without modifiers
     local keycode = key.keycode
     if (keycode < 0xFFB0 or 0xFFB9 < keycode) or key:ctrl() or key:alt() or key:super() or key:release() then
-        return wanxiang.RIME_PROCESS_RESULTS.kNoop
+        return utils.RIME_PROCESS_RESULTS.kNoop
     end
 
     local state = env.keypad_composer_state
@@ -85,7 +85,7 @@ function P.func(key, env)
         -- Auto mode with inactive composition: commit directly
         env.engine:commit_text(ch)
     end
-    return wanxiang.RIME_PROCESS_RESULTS.kAccepted
+    return utils.RIME_PROCESS_RESULTS.kAccepted
 end
 
 return P

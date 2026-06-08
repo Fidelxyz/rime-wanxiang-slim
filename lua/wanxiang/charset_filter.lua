@@ -20,7 +20,7 @@
 ---@field charset_filter_config CharsetFilterConfig?
 ---@field charset_filter_state CharsetFilterState?
 
-local wanxiang = require("wanxiang.wanxiang")
+local utils = require("utils.utils")
 
 ---Whether any character of `db_attr` is a key in `config_base_set`.
 ---@param db_attr string
@@ -106,7 +106,7 @@ end
 ---@return boolean
 local function is_text_allowed(text, config, state, ctx)
     for _, codepoint in utf8.codes(text) do
-        if wanxiang.is_chinese_codepoint(codepoint) then
+        if utils.is_chinese_codepoint(codepoint) then
             -- Reject as soon as we hit any unallowed character.
             if not is_codepoint_allowed(codepoint, config, state, ctx) then
                 return false
@@ -131,7 +131,7 @@ function M.init(env)
     local rime_config = env.engine.schema.config
 
     local charset_db = rime_api.get_distribution_code_name():lower() ~= "weasel"
-            and wanxiang.get_filename_with_fallback("lua/data/charset.reverse.bin")
+            and utils.get_filename_with_fallback("lua/data/charset.reverse.bin")
         or "lua/data/charset.reverse.bin"
 
     ---@type CharsetFilter[]

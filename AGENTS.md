@@ -9,6 +9,7 @@ configuration files, Lua extensions, and dictionary data for the [Rime Input Met
 
 ```
 ├── lua/wanxiang/                # Lua plugin modules
+├── lua/utils/                   # Lua utility modules
 ├── lua/data/                    # Data files for Lua plugins (emoji, charset, OpenCC)
 ├── lua/librime.lua              # Rime's Lua API type stubs
 ├── dicts/                       # Dictionary data files (.dict.yaml)
