@@ -137,12 +137,6 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 ### 其他功能
 
-#### 空码回溯
-
-前面编码有候选但继续输入无候选时，显示上一次候选并标注 `~`。
-
-- `lua/wanxiang/fallback_filter.lua`：3 码回退逻辑，空码候选恢复与 `~` 标注
-
 #### Unicode 输入
 
 大写 `U` 开头输入 Unicode 码点（如 `U62fc` 得到"拼"）。
@@ -159,7 +153,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 候选类型符号
 
-为不同类型的候选词（如 emoji、fallback 等）在注释末尾追加对应符号。
+为不同类型的候选词（如 emoji 等）在注释末尾追加对应符号。
 
 - `lua/wanxiang/candidate_type_marker.lua`：读取配置并追加类型符号逻辑
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_type_marker` 配置项
@@ -304,6 +298,12 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 - `lua/wanxiang/user_predict.lua`：`predict_space` 配置与打断逻辑
 - `wanxiang.schema.yaml`：`user_predict/enable_predict_space` 配置项
+
+#### 空码回溯
+
+前面编码有候选但继续输入无候选时，显示上一次候选并标注 `~`。
+
+- `lua/wanxiang/fallback_filter.lua`：3 码回退逻辑，空码候选恢复与 `~` 标注
 
 #### 固定已输入语句
 

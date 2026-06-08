@@ -30,8 +30,6 @@ outline: deep
 
 ## 其他功能
 
-**空码回溯**：输入编码无候选时，显示上一次候选，可直接空格上屏，减少回删操作。
-
 **Unicode 输入**：`U` + Unicode 编码输入对应字符。配置项：`recognizer/patterns/unicode`。
 
 **小键盘行为**：可配置小键盘参与编码，不直接上屏。配置项：`keypad_composer`。
