@@ -105,7 +105,7 @@ engine:
     - lua_filter@*wanxiang.comment_hint_displayer
     - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.fallback_filter  # 回退候选
-    - lua_filter@*wanxiang.escape_filter  # 转义字符处理
+    - lua_filter@*wanxiang.phrase_escaper  # 转义字符处理
     - lua_filter@*wanxiang.candidate_type_marker  # 候选类型标记
     - simplifier@decomposition_hint
     - simplifier@s2t

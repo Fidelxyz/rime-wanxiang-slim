@@ -154,7 +154,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 自定义短语中 `\n` `\s` `\t` 等转换为实际换行/空格/制表符。
 
-- `lua/wanxiang/escape_filter.lua`：转义序列格式化逻辑
+- `lua/wanxiang/phrase_escaper.lua`：转义序列格式化逻辑
 - `custom_phrase.txt` (用户目录)：自定义短语数据源
 
 #### 候选类型符号
