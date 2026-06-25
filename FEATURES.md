@@ -72,7 +72,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 英文输入编码末尾输入指定符号（默认 `\\`）触发英文造词，记录到 `en.userdb`。
 
-- `lua/wanxiang/english.lua`：英文造词逻辑（`trigger` 配置可自定义触发符）
+- `lua/wanxiang/english_user_dict_appender.lua`：提供英文整词候选；将上屏的英文词条写入英文用户词库
 - `wanxiang.schema.yaml`：`english` 段 `trigger` 配置
 
 ### 提示

@@ -72,7 +72,8 @@ engine:
     - navigator
     - express_editor
     - lua_processor@*wanxiang.candidate_pinner*P  # 候选置顶
-    - lua_processor@*wanxiang.auto_phrase  # 自动造词、英文造词
+    - lua_processor@*wanxiang.auto_phrase  # 自动造词
+    - lua_processor@*wanxiang.english_user_dict_appender  # 英文造词
   segmentors:
     - ascii_segmentor
     - matcher

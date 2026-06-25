@@ -14,7 +14,6 @@
 ---@class EnglishConfig
 ---@field english_spacing_mode string|"off"|"smart"|"before"|"after"
 ---@field spacing_timeout number
----@field user_dict_trigger string?
 ---@field split_code_pattern string
 ---@field find_delimiter_pattern string
 
@@ -309,14 +308,6 @@ function F.init(env)
     local english_spacing_mode = config:get_string("wanxiang_english/english_spacing") or "off"
     local spacing_timeout = config:get_double("wanxiang_english/spacing_timeout") or 0
 
-    local user_dict_trigger = config:get_string("wanxiang_english/user_dict_trigger")
-    if user_dict_trigger == "" then
-        user_dict_trigger = nil
-    end
-    if user_dict_trigger and #user_dict_trigger > 1 then
-        user_dict_trigger = user_dict_trigger:sub(1, 1)
-    end
-
     local delimiter = config:get_string("speller/delimiter") or " '"
     local delimiter_pattern = utils.escape_for_pattern(delimiter)
     local split_code_pattern = "[^" .. delimiter_pattern .. "]+"
@@ -325,7 +316,6 @@ function F.init(env)
     env.english_config = {
         english_spacing_mode = english_spacing_mode,
         spacing_timeout = spacing_timeout,
-        user_dict_trigger = user_dict_trigger,
         split_code_pattern = split_code_pattern,
         find_delimiter_pattern = find_delimiter_pattern,
     }
@@ -397,27 +387,6 @@ function F.func(input, env)
     end
 
     local code_len = #code
-
-    -- Forced English word creation: trailing `\\` triggers a raw English commit.
-    if
-        config.user_dict_trigger
-        and code_len > 2
-        and code:sub(-2) == config.user_dict_trigger .. config.user_dict_trigger
-    then
-        local raw_text = code:sub(1, code_len - 2)
-        if is_english_phrase(raw_text) then
-            if context.composition and not context.composition:empty() then
-                local segment = context.composition:back()
-                if segment then
-                    segment.prompt = "〔英文造词〕"
-                end
-            end
-            local cand = Candidate("english", 0, code_len, raw_text, "")
-            cand.preedit = raw_text
-            yield(cand)
-            return
-        end
-    end
 
     if context:get_property("english_spacing") == "true" then
         state.is_prev_commit_english = false
