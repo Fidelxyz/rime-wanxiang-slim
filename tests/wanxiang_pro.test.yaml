@@ -93,3 +93,15 @@ deploy:
     tests:
       - send: ni
         assert: eq(cand[1].text, "你") and eq(cand[1].comment, "亻尔 re")
+
+  user-dict:
+    tests:
+      # English User Dictionary
+      - send: notaword
+        assert: cand[1] == nil or cand[1].text ~= "notaword"
+      - send: "``notaword"
+        assert: eq(cand[1].text, "notaword")
+      - send: "``notaword "
+        assert: eq(commit, "notaword")
+      - send: notaword
+        assert: eq(cand[1].text, "notaword")
