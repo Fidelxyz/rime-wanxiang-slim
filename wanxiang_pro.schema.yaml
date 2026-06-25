@@ -73,7 +73,6 @@ engine:
     - express_editor
     - lua_processor@*wanxiang.candidate_pinner*P  # 候选置顶
     - lua_processor@*wanxiang.auto_phrase  # 自动造词
-    - lua_processor@*wanxiang.english_user_dict_appender  # 英文造词
   segmentors:
     - ascii_segmentor
     - matcher
@@ -99,6 +98,7 @@ engine:
     - lua_filter@*wanxiang.candidate_code_recorder*F
     - lua_filter@*wanxiang.lookup_filter  # 反查 / 辅助筛选
     - lua_filter@*wanxiang.english*F
+    - lua_filter@*wanxiang.english_user_dict_appender  # 英文造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，comment_hint_displayer 前
@@ -211,9 +211,6 @@ wanxiang_english:
 
   # 取消加空格状态的延时，单位为秒。设置为 0 则永不超时。
   spacing_timeout: 5
-
-  # 英文造词触发符号，双击触发造词。
-  user_dict_trigger: "\\"
 
 wanxiang_mixedcode:
   dictionary: wanxiang_mixedcode

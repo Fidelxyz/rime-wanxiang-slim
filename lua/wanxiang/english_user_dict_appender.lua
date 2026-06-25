@@ -7,16 +7,12 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@class EnglishUserDictAppenderConfig
----@field trigger string?
-
 ---@class EnglishUserDictAppenderState
 ---@field memory Memory?
 ---@field commit_notifier Connection?
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
----@field english_user_dict_appender_config EnglishUserDictAppenderConfig?
 ---@field english_user_dict_appender_state EnglishUserDictAppenderState?
 
 local utils = require("utils.utils")
@@ -33,16 +29,24 @@ end
 ---@param ctx Context
 ---@param env Env
 local function commit_handler(ctx, env)
-    local config = env.english_user_dict_appender_config
-    assert(config)
     local state = env.english_user_dict_appender_state
     assert(state)
 
-    local trigger = config.trigger
-    assert(trigger)
+    local memory = state.memory
+    if not memory then
+        return
+    end
 
-    local raw_input = ctx.input
-    if raw_input == "" or raw_input:sub(-1) ~= trigger then
+    -- Only handle commits in word-creation mode.
+    local segment = ctx.composition:back()
+    if not segment or not segment:has_tag("user_dict_appender") then
+        return
+    end
+
+    local segments = ctx.composition:toSegmentation():get_segments()
+    -- Skip if there are no real segments.
+    -- The first segment is always the trigger segment, so the real segments start from the second one.
+    if #segments < 2 then
         return
     end
 
@@ -51,26 +55,22 @@ local function commit_handler(ctx, env)
         return
     end
 
-    -- Strip trigger and trailing whitespace from raw input to get the code body.
-    local code_body = raw_input:gsub(trigger .. "+$", ""):gsub("%s+$", "")
-    -- Strip trigger from commit text to get the clean phrase.
-    local clean_commit_text = commit_text:gsub(trigger .. "+$", "")
-    if code_body == "" or clean_commit_text == "" then
-        return
-    end
+    -- Strip the trigger from the raw input to get the code body.
+    local code = ctx.input:sub(segments[2].start + 1)
+    -- Strip the surrounding whitespace from raw input.
+    code = code:gsub("^%s+", ""):gsub("%s+$", "")
 
-    local memory = state.memory
-    if not memory then
+    if code == "" then
         return
     end
 
     -- Add the original-cased code to the user dictionary.
-    memory:update_userdict(utils.make_dict_entry(clean_commit_text, code_body), 1, "")
+    memory:update_userdict(utils.make_dict_entry(commit_text, code), 1, "")
 
     -- Add the lowercased code to the user dictionary if it's different from the original.
-    local lower_code = code_body:lower()
-    if lower_code ~= code_body then
-        memory:update_userdict(utils.make_dict_entry(clean_commit_text, lower_code), 1, "")
+    local lower_code = code:lower()
+    if lower_code ~= code then
+        memory:update_userdict(utils.make_dict_entry(commit_text, lower_code), 1, "")
     end
 end
 
@@ -78,32 +78,17 @@ local F = {}
 
 ---@param env Env
 function F.init(env)
-    local rime_config = env.engine.schema.config
     local context = env.engine.context
-
-    local trigger = rime_config:get_string("wanxiang_english/user_dict_trigger")
-    if trigger == "" then
-        trigger = nil
-    end
-    if trigger and #trigger > 1 then
-        trigger = trigger:sub(1, 1)
-    end
 
     ---@type Memory?
     local memory = nil
     ---@type Connection?
     local commit_notifier = nil
 
-    if trigger then
-        memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
-        commit_notifier = context.commit_notifier:connect(function(ctx)
-            commit_handler(ctx, env)
-        end)
-    end
-
-    env.english_user_dict_appender_config = {
-        trigger = trigger,
-    }
+    memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
+    commit_notifier = context.commit_notifier:connect(function(ctx)
+        commit_handler(ctx, env)
+    end)
 
     env.english_user_dict_appender_state = {
         memory = memory,
@@ -122,33 +107,38 @@ function F.fini(env)
         env.english_user_dict_appender_state.commit_notifier:disconnect()
     end
 
-    env.english_user_dict_appender_config = nil
     env.english_user_dict_appender_state = nil
 end
 
 ---@param input Translation
 ---@param env Env
 function F.func(input, env)
-    local config = env.english_user_dict_appender_config
-    assert(config)
+    local context = env.engine.context
 
-    local trigger = config.trigger
-    local code = env.engine.context.input
-
-    -- Forced English word creation: a leading trigger offers a raw English commit.
-    if trigger and code:sub(1, #trigger) == trigger then
-        local raw_text = code:sub(#trigger + 1)
+    -- Forced English word creation. A raw English candidate is provided at the top.
+    local segments = context.composition:toSegmentation():get_segments()
+    -- Only provide raw English candidate before any Chinese word is selected.
+    -- Once a (partial) Chinese word selection is made, the composition splits into multiple segments, and the
+    -- English candidate is no longer offered.
+    -- The first segment is always the trigger segment, so the real segments start from the second one.
+    if #segments == 2 then
+        local code = context.input
+        local code_start = segments[2].start -- index starts from 0
+        local raw_text = code:sub(segments[2].start + 1)
         if is_english_phrase(raw_text) then
-            local cand = Candidate("english", 0, #code, raw_text, "")
-            cand.preedit = raw_text
-            yield(cand)
-            return
+            yield(Candidate("english", code_start, #code, raw_text, ""))
         end
     end
 
     for cand in input:iter() do
         yield(cand)
     end
+end
+
+---@param segment Segment
+---@return boolean
+function F.tags_match(segment, _)
+    return segment:has_tag("user_dict_appender")
 end
 
 return F
