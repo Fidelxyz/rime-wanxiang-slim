@@ -56,8 +56,9 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 手动造词（仅 PRO）
 
-`` `` `` 引导主动造词，支持后触发造词与次选造词。
+`` `` `` 引导主动造词，支持后触发造词与次选造词。造词模式下添加造词提示并移除整句候选。
 
+- `lua/wanxiang/user_dict_appender.lua`：造词模式下为候选添加 `user_dict_appender/tips` 提示，并移除整句（sentence）候选
 - `custom/wanxiang_pro.schema.yaml`：PRO 方案中用户词配置
 - `wanxiang.schema.yaml`：`user_dict` 段与 `user_dict_appender` 段
 

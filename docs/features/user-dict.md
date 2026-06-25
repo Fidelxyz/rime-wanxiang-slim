@@ -12,18 +12,14 @@ outline: deep
 recognizer:
   patterns:
     user_dict_appender: "^``[A-Za-z/`']*$"
-```
 
-```yaml
 user_dict_appender:
   # 手动造词引导符。
   prefix: "``"
 
   # 手动造词提示。
   tips: "〔造词〕"
-```
 
-```yaml
 key_binder:
   bindings:
     # 编码中输入 `` 进入造词模式。

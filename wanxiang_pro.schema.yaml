@@ -99,6 +99,7 @@ engine:
     - lua_filter@*wanxiang.lookup_filter  # 反查 / 辅助筛选
     - lua_filter@*wanxiang.english*F
     - lua_filter@*wanxiang.english_user_dict_appender  # 英文造词
+    - lua_filter@*wanxiang.user_dict_appender  # 手动造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，comment_hint_displayer 前
