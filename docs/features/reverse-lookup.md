@@ -132,6 +132,10 @@ patch:
 ## 配置
 
 ```yaml
+recognizer:
+  patterns:
+    wanxiang_reverse: "^`[A-Za-z;]*$"
+
 lookup_filter:
   # 检索的标签。将检索带有所选标签的候选。
   tags: [abc, user_dict_appender]
