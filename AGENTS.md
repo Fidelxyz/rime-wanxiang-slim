@@ -56,38 +56,6 @@ Files contain the following sections in order if applicable:
 8. **Public API**: Exported functions in a table (typically `P`, `T`, `F`, or `M`)
 9. **Return statement**: Export the public API table
 
-#### Naming Conventions
-- **Module tables**: Use `P` for processors, `T` for translators, `F` for filters, `M` for general utility modules
-- **Functions**: Use snake_case with meaningful words; avoid abbreviations
-- **Variables**: Use snake_case with meaningful words; avoid abbreviations
-- **Constants**: Use SCREAMING_SNAKE_CASE for true constants
-- **Type names**: Use PascalCase for class definitions
-
-#### Type Annotations
-- **All functions** must have complete type annotations using LuaLS/EmmyLua syntax
-- **Parameters**: Annotate with `---@param name type` before function definitions
-- **Return values**: Annotate with `---@return type` (use `?` suffix for nullable types)
-- **Class fields**: Annotate each field with its type (use `?` suffix for optional fields)
-- **Local variables**: Annotate complex types with `---@type` when type inference is unclear
-- **Type casts**: Use `---@cast` when narrowing types after validation
-- **Nil checks**: Only add `?` suffix for types that can actually be nil; trust Rime API types defined in `librime.lua` to never be nil unless explicitly marked
-
-#### Comments
-- **All comments** must be written in English
-- Use `---` for documentation comments (LuaLS annotations)
-- Use `--` for inline explanatory comments
-
-#### Code Organization
-- **Goto labels**: Use `::continue::` for loop continuation (placed at end of loop body)
-- **Early returns**: Prefer early returns for validation and edge cases
-- **Guard clauses**: Use assertions (`assert()`) to validate required state/config
-- **Table construction**: Initialize tables with explicit types when non-empty (e.g., `---@type string[]`)
-- **List appending**: Use cached local variables for list length when appending in loops
-- **String manipulation**: Use method syntax for string operations (e.g., `str:sub()`, `str:len()`) for readability
-
-#### Defensive coding
-Don't add error handling, fallbacks, or validation **for scenarios that can't happen**. Trust internal code and framework guarantees. **Only validate at system boundaries** (user input, external APIs).
-
 #### Module Lifecycle
 Standard Rime module pattern with three functions defined in order:
 
@@ -126,6 +94,39 @@ assert(state)
 ```
 ([local params]..., config, state, [global params]env, ctx, ...)
 ```
+
+#### Naming Conventions
+- **Module tables**: Use `P` for processors, `T` for translators, `F` for filters, `M` for general utility modules
+- **Functions**: Use snake_case with meaningful words; avoid abbreviations
+- **Variables**: Use snake_case with meaningful words; avoid abbreviations
+- **Constants**: Use SCREAMING_SNAKE_CASE for true constants
+- **Type names**: Use PascalCase for class definitions
+
+#### Type Annotations
+- **All functions** must have complete type annotations using LuaLS/EmmyLua syntax
+- **Parameters**: Annotate with `---@param name type` before function definitions
+- **Return values**: Annotate with `---@return type` (use `?` suffix for nullable types)
+- **Class fields**: Annotate each field with its type (use `?` suffix for optional fields)
+- **Local variables**: Annotate complex types with `---@type` when type inference is unclear
+- **Type casts**: Use `---@cast` when narrowing types after validation
+- **Nil checks**: Only add `?` suffix for types that can actually be nil; trust Rime API types defined in `librime.lua` to never be nil unless explicitly marked
+
+#### Comments
+- **All comments** must be written in English
+- Use `---` for documentation comments (LuaLS annotations)
+- Use `--` for inline explanatory comments
+
+#### Code Organization
+- **Column width**: Limit to 120 characters.
+- **Goto labels**: Use `::continue::` for loop continuation (placed at end of loop body)
+- **Early returns**: Prefer early returns for validation and edge cases
+- **Guard clauses**: Use assertions (`assert()`) to validate required state/config
+- **Table construction**: Initialize tables with explicit types when non-empty (e.g., `---@type string[]`)
+- **List appending**: Use cached local variables for list length when appending in loops
+- **String manipulation**: Use method syntax for string operations (e.g., `str:sub()`, `str:len()`) for readability
+
+#### Defensive coding
+Don't add error handling, fallbacks, or validation **for scenarios that can't happen**. Trust internal code and framework guarantees. **Only validate at system boundaries** (user input, external APIs).
 
 ### Rime's Lua API
 
@@ -172,6 +173,10 @@ When resolving merge conflicts, always read the full upstream changes to underst
 
 ### Step 4: Merge docs clearly
 When merging text-heavy files (e.g., Markdown docs, guides, notes), paraphrase upstream wording for clarity and readability before finalizing the merge result.
+
+## Testing
+
+Testing is handled automatically by Mira on GitHub Actions. There is no need to run tests locally or verify test results after making edits.
 
 ## Version Control
 
