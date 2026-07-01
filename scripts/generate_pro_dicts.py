@@ -1,4 +1,5 @@
 import re
+import shutil
 from contextlib import ExitStack
 from pathlib import Path
 
@@ -175,9 +176,6 @@ def process_dict(
         "吧\tb\t999",
     }
 
-    for out_file in out_files:
-        out_file.parent.mkdir(parents=True, exist_ok=True)
-
     with ExitStack() as stack:  # Close all files on exit
         fin = stack.enter_context(dict_file.open("r", encoding="utf-8"))
         fouts = [
@@ -263,11 +261,11 @@ def process_dict(
 
 def process(
     dicts_dir: Path,
-    aux_file: Path,
+    aux_code_file: Path,
     dist_dir: Path,
-    dicts: list[str] | None = None,
+    no_conversion_dicts: list[str] | None = None,
 ):
-    aux_table = load_aux_table(aux_file)
+    aux_table = load_aux_table(aux_code_file)
     print(f"已加载辅助码条目：{len(aux_table)}")
 
     print("拆分各 schema 辅助码映射...")
@@ -276,10 +274,6 @@ def process(
 
     # Collect dict files to process
     for dict_file in dicts_dir.iterdir():
-        # Filter by dicts if provided
-        if dicts and dict_file.name not in dicts:
-            continue
-
         if not dict_file.is_file():
             continue
 
@@ -290,34 +284,32 @@ def process(
             (dist_dir / f"rime-wanxiang-{schema}-fuzhu" / dicts_dir / dict_file.name)
             for schema in SCHEMA_COLUMNS
         ]
+
+        for out_file in out_files:
+            out_file.parent.mkdir(parents=True, exist_ok=True)
+
+        # Copy the original dict file to output if it's in the no_conversion_dicts list
+        if no_conversion_dicts and dict_file.name in no_conversion_dicts:
+            for out_file in out_files:
+                shutil.copy2(dict_file, out_file)
+
         print(f"\n=== 处理 {dict_file.name} ===")
         process_dict(dict_file, out_files, schema_maps)
 
 
 if __name__ == "__main__":
-    AUX_FILE = Path("custom/aux_code.txt")  # 辅助码表文件
-    DICTS_DIR = Path("dicts")  # 词库文件夹
-    DIST_DIR = Path("dist")  # 输出根目录
+    AUX_CODE_FILE = Path("custom/aux_code.txt")
+    DICTS_DIR = Path("dicts")
+    DIST_DIR = Path("dist")
 
-    # 仅处理这些文件
-    DICTS = [
-        "jichu.dict.yaml",
-        "zi.dict.yaml",
-        "duoyin.dict.yaml",
-        "cuoyin.dict.yaml",
-        "diming.dict.yaml",
-        "shici.dict.yaml",
-        "lianxiang.dict.yaml",
-        "renming.dict.yaml",
-        "wuzhong.dict.yaml",
+    NO_CONVERSION_DICTS = [
+        "cn&en.dict.yaml",
+        "en.dict.yaml",
     ]
-
-    # 输出文件在第一个点前插这个后缀（如 ".pro"；设为空串则不加）
-    OUTPUT_SUFFIX = ".pro"
 
     process(
         dicts_dir=DICTS_DIR,
-        aux_file=AUX_FILE,
+        aux_code_file=AUX_CODE_FILE,
         dist_dir=DIST_DIR,
-        dicts=DICTS,
+        no_conversion_dicts=NO_CONVERSION_DICTS,
     )

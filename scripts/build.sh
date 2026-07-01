@@ -99,13 +99,6 @@ package_schema_pro() {
         "${root_dir}/" "${out_dir}/"
 
     if [[ "${include_dicts}" == "true" ]]; then
-        # Copy ${root_dir}/dicts/ to ${out_dir}/dicts/
-        rsync -av \
-            --include='cn&en.dict.yaml' \
-            --include='en.dict.yaml' \
-            --exclude='*' \
-            "${root_dir}/dicts/" "${out_dir}/dicts/"
-
         # Copy ${root_dir}/opencc/dicts/ to ${out_dir}/opencc/dicts/
         rsync -av \
             --exclude='.*' \

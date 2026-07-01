@@ -14,6 +14,7 @@
 ---@class CharsetFilterState
 ---@field charset_db ReverseDb
 ---@field charset_db_cache table<string, string>
+---@field option_update_notifier Connection
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
@@ -36,36 +37,19 @@ local function check_intersection(db_attr, config_base_set)
     return false
 end
 
----Return whether `codepoint` is in any allowed charset, taking the union over all currently active rules
----(multi-switch support).
+---Return whether `codepoint` is in any allowed charset, taking the union over all active rules.
+---Callers must pass the pre-collected active rules so option switches are checked once per input rather than once per
+---candidate character.
 ---@param codepoint integer
----@param config CharsetFilterConfig
+---@param active_rules CharsetFilter[]
 ---@param state CharsetFilterState
----@param ctx Context
 ---@return boolean
-local function is_codepoint_allowed(codepoint, config, state, ctx)
+local function is_codepoint_allowed(codepoint, active_rules, state)
     local char = utf8.char(codepoint)
 
-    local has_active_rule = false
     local is_allowed = false
 
-    for _, rule in ipairs(config.filters) do
-        -- Check whether this rule's switch is on.
-        if rule.options ~= true then
-            local is_rule_active = false
-            for _, option in ipairs(rule.options) do
-                if ctx:get_option(option) then
-                    is_rule_active = true
-                    break
-                end
-            end
-            if not is_rule_active then
-                goto continue
-            end
-        end
-
-        has_active_rule = true
-
+    for _, rule in ipairs(active_rules) do
         if rule.blacklist[codepoint] then
             return false
         end
@@ -86,13 +70,6 @@ local function is_codepoint_allowed(codepoint, config, state, ctx)
                 end
             end
         end
-
-        ::continue::
-    end
-
-    -- No rule active: pass through by default.
-    if not has_active_rule then
-        return true
     end
 
     return is_allowed
@@ -100,15 +77,14 @@ end
 
 ---Return whether the entire text (single character or phrase) fully matches the active charset.
 ---@param text string
----@param config CharsetFilterConfig
+---@param active_rules CharsetFilter[]
 ---@param state CharsetFilterState
----@param ctx Context
 ---@return boolean
-local function is_text_allowed(text, config, state, ctx)
+local function is_text_allowed(text, active_rules, state)
     for _, codepoint in utf8.codes(text) do
         if utils.is_chinese_codepoint(codepoint) then
             -- Reject as soon as we hit any unallowed character.
-            if not is_codepoint_allowed(codepoint, config, state, ctx) then
+            if not is_codepoint_allowed(codepoint, active_rules, state) then
                 return false
             end
         end
@@ -229,6 +205,20 @@ function M.init(env)
         end
     end
 
+    -- Re-filter non-confirmed candidates immediately when a charset switch is toggled.
+    local option_update_notifier = env.engine.context.option_update_notifier:connect(function(ctx, name)
+        for _, filter in ipairs(filters) do
+            if filter.options ~= true then
+                for _, option in ipairs(filter.options) do
+                    if name == option then
+                        ctx:refresh_non_confirmed_composition()
+                        return
+                    end
+                end
+            end
+        end
+    end)
+
     env.charset_filter_config = {
         filters = filters,
     }
@@ -236,11 +226,15 @@ function M.init(env)
     env.charset_filter_state = {
         charset_db = ReverseDb(charset_db),
         charset_db_cache = {},
+        option_update_notifier = option_update_notifier,
     }
 end
 
 ---@param env Env
 function M.fini(env)
+    assert(env.charset_filter_state)
+    env.charset_filter_state.option_update_notifier:disconnect()
+
     env.charset_filter_config = nil
     env.charset_filter_state = nil
 end
@@ -256,8 +250,33 @@ function M.func(input, env)
     local context = env.engine.context
     local seg = context.composition:back()
 
-    -- Decide whether charset filtering applies to the current input.
-    local charset_active = #config.filters > 0 and seg and should_filter(seg)
+    -- Collect the rules whose switches are currently on.
+    ---@type CharsetFilter[]
+    local active_rules = {}
+    if #config.filters > 0 and seg and should_filter(seg) then
+        local active_rules_len = 0
+        for _, rule in ipairs(config.filters) do
+            local is_rule_active = rule.options == true
+            ---@cast rule.options string[]
+
+            if not is_rule_active then
+                for _, option in ipairs(rule.options) do
+                    if context:get_option(option) then
+                        is_rule_active = true
+                        break
+                    end
+                end
+            end
+
+            if is_rule_active then
+                active_rules_len = active_rules_len + 1
+                active_rules[active_rules_len] = rule
+            end
+        end
+    end
+
+    -- No active rule: pass everything through.
+    local charset_active = #active_rules > 0
 
     for cand in input:iter() do
         local text = cand.text
@@ -269,7 +288,7 @@ function M.func(input, env)
         end
 
         -- Drop any candidate (single character or phrase) that contains an uncommon character.
-        if is_text_allowed(text, config, state, context) then
+        if is_text_allowed(text, active_rules, state) then
             yield(cand)
         end
 

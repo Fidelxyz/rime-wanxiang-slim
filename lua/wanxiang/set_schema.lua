@@ -16,6 +16,8 @@ local PINYIN_SCHEMAS = {
     ["/gbpy"] = "国标双拼",
     ["/pyjj"] = "拼音加加",
     ["/lxsq"] = "乱序17",
+    ["/ltsp"] = "蓝天双拼",
+    ["/sdpy"] = "首道双拼",
     ["/zrlong"] = "自然龙",
     ["/hxlong"] = "汉心龙",
 }

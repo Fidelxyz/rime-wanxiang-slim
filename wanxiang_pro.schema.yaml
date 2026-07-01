@@ -119,7 +119,7 @@ engine:
 
 recognizer:
   patterns:
-    wanxiang_reverse: "^`[A-Za-z]*$"
+    wanxiang_reverse: "^`[A-Za-z;]*$"
     user_dict_appender: "^``[A-Za-z/`']*$"
     unicode: "^U[0-9a-fA-F]+"
 
@@ -168,19 +168,18 @@ translator:
   enable_user_dict: false  # 启用自动调频。
   contextual_suggestions: false  # 使用 Rime 内置的语法模型，效果一般，建议关闭。
   max_homophones: 8
-  max_homographs: 8
   initial_quality: 4
   spelling_hints: 99  # 将候选词在词典中的编码显示在注释中，供 Lua 脚本读取。
   always_show_comments: true  # Rime 默认在 preedit 等于 comment 时取消显示 comment。此处强制显示注释，供 Lua 脚本读取。
 
 grammar:
   language: wanxiang-lts-zh-hans
-  collocation_max_length: 8
+  collocation_max_length: 6
   collocation_min_length: 2
-  collocation_penalty: -15
-  non_collocation_penalty: -1
+  collocation_penalty: -14
+  non_collocation_penalty: -6
   weak_collocation_penalty: -100
-  rear_penalty: -10
+  rear_penalty: -18
 
 # 自定义短语
 custom_phrase:
@@ -240,7 +239,6 @@ user_dict:
   core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
   max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重
   max_homophones: 8
-  max_homographs: 8
   spelling_hints: 50
   always_show_comments: true
 
@@ -387,7 +385,7 @@ charset_filter:
   - option: charset_filter
     charset: a
     whitelist:
-      - "诶濛硷氽尛躝〇冇吔咗囧屌鲶芶咲畑垅𰻝𰻞龍朙頔"
+      - "诶濛硷氽尛躝〇冇吔磺咗囧屌鲶芶咲畑垅𰻝𰻞龍朙頔"
     blacklist: []
   - option: s2t
     charset: fa

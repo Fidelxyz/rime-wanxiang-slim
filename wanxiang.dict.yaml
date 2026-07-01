@@ -7,11 +7,16 @@ sort: by_weight  #字典初始排序，可选 original 或 by_weight
 use_preset_vocabulary: false
 import_tables:
   - dicts/zi  # 字表，包含所有带拼音的汉字
-  - dicts/jichu  # 基础词库，2-3字词汇
-  # - dicts/lianxiang  # 联想词库，5字以上词汇
+  - dicts/jichu  # 基础词库，2-4字词汇
+  #- dicts/lianxiang  # 联想词库，5字以上词汇
   - dicts/cuoyin  # 错音错字
   - dicts/duoyin  # 多场景多种读音的词组
   - dicts/shici  # 诗词
   - dicts/diming  # 地名
-  # - dicts/wuzhong
-  # - dicts/renming
+  #- dicts/wuzhong  # 物种
+  #- dicts/renming  # 人名
+  #- dicts/yixue  # 医学
+  #- dicts/huaxue  # 化学
+  #- dicts/yaopin  # 药品
+  #- dicts/mingren  # 名人
+  #- dicts/yiren  # 艺人

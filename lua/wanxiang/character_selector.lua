@@ -23,6 +23,10 @@ local function apply_character_selector(key, config, env, ctx)
         return false
     end
 
+    if utils.is_function_mode_active(ctx) then
+        return false
+    end
+
     if not ctx:is_composing() and not ctx:has_menu() then
         return false
     end

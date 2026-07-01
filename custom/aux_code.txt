@@ -9874,7 +9874,7 @@
 𣆖	;oe;oi;ov;oh,oe;oo;jy;;
 𣉪	;oh;oi;ov;oh;oo;ja;;
 𣺬	;dh;di;dv;dh;ko;ia;;
-𤆴	;sh;sh;wh;ht,hy,sh;bc;yc;;
+𤆴	;wh;wh;wh;ht,hy,sh;bc;yc;;
 𤚝	;nw;nw;nw;nh;qn;tr;;
 𤛥	;nb;nb;nb;nh;qn;tr;;
 𤠛	;qh;qi;qv;qh;mo;qt;;
@@ -13067,7 +13067,7 @@
 騍	;mg;mg;mg;mg;ne;cj;;hl
 𠏀	;rg;rk;rz;rg;ju;wm;;
 𠡜	;wl;wl;wl;il;bs;yc;;
-𠡤	;ll;sl;wl;ll;bs;yc;;
+𠡤	;ll;wl;wl;ll;bs;yc;;
 𠢹	;gl;gl;gl;lg,gl;xs;ya;;
 𠩧	;iv;iv;iv;iv;xs;dw;;
 𠪒	;ij;ij;ij;ij;xz;dk;;
@@ -16622,7 +16622,7 @@
 儚	;rx;rx;rx;rm,rx;jl;wa;;rc
 黾	;kd;kd;kd;kd;dm;kj;kd;kv;kv
 矇	;ou;ou;ou;om;qj;ha;;sc
-夣	;wx;sx;wx;dx,wx,xb;bl;yc;;dd
+夣	;wx;wx;wx;dx,wx,xb;bl;yc;;dd
 甿	;tw;tw;tw;tw;qf;ly;;sd
 鄳	;ss;ke;le;em,ss;dt;xb,mg;;sv
 蝱	;wi;wi;wi;iw,wi;fc;yn;;do
@@ -19204,7 +19204,7 @@
 𣋏	;on;oi;on;on;of;jm;;
 𤆝	;hy;hy;hy;hw,hp;ch;oh;;
 𤗵	;pf;pf;pn;pp,pf;ai;th;;
-𤰑	;yf;sy;wf;sf,yf;bt;yc;;
+𤰑	;yf;wy;wf;sf,yf;bt;yc;;
 𤾣	;bf;bf;bn;bp,bf;ui;ro;;
 𥐁	;uf;uf;un;up,uf;oi;td;;
 𥐚	;ub;ub;ub;ub;my;dh;;
@@ -23302,7 +23302,7 @@
 𠈱	;ru;ru;ru;ru;jt;wi;;
 𠋲	;rx;rx;rx;rs;ji;wf;;
 𠗼	;dx;dx;dx;dq;wy;ud;;
-𠘺	;sj;sj;wj;jt,sj,jy;bo;yc;;
+𠘺	;sj;wj;wj;jt,sj,jy;bo;yc;;
 𠝿	;xd;xd;xd;sd,dd;yp;im;;
 𠞯	;yd;yd;yd;xd;tp;fv;;
 𠩄	;il;il;il;ia;xr;dy;;
@@ -24384,7 +24384,7 @@
 𠊲	;rq;rq;rq;rt,ry;jm;wp;;
 𠞀	;bd;bd;bd;kd,xd;ep;pw;;
 𠟶	;bd;bd;bd;kd;ep;pw;;
-𠫓	;sa;sa;ad;sa,sw;fk;gc;;
+𠫓	;sa;ws;ad;sa,sw;fk;gc;;
 𠫮	;sj;sj;sj;js;ko;cj;;
 𠳶	;kj;kj;kj;kt;do;kt;;
 𠸂	;kq;kq;kq;kt;dm;kp;;
@@ -31846,7 +31846,7 @@
 𨕕	;zy;zl;zk;zy;bu;yc;;
 𨖹	;zt;zt;zt;zv;yu;gc;;
 𨙸	;ve;ve;ue;ve;ct;fc;ue;hv;fe
-𨜎	;ue;se;we;ue;bt;yc;;
+𨜎	;ue;we;we;ue;bt;yc;;
 𨟊	;je;je;je;ve;tt;rr;;
 𨟾	;yu;yu;yu;yu;yb;sg;;
 𨡐	;yv;ny;py;yv;qy;rm;;
