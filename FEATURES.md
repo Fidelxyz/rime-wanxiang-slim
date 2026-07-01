@@ -83,7 +83,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 输入常见错读词时提示正确读音（如"给予"提示 `jǐ yǔ`）。
 
 - `lua/wanxiang/comment_hint_displayer.lua`：错音纠正提示逻辑（使用 Memory API 查询）
-- `dicts/cuoyin.dict.yaml`：错音词条数据
+- `dicts/correction.dict.yaml`：错音词条数据
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`correction_hint` 配置段
 
 #### 辅助码提示（仅 PRO）
@@ -117,7 +117,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `lua/wanxiang/english.lua`：英文全能过滤器：格式化、智能加空格、大小写
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
-- `dicts/en.dict.yaml`：英文词条
+- `dicts/english.dict.yaml`：英文词条
 - `wanxiang_algebra.yaml` (`english` 段)：英文输入转写规则
 
 ##### 英文智能加空格
@@ -133,7 +133,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 - `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
 - `wanxiang_mixedcode.dict.yaml`：混合编码词典
-- `dicts/cn&en.dict.yaml`：中英混合词条
+- `dicts/mixedcode.dict.yaml`：中英混合词条
 - `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
 
 ### 其他功能

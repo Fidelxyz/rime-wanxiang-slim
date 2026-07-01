@@ -4,4 +4,4 @@
 name: wanxiang_english
 version: "LTS"
 import_tables:
-  - dicts/en
+  - dicts/english

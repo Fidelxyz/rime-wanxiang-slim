@@ -106,12 +106,6 @@ package_schema_pro() {
 
         # Copy decomposition dict to ${out_dir}/opencc/dicts/
         cp "${root_dir}/custom/${schema}_chaifen.txt" "${out_dir}/opencc/dicts/decomposition.txt"
-
-        # A hack to replace spaces with colons in decomposition.txt to adapt to OpenCC format,
-        # while allowing fetching the raw chaifen.txt from upstream without modification.
-        # Spaces are later recovered from colons in decomposition.txt by the `comment_format`
-        # of the simplifier config.
-        sed -i 's/ /:/g' "${out_dir}/opencc/dicts/decomposition.txt"
     fi
 
     # Copy ${root_dir}/custom/ to ${out_dir}/custom/

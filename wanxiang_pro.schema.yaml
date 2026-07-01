@@ -349,7 +349,8 @@ decomposition_hint:
   tips: char
   tags: [abc]
   comment_format:
-    # Recover the spaces that were converted into colons in build.sh.
+    # Recover the spaces that were converted into colons during dictionary
+    # fetching (scripts/update_dicts.py).
     - xform/:/ /g
 
 lookup_filter:

@@ -303,8 +303,8 @@ if __name__ == "__main__":
     DIST_DIR = Path("dist")
 
     NO_CONVERSION_DICTS = [
-        "cn&en.dict.yaml",
-        "en.dict.yaml",
+        "mixedcode.dict.yaml",
+        "english.dict.yaml",
     ]
 
     process(

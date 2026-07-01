@@ -62,8 +62,13 @@ patch:
 
 部分扩展词库数据未默认启用，可查阅 `wanxiang.dict.yaml` 中的注释项，通过上述方式按需开启：
 
-| 词库文件 | 用途 |
+| 词库 | 用途 |
 | --- | --- |
-| `lianxiang.dict.yaml` | 联想词库 |
-| `renming.dict.yaml` | 人名词库 |
-| `wuzhong.dict.yaml` | 物种词库 |
+| `dicts/association` | 联想词库 |
+| `dicts/species` | 物种词库 |
+| `dicts/person` | 人名词库 |
+| `dicts/medical` | 医学词库 |
+| `dicts/chemistry` | 化学词库 |
+| `dicts/pharmaceutical` | 药品词库 |
+| `dicts/celebrity` | 名人词库 |
+| `dicts/artist` | 艺人词库 |

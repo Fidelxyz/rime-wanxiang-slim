@@ -174,7 +174,7 @@ end
 ---Mispronunciation/typo hint module.
 local correction_hint = {}
 
-correction_hint.DICT_PATH = "dicts/cuoyin.dict.yaml"
+correction_hint.DICT_PATH = "dicts/correction.dict.yaml"
 
 ---@type table<string, {text: string, comment: string}>?
 correction_hint.dict = nil
