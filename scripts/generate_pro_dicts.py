@@ -290,11 +290,13 @@ def process(
 
         # Copy the original dict file to output if it's in the no_conversion_dicts list
         if no_conversion_dicts and dict_file.name in no_conversion_dicts:
+            print(f"\n=== 复制 {dict_file.name} ===")
             for out_file in out_files:
+                print("已复制：", out_file)
                 shutil.copy2(dict_file, out_file)
-
-        print(f"\n=== 处理 {dict_file.name} ===")
-        process_dict(dict_file, out_files, schema_maps)
+        else:
+            print(f"\n=== 处理 {dict_file.name} ===")
+            process_dict(dict_file, out_files, schema_maps)
 
 
 if __name__ == "__main__":
