@@ -148,6 +148,44 @@ function M.has_ascii_letter(s)
     return false
 end
 
+---Whitelist of ASCII symbols allowed to appear in an English phrase.
+---@type table<integer, boolean>
+M.ENGLISH_SYMBOLS = {
+    [32] = true, -- space
+    [33] = true, -- !
+    [39] = true, -- '
+    [44] = true, -- ,
+    [45] = true, -- -
+    [43] = true, -- +
+    [46] = true, -- .
+    [48] = true, -- 0
+    [49] = true, -- 1
+    [50] = true, -- 2
+    [51] = true, -- 3
+    [52] = true, -- 4
+    [53] = true, -- 5
+    [54] = true, -- 6
+    [55] = true, -- 7
+    [56] = true, -- 8
+    [57] = true, -- 9
+}
+
+---Must contain at least one English letter; pure digits/symbols return false.
+---@param s string
+---@return boolean
+function M.is_english_phrase(s)
+    local has_alpha = false
+    for i = 1, #s do
+        local b = s:byte(i)
+        if (b >= 65 and b <= 90) or (b >= 97 and b <= 122) then
+            has_alpha = true
+        elseif not M.ENGLISH_SYMBOLS[b] then
+            return false
+        end
+    end
+    return has_alpha
+end
+
 ---@type table<string, string>
 local TONE_STRIP_MAP = {
     ["ā"] = "a",

@@ -114,7 +114,10 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 整句英文输入、自动句中空格、首字母/全大写格式化。
 
-- `lua/wanxiang/english.lua`：英文全能过滤器：格式化、智能加空格、大小写
+- `lua/wanxiang/english_case_formatter.lua`：智能英文大小写格式化（前两个输入字母驱动）
+- `lua/wanxiang/english_single_letter_promoter.lua`：单字母输入时生成大小写候选并置前
+- `lua/wanxiang/english_spacer.lua`：自动英文空格处理（smart 模式、超时）
+- `lua/utils/utils.lua`：英文判断公共工具函数（`is_english_phrase`、`ENGLISH_SYMBOLS`）
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
 - `dicts/english.dict.yaml`：英文词条
@@ -124,7 +127,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 支持 off/before/after/smart 四种策略，超时销毁。
 
-- `lua/wanxiang/english.lua`：加空格全部逻辑（smart 模式、超时）
+- `lua/wanxiang/english_spacer.lua`：加空格全部逻辑（smart 模式、超时）
 - `wanxiang.schema.yaml` (`english` 段)：加空格策略配置项
 
 #### 混合词输入
