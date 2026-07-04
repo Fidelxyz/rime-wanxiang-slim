@@ -4,6 +4,7 @@
 
 ---@class CodeHintConfig
 ---@field auto_delimiter string
+---@field split_code_pattern string
 ---@field max_candidate_length integer
 
 ---@class CorrectionHintConfig
@@ -98,11 +99,13 @@ function code_hint.init(env)
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
+    local split_code_pattern = "[^" .. utils.escape_for_pattern(auto_delimiter) .. "]+"
 
     local max_candidate_length = rime_config:get_int("code_hint/max_candidate_length") or 0
 
     env.code_hint_config = {
         auto_delimiter = auto_delimiter,
+        split_code_pattern = split_code_pattern,
         max_candidate_length = max_candidate_length,
     }
 end
@@ -136,7 +139,7 @@ function code_hint.get_comment(cand, raw_comment, env)
     ---@type string[]
     local segments = {}
     local segments_len = 0
-    for segment in raw_comment:gmatch("[^" .. config.auto_delimiter .. "]+") do
+    for segment in raw_comment:gmatch(config.split_code_pattern) do
         segments_len = segments_len + 1
         segments[segments_len] = segment
     end
