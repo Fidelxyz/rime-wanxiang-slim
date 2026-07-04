@@ -105,7 +105,6 @@ engine:
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，comment_hint_displayer 前
     - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
     - lua_filter@*wanxiang.comment_hint_displayer
-    - lua_filter@*wanxiang.reorder_filter
     - lua_filter@*wanxiang.phrase_escaper  # 转义字符处理
     - lua_filter@*wanxiang.candidate_type_marker  # 候选类型标记
     - simplifier@decomposition_hint

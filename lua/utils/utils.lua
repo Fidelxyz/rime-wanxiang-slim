@@ -193,14 +193,6 @@ function M.remove_pinyin_tone(s)
     return table.concat(result)
 end
 
----Check whether a candidate originates from the table, user_table, or fixed translators.
----@param cand Candidate
----@return boolean
-function M.is_table_type_candidate(cand)
-    local t = cand.type
-    return t == "table" or t == "user_table" or t == "fixed"
-end
-
 ---@return number
 function M.now()
     if rime_api.get_time_ms then
