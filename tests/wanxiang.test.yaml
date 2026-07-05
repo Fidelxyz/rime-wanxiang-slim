@@ -8,6 +8,15 @@ script: |
     return actual == expected
   end
 
+  function has_cand(text)
+    for i = 1, #cand do
+      if cand[i].text == text then
+        return true
+      end
+    end
+    return false
+  end
+
 deploy:
   default:
     tests:
@@ -44,6 +53,18 @@ deploy:
       # English
       - send: english
         assert: eq(cand[1].text, "English")
+      - send: hello
+        assert: eq(cand[1].text, "hello")
+      - send: Hello
+        assert: eq(cand[1].text, "Hello")
+      - send: HEllo
+        assert: eq(cand[1].text, "HELLO")
+      - send: HELLO
+        assert: eq(cand[1].text, "HELLO")
+      - send: a
+        assert: has_cand("a") and has_cand("A")
+      - send: A
+        assert: has_cand("A") and has_cand("a")
       # Emoji
       - send: haha
         assert: cand[2].text ~= "😄"
