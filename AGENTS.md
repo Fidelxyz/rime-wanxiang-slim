@@ -176,7 +176,7 @@ When merging text-heavy files (e.g., Markdown docs, guides, notes), paraphrase u
 
 ## Testing
 
-Testing is handled automatically by Mira on GitHub Actions. There is no need to run tests locally or verify test results after making edits.
+Testing is handled automatically by [Mira](https://github.com/rimeinn/mira) on GitHub Actions. There is no need to run tests locally or verify test results after making edits.
 
 ## Version Control
 
