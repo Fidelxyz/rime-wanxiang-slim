@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.6.0-beta.3](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.2...v0.6.0-beta.3) (2026-07-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove automatic english spacing
+* **english_user_dict_appender:** unify trigger for chinese and english user dict appender
+
+### Features
+
+* **user_dict_appender:** drop sentence candidate and always show tips in word creation mode ([e8d3fbc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/e8d3fbc6c1e86dacdb9ac2b6365f547ce99e26b0))
+
+
+### Bug Fixes
+
+* **build:** skip processing for excluded dicts ([eee70d4](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/eee70d44248c5594c95474dee92f1c8a125426f8))
+* fix librime-lua stub ([8b073da](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8b073da7f95dcdb2e8612db84e4cc1ac78201173))
+
+
+### Code Refactoring
+
+* **english_user_dict_appender:** unify trigger for chinese and english user dict appender ([a628cc0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/a628cc090951f3c9f23b00df93f394e69b8774d3))
+* remove automatic english spacing ([34358ab](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/34358ab77a30226236a8b30049916505d2e4481a))
+
 ## [0.6.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.1...v0.6.0-beta.2) (2026-06-08)
 
 
