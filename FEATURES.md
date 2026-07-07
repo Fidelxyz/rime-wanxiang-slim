@@ -1,6 +1,6 @@
 # 万象拼音 — 功能与实现位置映射
 
-本文档列出 README.md 中提到的所有功能，并映射到对应的实现文件。
+本文档列出万象拼音输入方案中的所有功能，并映射到对应的实现文件。
 
 ## 功能一览
 
@@ -11,12 +11,12 @@
 双拼后直接追加辅助码，4 码末尾追加 `/` 强制单字优先。
 
 - `custom/wanxiang_pro.schema.yaml`：PRO 方案中的辅助码编码配置
-- `custom/wanxiang.dict.yaml`：携带辅助码的 PRO 词库（格式：`字 拼音;辅码 词频`）
+- `custom/wanxiang.dict.yaml`：携带辅助码的 PRO 词库
 - `wanxiang_algebra.yaml`：`/` 引导辅助码聚拢的转写规则
 
 #### 间接辅助码（仅 PRO）
 
-使用 `/` 分隔符引导辅助码（格式：`拼音/辅码`）。
+使用 `/` 分隔符引导辅助码。
 
 - `custom/wanxiang_pro.schema.yaml`：间接辅助码 speller 配置
 - `wanxiang_algebra.yaml`：间接辅助码转写规则
@@ -25,8 +25,8 @@
 
 输入主拼音后按 `` ` `` 引导二次筛选（部首、两分、多分、笔画）。
 
-- `lua/wanxiang/lookup_filter.lua`：候选筛选核心逻辑，支持 aux/db 双数据源
-- `wanxiang.schema.yaml` (`lookup_filter` 段)：反查配置（引导符、tags、数据源优先级）
+- `lua/wanxiang/lookup_filter.lua`：候选筛选核心逻辑
+- `wanxiang.schema.yaml` (`lookup_filter` 段)：反查配置
 
 #### 声调辅助筛选
 
@@ -35,7 +35,7 @@
 - `wanxiang_algebra.yaml`：声调数字(7890)到拼音声调的转写规则
 - `wanxiang.schema.yaml`：`alphabet` 中 7890、`tone_corrector` 配置段
 - `lua/wanxiang/tone_corrector.lua`：声调修正处理器
-- `lua/wanxiang/preedit_tone_displayer.lua`：声调数字转上标显示（7890 → ¹²³⁴）
+- `lua/wanxiang/preedit_tone_displayer.lua`：声调数字转上标显示
 
 #### 编码全拼展开
 
@@ -46,7 +46,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 ### 反查
 
-通过 `` ` `` 引导拆字/笔画模式（如 `` `yu if `` 查找"震"）。
+通过 `` ` `` 引导拆字/笔画模式。
 
 - `wanxiang_reverse.schema.yaml`：拆分与笔画反查方案定义
 - `wanxiang_reverse.dict.yaml`：反查字典数据
@@ -58,39 +58,39 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 `` `` `` 引导主动造词，支持后触发造词与次选造词。造词模式下添加造词提示并移除整句候选。
 
-- `lua/wanxiang/user_dict_appender.lua`：造词模式下为候选添加 `user_dict_appender/tips` 提示，并移除整句（sentence）候选
-- `custom/wanxiang_pro.schema.yaml`：PRO 方案中用户词配置
+- `lua/wanxiang/user_dict_appender.lua`：添加 tips 提示并过滤整句候选
+- `custom/wanxiang_pro.schema.yaml`：用户词配置
 - `wanxiang.schema.yaml`：`user_dict` 段与 `user_dict_appender` 段
 
 #### 自动造词（仅 PRO）
 
-关闭调频下通过逐步选字选词上屏记录整段，不产生小碎片。
+关闭调频下通过逐步选字选词上屏记录整段。
 
 - `lua/wanxiang/auto_phrase.lua`：自动造词模块
 - `wanxiang.schema.yaml`：`user_dict_appender` 段配置
 
 #### 英文造词
 
-英文编码开头输入造词引导符 ` `` `（与手动造词共用 `user_dict_appender/prefix` 配置）触发英文造词，将上屏的英文词条记录到 `en.userdb`。仅在首个音节段（尚未选定中文词）时提供英文整词候选。
+英文编码开头输入造词引导符 ` `` ` 触发英文造词，将上屏的英文词条记录到 `en.userdb`。仅在首个音节段时提供英文整词候选。
 
-- `lua/wanxiang/english_user_dict_appender.lua`：提供英文整词候选；将上屏的英文词条写入英文用户词库（触发符读取 `user_dict_appender/prefix`）
+- `lua/wanxiang/english_user_dict_appender.lua`：英文词条追加与整词候选
 - `wanxiang.schema.yaml`：`english` 段 `trigger` 配置
 
 ### 提示
 
 #### 错音错字提示
 
-输入常见错读词时提示正确读音（如"给予"提示 `jǐ yǔ`）。
+输入常见错读词时提示正确读音。
 
-- `lua/wanxiang/comment_hint_displayer.lua`：错音纠正提示逻辑（使用 Memory API 查询）
+- `lua/wanxiang/comment_hint_displayer.lua`：错音纠正提示逻辑
 - `dicts/correction.dict.yaml`：错音词条数据
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`correction_hint` 配置段
 
 #### 辅助码提示（仅 PRO）
 
-任意长度候选词的辅助码提示，Ctrl+a 循环切换（辅助码/关闭），Ctrl+c 拆分提示。
+任意长度候选词的辅助码提示，Ctrl+A 循环切换，Ctrl+C 拆分提示。
 
-- `lua/wanxiang/comment_hint_displayer.lua`：注释显示模块：辅助码提示、拆分提示
+- `lua/wanxiang/comment_hint_displayer.lua`：注释显示模块
 - `custom/wanxiang_chaifen.schema.yaml`：拆分反查方案
 - `custom/wanxiang_chaifen_*.dict.yaml`：7 种辅码拆分字典
 
@@ -106,7 +106,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 - `lua/wanxiang/charset_filter.lua`：字符集过滤模块
 - `lua/data/charset.reverse.bin`：二进制字符集标记数据库
-- `wanxiang.schema.yaml`：`charset` 段配置（option、base、whitelist、blacklist）
+- `wanxiang.schema.yaml`：`charset` 段配置
 
 ### 非汉字词库输入
 
@@ -114,9 +114,9 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 整句英文输入、首字母/全大写格式化。
 
-- `lua/wanxiang/english_case_formatter.lua`：智能英文大小写格式化（前两个输入字母驱动）
+- `lua/wanxiang/english_case_formatter.lua`：智能英文大小写格式化
 - `lua/wanxiang/english_single_letter_promoter.lua`：单字母输入时生成大小写候选并置前
-- `lua/utils/utils.lua`：英文判断公共工具函数（`is_english_phrase`、`ENGLISH_SYMBOLS`）
+- `lua/utils/utils.lua`：英文判断公共工具函数
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
 - `dicts/english.dict.yaml`：英文词条
@@ -124,7 +124,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 混合词输入
 
-字母、汉字、数字、特殊符号组合输入（如 `1000wclips`、`AD钙奶`、`Type-C`）。
+字母、汉字、数字、特殊符号组合输入。
 
 - `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
 - `wanxiang_mixedcode.dict.yaml`：混合编码词典
@@ -135,7 +135,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### Unicode 输入
 
-大写 `U` 开头输入 Unicode 码点（如 `U62fc` 得到"拼"）。
+大写 `U` 开头输入 Unicode 码点。
 
 - `lua/wanxiang/unicode.lua`：Unicode 字符翻译器
 - `wanxiang.schema.yaml`：recognizer 中 `unicode` 模式配置
@@ -149,7 +149,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 候选类型符号
 
-为不同类型的候选词（如 emoji 等）在注释末尾追加对应符号。
+为不同类型的候选词在注释末尾追加对应符号。
 
 - `lua/wanxiang/candidate_type_marker.lua`：读取配置并追加类型符号逻辑
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_type_marker` 配置项
@@ -158,7 +158,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 小键盘不直接上屏。
 
-- `lua/wanxiang/keypad_composer.lua`：KP（数字小键盘）映射处理（`KP_MAP`）
+- `lua/wanxiang/keypad_composer.lua`：数字小键盘映射处理
 - `wanxiang.schema.yaml`：小键盘相关配置
 
 ### 删除键限制
@@ -169,13 +169,13 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 ### 候选词部分上屏
 
-<kbd>Ctrl</kbd> + 数字键上屏首选前 N 字，并保留后续编码。
+Ctrl + 数字键上屏首选前 N 字，并保留后续编码。
 
 - `lua/wanxiang/partial_committer.lua`：部分上屏处理器
 
 ### 候选置顶
 
-<kbd>Ctrl</kbd>+<kbd>P</kbd> 置顶当前候选，<kbd>Ctrl</kbd>+<kbd>L</kbd> 取消置顶。置顶记录写入独立的用户数据库 `wanxiang_pinned.userdb`，下次输入相同编码时被置顶的候选会排在最前。
+Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用户数据库 `wanxiang_pinned.userdb`，下次输入相同编码时被置顶的候选会排在最前。
 
 - `lua/wanxiang/candidate_pinner.lua`：置顶处理器与过滤器
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_pinner` 段配置，processors 中 `candidate_pinner*P`
@@ -184,13 +184,13 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 辅助码聚拢、间接辅助码引导、短码英文前置、双击上屏斜杠。
 
-- `wanxiang_algebra.yaml`：`/` 相关的转写规则（辅助码聚拢、英文前置）
+- `wanxiang_algebra.yaml`：`/` 相关的转写规则
 - `lua/wanxiang/backspace_limiter.lua`：双击斜杠
 - `wanxiang.schema.yaml`：斜杠相关的 speller/recognizer 配置
 
 ### 方案切换
 
-通过 `/flypy`、`/zrm` 等指令切换双拼/全拼方案（共 15 种）。
+通过 `/flypy`、`/zrm` 等指令切换双拼/全拼方案。
 
 - `lua/wanxiang/set_schema.lua`：方案切换翻译器，自动修改 custom 文件
 - `wanxiang_algebra.yaml`：12+ 拼音方案的转写规则
@@ -206,17 +206,17 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 通过辅助码修改候选长句中的特定字。
 
-- `lua/wanxiang/lookup_filter.lua`：辅筛定点改字功能
+- `lua/wanxiang/lookup_filter.lua`：候选定点修改
 
 #### 成对符号包裹
 
-输入编码末尾追加 `\a` 等触发成对符号包裹（如 `\k` 映射 `《》`）。
+输入编码末尾追加 `\a` 等触发成对符号包裹。
 
-- `lua/wanxiang/super_filter.lua`：成对符号包裹逻辑（`wrap_parts` 映射）
+- `lua/wanxiang/super_filter.lua`：符号包裹处理
 - `wanxiang.schema.yaml`：`paired_symbols` 配置段
 - `custom/wanxiang_pro.schema.yaml`：`paired_symbols` 配置段
-- `custom/wanxiang.custom.yaml`：`paired_symbols` 配置段（模板）
-- `custom/wanxiang_pro.custom.yaml`：`paired_symbols` 配置段（模板）
+- `custom/wanxiang.custom.yaml`：`paired_symbols` 配置段
+- `custom/wanxiang_pro.custom.yaml`：`paired_symbols` 配置段
 
 #### 量词预测调频
 
@@ -229,7 +229,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 根据上文输入置顶预测词或主动弹出预测词。
 
-- `lua/wanxiang/user_predict.lua`：输入预测模块
+- `lua/wanxiang/user_predict.lua`：上下文预测处理
 
 ##### 联想空格打断
 
@@ -238,11 +238,11 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `lua/wanxiang/user_predict.lua`：`predict_space` 配置与打断逻辑
 - `wanxiang.schema.yaml`：`user_predict/enable_predict_space` 配置项
 
-#### 英文智能加空格
+#### 自动英文空格
 
-支持 off/before/after/smart 四种策略，超时销毁。
+在英文单词前后自动添加空格。
 
-- `lua/wanxiang/english_spacer.lua`：加空格全部逻辑（smart 模式、超时）
+- `lua/wanxiang/english_spacer.lua`：加空格逻辑
 - `wanxiang.schema.yaml` (`english` 段)：加空格策略配置项
 
 #### 空码回溯
@@ -259,7 +259,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 循环切换分词
 
-多次按下分词键 <kbd>'</kbd> 循环切换分词模式。
+多次按下分词键 ' 循环切换分词模式。
 
 - `lua/wanxiang/super_processor.lua`：循环分词处理器
 
@@ -291,7 +291,7 @@ Shift+Space 在中文/英文/混合候选词之间切换。
 - `lua/data/HKVariants.txt`：香港繁体变体
 - `lua/data/TWVariants.txt`：台湾繁体变体
 - `lua/data/others.txt`：其他替换数据
-- `wanxiang.schema.yaml`：`super_replacer` 段配置（rules、chain、db_name 等）
+- `wanxiang.schema.yaml`：`super_replacer` 段配置
 
 #### 候选排序
 
@@ -304,13 +304,13 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 #### 快符输入
 
-单字母 + `/` 快速上屏自定义符号（如 `a/` 上屏"！"），支持 `repeat` 重复上屏。
+单字母 + `/` 快速上屏自定义符号，支持 `repeat` 重复上屏。
 
-- `lua/wanxiang/super_processor.lua`：快符处理逻辑（`quick_symbol_text` 映射、拦截与自动上屏）
+- `lua/wanxiang/super_processor.lua`：快符处理逻辑
 - `wanxiang.schema.yaml`：`quick_symbol_text` 配置段
 - `custom/wanxiang_pro.schema.yaml`：`quick_symbol_text` 配置段
-- `custom/wanxiang.custom.yaml`：`quick_symbol_text` 配置段（模板）
-- `custom/wanxiang_pro.custom.yaml`：`quick_symbol_text` 配置段（模板）
+- `custom/wanxiang.custom.yaml`：`quick_symbol_text` 配置段
+- `custom/wanxiang_pro.custom.yaml`：`quick_symbol_text` 配置段
 
 #### 符号输入
 
@@ -332,7 +332,7 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 #### 中英翻译
 
-Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
+Ctrl+E 进入翻译模式。
 
 - `lua/data/chinese_english.txt`：中译英数据
 - `lua/data/english_chinese.txt`：英译中数据
@@ -340,7 +340,7 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 
 #### 短语格式化
 
-自定义短语中重复字符与动态变量（时间、日期等）格式化。
+自定义短语中重复字符与动态变量格式化。
 
 | 已删除文件 | 说明 |
 |------------|------|
@@ -355,7 +355,7 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 - `lua/wanxiang/super_tips.lua`：Tips 系统，LevelDB 数据库 `lua/tips.userdb`
 - `lua/data/tips_show.txt`：Tips 自带数据
 - `lua/data/tips_user.txt预留自定义文件`：Tips 用户自定义数据
-- `wanxiang.schema.yaml` 等：`tips` 段配置（`disabled_types`、`tips_key`）、Ctrl+t 开关、`super_tips` 开关与处理器
+- `wanxiang.schema.yaml` 等：`tips` 段配置、Ctrl+T 开关、`super_tips` 开关与处理器
 
 #### 计算器
 
@@ -367,7 +367,7 @@ Ctrl+E 进入翻译模式（OpenCC 查表中英互译）。
 
 统计用户输入字数等数据。
 
-- `lua/wanxiang/input_statistics.lua`：输入统计模块
+- `lua/wanxiang/input_statistics.lua`：输入字数统计
 
 ### 特殊布局相关
 
