@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/yiren.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/yiren.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: artist
-version: "15.16.0"
+version: "16.0.1"
 sort: by_weight
 ...
 阿宝	ā bǎo	650
@@ -1103,6 +1103,7 @@ sort: by_weight
 邱林	qiū lín	241
 邱秋	qiū qiū	67
 邱天	qiū tiān	268
+仇晓	qiú xiǎo	504
 邱晔	qiū yè	7
 曲博	qū bó	122
 瞿颖	qú yǐng	110
@@ -1997,7 +1998,6 @@ sort: by_weight
 周瑜	zhōu yú	4996
 周韵	zhōu yùn	537
 周占	zhōu zhàn	2315
-周知	zhōu zhī	261
 周仲	zhōu zhòng	654
 朱丹	zhū dān	141
 朱虹	zhū hóng	345
@@ -5455,6 +5455,7 @@ sort: by_weight
 彭昱畅	péng yù chàng	512
 彭禺厶	péng yú sī	233
 彭梓洋	péng zǐ yáng	12
+皮切丝	pí qiē sī	634
 皮小浪	pí xiǎo làng	15
 朴宝剑	piáo bǎo jiàn	41
 朴宝英	piáo bǎo yīng	41
@@ -5650,12 +5651,14 @@ sort: by_weight
 裘慕远	qiú mù yuǎn	1
 邱佩宁	qiū pèi níng	13
 邱诗媛	qiū shī yuàn	1
+仇小豹	qiú xiǎo bào	459
 裘晓洁	qiú xiǎo jié	5
 邱贻可	qiū yí kě	369
 邱意浓	qiū yì nóng	1
 邱永传	qiū yǒng chuán	26
 仇永力	qiú yǒng lì	12
 邱雨铄	qiū yǔ shuò	16
+仇云波	qiú yún bō	279
 瞿澳晖	qú ào huī	135
 屈柏宇	qū bǎi yǔ	12
 屈楚萧	qū chǔ xiāo	662
@@ -8854,6 +8857,7 @@ sort: by_weight
 朱颜曼滋	zhū yán màn zī	4
 巴音额日乐	bā yīn é rì lè	140
 达来哈里呼	dá lái hā lǐ hū	1
+古川登志夫	gǔ chuān dēng zhì fū	10
 哈斯其其格	hǎ sī qí qí gé	3
 时代少年团	shí dài shào nián tuán	56
 斯琴格日乐	sī qín gé rì lè	75

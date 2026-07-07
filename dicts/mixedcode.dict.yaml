@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/cn&en.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/cn&en.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: mixedcode
-version: "15.16.0"
+version: "16.0.1"
 sort: original  #字典初始排序，可選original或by_weight
 ...
 2B	2B
@@ -1895,3 +1895,5 @@ iPhone 14 Pro Max	IPhone14ProMax
 iPhone 15 Pro Max	IPhone15ProMax
 iPhone 16 Pro Max	IPhone16ProMax
 iPhone 17 Pro Max	IPhone17ProMax
+Z世代	Z'shì'dài
+Be动词	Be'dòng'cí

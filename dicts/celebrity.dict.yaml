@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/mingren.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/mingren.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: celebrity
-version: "15.16.0"
+version: "16.0.1"
 sort: by_weight
 ...
 蔡畅	cài chàng	512
@@ -549,6 +549,7 @@ sort: by_weight
 秦越	qín yuè	28
 秦钟	qín zhōng	966
 秦仲	qín zhòng	361
+仇英	qiú yīng	644
 冉闵	rǎn mǐn	502
 冉求	rǎn qiú	472
 冉有	rǎn yǒu	580
@@ -691,6 +692,9 @@ sort: by_weight
 肖钦	xiāo qīn	280
 肖全	xiāo quán	342
 肖扬	xiāo yáng	106
+萧绎	xiāo yì	36
+萧意	xiāo yì	2
+萧翼	xiāo yì	1
 肖鹰	xiāo yīng	28
 谢安	xiè ān	1048
 谢彬	xiè bīn	671
@@ -780,7 +784,9 @@ sort: by_weight
 严复	yán fù	135
 阎罗	yán luó	195
 阎魔	yán mó	76
+燕青	yān qīng	364
 阎柔	yán róu	16
+燕顺	yān shùn	616
 严嵩	yán sōng	1047
 阎王	yán wang	1319
 阎行	yán xíng	14
@@ -1003,6 +1009,7 @@ sort: by_weight
 邹忌	zōu jì	229
 邹容	zōu róng	28
 邹衍	zōu yǎn	139
+薄一波	bó yì bō	247
 蔡哀侯	cài āi hóu	82
 蔡百铨	cài bǎi quán	328
 蔡邦华	cài bāng huá	270
@@ -1931,6 +1938,7 @@ sort: by_weight
 何振梁	hé zhèn liáng	495
 何志平	hé zhì píng	464
 何柱国	hé zhù guó	16
+胡燕青	hú yàn qīng	297
 华天龙	huà tiān lóng	279
 华文漪	huà wén yī	284
 华锡钧	huà xī jūn	310
@@ -2366,6 +2374,7 @@ sort: by_weight
 李学勤	lǐ xué qín	173
 李寻欢	lǐ xún huān	578
 李迅雷	lǐ xùn léi	680
+李彦宏	lǐ yàn hóng	420
 李延年	lǐ yán nián	182
 李一男	lǐ yì nán	426
 厉以宁	lì yǐ níng	69
@@ -3345,20 +3354,31 @@ sort: by_weight
 秦仲文	qín zhòng wén	3
 秦庄公	qín zhuāng gōng	16
 秦庄王	qín zhuāng wáng	189
+仇保兴	qiú bǎo xīng	504
+仇池公	qiú chí gōng	297
 裘德考	qiú dé kǎo	78
 裘东耀	qiú dōng yào	270
 裘法祖	qiú fǎ zǔ	38
 裘桂仙	qiú guì xiān	220
 裘国根	qiú guó gēn	558
+仇国仕	qiú guó shì	405
 裘锦秋	qiú jǐn qiū	405
 裘丽琳	qiú lì lín	252
+仇鹿鸣	qiú lù míng	374
 裘千尺	qiú qiān chǐ	66
 裘千仞	qiú qiān rèn	405
 裘千丈	qiú qiān zhàng	66
 裘盛戎	qiú shèng róng	50
+仇士良	qiú shì liáng	572
+仇十洲	qiú shí zhōu	266
 裘维蕃	qiú wéi fān	202
 裘锡圭	qiú xī guī	295
+仇彦英	qiú yàn yīng	320
+仇焱之	qiú yàn zhī	194
 裘曰修	qiú yuē xiū	252
+仇兆鳌	qiú zhào áo	333
+仇志强	qiú zhì qiáng	310
+仇子明	qiú zǐ míng	378
 全红婵	quán hóng chán	1517
 冉阿让	rǎn ā ràng	135
 冉伯牛	rǎn bó niú	315
@@ -3473,6 +3493,7 @@ sort: by_weight
 施伟贤	shī wěi xián	277
 施一公	shī yì gōng	430
 施夷光	shī yí guāng	3
+释印乐	shì yìn lè	158
 施永青	shī yǒng qīng	3
 施愚山	shī yú shān	230
 施肇基	shī zhào jī	454
@@ -5289,3 +5310,5 @@ sort: by_weight
 中岛一贵	zhōng dǎo yí guì	279
 中岛英树	zhōng dǎo yīng shù	180
 中岛哲也	zhōng dǎo zhé yě	500
+斯特里克兰德	sī tè lǐ kè lán dé	10
+香宗我部亲泰	xiāng zōng wǒ bù qīn tài	10

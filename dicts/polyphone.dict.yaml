@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/duoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/duoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: polyphone
-version: "15.16.0"
+version: "16.0.1"
 sort: by_weight
 ...
 自己打的	zì jǐ dǎ de	80
@@ -19,6 +19,7 @@ sort: by_weight
 同行的	tóng háng de	198
 抽空	chōu kòng	2528
 调到了	diào dào le	95
+着了	zháo le	522
 那天	nèi tiān	1053
 坐骑	zuò jì	796
 曾参	zēng shēn	32
@@ -372,7 +373,7 @@ sort: by_weight
 迫降	pò jiàng	3918
 浅浅	jiān jiān	927
 浅浅	qiǎn qiǎn	447
-不了	bù liǎo	3668
+不了	bù liǎo	45439
 不了	bù le	45437
 着人	zhuó rén	149
 闲着	xián zhāo	555

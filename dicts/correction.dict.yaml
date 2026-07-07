@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/cuoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/cuoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: correction
-version: "15.16.0"
+version: "16.0.1"
 sort: by_weight
 ...
 株木琅玛	zhū mù láng mǎ	205	有声
@@ -20,6 +20,8 @@ sort: by_weight
 杉杉来吃	shān shān lái chī	1091	书名
 食话食说	shí huà shí shuō	259	节目
 零零总总	ling ling zong zong	6	林林总总
+弃如敝履	qì rú bì lǚ	486	弃如敝屣(xǐ)
+卡扣	kǎ kòu	3690	qiǎ kòu
 味噌	wèi zēng	1043	cēng
 味噌汤	wèi zēng tāng	1008	味噌(cēng)汤
 太差劲	tài chà jìng	89	jìn
@@ -38,7 +40,7 @@ sort: by_weight
 谄媚	xiàn mèi	510	chǎn mèi
 着落	zháo luò	470	zhuó luò
 胁差	lei cha	73	xié chā
-刚劲	gāng jìn	3301	gāng jìng
+刚劲	gāng jìn	901	gāng jìng
 井陉	jing jing	1237	jǐng xíng
 猇亭	hu ting	146	xiāo tíng
 猇亭区	hu ting qu	88	猇(xiāo)亭区

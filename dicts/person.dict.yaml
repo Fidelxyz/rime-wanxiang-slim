@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v15.16.0/dicts/renming.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/renming.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: person
-version: "15.16.0"
+version: "16.0.1"
 sort: by_weight
 ...
 白波	bái bō	76
@@ -927,7 +927,7 @@ sort: by_weight
 林颖	lín yǐng	702
 林莺	lín yīng	667
 林勇	lín yǒng	159
-林雨	lín yǔ	3665
+林雨	lín yǔ	366
 林玉	lín yù	97
 林宇	lín yǔ	77
 林羽	lín yǔ	48
@@ -9550,6 +9550,8 @@ sort: by_weight
 秦之济	qín zhī jì	45
 秦之桢	qín zhī zhēn	45
 秦宗权	qín zōng quán	61
+仇池国	qiú chí guó	37
+仇池山	qiú chí shān	23
 裘德洛	qiú dé luò	88
 裘赛荣	qiú sài róng	45
 裘英俊	qiú yīng jùn	441
@@ -19003,9 +19005,6 @@ sort: by_weight
 佐竹敬久	zuǒ zhú jìng jiǔ	0
 佐竹隆义	zuǒ zhú lóng yì	0
 佐助鸣人	zuǒ zhù míng rén	2
-佐助小樱	zuǒ zhù xiǎo yīng	13
-佐竹秀义	zuǒ zhú xiù yì	0
-佐竹雅昭	zuǒ zhú yǎ zhāo	0
 佐竹义笃	zuǒ zhú yì dǔ	0
 佐竹义峰	zuǒ zhú yì fēng	0
 佐竹义久	zuǒ zhú yì jiǔ	0
