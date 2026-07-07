@@ -29,8 +29,6 @@ deploy:
       # English
       - send: english
         assert: eq(cand[1].text, "English")
-      - send: "hello world "
-        assert: eq(commit, "hello world")
       # Emoji
       - send: haha
         assert: cand[2].text ~= "😄"

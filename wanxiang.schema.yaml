@@ -58,7 +58,6 @@ engine:
     - recognizer
     - key_binder
     - lua_processor@*wanxiang.key_binder
-    - lua_processor@*wanxiang.english_spacer*P  # 自动英文空格处理器，speller 前
     - lua_processor@*wanxiang.tone_corrector  # 声调修正
     - speller
     - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
@@ -96,7 +95,6 @@ engine:
     - lua_filter@*wanxiang.lookup_filter  # 反查 / 辅助筛选
     - lua_filter@*wanxiang.english_case_formatter  # 智能英文大小写
     - lua_filter@*wanxiang.english_single_letter_promoter  # 单字母英文候选
-    - lua_filter@*wanxiang.english_spacer*F  # 自动英文空格
     - lua_filter@*wanxiang.english_user_dict_appender  # 英文造词
     - lua_filter@*wanxiang.user_dict_appender  # 手动造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
@@ -194,19 +192,6 @@ wanxiang_english:
   initial_quality: 2.1
   comment_format:
     - xform/^~.+$//
-
-  ### Lua 相关配置 ###
-
-  # 自动添加空格。
-  # off: 关闭。
-  # before: 总是前加。
-  # after: 总是后加。
-  # smart: 连续输入英文时，第二个单词前开始加空格。非输入状态下回车与空格打断加空格状态。
-  # 可设置 spacing_timeout 延时取消加空格状态。
-  english_spacing: smart
-
-  # 取消加空格状态的延时，单位为秒。设置为 0 则永不超时。
-  spacing_timeout: 5
 
 wanxiang_mixedcode:
   dictionary: wanxiang_mixedcode
