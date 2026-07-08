@@ -24,7 +24,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y opencc
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           path: ${{ github.event.repository.name }}
           persist-credentials: true
@@ -41,7 +41,7 @@ jobs:
             core.setOutput('tag', release.tag_name);
 
       - name: Checkout OpenCC
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: BYVoid/OpenCC
           ref: ${{ steps.opencc-latest-tag.outputs.tag }}
@@ -71,7 +71,7 @@ jobs:
     needs: update-opencc
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           path: ${{ github.event.repository.name }}
           ref: ${{ github.ref_name }}
@@ -89,7 +89,7 @@ jobs:
             core.setOutput('tag', release.tag_name);
 
       - name: Checkout upstream at latest release
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.UPSTREAM_OWNER }}/${{ env.UPSTREAM_REPO }}
           ref: ${{ steps.upstream-latest-tag.outputs.tag }}
