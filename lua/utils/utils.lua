@@ -347,10 +347,11 @@ end
 
 ---Escape a string for use in a Lua pattern.
 ---@param str string
+---@return string
 function M.escape_for_pattern(str)
     -- Add a `%` before magic characters: . % * + - ? ^ $ [ ] ( ).
     -- See https://www.lua.org/pil/20.2.html.
-    return str:gsub("(%.%%%*%+%-%?%^%$%[%]%(%))", "%%%1")
+    return (str:gsub("([%.%%%*%+%-%?%^%$%[%]%(%)])", "%%%1"))
 end
 
 return M
