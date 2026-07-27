@@ -14,9 +14,8 @@
 ---@field bypass_prefix string?
 
 ---@class LookupFilterState
----@field db_cache table<string, {component_match_codes: string[], stroke_match_codes: string[]}>
----@field comment_cache table<string, string[][]|false>
----@field cache_size integer
+---@field db_cache SegmentedCache<{component_match_codes: string[], stroke_match_codes: string[]}>
+---@field comment_cache SegmentedCache<string[][]|false>
 ---
 ---@field select_notifier Connection?
 
@@ -26,7 +25,11 @@
 ---@field lookup_filter_state LookupFilterState?
 
 local utils = require("utils.utils")
+local SegmentedCache = require("utils.segmented_cache")
 
+-- Maximum number of live entries per cache generation. A cache holds between
+-- `MAX_CACHE_SIZE` and `2 * MAX_CACHE_SIZE` entries before its coldest
+-- generation is dropped.
 local MAX_CACHE_SIZE = 1024
 
 ---Return whether any string in `list` starts with the literal `prefix`.
@@ -601,9 +604,8 @@ function F.init(env)
     }
 
     env.lookup_filter_state = {
-        db_cache = {},
-        comment_cache = {},
-        cache_size = 0,
+        db_cache = SegmentedCache.new(MAX_CACHE_SIZE),
+        comment_cache = SegmentedCache.new(MAX_CACHE_SIZE),
         select_notifier = select_notifier,
     }
 end
@@ -640,12 +642,6 @@ function F.func(translation, env)
 
     local state = env.lookup_filter_state
     assert(state)
-
-    if state.cache_size > MAX_CACHE_SIZE then
-        state.db_cache = {}
-        state.comment_cache = {}
-        state.cache_size = 0
-    end
 
     local if_single_char_first = context:get_option("char_priority")
 
@@ -685,15 +681,12 @@ function F.func(translation, env)
             local comment_text = genuine.comment
             if comment_text ~= "" then
                 local cache_key = cand_text .. ":" .. comment_text
-                if state.comment_cache[cache_key] == nil then
-                    state.comment_cache[cache_key] = parse_comment_codes(
-                        comment_text,
-                        config.comment_split_pattern,
-                        cand_len
-                    ) or false
-                    state.cache_size = state.cache_size + 1
+                local cached = state.comment_cache:get(cache_key)
+                if cached == nil then
+                    cached = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len) or false
+                    state.comment_cache:insert(cache_key, cached)
                 end
-                codes_by_source.aux = state.comment_cache[cache_key] or nil
+                codes_by_source.aux = cached or nil
             end
         end
 
@@ -706,18 +699,19 @@ function F.func(translation, env)
                 local char = utf8.char(codepoint)
 
                 -- Check the cache; on miss, derive component and stroke match codes.
-                if not state.db_cache[char] then
+                local entry = state.db_cache:get(char)
+                if not entry then
                     local component_match_codes, stroke_match_codes = build_reverse_group(
                         config.component_projection,
                         config.stroke_projection,
                         config.db_table,
                         char
                     )
-                    state.db_cache[char] = {
+                    entry = {
                         component_match_codes = component_match_codes,
                         stroke_match_codes = stroke_match_codes,
                     }
-                    state.cache_size = state.cache_size + 1
+                    state.db_cache:insert(char, entry)
                 end
 
                 ---@type string[]?
@@ -727,17 +721,17 @@ function F.func(translation, env)
                     codes = {}
                     local codes_len = 0
                     -- Single-character candidate: merge component and stroke match codes.
-                    for _, code in ipairs(state.db_cache[char].component_match_codes) do
+                    for _, code in ipairs(entry.component_match_codes) do
                         codes_len = codes_len + 1
                         codes[codes_len] = code
                     end
-                    for _, code in ipairs(state.db_cache[char].stroke_match_codes) do
+                    for _, code in ipairs(entry.stroke_match_codes) do
                         codes_len = codes_len + 1
                         codes[codes_len] = code
                     end
                 else
                     -- Phrase candidate: use only component match codes to keep matching tractable.
-                    codes = state.db_cache[char].component_match_codes
+                    codes = entry.component_match_codes
                 end
                 -- Use `false` for characters without codes: `nil` would leave holes in the array,
                 -- and `#` on a table with holes is undefined, which would break the `idx > #codes_sequence`

@@ -26,6 +26,7 @@
 输入主拼音后按 `` ` `` 引导二次筛选（部首、两分、多分、笔画）。
 
 - `lua/wanxiang/lookup_filter.lua`：候选筛选核心逻辑
+- `lua/utils/segmented_cache.lua`：反查/注释解析结果的分段缓存
 - `wanxiang.schema.yaml` (`lookup_filter` 段)：反查配置
 
 #### 声调辅助筛选
