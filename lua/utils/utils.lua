@@ -186,6 +186,13 @@ function M.is_english_phrase(s)
     return has_alpha
 end
 
+---Test whether `str` contains any ASCII letter, digit or symbol.
+---@param str string
+---@return boolean
+function M.is_english_or_mixed_phrase(str)
+    return str:find("[%w%p]") ~= nil
+end
+
 ---@type table<string, string>
 local TONE_STRIP_MAP = {
     ["ā"] = "a",

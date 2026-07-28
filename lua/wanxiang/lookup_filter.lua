@@ -4,38 +4,71 @@
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class LookupFilterConfig
----@field data_sources (string|"aux"|"db")[]
----@field has_db boolean
----@field db_table ReverseLookup[]?
----@field main_projection Projection?
----@field xlit_projection Projection?
----@field comment_split_pattern string?
----@field trigger string?
----@field bypass_prefix string?
 ---@field tags string[]
+---@field trigger string?
+---@field data_sources (string|"aux"|"db")[]
+---@field db_table ReverseLookup[]?
+---@field component_projection Projection?
+---@field stroke_projection Projection?
+---@field comment_split_pattern string?
+---@field bypass_prefix string?
 
 ---@class LookupFilterState
----@field db_cache table<string, {main: string[], xlit: string[]}>
+---@field db_cache table<string, {component_match_codes: string[], stroke_match_codes: string[]}>
 ---@field comment_cache table<string, string[][]|false>
 ---@field cache_size integer
 ---
----@field select_notifier Connection
+---@field select_notifier Connection?
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field lookup_filter_config LookupFilterConfig?
 ---@field lookup_filter_state LookupFilterState?
 
----Escape Lua-pattern special characters.
----@param s string
----@return string
-local function alt_lua_punc(s)
-    return (s:gsub("([%.%+%-%*%?%[%]%^%$%(%)%%])", "%%%1"))
+local utils = require("utils.utils")
+
+local MAX_CACHE_SIZE = 1024
+
+---Return whether any string in `list` starts with the literal `prefix`.
+---@param list string[]
+---@param prefix string
+---@return boolean
+local function any_starts_with(list, prefix)
+    for i = 1, #list do
+        if list[i]:find(prefix, 1, true) == 1 then
+            return true
+        end
+    end
+    return false
 end
 
+---Find the rightmost literal occurrence of `needle` at or after `init`.
+---@param haystack string
+---@param needle string
+---@param init integer
+---@return integer? match_start
+---@return integer? match_end
+local function find_last(haystack, needle, init)
+    ---@type integer?
+    local match_start = nil
+    ---@type integer?
+    local match_end = nil
+    local scan_from = init
+    while true do
+        local hit_start, hit_end = haystack:find(needle, scan_from, true)
+        if not hit_start then
+            break
+        end
+        match_start, match_end = hit_start, hit_end
+        scan_from = hit_start + 1
+    end
+    return match_start, match_end
+end
+
+---Load component and stroke projection rules from a schema.
 ---@param schema_id string
----@return string[] main_rules
----@return string[] xlit_rules
+---@return string[] component_rules
+---@return string[] stroke_rules
 local function parse_schema_rules(schema_id)
     if schema_id == "" then
         return {}, {}
@@ -49,62 +82,68 @@ local function parse_schema_rules(schema_id)
     end
 
     ---@type string[]
-    local main_rules = {}
-    local main_rules_len = 0
+    local component_rules = {}
+    local component_rules_len = 0
     ---@type string[]
-    local xlit_rules = {}
-    local xlit_rules_len = 0
+    local stroke_rules = {}
+    local stroke_rules_len = 0
     for i = 0, algebra_list.size - 1 do
         local rule_val = algebra_list:get_value_at(i)
         local rule = rule_val and rule_val:get_string()
         if rule and #rule > 0 then
             if rule:match("^xlit/HSPZN/") then
-                xlit_rules_len = xlit_rules_len + 1
-                xlit_rules[xlit_rules_len] = rule
+                stroke_rules_len = stroke_rules_len + 1
+                stroke_rules[stroke_rules_len] = rule
             else
-                main_rules_len = main_rules_len + 1
-                main_rules[main_rules_len] = rule
+                component_rules_len = component_rules_len + 1
+                component_rules[component_rules_len] = rule
             end
         end
     end
-    return main_rules, xlit_rules
+    return component_rules, stroke_rules
 end
 
----@param main_projection Projection?
----@param xlit_projection Projection?
----@param part string
----@return string[] main_variants
----@return string[] xlit_variants
-local function expand_code_variant(main_projection, xlit_projection, part)
+---Derive match codes from one raw code returned by a reverse-lookup database.
+---@param raw_code string A reverse-lookup entry containing component spellings or an uppercase stroke sequence.
+---@param component_projection Projection?
+---@param stroke_projection Projection?
+---@return string[] component_match_codes
+---@return string[] stroke_match_codes
+local function derive_match_codes(raw_code, component_projection, stroke_projection)
+    -- Collect both code categories without duplicates.
     ---@type string[]
-    local out = {}
-    local out_len = 0
+    local component_match_codes = {}
+    local component_match_codes_len = 0
     ---@type table<string, boolean>
-    local seen = {}
-    ---@type string[]
-    local out_xlit = {}
-    local out_xlit_len = 0
-    ---@type table<string, boolean>
-    local seen_xlit = {}
+    local seen_component_match_codes = {}
 
+    ---@type string[]
+    local stroke_match_codes = {}
+    local stroke_match_codes_len = 0
+    ---@type table<string, boolean>
+    local seen_stroke_match_codes = {}
+
+    ---Collect a component match code.
     ---@param s string
-    local function add(s)
-        if #s > 0 and not seen[s] then
-            seen[s] = true
-            out_len = out_len + 1
-            out[out_len] = s
+    local function add_component_match_code(s)
+        if #s > 0 and not seen_component_match_codes[s] then
+            seen_component_match_codes[s] = true
+            component_match_codes_len = component_match_codes_len + 1
+            component_match_codes[component_match_codes_len] = s
         end
     end
 
+    ---Collect a stroke match code.
     ---@param s string
-    local function add_xlit(s)
-        if #s > 0 and not seen_xlit[s] then
-            seen_xlit[s] = true
-            out_xlit_len = out_xlit_len + 1
-            out_xlit[out_xlit_len] = s
+    local function add_stroke_match_code(s)
+        if #s > 0 and not seen_stroke_match_codes[s] then
+            seen_stroke_match_codes[s] = true
+            stroke_match_codes_len = stroke_match_codes_len + 1
+            stroke_match_codes[stroke_match_codes_len] = s
         end
     end
 
+    ---Extract each character's first auxiliary-code letter from a sequence of two-letter codes.
     ---@param s string
     ---@return string?
     local function extract_odd_positions(s)
@@ -118,6 +157,7 @@ local function expand_code_variant(main_projection, xlit_projection, part)
         return res
     end
 
+    ---Derive the conventional `u` spelling for `j/q/x/y + v` component pairs.
     ---@param s string
     ---@return string?
     local function get_v_variant(s)
@@ -139,111 +179,113 @@ local function expand_code_variant(main_projection, xlit_projection, part)
         return has_change and res or nil
     end
 
-    local _, quote_count = part:gsub("'", "")
-    if quote_count == 1 then
-        local s1, s2 = part:match("^([^']*)'([^']*)$")
-        if s1 and s2 and #s1 > 0 and #s2 > 0 then
-            add(s1:sub(1, 1) .. s2:sub(1, 1))
-        end
-    end
-    if part:match("^%l+$") then
-        add(part)
-    end
-    local raw_extracted = extract_odd_positions(part)
-    if raw_extracted then
-        add(raw_extracted)
+    -- Add an unsplit lowercase raw code unchanged.
+    if raw_code:match("^%l+$") then
+        add_component_match_code(raw_code)
     end
 
-    if main_projection and not part:match("^%u+$") then
-        local p = main_projection:apply(part, true)
-        if p and #p > 0 then
-            add(p)
-            local v_variant = get_v_variant(p)
+    -- Reverse dictionaries separate component spellings with apostrophes.
+    -- For a two-component raw code, add the initial of each component spelling.
+    local _, quote_count = raw_code:gsub("'", "")
+    if quote_count == 1 then
+        local s1, s2 = raw_code:match("^([^']*)'([^']*)$")
+        if s1 and s2 and #s1 > 0 and #s2 > 0 then
+            add_component_match_code(s1:sub(1, 1) .. s2:sub(1, 1))
+        end
+    end
+
+    -- Add each character's first auxiliary-code letter from an unsplit two-letter code sequence.
+    local component_initials = extract_odd_positions(raw_code)
+    if component_initials then
+        add_component_match_code(component_initials)
+    end
+
+    -- Apply the component spelling projection to a non-stroke raw code.
+    if component_projection and not raw_code:match("^%u+$") then
+        local projected_code = component_projection:apply(raw_code, true)
+        if projected_code and projected_code ~= "" then
+            -- Add the projected component code unchanged.
+            add_component_match_code(projected_code)
+
+            -- Add the `u` spelling when the projected code contains `j/q/x/y + v` pairs.
+            local v_variant = get_v_variant(projected_code)
             if v_variant then
-                add(v_variant)
+                add_component_match_code(v_variant)
             end
-            local proj_extracted = extract_odd_positions(p)
-            if proj_extracted then
-                add(proj_extracted)
+
+            -- Add each character's first auxiliary-code letter from the projected two-letter codes.
+            local projected_component_initials = extract_odd_positions(projected_code)
+            if projected_component_initials then
+                add_component_match_code(projected_component_initials)
             end
         end
     end
-    if part:match("^%u+$") and xlit_projection then
-        local xlit_result = xlit_projection:apply(part, true)
-        if xlit_result and #xlit_result > 0 then
-            add_xlit(xlit_result)
+
+    -- Uppercase HSPZN raw codes encode strokes and must be transliterated to the active layout.
+    if raw_code:match("^%u+$") and stroke_projection then
+        local stroke_match_code = stroke_projection:apply(raw_code, true)
+        if stroke_match_code and #stroke_match_code > 0 then
+            add_stroke_match_code(stroke_match_code)
         end
     end
-    return out, out_xlit
+    return component_match_codes, stroke_match_codes
 end
 
----@param main_projection Projection?
----@param xlit_projection Projection?
+---Collect component and stroke match codes for `text` from reverse-lookup databases.
+---@param component_projection Projection?
+---@param stroke_projection Projection?
 ---@param db_table ReverseLookup[]
 ---@param text string
----@return string[] main
----@return string[] xlit
-local function build_reverse_group(main_projection, xlit_projection, db_table, text)
+---@return string[] component_match_codes
+---@return string[] stroke_match_codes
+local function build_reverse_group(component_projection, stroke_projection, db_table, text)
     ---@type string[]
-    local group_main = {}
-    local group_main_len = 0
+    local component_match_codes = {}
+    local component_match_codes_len = 0
     ---@type table<string, boolean>
-    local seen_main = {}
+    local seen_component_match_codes = {}
     ---@type string[]
-    local group_xlit = {}
-    local group_xlit_len = 0
+    local stroke_match_codes = {}
+    local stroke_match_codes_len = 0
     ---@type table<string, boolean>
-    local seen_xlit = {}
+    local seen_stroke_match_codes = {}
 
     for _, db in ipairs(db_table) do
         local code = db:lookup(text)
         if code ~= "" then
-            for part in code:gmatch("%S+") do
-                -- Receive the two separated data streams.
-                local main_variants, xlit_variants = expand_code_variant(main_projection, xlit_projection, part)
+            for raw_code in code:gmatch("%S+") do
+                local derived_component_match_codes, derived_stroke_match_codes =
+                    derive_match_codes(raw_code, component_projection, stroke_projection)
 
-                -- Fill main data.
-                for _, v in ipairs(main_variants) do
-                    if not seen_main[v] then
-                        seen_main[v] = true
-                        group_main_len = group_main_len + 1
-                        group_main[group_main_len] = v
+                for _, match_code in ipairs(derived_component_match_codes) do
+                    if not seen_component_match_codes[match_code] then
+                        seen_component_match_codes[match_code] = true
+                        component_match_codes_len = component_match_codes_len + 1
+                        component_match_codes[component_match_codes_len] = match_code
                     end
                 end
-                -- Fill xlit data.
-                for _, v in ipairs(xlit_variants) do
-                    if not seen_xlit[v] then
-                        seen_xlit[v] = true
-                        group_xlit_len = group_xlit_len + 1
-                        group_xlit[group_xlit_len] = v
+                for _, match_code in ipairs(derived_stroke_match_codes) do
+                    if not seen_stroke_match_codes[match_code] then
+                        seen_stroke_match_codes[match_code] = true
+                        stroke_match_codes_len = stroke_match_codes_len + 1
+                        stroke_match_codes[stroke_match_codes_len] = match_code
                     end
                 end
             end
         end
     end
-    return group_main, group_xlit
+    return component_match_codes, stroke_match_codes
 end
 
----@param list string[]
----@param prefix string
----@return boolean
-local function any_starts_with(list, prefix)
-    for i = 1, #list do
-        if list[i]:find(prefix, 1, true) == 1 then
-            return true
-        end
-    end
-    return false
-end
-
----@param codes_sequence string[][]
+---Fuzzy-match `input_str` against per-character code alternatives.
+---@param codes_sequence (string[]|false)[]
 ---@param idx integer
 ---@param input_str string
 ---@param input_idx integer
----@param memo table<integer, boolean>
+---@param match_state_cache table<integer, boolean>
 ---@param is_phrase_mode boolean
 ---@return boolean
-local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, memo, is_phrase_mode)
+local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, match_state_cache, is_phrase_mode)
     if input_idx > #input_str then
         return true
     end
@@ -251,9 +293,11 @@ local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, 
         return false
     end
 
-    local state_key = idx * 1000 + input_idx
-    if memo[state_key] ~= nil then
-        return memo[state_key]
+    local match_state_key = idx * (#input_str + 1) + input_idx
+
+    local cached_result = match_state_cache[match_state_key]
+    if cached_result ~= nil then
+        return cached_result
     end
 
     local codes = codes_sequence[idx]
@@ -261,53 +305,55 @@ local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, 
 
     if codes then
         for _, code in ipairs(codes) do
-            local skip = false
             if is_phrase_mode and #code > 3 then
-                skip = true
+                goto continue
             end
 
             if code:match("^%d+$") then
-                skip = true
+                goto continue
             end
-            if not skip then
-                local i_curr = input_idx
-                local c_curr = 1
-                local i_limit = #input_str
-                local c_limit = #code
-                while i_curr <= i_limit and c_curr <= c_limit do
-                    if input_str:byte(i_curr) == code:byte(c_curr) then
-                        i_curr = i_curr + 1
-                    end
-                    c_curr = c_curr + 1
+
+            local i_curr = input_idx
+            local c_curr = 1
+            local i_limit = #input_str
+            local c_limit = #code
+            -- Greedily consume as much of the input as this code covers.
+            -- Maximizing consumption here is optimal for subsequence
+            -- matching: advancing the input pointer further never makes the
+            -- remaining sequence harder to satisfy, so no backtracking on
+            -- consumption count is needed.
+            while i_curr <= i_limit and c_curr <= c_limit do
+                if input_str:byte(i_curr) == code:byte(c_curr) then
+                    i_curr = i_curr + 1
                 end
-                if match_fuzzy_recursive(codes_sequence, idx + 1, input_str, i_curr, memo, is_phrase_mode) then
-                    result = true
-                    break
-                end
+                c_curr = c_curr + 1
             end
+
+            if match_fuzzy_recursive(codes_sequence, idx + 1, input_str, i_curr, match_state_cache, is_phrase_mode) then
+                result = true
+                break
+            end
+
+            ::continue::
         end
     else
-        if match_fuzzy_recursive(codes_sequence, idx + 1, input_str, input_idx, memo, is_phrase_mode) then
-            result = true
-        end
+        result = match_fuzzy_recursive(codes_sequence, idx + 1, input_str, input_idx, match_state_cache, is_phrase_mode)
     end
-    memo[state_key] = result
+
+    match_state_cache[match_state_key] = result
     return result
 end
 
--- Parse the lookup-trigger split point in the input.
--- Compatible with the dynamic word-creation prefix: if the input starts with
--- bypass_prefix, skip past it and only treat trailing reverse-lookup triggers
--- as filter separators.
+---Split input into base and auxiliary codes at the lookup trigger.
 ---@param input string
----@param trigger string?
+---@param trigger string
 ---@param bypass_prefix string?
 ---@return string? base_code
 ---@return string? aux_code
----@return integer? key_start
----@return integer? key_end
+---@return integer? trigger_start
+---@return integer? trigger_end
 local function split_lookup_input(input, trigger, bypass_prefix)
-    if not trigger or input == "" then
+    if input == "" then
         return nil
     end
 
@@ -318,33 +364,22 @@ local function split_lookup_input(input, trigger, bypass_prefix)
     end
 
     local input_body = input:sub(scan_from)
+    -- Reject a body starting with a symbol trigger (no base code precedes it); alphanumeric triggers are exempt.
     if input_body:sub(1, #trigger) == trigger and not trigger:match("^%w+$") then
         return nil
     end
 
-    ---@type integer?
-    local s_start = nil
-    ---@type integer?
-    local s_end = nil
-    local from = scan_from
-    while true do
-        local s, e = input:find(trigger, from, true)
-        if not s then
-            break
-        end
-        s_start, s_end = s, e
-        from = s + 1
-    end
-
-    if not s_start or not s_end then
+    local trigger_start, trigger_end = find_last(input, trigger, scan_from)
+    if not trigger_start or not trigger_end then
         return nil
     end
 
-    local base_code = input:sub(1, s_start - 1)
-    local aux_code = input:sub(s_end + 1)
-    return base_code, aux_code, s_start, s_end
+    local base_code = input:sub(1, trigger_start - 1)
+    local aux_code = input:sub(trigger_end + 1)
+    return base_code, aux_code, trigger_start, trigger_end
 end
 
+---Parse per-character auxiliary codes from a candidate comment.
 ---@param comment string
 ---@param pattern string
 ---@param target_len integer
@@ -395,24 +430,34 @@ local function parse_comment_codes(comment, pattern, target_len)
     return result
 end
 
----@param seg Segment
----@param config LookupFilterConfig
----@return boolean
-local function matches_tags(seg, config)
-    for _, v in ipairs(config.tags) do
-        if seg.tags[v] then
-            return true
-        end
-    end
-    return false
-end
-
 local F = {}
 
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
     local cfg_root = rime_config:get_map("lookup_filter")
+
+    ---@type string[]
+    local tags = {}
+    local tags_len = 0
+    local tags_item = cfg_root and cfg_root:get("tags")
+    local tags_cfg = tags_item and tags_item:get_list()
+    if tags_cfg and tags_cfg.size > 0 then
+        for i = 0, tags_cfg.size - 1 do
+            local tag_val = tags_cfg:get_value_at(i)
+            local tag = tag_val and tag_val:get_string()
+            if tag and tag ~= "" then
+                tags_len = tags_len + 1
+                tags[tags_len] = tag
+            end
+        end
+    end
+
+    local trigger_val = cfg_root and cfg_root:get_value("trigger")
+    local trigger = trigger_val and trigger_val:get_string()
+    if trigger == "" then
+        trigger = nil
+    end
 
     ---@type string[]
     local data_sources = {}
@@ -444,9 +489,9 @@ function F.init(env)
     ---@type ReverseLookup[]?
     local db_table = nil
     ---@type Projection?
-    local main_projection = nil
+    local component_projection = nil
     ---@type Projection?
-    local xlit_projection = nil
+    local stroke_projection = nil
     if has_db_source then
         local db_list_item = cfg_root and cfg_root:get("dicts")
         local db_list_cfg = db_list_item and db_list_item:get_list()
@@ -469,14 +514,14 @@ function F.init(env)
             end
 
             if #db_names > 0 then
-                local main_rules, xlit_rules = parse_schema_rules(db_names[1])
-                if #main_rules > 0 then
-                    main_projection = Projection()
-                    main_projection:load(main_rules)
+                local component_rules, stroke_rules = parse_schema_rules(db_names[1])
+                if #component_rules > 0 then
+                    component_projection = Projection()
+                    component_projection:load(component_rules)
                 end
-                if #xlit_rules > 0 then
-                    xlit_projection = Projection()
-                    xlit_projection:load(xlit_rules)
+                if #stroke_rules > 0 then
+                    stroke_projection = Projection()
+                    stroke_projection:load(stroke_rules)
                 end
             end
         else
@@ -491,34 +536,10 @@ function F.init(env)
         if delimiter == "" then
             delimiter = " "
         end
-        comment_split_pattern = "[^" .. alt_lua_punc(delimiter) .. "]+"
-    end
-
-    local trigger_val = cfg_root and cfg_root:get_value("trigger")
-    local trigger = trigger_val and trigger_val:get_string()
-    if trigger == "" then
-        trigger = nil
+        comment_split_pattern = "[^" .. utils.escape_for_pattern(delimiter) .. "]+"
     end
 
     local bypass_prefix = rime_config:get_string("user_dict_appender/prefix")
-
-    ---@type string[]
-    local tags = {}
-    local tags_len = 0
-    local tags_item = cfg_root and cfg_root:get("tags")
-    local tags_cfg = tags_item and tags_item:get_list()
-    if tags_cfg and tags_cfg.size > 0 then
-        for i = 0, tags_cfg.size - 1 do
-            local tag_val = tags_cfg:get_value_at(i)
-            local tag = tag_val and tag_val:get_string()
-            if tag and tag ~= "" then
-                tags_len = tags_len + 1
-                tags[tags_len] = tag
-            end
-        end
-    else
-        tags = { "abc" }
-    end
 
     -- Hook into the context's select_notifier, which fires every time the user
     -- selects (commits) a candidate from the menu. The purpose is to clean up
@@ -539,41 +560,44 @@ function F.init(env)
     --        b. If the preedit is fully converted (no remaining raw input),
     --           the entire phrase is done, so it strips the trigger, sets the
     --           input to just the base code, and commits the result.
-    local select_notifier = env.engine.context.select_notifier:connect(function(ctx)
-        local state = env.lookup_filter_state
-        assert(state)
+    ---@type Connection?
+    local select_notifier = nil
+    if trigger then
+        select_notifier = env.engine.context.select_notifier:connect(function(ctx)
+            local state = env.lookup_filter_state
+            assert(state)
 
-        local input = ctx.input
-        -- Split at the last trigger character to get the base code
-        local base_code, _ = split_lookup_input(input, trigger, bypass_prefix)
-        if not base_code or base_code == "" then
-            return
-        end
+            local input = ctx.input
+            -- Split at the last trigger character to get the base code
+            local base_code, _ = split_lookup_input(input, trigger, bypass_prefix)
+            if not base_code or base_code == "" then
+                return
+            end
 
-        -- Check whether the preedit still has unconverted input before the trigger
-        local edit = select(1, split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix))
-        if edit and edit:match("[%w/]") then
-            -- There are still unconverted syllables remaining — keep the trigger
-            -- appended so the user can continue filtering the next candidate
-            ctx.input = base_code .. trigger
-        else
-            -- All syllables have been converted — strip the trigger and commit
-            -- the fully composed text
-            ctx.input = base_code
-            ctx:commit()
-        end
-    end)
+            -- Check whether the preedit still has unconverted input before the trigger
+            local edit = split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix)
+            if edit and edit:match("[%w/]") then
+                -- There are still unconverted syllables remaining — keep the trigger
+                -- appended so the user can continue filtering the next candidate
+                ctx.input = base_code .. trigger
+            else
+                -- All syllables have been converted — strip the trigger and commit
+                -- the fully composed text
+                ctx.input = base_code
+                ctx:commit()
+            end
+        end)
+    end
 
     env.lookup_filter_config = {
-        data_sources = data_sources,
-        has_db = has_db_source,
-        db_table = db_table,
-        main_projection = main_projection,
-        xlit_projection = xlit_projection,
-        comment_split_pattern = comment_split_pattern,
-        trigger = trigger,
-        bypass_prefix = bypass_prefix,
         tags = tags,
+        trigger = trigger,
+        data_sources = data_sources,
+        db_table = db_table,
+        component_projection = component_projection,
+        stroke_projection = stroke_projection,
+        comment_split_pattern = comment_split_pattern,
+        bypass_prefix = bypass_prefix,
     }
 
     env.lookup_filter_state = {
@@ -584,6 +608,16 @@ function F.init(env)
     }
 end
 
+---@param env Env
+function F.fini(env)
+    assert(env.lookup_filter_state)
+    if env.lookup_filter_state.select_notifier then
+        env.lookup_filter_state.select_notifier:disconnect()
+    end
+    env.lookup_filter_config = nil
+    env.lookup_filter_state = nil
+end
+
 ---@param translation Translation
 ---@param env Env
 function F.func(translation, env)
@@ -591,23 +625,9 @@ function F.func(translation, env)
 
     local config = env.lookup_filter_config
     assert(config)
-    local state = env.lookup_filter_state
-    assert(state)
 
-    local seg = context.composition:back()
-    if not seg or not matches_tags(seg, config) then
-        for cand in translation:iter() do
-            yield(cand)
-        end
-        return
-    end
-
-    if #config.data_sources == 0 then
-        for cand in translation:iter() do
-            yield(cand)
-        end
-        return
-    end
+    -- `trigger` is ensured to be non-nil in `F.init()`.
+    assert(config.trigger)
 
     local input = context.input
     local _, aux_code, _, _ = split_lookup_input(input, config.trigger, config.bypass_prefix)
@@ -618,25 +638,24 @@ function F.func(translation, env)
         return
     end
 
-    local if_single_char_first = context:get_option("char_priority")
+    local state = env.lookup_filter_state
+    assert(state)
 
-    ---@type table<integer, Candidate[]>
-    local buckets = {}
-    ---@type table<integer, integer>
-    local bucket_lengths = {}
-
-    ---@type Candidate[]
-    local long_word_cands = {}
-    local long_word_cands_len = 0
-    local max_len = 0
-
-    if state.cache_size > 2000 then
+    if state.cache_size > MAX_CACHE_SIZE then
         state.db_cache = {}
         state.comment_cache = {}
         state.cache_size = 0
     end
-    local db_cache = state.db_cache
-    local comment_cache = state.comment_cache
+
+    local if_single_char_first = context:get_option("char_priority")
+
+    ---@type table<integer, Candidate[]>
+    local cands_by_length = {}
+
+    ---@type Candidate[]
+    local long_word_cands = {}
+    local long_word_cands_len = 0
+    local max_cand_len = 0
 
     for cand in translation:iter() do
         if cand.type == "sentence" then
@@ -649,88 +668,105 @@ function F.func(translation, env)
             goto continue
         end
 
-        local b = cand_text:byte(1)
-        if b and b < 128 then
+        if utils.is_english_or_mixed_phrase(cand_text) then
             goto continue
         end
 
-        ---@type table<"aux"|"db", string[][]>
-        local raw_data = {}
+        local codes_by_source = {
+            ---@type string[][]?
+            aux = nil,
+            ---@type (string[]|false)[]?
+            db = nil,
+        }
 
         -- Source A: aux data (from candidate comment).
         if config.comment_split_pattern then
             local genuine = cand:get_genuine()
-            local comment_text = genuine and genuine.comment or ""
+            local comment_text = genuine.comment
             if comment_text ~= "" then
-                local cache_key = cand_text .. "_" .. comment_text
-                if not comment_cache[cache_key] then
-                    comment_cache[cache_key] = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len)
-                        or false
+                local cache_key = cand_text .. ":" .. comment_text
+                if state.comment_cache[cache_key] == nil then
+                    state.comment_cache[cache_key] = parse_comment_codes(
+                        comment_text,
+                        config.comment_split_pattern,
+                        cand_len
+                    ) or false
                     state.cache_size = state.cache_size + 1
                 end
-                if comment_cache[cache_key] then
-                    raw_data.aux = comment_cache[cache_key]
-                end
+                codes_by_source.aux = state.comment_cache[cache_key] or nil
             end
         end
 
         -- Source B: db data (from reverse lookup).
-        if config.has_db then
-            raw_data.db = {}
+        if config.db_table then
+            codes_by_source.db = {}
             local i = 0
-            for _, code_point in utf8.codes(cand_text) do
+            for _, codepoint in utf8.codes(cand_text) do
                 i = i + 1
-                local char_str = utf8.char(code_point)
+                local char = utf8.char(codepoint)
 
-                -- Check the cache; on miss, call the lookup helper to obtain main + xlit data.
-                if not db_cache[char_str] and config.db_table then
-                    local main_codes, xlit_codes =
-                        build_reverse_group(config.main_projection, config.xlit_projection, config.db_table, char_str)
-                    db_cache[char_str] = {
-                        main = main_codes or {},
-                        xlit = xlit_codes or {},
+                -- Check the cache; on miss, derive component and stroke match codes.
+                if not state.db_cache[char] then
+                    local component_match_codes, stroke_match_codes = build_reverse_group(
+                        config.component_projection,
+                        config.stroke_projection,
+                        config.db_table,
+                        char
+                    )
+                    state.db_cache[char] = {
+                        component_match_codes = component_match_codes,
+                        stroke_match_codes = stroke_match_codes,
                     }
                     state.cache_size = state.cache_size + 1
                 end
 
+                ---@type string[]?
+                local codes = nil
                 -- Decide which slice to use depending on whether this is a phrase or a single character.
                 if cand_len == 1 then
-                    ---@type string[]
-                    local combined = {}
-                    local combined_len = 0
-                    for _, v in ipairs(db_cache[char_str].main) do
-                        combined_len = combined_len + 1
-                        combined[combined_len] = v
+                    codes = {}
+                    local codes_len = 0
+                    -- Single-character candidate: merge component and stroke match codes.
+                    for _, code in ipairs(state.db_cache[char].component_match_codes) do
+                        codes_len = codes_len + 1
+                        codes[codes_len] = code
                     end
-                    for _, v in ipairs(db_cache[char_str].xlit) do
-                        combined_len = combined_len + 1
-                        combined[combined_len] = v
+                    for _, code in ipairs(state.db_cache[char].stroke_match_codes) do
+                        codes_len = codes_len + 1
+                        codes[codes_len] = code
                     end
-                    raw_data.db[i] = (#combined > 0) and combined or nil
                 else
-                    local main_data = db_cache[char_str].main
-                    raw_data.db[i] = (main_data and #main_data > 0) and main_data or nil
+                    -- Phrase candidate: use only component match codes to keep matching tractable.
+                    codes = state.db_cache[char].component_match_codes
                 end
+                -- Use `false` for characters without codes: `nil` would leave holes in the array,
+                -- and `#` on a table with holes is undefined, which would break the `idx > #codes_sequence`
+                -- termination check in match_fuzzy_recursive.
+                codes_by_source.db[i] = next(codes) ~= nil and codes or false
             end
         end
 
         ---@type boolean
         local matched = false
+        -- Match the aux code against each configured source until one hits. The two sources share the
+        -- same matching routine but differ in two ways:
+        --   1. Phrase mode is enabled only for `db`, capping per-character code length during fuzzy
+        --      matching.
+        --   2. They disagree on characters without codes: `db` stores `false`, which lets the
+        --      character be skipped, while `aux` stores an empty list, which fails the match.
         for _, source_type in ipairs(config.data_sources) do
-            local codes_seq = raw_data[source_type]
+            local codes_seq = codes_by_source[source_type]
             if codes_seq then
-                if source_type == "aux" then
-                    if cand_len == 1 then
-                        matched = any_starts_with(codes_seq[1], aux_code)
-                    else
-                        matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, false)
+                if cand_len == 1 then
+                    -- Single character: prefix-match against its code list. The list is absent when
+                    -- the character has no codes from this source, in which case it cannot match.
+                    local codes = codes_seq[1]
+                    if codes then
+                        matched = any_starts_with(codes, aux_code)
                     end
-                elseif source_type == "db" then
-                    if cand_len == 1 then
-                        matched = any_starts_with(codes_seq[1], aux_code)
-                    else
-                        matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, true)
-                    end
+                else
+                    -- Phrase: fuzzy subsequence match across the per-character code sequence.
+                    matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, source_type == "db")
                 end
 
                 if matched then
@@ -740,21 +776,18 @@ function F.func(translation, env)
         end
 
         if matched then
+            -- Collect each matched candidate into the structures that determine its output order.
             if if_single_char_first and cand_len > 1 then
                 long_word_cands_len = long_word_cands_len + 1
                 long_word_cands[long_word_cands_len] = cand
             else
-                if not buckets[cand_len] then
-                    buckets[cand_len] = {}
-                    bucket_lengths[cand_len] = 0
+                if not cands_by_length[cand_len] then
+                    cands_by_length[cand_len] = {}
                 end
-                local cand_list = buckets[cand_len]
-                local cand_list_len = bucket_lengths[cand_len] + 1
-                bucket_lengths[cand_len] = cand_list_len
-                cand_list[cand_list_len] = cand
+                table.insert(cands_by_length[cand_len], cand)
 
-                if cand_len > max_len then
-                    max_len = cand_len
+                if cand_len > max_cand_len then
+                    max_cand_len = cand_len
                 end
             end
         end
@@ -763,22 +796,18 @@ function F.func(translation, env)
     end
 
     if if_single_char_first then
-        if buckets[1] then
-            for _, c in ipairs(buckets[1]) do
+        -- Under char_priority, every multi-char candidate was diverted to long_word_cands above,
+        -- so cands_by_length only ever holds single chars.
+        -- Effective order: single chars -> long words (in original order).
+        if cands_by_length[1] then
+            for _, c in ipairs(cands_by_length[1]) do
                 yield(c)
             end
         end
-        for l = max_len, 2, -1 do
-            if buckets[l] then
-                for _, c in ipairs(buckets[l]) do
-                    yield(c)
-                end
-            end
-        end
     else
-        for l = max_len, 1, -1 do
-            if buckets[l] then
-                for _, c in ipairs(buckets[l]) do
+        for l = max_cand_len, 1, -1 do
+            if cands_by_length[l] then
+                for _, c in ipairs(cands_by_length[l]) do
                     yield(c)
                 end
             end
@@ -790,12 +819,23 @@ function F.func(translation, env)
     end
 end
 
+---@param segment Segment
 ---@param env Env
-function F.fini(env)
-    assert(env.lookup_filter_state)
-    env.lookup_filter_state.select_notifier:disconnect()
-    env.lookup_filter_config = nil
-    env.lookup_filter_state = nil
+---@return boolean
+function F.tags_match(segment, env)
+    local config = env.lookup_filter_config
+    assert(config)
+
+    if not config.trigger or next(config.data_sources) == nil then
+        return false
+    end
+
+    for _, tag in ipairs(config.tags) do
+        if segment.tags[tag] then
+            return true
+        end
+    end
+    return false
 end
 
 return F
