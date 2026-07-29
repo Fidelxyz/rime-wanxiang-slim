@@ -45,27 +45,24 @@ local function any_starts_with(list, prefix)
     return false
 end
 
----Find the rightmost literal occurrence of `needle` at or after `init`.
+---Find the start of the rightmost literal occurrence of `needle` at or after `init`.
 ---@param haystack string
 ---@param needle string
 ---@param init integer
 ---@return integer? match_start
----@return integer? match_end
 local function find_last(haystack, needle, init)
     ---@type integer?
     local match_start = nil
-    ---@type integer?
-    local match_end = nil
     local scan_from = init
     while true do
-        local hit_start, hit_end = haystack:find(needle, scan_from, true)
+        local hit_start = haystack:find(needle, scan_from, true)
         if not hit_start then
             break
         end
-        match_start, match_end = hit_start, hit_end
+        match_start = hit_start
         scan_from = hit_start + 1
     end
-    return match_start, match_end
+    return match_start
 end
 
 ---Load component and stroke projection rules from a schema.
@@ -353,8 +350,6 @@ end
 ---@param bypass_prefix string?
 ---@return string? base_code
 ---@return string? aux_code
----@return integer? trigger_start
----@return integer? trigger_end
 local function split_lookup_input(input, trigger, bypass_prefix)
     if input == "" then
         return nil
@@ -372,14 +367,14 @@ local function split_lookup_input(input, trigger, bypass_prefix)
         return nil
     end
 
-    local trigger_start, trigger_end = find_last(input, trigger, scan_from)
-    if not trigger_start or not trigger_end then
+    local trigger_start = find_last(input, trigger, scan_from)
+    if not trigger_start then
         return nil
     end
 
     local base_code = input:sub(1, trigger_start - 1)
-    local aux_code = input:sub(trigger_end + 1)
-    return base_code, aux_code, trigger_start, trigger_end
+    local aux_code = input:sub(trigger_start + #trigger)
+    return base_code, aux_code
 end
 
 ---Parse per-character auxiliary codes from a candidate comment.
@@ -479,15 +474,12 @@ function F.init(env)
 
                 if source == "aux" then
                     has_aux_source = true
-                end
-                if source == "db" then
+                elseif source == "db" then
                     has_db_source = true
                 end
             end
         end
     end
-    -- Core rule: when an `aux` source is configured, comments must be parsed.
-    local has_comment = has_aux_source
 
     ---@type ReverseLookup[]?
     local db_table = nil
@@ -527,14 +519,12 @@ function F.init(env)
                     stroke_projection:load(stroke_rules)
                 end
             end
-        else
-            has_db_source = false
         end
     end
 
     ---@type string?
     local comment_split_pattern = nil
-    if has_comment then
+    if has_aux_source then
         local delimiter = rime_config:get_string("speller/delimiter") or " '"
         if delimiter == "" then
             delimiter = " "
@@ -544,48 +534,21 @@ function F.init(env)
 
     local bypass_prefix = rime_config:get_string("user_dict_appender/prefix")
 
-    -- Hook into the context's select_notifier, which fires every time the user
-    -- selects (commits) a candidate from the menu. The purpose is to clean up
-    -- the input buffer after a candidate is chosen while the auxiliary-code
-    -- lookup trigger (e.g. "`") is present.
-    --
-    -- Workflow:
-    --   1. When the user types "pinyin`aux" and picks a candidate, this callback
-    --      runs with the current input still containing the trigger + aux code.
-    --   2. It splits the input at the trigger to recover the base pinyin code
-    --      (everything before the trigger).
-    --   3. It then checks the preedit text (the composed/converted string shown
-    --      to the user) to decide what to do next:
-    --        a. If the preedit still contains unconverted alphanumeric input
-    --           before the trigger, there are remaining syllables to convert,
-    --           so it resets the input to "code`" — keeping the trigger so the
-    --           user can continue auxiliary-code filtering on the next candidate.
-    --        b. If the preedit is fully converted (no remaining raw input),
-    --           the entire phrase is done, so it strips the trigger, sets the
-    --           input to just the base code, and commits the result.
+    -- Keep the trigger after selecting a partial composition; remove it and commit when conversion is complete.
     ---@type Connection?
     local select_notifier = nil
     if trigger then
         select_notifier = env.engine.context.select_notifier:connect(function(ctx)
-            local state = env.lookup_filter_state
-            assert(state)
-
             local input = ctx.input
-            -- Split at the last trigger character to get the base code
-            local base_code, _ = split_lookup_input(input, trigger, bypass_prefix)
+            local base_code = split_lookup_input(input, trigger, bypass_prefix)
             if not base_code or base_code == "" then
                 return
             end
 
-            -- Check whether the preedit still has unconverted input before the trigger
             local edit = split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix)
             if edit and edit:match("[%w/]") then
-                -- There are still unconverted syllables remaining — keep the trigger
-                -- appended so the user can continue filtering the next candidate
                 ctx.input = base_code .. trigger
             else
-                -- All syllables have been converted — strip the trigger and commit
-                -- the fully composed text
                 ctx.input = base_code
                 ctx:commit()
             end
@@ -632,7 +595,7 @@ function F.func(translation, env)
     assert(config.trigger)
 
     local input = context.input
-    local _, aux_code, _, _ = split_lookup_input(input, config.trigger, config.bypass_prefix)
+    local _, aux_code = split_lookup_input(input, config.trigger, config.bypass_prefix)
     if not aux_code or aux_code == "" then
         for cand in translation:iter() do
             yield(cand)
