@@ -7,7 +7,7 @@
 ---@field tags string[]
 ---@field trigger string?
 ---@field data_sources (string|"aux"|"db")[]
----@field db_table ReverseLookup[]?
+---@field reverse_lookup ReverseLookup?
 ---@field component_projection Projection?
 ---@field stroke_projection Projection?
 ---@field comment_split_pattern string?
@@ -231,14 +231,14 @@ local function derive_match_codes(raw_code, component_projection, stroke_project
     return component_match_codes, stroke_match_codes
 end
 
----Collect component and stroke match codes for `text` from reverse-lookup databases.
+---Collect component and stroke match codes for `text` from a reverse-lookup database.
 ---@param component_projection Projection?
 ---@param stroke_projection Projection?
----@param db_table ReverseLookup[]
+---@param reverse_lookup ReverseLookup
 ---@param text string
 ---@return string[] component_match_codes
 ---@return string[] stroke_match_codes
-local function build_reverse_group(component_projection, stroke_projection, db_table, text)
+local function build_reverse_group(component_projection, stroke_projection, reverse_lookup, text)
     ---@type string[]
     local component_match_codes = {}
     local component_match_codes_len = 0
@@ -250,26 +250,24 @@ local function build_reverse_group(component_projection, stroke_projection, db_t
     ---@type table<string, boolean>
     local seen_stroke_match_codes = {}
 
-    for _, db in ipairs(db_table) do
-        local code = db:lookup(text)
-        if code ~= "" then
-            for raw_code in code:gmatch("%S+") do
-                local derived_component_match_codes, derived_stroke_match_codes =
-                    derive_match_codes(raw_code, component_projection, stroke_projection)
+    local code = reverse_lookup:lookup(text)
+    if code ~= "" then
+        for raw_code in code:gmatch("%S+") do
+            local derived_component_match_codes, derived_stroke_match_codes =
+                derive_match_codes(raw_code, component_projection, stroke_projection)
 
-                for _, match_code in ipairs(derived_component_match_codes) do
-                    if not seen_component_match_codes[match_code] then
-                        seen_component_match_codes[match_code] = true
-                        component_match_codes_len = component_match_codes_len + 1
-                        component_match_codes[component_match_codes_len] = match_code
-                    end
+            for _, match_code in ipairs(derived_component_match_codes) do
+                if not seen_component_match_codes[match_code] then
+                    seen_component_match_codes[match_code] = true
+                    component_match_codes_len = component_match_codes_len + 1
+                    component_match_codes[component_match_codes_len] = match_code
                 end
-                for _, match_code in ipairs(derived_stroke_match_codes) do
-                    if not seen_stroke_match_codes[match_code] then
-                        seen_stroke_match_codes[match_code] = true
-                        stroke_match_codes_len = stroke_match_codes_len + 1
-                        stroke_match_codes[stroke_match_codes_len] = match_code
-                    end
+            end
+            for _, match_code in ipairs(derived_stroke_match_codes) do
+                if not seen_stroke_match_codes[match_code] then
+                    seen_stroke_match_codes[match_code] = true
+                    stroke_match_codes_len = stroke_match_codes_len + 1
+                    stroke_match_codes[stroke_match_codes_len] = match_code
                 end
             end
         end
@@ -481,43 +479,25 @@ function F.init(env)
         end
     end
 
-    ---@type ReverseLookup[]?
-    local db_table = nil
+    ---@type ReverseLookup?
+    local reverse_lookup = nil
     ---@type Projection?
     local component_projection = nil
     ---@type Projection?
     local stroke_projection = nil
     if has_db_source then
-        local db_list_item = cfg_root and cfg_root:get("dicts")
-        local db_list_cfg = db_list_item and db_list_item:get_list()
-        if db_list_cfg and db_list_cfg.size > 0 then
-            ---@type string[]
-            local db_names = {}
-            local db_names_len = 0
-            ---@type ReverseLookup[]
-            db_table = {}
-            local db_table_len = 0
-            for i = 0, db_list_cfg.size - 1 do
-                local db_name_val = db_list_cfg:get_value_at(i)
-                local db_name = db_name_val and db_name_val:get_string()
-                if db_name and db_name ~= "" then
-                    db_names_len = db_names_len + 1
-                    db_names[db_names_len] = db_name
-                    db_table_len = db_table_len + 1
-                    db_table[db_table_len] = ReverseLookup(db_name)
-                end
+        local db_val = cfg_root and cfg_root:get_value("dict")
+        local db_name = db_val and db_val:get_string()
+        if db_name and db_name ~= "" then
+            reverse_lookup = ReverseLookup(db_name)
+            local component_rules, stroke_rules = parse_schema_rules(db_name)
+            if #component_rules > 0 then
+                component_projection = Projection()
+                component_projection:load(component_rules)
             end
-
-            if #db_names > 0 then
-                local component_rules, stroke_rules = parse_schema_rules(db_names[1])
-                if #component_rules > 0 then
-                    component_projection = Projection()
-                    component_projection:load(component_rules)
-                end
-                if #stroke_rules > 0 then
-                    stroke_projection = Projection()
-                    stroke_projection:load(stroke_rules)
-                end
+            if #stroke_rules > 0 then
+                stroke_projection = Projection()
+                stroke_projection:load(stroke_rules)
             end
         end
     end
@@ -559,7 +539,7 @@ function F.init(env)
         tags = tags,
         trigger = trigger,
         data_sources = data_sources,
-        db_table = db_table,
+        reverse_lookup = reverse_lookup,
         component_projection = component_projection,
         stroke_projection = stroke_projection,
         comment_split_pattern = comment_split_pattern,
@@ -654,7 +634,7 @@ function F.func(translation, env)
         end
 
         -- Source B: db data (from reverse lookup).
-        if config.db_table then
+        if config.reverse_lookup then
             codes_by_source.db = {}
             local i = 0
             for _, codepoint in utf8.codes(cand_text) do
@@ -667,7 +647,7 @@ function F.func(translation, env)
                     local component_match_codes, stroke_match_codes = build_reverse_group(
                         config.component_projection,
                         config.stroke_projection,
-                        config.db_table,
+                        config.reverse_lookup,
                         char
                     )
                     entry = {

@@ -144,7 +144,7 @@ lookup_filter:
   trigger: "`"
 
   # 反查数据库。
-  dicts: [wanxiang_reverse]
+  dict: wanxiang_reverse
 
   # 反查数据来源及顺序。
   # aux: 词库携带的辅助码。
