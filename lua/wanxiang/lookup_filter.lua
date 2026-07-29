@@ -3,10 +3,12 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
+---@alias LookupDataSource "aux"|"db"
+
 ---@class LookupFilterConfig
 ---@field tags string[]
 ---@field trigger string?
----@field data_sources (string|"aux"|"db")[]
+---@field data_sources LookupDataSource[]
 ---@field reverse_lookup ReverseLookup?
 ---@field component_projection Projection?
 ---@field stroke_projection Projection?
@@ -275,6 +277,28 @@ local function build_reverse_group(component_projection, stroke_projection, reve
     return component_match_codes, stroke_match_codes
 end
 
+---Get cached reverse-lookup codes for `text`, deriving them on a cache miss.
+---@param text string
+---@param config LookupFilterConfig
+---@param state LookupFilterState
+---@return {component_match_codes: string[], stroke_match_codes: string[]}
+local function get_reverse_entry(text, config, state)
+    local entry = state.db_cache:get(text)
+    if entry then
+        return entry
+    end
+
+    assert(config.reverse_lookup)
+    local component_match_codes, stroke_match_codes =
+        build_reverse_group(config.component_projection, config.stroke_projection, config.reverse_lookup, text)
+    entry = {
+        component_match_codes = component_match_codes,
+        stroke_match_codes = stroke_match_codes,
+    }
+    state.db_cache:insert(text, entry)
+    return entry
+end
+
 ---Fuzzy-match `input_str` against per-character code alternatives.
 ---@param codes_sequence (string[]|false)[]
 ---@param idx integer
@@ -455,9 +479,11 @@ function F.init(env)
         trigger = nil
     end
 
-    ---@type string[]
+    ---@type LookupDataSource[]
     local data_sources = {}
     local data_sources_len = 0
+    ---@type table<LookupDataSource, boolean>
+    local seen_data_sources = {}
     local has_db_source = false
     local has_aux_source = false
     local sources_list_item = cfg_root and cfg_root:get("data_source")
@@ -466,16 +492,24 @@ function F.init(env)
         for i = 0, sources_list.size - 1 do
             local source_val = sources_list:get_value_at(i)
             local source = source_val and source_val:get_string()
-            if source and source ~= "" then
-                data_sources_len = data_sources_len + 1
-                data_sources[data_sources_len] = source
-
-                if source == "aux" then
-                    has_aux_source = true
-                elseif source == "db" then
-                    has_db_source = true
-                end
+            if source ~= "aux" and source ~= "db" then
+                goto continue
             end
+            if seen_data_sources[source] then
+                goto continue
+            end
+
+            seen_data_sources[source] = true
+            data_sources_len = data_sources_len + 1
+            data_sources[data_sources_len] = source
+
+            if source == "aux" then
+                has_aux_source = true
+            else
+                has_db_source = true
+            end
+
+            ::continue::
         end
     end
 
@@ -611,121 +645,84 @@ function F.func(translation, env)
             goto continue
         end
 
-        local codes_by_source = {
-            ---@type string[][]?
-            aux = nil,
-            ---@type (string[]|false)[]?
-            db = nil,
-        }
-
-        -- Source A: aux data (from candidate comment).
-        if config.comment_split_pattern then
-            local genuine = cand:get_genuine()
-            local comment_text = genuine.comment
-            if comment_text ~= "" then
-                local cache_key = cand_text .. ":" .. comment_text
-                local cached = state.comment_cache:get(cache_key)
-                if cached == nil then
-                    cached = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len) or false
-                    state.comment_cache:insert(cache_key, cached)
-                end
-                codes_by_source.aux = cached or nil
-            end
-        end
-
-        -- Source B: db data (from reverse lookup).
-        if config.reverse_lookup then
-            codes_by_source.db = {}
-            local i = 0
-            for _, codepoint in utf8.codes(cand_text) do
-                i = i + 1
-                local char = utf8.char(codepoint)
-
-                -- Check the cache; on miss, derive component and stroke match codes.
-                local entry = state.db_cache:get(char)
-                if not entry then
-                    local component_match_codes, stroke_match_codes = build_reverse_group(
-                        config.component_projection,
-                        config.stroke_projection,
-                        config.reverse_lookup,
-                        char
-                    )
-                    entry = {
-                        component_match_codes = component_match_codes,
-                        stroke_match_codes = stroke_match_codes,
-                    }
-                    state.db_cache:insert(char, entry)
-                end
-
-                ---@type string[]?
-                local codes = nil
-                -- Decide which slice to use depending on whether this is a phrase or a single character.
-                if cand_len == 1 then
-                    codes = {}
-                    local codes_len = 0
-                    -- Single-character candidate: merge component and stroke match codes.
-                    for _, code in ipairs(entry.component_match_codes) do
-                        codes_len = codes_len + 1
-                        codes[codes_len] = code
-                    end
-                    for _, code in ipairs(entry.stroke_match_codes) do
-                        codes_len = codes_len + 1
-                        codes[codes_len] = code
-                    end
-                else
-                    -- Phrase candidate: use only component match codes to keep matching tractable.
-                    codes = entry.component_match_codes
-                end
-                -- Use `false` for characters without codes: `nil` would leave holes in the array,
-                -- and `#` on a table with holes is undefined, which would break the `idx > #codes_sequence`
-                -- termination check in match_fuzzy_recursive.
-                codes_by_source.db[i] = next(codes) ~= nil and codes or false
-            end
-        end
-
         ---@type boolean
         local matched = false
-        -- Match the aux code against each configured source until one hits. The two sources share the
-        -- same matching routine but differ in two ways:
-        --   1. Phrase mode is enabled only for `db`, capping per-character code length during fuzzy
-        --      matching.
-        --   2. They disagree on characters without codes: `db` stores `false`, which lets the
-        --      character be skipped, while `aux` stores an empty list, which fails the match.
-        for _, source_type in ipairs(config.data_sources) do
-            local codes_seq = codes_by_source[source_type]
-            if codes_seq then
-                if cand_len == 1 then
-                    -- Single character: prefix-match against its code list. The list is absent when
-                    -- the character has no codes from this source, in which case it cannot match.
-                    local codes = codes_seq[1]
-                    if codes then
-                        matched = any_starts_with(codes, aux_code)
-                    end
-                else
-                    -- Phrase: fuzzy subsequence match across the per-character code sequence.
-                    matched = match_fuzzy_recursive(codes_seq, 1, aux_code, 1, {}, source_type == "db")
+        for _, source in ipairs(config.data_sources) do
+            if source == "aux" then
+                if not config.comment_split_pattern then
+                    goto continue
                 end
 
-                if matched then
-                    break
+                local genuine = cand:get_genuine()
+                local comment_text = genuine.comment
+                if comment_text == "" then
+                    goto continue
+                end
+
+                local cache_key = cand_text .. ":" .. comment_text
+                local codes_sequence = state.comment_cache:get(cache_key)
+                ---@cast codes_sequence string[][]|false
+                if codes_sequence == nil then
+                    codes_sequence = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len) or false
+                    state.comment_cache:insert(cache_key, codes_sequence)
+                end
+                if not codes_sequence then
+                    goto continue
+                end
+
+                if cand_len == 1 then
+                    assert(#codes_sequence == 1)
+                    matched = any_starts_with(codes_sequence[1], aux_code)
+                else
+                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_code, 1, {}, false)
+                end
+            else -- if source == "db" then
+                if not config.reverse_lookup then
+                    goto continue
+                end
+
+                if cand_len == 1 then
+                    local entry = get_reverse_entry(cand_text, config, state)
+                    matched = any_starts_with(entry.component_match_codes, aux_code)
+                        or any_starts_with(entry.stroke_match_codes, aux_code)
+                else
+                    ---@type (string[]|false)[]
+                    local codes_sequence = {}
+                    local codes_sequence_len = 0
+                    for _, codepoint in utf8.codes(cand_text) do
+                        local entry = get_reverse_entry(utf8.char(codepoint), config, state)
+                        local codes = entry.component_match_codes
+                        codes_sequence_len = codes_sequence_len + 1
+                        -- Preserve the sequence length for characters without component codes.
+                        codes_sequence[codes_sequence_len] = next(codes) ~= nil and codes or false
+                    end
+                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_code, 1, {}, true)
                 end
             end
+
+            if matched then
+                break
+            end
+
+            ::continue::
         end
 
-        if matched then
-            -- Collect each matched candidate into the structures that determine its output order.
-            if if_single_char_first and cand_len > 1 then
-                long_word_cands_len = long_word_cands_len + 1
-                long_word_cands[long_word_cands_len] = cand
-            else
-                if not cands_by_length[cand_len] then
-                    cands_by_length[cand_len] = {}
-                end
-                table.insert(cands_by_length[cand_len], cand)
+        if not matched then
+            goto continue
+        end
 
-                if cand_len > max_cand_len then
-                    max_cand_len = cand_len
-                end
+        -- Collect each matched candidate into the structures that determine its output order.
+        if if_single_char_first and cand_len > 1 then
+            long_word_cands_len = long_word_cands_len + 1
+            long_word_cands[long_word_cands_len] = cand
+        else
+            if not cands_by_length[cand_len] then
+                cands_by_length[cand_len] = {}
+            end
+            table.insert(cands_by_length[cand_len], cand)
+
+            if cand_len > max_cand_len then
+                max_cand_len = cand_len
             end
         end
 
