@@ -57,7 +57,7 @@ outline: deep
 - 「丨」的编码为 `s`。
 - 「丶」的编码为 `n`。
 
-因此，拆分编码为 `hspnzhshn`。
+因此，拆分编码为 `hspnznhsn`。
 
 :::
 
@@ -89,7 +89,7 @@ patch:
 
 - 反查符 `` ` `` + 两分拆分编码 `mudui` → `` `mudui ``。
 - 反查符 `` ` `` + 多分拆分编码 `muyoucun` → `` `muyoucun ``。
-- 反查符 `` ` `` + 笔画拆分编码 `hspnzhshn` → `` `hspnzhshn ``。
+- 反查符 `` ` `` + 笔画拆分编码 `hspnznhsn` → `` `hspnznhsn ``。
 
 :::
 
@@ -105,11 +105,11 @@ patch:
 
   - 拼音编码 `shu` + 反查符 `` ` `` + 两分拆分编码 `mudui` → `` shu`mudui ``。
   - 拼音编码 `shu` + 反查符 `` ` `` + 多分拆分编码 `muyoucun` → `` shu`muyoucun ``。
-  - 拼音编码 `shu` + 反查符 `` ` `` + 笔画拆分编码 `hspnzhshn` → `` shu`hspnzhshn ``。
+  - 拼音编码 `shu` + 反查符 `` ` `` + 笔画拆分编码 `hspnznhsn` → `` shu`hspnznhsn ``。
 
   :::
 
-- 对于词组，匹配辅助码序列的任意子字符串。
+- <Badge>仅 Pro</Badge> 对于词组，匹配辅助码序列的任意子字符串。
   
   ::: info 示例
 
