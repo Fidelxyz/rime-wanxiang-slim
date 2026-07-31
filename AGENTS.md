@@ -13,8 +13,9 @@ configuration files, Lua extensions, and dictionary data for the [Rime Input Met
 ├── lua/data/                    # Data files for Lua plugins (emoji, charset, OpenCC)
 ├── lua/librime.lua              # Rime's Lua API type stubs
 ├── dicts/                       # Dictionary data files (.dict.yaml)
+├── data/                        # Source data processed before schema packaging
 ├── opencc/                      # OpenCC data files for simplifier
-├── custom/                      # Custom configuration templates, data files
+├── custom/                      # Custom configuration templates
 ├── scripts/                     # Build and maintenance scripts
 ├── tests/                       # Mira test cases
 ├── .github/workflows/           # CI/CD (GitHub Actions)

@@ -105,7 +105,7 @@ package_schema_pro() {
             "${root_dir}/opencc/dicts/" "${out_dir}/opencc/dicts/"
 
         # Copy decomposition dict to ${out_dir}/opencc/dicts/
-        cp "${root_dir}/custom/${schema}_chaifen.txt" "${out_dir}/opencc/dicts/decomposition.txt"
+        cp "${root_dir}/data/decomposition/${schema}.txt" "${out_dir}/opencc/dicts/decomposition.txt"
     fi
 
     # Copy ${root_dir}/custom/ to ${out_dir}/custom/

@@ -190,14 +190,14 @@ def normalize_chaifen(source_dir: Path, repo_root: Path) -> None:
     print("==> Converting chaifen decomposition data")
     for schema in CHAIFEN_SCHEMAS:
         input_path = source_dir / "custom" / f"{schema}_chaifen.txt"
-        output_path = repo_root / "custom" / f"{schema}_chaifen.txt"
+        output_path = repo_root / "data" / "decomposition" / f"{schema}.txt"
 
         if not input_path.is_file():
             raise UpdateError(f"missing upstream chaifen file: {input_path}")
 
         text = input_path.read_text(encoding="utf-8")
         output_path.write_text(convert_chaifen_text(text), encoding="utf-8")
-        print(f"    custom/{schema}_chaifen.txt")
+        print(f"    data/decomposition/{schema}.txt")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

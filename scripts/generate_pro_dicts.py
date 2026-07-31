@@ -307,7 +307,7 @@ def process(
 
 
 if __name__ == "__main__":
-    AUX_CODE_FILE = Path("custom/aux_code.txt")
+    AUX_CODE_FILE = Path("data/aux_code.txt")
     DICTS_DIR = Path("dicts")
     DIST_DIR = Path("dist")
 
