@@ -23,6 +23,29 @@ deploy:
         assert: eq(cand[1].text, "这是") and eq(preedit, "zhe⁴ shi⁴")
       - send: zhe0shi08
         assert: eq(cand[1].text, "这时") and eq(preedit, "zhe⁴ shi²")
+      # Reverse Lookup
+      - send: "`mudui"
+        assert: eq(cand[1].text, "棁") and eq(cand[2].text, "树")
+      - send: "`muyoucun"
+        assert: eq(cand[1].text, "树")
+      - send: "`hspnznhsn"
+        assert: eq(cand[1].text, "树")
+      - send: shu`mudui
+        assert: eq(cand[1].text, "树")
+      - send: shu`muyoucun
+        assert: eq(cand[1].text, "树")
+      - send: shu`hspnznhsn
+        assert: eq(cand[1].text, "树")
+      - send: shu`x
+        assert: cand[1].text ~= "树"
+      - send: nihao`r
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`rn
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`renz
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`x
+        assert: cand[1].text ~= "你好"
       # Simplifier
       - send: weishenme
         assert: eq(cand[1].text, "为什么")
