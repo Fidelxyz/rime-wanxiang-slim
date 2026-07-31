@@ -549,7 +549,7 @@ function Translation() end
 function Memory(engine, schema, namespace) end
 
 ---@class Projection
----@field load fun(self: self, rules: ConfigList): boolean
+---@field load fun(self: self, rules: ConfigList|string[]): boolean
 ---@field apply fun(self: self, str: string, ret_org_str?: boolean): string
 
 ---@return Projection
