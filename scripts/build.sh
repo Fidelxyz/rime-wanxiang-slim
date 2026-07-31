@@ -75,6 +75,7 @@ package_schema_base() {
         --include='*/' \
         --exclude='wanxiang_pro.custom.yaml' \
         --include='*.custom.yaml' \
+        --include='custom_phrase.txt' \
         --exclude='*' \
         "${custom_dir}/" "${out_dir}/custom/"
 }
@@ -112,6 +113,7 @@ package_schema_pro() {
     rsync -av \
         --exclude='wanxiang.custom.yaml' \
         --include='*.custom.yaml' \
+        --include='custom_phrase.txt' \
         --exclude='*' \
         "${root_dir}/custom/" "${out_dir}/custom/"
 
