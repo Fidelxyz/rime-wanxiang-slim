@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Normalize dictionary and decomposition data from an upstream rime_wanxiang checkout.
+"""Normalize dictionary and auxiliary-code data from upstream.
 
-This script reads dictionary and character-decomposition data from an
-already-present local checkout of the upstream source tree and writes
-normalized results into this repository's working tree.
+This script reads dictionary and auxiliary-code source data from an already
+present local checkout of the upstream source tree and writes normalized results
+into this repository's working tree.
 
 What it does:
 
@@ -14,21 +14,19 @@ What it does:
 3. Replace each dictionary's original comment header with a standardized header
    recording the upstream source, the original file name, and the upstream
    copyright/licence.
-4. Convert each per-schema decomposition file to the OpenCC-compatible decomposition
-   format by separating the auxiliary code with a colon. Two schemas (shyplus,
-   zrm) ship the auxiliary code glued to the components with no separator; the
-   missing separator is inserted first.
+4. Write a code-only auxiliary CSV and normalized per-schema decomposition
+   tables for direct consumption by the Pro dictionary generator and packager.
 
 Usage::
 
     scripts/update_dicts.py --source <upstream_dir> --tag <tag> [--repo-root <dir>]
 """
 
-from __future__ import annotations
-
 import argparse
+import csv
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 UPSTREAM_REPO = "amzxyz/rime-wanxiang"
@@ -50,39 +48,227 @@ DICT_NAME_MAPPING: dict[str, str] = {
     "yaopin": "pharmaceutical",
     "mingren": "celebrity",
     "yiren": "artist",
+    "fangyan": "dialect",
+    "taifeng": "typhoon",
     "en": "english",
-    "cn&en": "mixedcode",
+    "mixed": "mixedcode",
 }
 
-# Per-schema decomposition files to convert.
-DECOMPOSITION_SCHEMAS: list[str] = [
-    "flypy",
-    "hanxin",
-    "moqi",
-    "shouyou",
-    "shyplus",
-    "tiger",
-    "wubi",
-    "wx",
-    "zrm",
-]
+SRC_AUXILIARY_CSV_PATH = Path("custom/aux_code.csv")
+SRC_DEDICATED_DECOMPOSITION: dict[str, Path] = {
+    "wubi": Path("custom/wubi_chaifen.txt"),
+}
+DST_AUXILIARY_CSV_PATH = Path("data/aux_code.csv")
+DST_DECOMPOSITION_DIR = Path("data/decomposition")
+AUXILIARY_SCHEMA_MAPPING: dict[str, str] = {
+    "万象": "wx",
+    "墨奇": "moqi",
+    "野鹤": "flypy",
+    "自然码": "zrm",
+    "虎码首末": "tiger",
+    "五笔前2": "wubi",
+    "汉心码": "hanxin",
+    "首右": "shouyou",
+    "首右Plus": "shyplus",
+}
 
-# A decomposition data line is ``<char><TAB><components>[<sep>]<auxcode>``. The
-# separator between the decomposition components and the auxiliary code must
-# become a colon so OpenCC treats the value as a single candidate (the colon is
-# turned back into a space for display by the schema's ``comment_format``).
-#
-# Most schemas separate the auxcode with a single space (``口可 kk``,
-# ``亡丶 f;fdvg``); there the space *is* the separator and is simply replaced by
-# a colon. A few schemas instead glue the auxcode directly onto the components
-# with no separator (``丿勹pb``, ``{⺁}px``, ``.dk``); there a colon is inserted
-# before the trailing lowercase-letter auxcode. Lines that are auxcode-only
-# (``kg``) or component-only (``󰂮󰄼·󰂮󰄋``) are left untouched.
-_DECOMPOSITION_GLUED_AUX_CODE = re.compile(r"([^\sa-z])([a-z]+)$")
+AUXILIARY_CANDIDATE_SEPARATOR_PATTERN = re.compile(r"[|｜]")
+AUXILIARY_CODE_SEPARATOR_PATTERN = re.compile(r"[,;]")
+AUXILIARY_CODE_ONLY_PATTERN = re.compile(r"[a-z]+(?:[,;][a-z]+)*")
+GLUED_AUXILIARY_CODE_PREFIX_PATTERN = re.compile(r"^([a-z]+)(?=[^a-z])")
+GLUED_AUXILIARY_CODE_SUFFIX_PATTERN = re.compile(r"([a-z]+)$")
+GLUED_DECOMPOSITION_CODE_PATTERN = re.compile(r"([^\sa-z])([a-z]+)$")
 
 
-class UpdateError(Exception):
+class Error(Exception):
     """Raised for any expected, user-facing failure."""
+
+
+@dataclass(frozen=True)
+class AuxiliaryCandidate:
+    """Normalized decomposition and auxiliary-code parts of one candidate."""
+
+    decomposition: str
+    code_text: str
+
+
+def normalize_auxiliary_candidate(candidate: str) -> AuxiliaryCandidate | None:
+    """Normalize one upstream candidate into separate decomposition and code parts.
+
+    Candidates with both parts become ``AuxiliaryCandidate(decomposition, codes)``.
+    Code-only candidates have an empty decomposition, while decomposition-only
+    candidates have empty code text. Empty candidates return ``None``.
+    """
+    candidate = candidate.strip()
+    if not candidate:
+        return None
+
+    candidate_parts = candidate.rsplit(maxsplit=1)
+    if len(candidate_parts) == 2:
+        decomposition, code_text = candidate_parts
+        return AuxiliaryCandidate(decomposition, code_text.lower())
+
+    if AUXILIARY_CODE_ONLY_PATTERN.fullmatch(candidate):
+        return AuxiliaryCandidate("", candidate.lower())
+
+    prefix_match = GLUED_AUXILIARY_CODE_PREFIX_PATTERN.search(candidate)
+    suffix_match = GLUED_AUXILIARY_CODE_SUFFIX_PATTERN.search(candidate)
+    auxiliary_codes: list[str] = []
+    decomposition_start = 0
+    decomposition_end = len(candidate)
+
+    if prefix_match:
+        auxiliary_codes.append(prefix_match.group(1))
+        decomposition_start = prefix_match.end()
+    if suffix_match and (
+        not prefix_match or suffix_match.start() >= prefix_match.end()
+    ):
+        auxiliary_codes.append(suffix_match.group(1))
+        decomposition_end = suffix_match.start()
+
+    if not auxiliary_codes:
+        return AuxiliaryCandidate(candidate, "")
+
+    decomposition = candidate[decomposition_start:decomposition_end]
+    return AuxiliaryCandidate(decomposition, ",".join(auxiliary_codes))
+
+
+def normalize_auxiliary_cell(cell: str) -> list[AuxiliaryCandidate]:
+    """Normalize every candidate in one upstream CSV cell."""
+    normalized_candidates: list[AuxiliaryCandidate] = []
+    for candidate in AUXILIARY_CANDIDATE_SEPARATOR_PATTERN.split(cell):
+        normalized_candidate = normalize_auxiliary_candidate(candidate)
+        if normalized_candidate:
+            normalized_candidates.append(normalized_candidate)
+    return normalized_candidates
+
+
+def extract_auxiliary_codes(candidates: list[AuxiliaryCandidate]) -> str:
+    """Return comma-separated auxiliary codes from normalized candidates."""
+    auxiliary_codes: list[str] = []
+    for candidate in candidates:
+        auxiliary_codes.extend(
+            code
+            for code in AUXILIARY_CODE_SEPARATOR_PATTERN.split(candidate.code_text)
+            if code
+        )
+    return ",".join(auxiliary_codes)
+
+
+def format_decomposition_cell(candidates: list[AuxiliaryCandidate]) -> str:
+    """Serialize normalized candidates for an OpenCC decomposition table."""
+    formatted_candidates: list[str] = []
+    for candidate in candidates:
+        if candidate.decomposition and candidate.code_text:
+            formatted_candidates.append(
+                f"{candidate.decomposition}:{candidate.code_text}"
+            )
+        else:
+            formatted_candidates.append(candidate.decomposition or candidate.code_text)
+    return "｜".join(formatted_candidates)
+
+
+def normalize_dedicated_decomposition_text(text: str) -> str:
+    """Convert a dedicated decomposition source to the normalized OpenCC format."""
+    return "".join(
+        (
+            line.rstrip("\n").replace(" ", ":")
+            if " " in line.rstrip("\n")
+            else GLUED_DECOMPOSITION_CODE_PATTERN.sub(r"\1:\2", line.rstrip("\n"))
+        )
+        + line[len(line.rstrip("\n")) :]
+        for line in text.splitlines(keepends=True)
+    )
+
+
+@dataclass(frozen=True)
+class NormalizedAuxiliaryRow:
+    """One character and its normalized cells ordered by auxiliary schema."""
+
+    char: str
+    cells: list[list[AuxiliaryCandidate]]
+
+
+NormalizedAuxiliaryData = list[NormalizedAuxiliaryRow]
+
+
+def parse_auxiliary_code_csv(input_path: Path) -> NormalizedAuxiliaryData:
+    """Parse an upstream auxiliary-code CSV into normalized rows."""
+    normalized_data: NormalizedAuxiliaryData = []
+
+    with input_path.open(
+        "r", encoding="utf-8-sig", errors="ignore", newline=""
+    ) as input_file:
+        reader = csv.reader(input_file)
+        header = next(reader, None)
+        if header is None:
+            raise Error(f"auxiliary-code CSV has no header: {input_path}")
+
+        expected_columns = len(AUXILIARY_SCHEMA_MAPPING) + 1
+        if len(header) != expected_columns:
+            raise Error(
+                f"auxiliary-code CSV header has {len(header)} columns, "
+                f"expected {expected_columns}: {input_path}"
+            )
+        if tuple(header) != ("#", *AUXILIARY_SCHEMA_MAPPING):
+            raise Error(f"unexpected auxiliary-code CSV header: {input_path}")
+
+        for line_number, row in enumerate(reader, start=2):
+            if len(row) != expected_columns:
+                raise Error(
+                    f"auxiliary-code CSV row {line_number} has {len(row)} columns, "
+                    f"expected {expected_columns}: {input_path}"
+                )
+
+            char = row[0].strip()
+            if not char:
+                continue
+
+            normalized_cells = [normalize_auxiliary_cell(cell) for cell in row[1:]]
+            normalized_data.append(NormalizedAuxiliaryRow(char, normalized_cells))
+
+    return normalized_data
+
+
+def write_code_only_auxiliary_csv(
+    normalized_data: NormalizedAuxiliaryData,
+    output_path: Path,
+) -> None:
+    """Write normalized auxiliary codes to a code-only CSV."""
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="") as output_file:
+        writer = csv.writer(output_file, lineterminator="\n")
+        writer.writerow(["#", *AUXILIARY_SCHEMA_MAPPING.values()])
+        writer.writerows(
+            [row.char, *(extract_auxiliary_codes(cell) for cell in row.cells)]
+            for row in normalized_data
+        )
+
+
+def write_auxiliary_decomposition_tables(
+    normalized_data: NormalizedAuxiliaryData,
+    schemas: list[str],
+    decomposition_directory: Path,
+) -> None:
+    """Write normalized auxiliary data to per-schema decomposition tables."""
+    decomposition_lines: dict[str, list[str]] = {schema: [] for schema in schemas}
+
+    for row in normalized_data:
+        for schema, candidates in zip(
+            AUXILIARY_SCHEMA_MAPPING.values(), row.cells, strict=True
+        ):
+            if schema not in decomposition_lines:
+                continue
+            decomposition_cell = format_decomposition_cell(candidates)
+            if decomposition_cell:
+                decomposition_lines[schema].append(
+                    f"{row.char}\t{decomposition_cell}\n"
+                )
+
+    decomposition_directory.mkdir(parents=True, exist_ok=True)
+    for schema, lines in decomposition_lines.items():
+        output_file = decomposition_directory / f"{schema}.txt"
+        output_file.write_text("".join(lines), encoding="utf-8")
 
 
 def validate_upstream_files(source_dir: Path) -> bool:
@@ -91,9 +277,8 @@ def validate_upstream_files(source_dir: Path) -> bool:
     expected_files.update(
         Path("dicts") / f"{pinyin}.dict.yaml" for pinyin in DICT_NAME_MAPPING
     )
-    expected_files.update(
-        Path("custom") / f"{schema}_chaifen.txt" for schema in DECOMPOSITION_SCHEMAS
-    )
+    expected_files.add(SRC_AUXILIARY_CSV_PATH)
+    expected_files.update(SRC_DEDICATED_DECOMPOSITION.values())
 
     actual_files = set()
     actual_files.update(
@@ -103,7 +288,8 @@ def validate_upstream_files(source_dir: Path) -> bool:
     )
     actual_files.update(
         path.relative_to(source_dir)
-        for path in (source_dir / "custom").glob("*_chaifen.txt")
+        for pattern in ("*.csv", "*_chaifen.txt")
+        for path in (source_dir / "custom").glob(pattern)
         if path.is_file()
     )
 
@@ -153,7 +339,7 @@ def normalize_dict_text(
         (i for i, line in enumerate(lines) if line.rstrip("\n") == "---"), None
     )
     if marker_index is None:
-        raise UpdateError(
+        raise Error(
             f"dictionary has no '---' document marker: dicts/{pinyin}.dict.yaml"
         )
 
@@ -177,37 +363,15 @@ def normalize_dict_text(
         out.append(line)
 
     if not saw_name:
-        raise UpdateError(
-            f"dictionary has no 'name:' directive: dicts/{pinyin}.dict.yaml"
-        )
+        raise Error(f"dictionary has no 'name:' directive: dicts/{pinyin}.dict.yaml")
 
     return "".join(out)
-
-
-def convert_decomposition_line(line: str) -> str:
-    """Convert a single decomposition line to the colon-separated decomposition format.
-
-    If the line already has a space separating the components from the auxiliary
-    code, that space becomes the colon. Otherwise, when a lowercase-letter
-    auxcode is glued directly to the components, a colon is inserted before it.
-    This covers both formats per line without any per-schema knowledge.
-    """
-    if " " in line:
-        return line.replace(" ", ":")
-    return _DECOMPOSITION_GLUED_AUX_CODE.sub(r"\1:\2", line)
-
-
-def convert_decomposition_text(text: str) -> str:
-    """Convert decomposition text, preserving line count and endings."""
-    return "".join(
-        convert_decomposition_line(line.rstrip("\n")) + line[len(line.rstrip("\n")) :]
-        for line in text.splitlines(keepends=True)
-    )
 
 
 def normalize_dictionaries(
     source_dir: Path, repo_root: Path, version: str, tag: str
 ) -> None:
+    """Normalize every configured upstream dictionary."""
     print("==> Normalizing dictionaries")
     for pinyin, english in DICT_NAME_MAPPING.items():
         input_path = source_dir / "dicts" / f"{pinyin}.dict.yaml"
@@ -224,15 +388,39 @@ def normalize_dictionaries(
             (repo_root / "dicts" / f"{pinyin}.dict.yaml").unlink(missing_ok=True)
 
 
-def normalize_decomposition(source_dir: Path, repo_root: Path) -> None:
-    print("==> Converting decomposition data")
-    for schema in DECOMPOSITION_SCHEMAS:
-        input_path = source_dir / "custom" / f"{schema}_chaifen.txt"
-        output_path = repo_root / "data" / "decomposition" / f"{schema}.txt"
+def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
+    """Generate code-only auxiliary data and normalized decomposition tables."""
+    print("==> Normalizing auxiliary-code sources")
 
-        text = input_path.read_text(encoding="utf-8")
-        output_path.write_text(convert_decomposition_text(text), encoding="utf-8")
-        print(f"    data/decomposition/{schema}.txt")
+    normalized_data = parse_auxiliary_code_csv(source_dir / SRC_AUXILIARY_CSV_PATH)
+
+    print("  Writing normalized auxiliary-code CSV:")
+    write_code_only_auxiliary_csv(normalized_data, repo_root / DST_AUXILIARY_CSV_PATH)
+    print(f"    {DST_AUXILIARY_CSV_PATH.as_posix()}")
+
+    print("  Writing normalized auxiliary decomposition tables:")
+    decomposition_schemas = [
+        schema
+        for schema in AUXILIARY_SCHEMA_MAPPING.values()
+        if schema not in SRC_DEDICATED_DECOMPOSITION
+    ]
+    write_auxiliary_decomposition_tables(
+        normalized_data, decomposition_schemas, repo_root / DST_DECOMPOSITION_DIR
+    )
+    for schema in decomposition_schemas:
+        print(f"    {(DST_DECOMPOSITION_DIR / f'{schema}.txt').as_posix()}")
+
+    print("  Writing normalized dedicated decomposition tables:")
+    for schema, source_path in SRC_DEDICATED_DECOMPOSITION.items():
+        input_path = source_dir / source_path
+        output_path = repo_root / DST_DECOMPOSITION_DIR / f"{schema}.txt"
+        output_path.write_text(
+            normalize_dedicated_decomposition_text(
+                input_path.read_text(encoding="utf-8")
+            ),
+            encoding="utf-8",
+        )
+        print(f"    {output_path.relative_to(repo_root).as_posix()}")
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -279,8 +467,8 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         normalize_dictionaries(source_dir, repo_root, version, tag)
-        normalize_decomposition(source_dir, repo_root)
-    except UpdateError as error:
+        normalize_auxiliary_sources(source_dir, repo_root)
+    except Error as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
 

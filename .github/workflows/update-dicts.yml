@@ -95,7 +95,7 @@ jobs:
           ref: ${{ steps.upstream-latest-tag.outputs.tag }}
           path: upstream
 
-      - name: Normalize dictionaries and chaifen data
+      - name: Normalize dictionaries and auxiliary-code data
         working-directory: ${{ github.event.repository.name }}
         run: |-
           python3 scripts/update_dicts.py \

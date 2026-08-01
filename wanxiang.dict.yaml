@@ -20,3 +20,5 @@ import_tables:
   #- dicts/pharmaceutical  # 药品
   #- dicts/celebrity  # 名人
   #- dicts/artist  # 艺人
+  #- dicts/dialect  # 方言
+  #- dicts/typhoon  # 台风

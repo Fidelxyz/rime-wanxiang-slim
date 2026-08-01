@@ -1983,6 +1983,9 @@ pro:
       - xform/^zh/Ⓥ/
       - xlit/ⓆⓌⒺⓇⓉⓎⓊⓛⓄⓅⒶⓈⒹⒻⒼⒽⒿⓀⓁⓏⓍⒸⓋⒷⓃⓂ/qwertyuiopasdfghjklzxcvbnm/
 
+  # Generated Pro dictionaries retain all auxiliary-code alternatives in one
+  # comma-separated spelling. The rules below derive only the first two;
+  # later alternatives remain stored in the dictionary but are not input forms.
   直接辅助:  ########################################位于词库第三个分号后
     __append:
       - xform/Ⅾ//  # 用于Lua判断是否处于直接辅助的标记

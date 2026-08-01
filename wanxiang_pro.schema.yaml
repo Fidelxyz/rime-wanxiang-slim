@@ -335,8 +335,7 @@ decomposition_hint:
   tips: char
   tags: [abc]
   comment_format:
-    # Recover the spaces that were converted into colons during dictionary
-    # fetching (scripts/update_dicts.py).
+    # Display normalized decomposition/code separators as spaces.
     - xform/:/ /g
 
 lookup_filter:

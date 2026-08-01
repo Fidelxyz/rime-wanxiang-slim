@@ -1,25 +1,19 @@
+#!/usr/bin/env python3
+"""Generate Pro dictionaries from normalized auxiliary-code data."""
+
+import csv
 import re
 import shutil
 from contextlib import ExitStack
 from pathlib import Path
 
-# Schemas for columns in the auxiliary code table.
-SCHEMA_COLUMNS: list[str] = [
-    "wx",
-    "moqi",
-    "flypy",
-    "zrm",
-    "tiger",
-    "wubi",
-    "hanxin",
-    "shouyou",
-    "shyplus",
-]
 # Separator between pinyin and auxiliary code in the output dicts.
 SEP = ";"
 
 # Pattern to split Chinese and non-Chinese text blocks.
-CJK_SPLIT = re.compile(r"([〇\u3400-\u4DBF\u4E00-\u9FFF\U00020000-\U000323AF])")
+CJK_SPLIT_PATTERN = re.compile(r"([〇\u3400-\u4DBF\u4E00-\u9FFF\U00020000-\U000323AF])")
+# Pattern to check if a string consists entirely of digits.
+DIGIT_PATTERN = re.compile(r"^\d+$")
 
 
 def tokenize_word(word: str) -> list[tuple[str, str]]:
@@ -27,10 +21,10 @@ def tokenize_word(word: str) -> list[tuple[str, str]]:
     Split a word into CJK and non-CJK blocks, returning a list of (type, text) tuples.
     """
     units: list[tuple[str, str]] = []
-    for part in CJK_SPLIT.split(word):
+    for part in CJK_SPLIT_PATTERN.split(word):
         if not part or part.isspace():
             continue
-        if CJK_SPLIT.fullmatch(part):
+        if CJK_SPLIT_PATTERN.fullmatch(part):
             units.append(("cn", part))
         else:
             # Append only if there is content left after stripping whitespace.
@@ -41,7 +35,9 @@ def tokenize_word(word: str) -> list[tuple[str, str]]:
 
 
 def get_alignment(
-    units: list[tuple[str, str]], segs: list[str], per_schema_maps: list[dict]
+    units: list[tuple[str, str]],
+    segs: list[str],
+    schema_maps: dict[str, dict[str, str]],
 ) -> list[list[str]] | None:
     """
     Align CJK and non-CJK blocks to the pinyin segments.
@@ -51,7 +47,7 @@ def get_alignment(
     e.g. [['aux_schema0', 'aux_schema1', ...], ...]  with length == len(segs).
     Returns None when the alignment fails.
     """
-    n_schemas = len(per_schema_maps)
+    n_schemas = len(schema_maps)
     n_units = len(units)
     n_segs = len(segs)
 
@@ -62,7 +58,7 @@ def get_alignment(
             return None
         result = []
         for _, ch in units:
-            result.append([m.get(ch, "") for m in per_schema_maps])
+            result.append([schema_map.get(ch, "") for schema_map in schema_maps.values()])
         return result
 
     # General path: mixed words containing English segments (iterative + backtracking).
@@ -85,7 +81,7 @@ def get_alignment(
 
         if utype == "cn":
             # CJK: strictly consume exactly one pinyin segment.
-            aux_row = [m.get(utext, "") for m in per_schema_maps]
+            aux_row = [schema_map.get(utext, "") for schema_map in schema_maps.values()]
             stack.append((u_idx + 1, s_idx + 1, built + [aux_row]))
 
         else:
@@ -116,48 +112,22 @@ def get_alignment(
     return None
 
 
-def load_aux_table(aux_file: Path) -> dict[str, list[str]]:
-    """
-    Load the "character -> auxiliary code segments" mapping from a single aux file.
-    Each line has the format:
-        char<TAB>;seg1;seg2;...
-    (empty segments are preserved without shifting; commas inside a segment are kept as-is)
-    """
+def load_aux_table(aux_file: Path) -> dict[str, dict[str, str]]:
+    """Load character-to-code mappings keyed by CSV schema ID."""
     print(f"加载辅助码表文件: {aux_file.name}")
 
-    aux_map: dict[str, list[str]] = {}
-    with aux_file.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-
-            cols = line.split("\t")
-            if len(cols) < 2:
-                continue
-
-            char = cols[0]
-            # Skip the first empty segment before the first ';'
-            aux_list = cols[1].split(";")[1:]
-            aux_map[char] = aux_list
-
-    return aux_map
-
-
-def build_schema_maps(aux_table: dict[str, list[str]]) -> list[dict[str, str]]:
-    """
-    Build a mapping for each aux code schema that maps characters to their corresponding aux code segment for that schema.
-    """
-    return [
-        {
-            ch: aux_list[i] if i < len(aux_list) else ""
-            for ch, aux_list in aux_table.items()
+    with aux_file.open("r", encoding="utf-8", newline="") as input_file:
+        reader = csv.DictReader(input_file)
+        assert reader.fieldnames
+        schema_maps: dict[str, dict[str, str]] = {
+            schema: {} for schema in reader.fieldnames[1:]
         }
-        for i in range(len(SCHEMA_COLUMNS))
-    ]
+        for row in reader:
+            char = row["#"]
+            for schema, schema_map in schema_maps.items():
+                schema_map[char] = row[schema]
 
-
-DIGIT_RE = re.compile(r"^\d+$")
+    return schema_maps
 
 
 def copy_dict(dict_file: Path, out_files: list[Path]):
@@ -172,7 +142,7 @@ def copy_dict(dict_file: Path, out_files: list[Path]):
 def process_dict(
     dict_file: Path,
     out_files: list[Path],
-    schema_maps: list[dict[str, str]],
+    schema_maps: dict[str, dict[str, str]],
 ):
     """
     Process a single dictionary file and write the results for every schema.
@@ -218,7 +188,7 @@ def process_dict(
             col4 = parts[3] if len(parts) > 3 else ""
 
             # If the second column is a frequency (all digits), move it to the third column.
-            if DIGIT_RE.fullmatch(col2 or ""):
+            if DIGIT_PATTERN.fullmatch(col2 or ""):
                 col3, col2 = col2, ""
 
             # Pass specific lines through unchanged.
@@ -248,6 +218,8 @@ def process_dict(
                 new_cols = []
                 for i, py in enumerate(pinyins):
                     aux = aligned[i][si] if i < len(aligned) else ""
+                    # Keep comma-separated alternatives in one spelling to match
+                    # upstream Pro dictionaries instead of expanding duplicate rows.
                     new_cols.append(py + SEP + aux)
                 new_col2 = " ".join(new_cols)
                 if col4:
@@ -274,12 +246,9 @@ def process(
     dist_dir: Path,
     no_conversion_dicts: list[str] | None = None,
 ):
-    aux_table = load_aux_table(aux_code_file)
-    print(f"已加载辅助码条目: {len(aux_table)}")
-
-    print("拆分各 schema 辅助码映射...")
-    schema_maps = build_schema_maps(aux_table)
-    print("拆分完成。")
+    schema_maps = load_aux_table(aux_code_file)
+    first_schema_map = next(iter(schema_maps.values()))
+    print(f"已加载辅助码条目: {len(first_schema_map)}")
 
     # Collect dict files to process
     for dict_file in dicts_dir.iterdir():
@@ -291,7 +260,7 @@ def process(
 
         out_files = [
             (dist_dir / f"rime-wanxiang-{schema}-fuzhu" / dicts_dir / dict_file.name)
-            for schema in SCHEMA_COLUMNS
+            for schema in schema_maps
         ]
 
         for out_file in out_files:
@@ -307,7 +276,7 @@ def process(
 
 
 if __name__ == "__main__":
-    AUX_CODE_FILE = Path("data/aux_code.txt")
+    AUX_CODE_FILE = Path("data/aux_code.csv")
     DICTS_DIR = Path("dicts")
     DIST_DIR = Path("dist")
 
