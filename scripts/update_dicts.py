@@ -85,6 +85,47 @@ class UpdateError(Exception):
     """Raised for any expected, user-facing failure."""
 
 
+def validate_upstream_files(source_dir: Path) -> bool:
+    """Report upstream file changes and return whether all required files exist."""
+    expected_files = set()
+    expected_files.update(
+        Path("dicts") / f"{pinyin}.dict.yaml" for pinyin in DICT_NAME_MAPPING
+    )
+    expected_files.update(
+        Path("custom") / f"{schema}_chaifen.txt" for schema in DECOMPOSITION_SCHEMAS
+    )
+
+    actual_files = set()
+    actual_files.update(
+        path.relative_to(source_dir)
+        for path in (source_dir / "dicts").glob("*.dict.yaml")
+        if path.is_file()
+    )
+    actual_files.update(
+        path.relative_to(source_dir)
+        for path in (source_dir / "custom").glob("*_chaifen.txt")
+        if path.is_file()
+    )
+
+    new_files = sorted(actual_files - expected_files)
+    if new_files:
+        print(
+            "warning: unrecognized upstream files will not be processed:",
+            file=sys.stderr,
+        )
+        for path in new_files:
+            print(f"    {path.as_posix()}", file=sys.stderr)
+
+    missing_files = sorted(expected_files - actual_files)
+    if missing_files:
+        print("error: required upstream files are missing:", file=sys.stderr)
+        for path in missing_files:
+            print(f"    {path.as_posix()}", file=sys.stderr)
+        return False
+
+    return True
+
+
 def build_dict_header(src_name: str, tag: str) -> str:
     """Return the standardized comment header for a normalized dictionary."""
     return (
@@ -172,9 +213,6 @@ def normalize_dictionaries(
         input_path = source_dir / "dicts" / f"{pinyin}.dict.yaml"
         output_path = repo_root / "dicts" / f"{english}.dict.yaml"
 
-        if not input_path.is_file():
-            raise UpdateError(f"missing upstream dictionary: {input_path}")
-
         text = input_path.read_text(encoding="utf-8")
         output_path.write_text(
             normalize_dict_text(text, english, version, pinyin, tag), encoding="utf-8"
@@ -191,9 +229,6 @@ def normalize_decomposition(source_dir: Path, repo_root: Path) -> None:
     for schema in DECOMPOSITION_SCHEMAS:
         input_path = source_dir / "custom" / f"{schema}_chaifen.txt"
         output_path = repo_root / "data" / "decomposition" / f"{schema}.txt"
-
-        if not input_path.is_file():
-            raise UpdateError(f"missing upstream decomposition file: {input_path}")
 
         text = input_path.read_text(encoding="utf-8")
         output_path.write_text(convert_decomposition_text(text), encoding="utf-8")
@@ -229,10 +264,13 @@ def main(argv: list[str] | None = None) -> int:
     source_dir: Path = args.source
     repo_root: Path = args.repo_root.resolve()
     tag: str = args.tag
-    version = tag[1:] if tag.startswith("v") else tag
+    version = tag.removeprefix("v")
 
     if not source_dir.is_dir():
         print(f"error: source directory does not exist: {source_dir}", file=sys.stderr)
+        return 1
+
+    if not validate_upstream_files(source_dir):
         return 1
 
     print(f"==> Updating dictionaries from {UPSTREAM_REPO} {tag} (version {version})")
