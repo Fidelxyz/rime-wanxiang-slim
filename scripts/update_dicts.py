@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Normalize dictionary and chaifen data from an upstream rime_wanxiang checkout.
+"""Normalize dictionary and decomposition data from an upstream rime_wanxiang checkout.
 
-This script reads dictionary and character-decomposition (chaifen) data from an
+This script reads dictionary and character-decomposition data from an
 already-present local checkout of the upstream source tree and writes
 normalized results into this repository's working tree.
 
@@ -14,7 +14,7 @@ What it does:
 3. Replace each dictionary's original comment header with a standardized header
    recording the upstream source, the original file name, and the upstream
    copyright/licence.
-4. Convert each per-schema chaifen file to the OpenCC-compatible decomposition
+4. Convert each per-schema decomposition file to the OpenCC-compatible decomposition
    format by separating the auxiliary code with a colon. Two schemas (shyplus,
    zrm) ship the auxiliary code glued to the components with no separator; the
    missing separator is inserted first.
@@ -54,8 +54,8 @@ DICT_NAME_MAPPING: dict[str, str] = {
     "cn&en": "mixedcode",
 }
 
-# Per-schema chaifen files to convert.
-CHAIFEN_SCHEMAS: list[str] = [
+# Per-schema decomposition files to convert.
+DECOMPOSITION_SCHEMAS: list[str] = [
     "flypy",
     "hanxin",
     "moqi",
@@ -67,7 +67,7 @@ CHAIFEN_SCHEMAS: list[str] = [
     "zrm",
 ]
 
-# A chaifen data line is ``<char><TAB><components>[<sep>]<auxcode>``. The
+# A decomposition data line is ``<char><TAB><components>[<sep>]<auxcode>``. The
 # separator between the decomposition components and the auxiliary code must
 # become a colon so OpenCC treats the value as a single candidate (the colon is
 # turned back into a space for display by the schema's ``comment_format``).
@@ -78,7 +78,7 @@ CHAIFEN_SCHEMAS: list[str] = [
 # with no separator (``丿勹pb``, ``{⺁}px``, ``.dk``); there a colon is inserted
 # before the trailing lowercase-letter auxcode. Lines that are auxcode-only
 # (``kg``) or component-only (``󰂮󰄼·󰂮󰄋``) are left untouched.
-_CHAIFEN_GLUED_AUX_CODE = re.compile(r"([^\sa-z])([a-z]+)$")
+_DECOMPOSITION_GLUED_AUX_CODE = re.compile(r"([^\sa-z])([a-z]+)$")
 
 
 class UpdateError(Exception):
@@ -143,8 +143,8 @@ def normalize_dict_text(
     return "".join(out)
 
 
-def convert_chaifen_line(line: str) -> str:
-    """Convert a single chaifen line to the colon-separated decomposition format.
+def convert_decomposition_line(line: str) -> str:
+    """Convert a single decomposition line to the colon-separated decomposition format.
 
     If the line already has a space separating the components from the auxiliary
     code, that space becomes the colon. Otherwise, when a lowercase-letter
@@ -153,13 +153,13 @@ def convert_chaifen_line(line: str) -> str:
     """
     if " " in line:
         return line.replace(" ", ":")
-    return _CHAIFEN_GLUED_AUX_CODE.sub(r"\1:\2", line)
+    return _DECOMPOSITION_GLUED_AUX_CODE.sub(r"\1:\2", line)
 
 
-def convert_chaifen_text(text: str) -> str:
-    """Convert chaifen text, preserving line count and endings."""
+def convert_decomposition_text(text: str) -> str:
+    """Convert decomposition text, preserving line count and endings."""
     return "".join(
-        convert_chaifen_line(line.rstrip("\n")) + line[len(line.rstrip("\n")) :]
+        convert_decomposition_line(line.rstrip("\n")) + line[len(line.rstrip("\n")) :]
         for line in text.splitlines(keepends=True)
     )
 
@@ -186,17 +186,17 @@ def normalize_dictionaries(
             (repo_root / "dicts" / f"{pinyin}.dict.yaml").unlink(missing_ok=True)
 
 
-def normalize_chaifen(source_dir: Path, repo_root: Path) -> None:
-    print("==> Converting chaifen decomposition data")
-    for schema in CHAIFEN_SCHEMAS:
+def normalize_decomposition(source_dir: Path, repo_root: Path) -> None:
+    print("==> Converting decomposition data")
+    for schema in DECOMPOSITION_SCHEMAS:
         input_path = source_dir / "custom" / f"{schema}_chaifen.txt"
         output_path = repo_root / "data" / "decomposition" / f"{schema}.txt"
 
         if not input_path.is_file():
-            raise UpdateError(f"missing upstream chaifen file: {input_path}")
+            raise UpdateError(f"missing upstream decomposition file: {input_path}")
 
         text = input_path.read_text(encoding="utf-8")
-        output_path.write_text(convert_chaifen_text(text), encoding="utf-8")
+        output_path.write_text(convert_decomposition_text(text), encoding="utf-8")
         print(f"    data/decomposition/{schema}.txt")
 
 
@@ -241,7 +241,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         normalize_dictionaries(source_dir, repo_root, version, tag)
-        normalize_chaifen(source_dir, repo_root)
+        normalize_decomposition(source_dir, repo_root)
     except UpdateError as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
