@@ -113,7 +113,7 @@ function M.init(env)
     ---@type CharsetFilter[]
     local filters = {}
     local filters_len = 0
-    local filters_cfg = rime_config:get_list("charset_filter")
+    local filters_cfg = rime_config:get_list("charset_filter/filters")
     if filters_cfg then
         for i = 0, filters_cfg.size - 1 do
             local filter_cfg = filters_cfg:get_at(i)
@@ -163,34 +163,28 @@ function M.init(env)
                     end
                 end
 
-                ---@param list ConfigList
+                ---@param str string
                 ---@param map table<integer, boolean>
-                local function load_list_to_map(list, map)
-                    for k = 0, list.size - 1 do
-                        local val = list:get_value_at(k)
-                        local str = val and val:get_string()
-                        if str and str ~= "" then
-                            for _, cp in utf8.codes(str) do
-                                map[cp] = true
-                            end
-                        end
+                local function load_string_to_map(str, map)
+                    for _, cp in utf8.codes(str) do
+                        map[cp] = true
                     end
                 end
 
                 ---@type table<integer, boolean>
                 local rule_whitelist = {}
-                local whitelist_cfg = filter_map:get("whitelist")
-                local whitelist_list = whitelist_cfg and whitelist_cfg:get_list()
-                if whitelist_list then
-                    load_list_to_map(whitelist_list, rule_whitelist)
+                local whitelist_val = filter_map:get_value("whitelist")
+                local whitelist = whitelist_val and whitelist_val:get_string()
+                if whitelist then
+                    load_string_to_map(whitelist, rule_whitelist)
                 end
 
                 ---@type table<integer, boolean>
                 local rule_blacklist = {}
-                local blacklist_cfg = filter_map:get("blacklist")
-                local blacklist_list = blacklist_cfg and blacklist_cfg:get_list()
-                if blacklist_list then
-                    load_list_to_map(blacklist_list, rule_blacklist)
+                local blacklist_val = filter_map:get_value("blacklist")
+                local blacklist = blacklist_val and blacklist_val:get_string()
+                if blacklist then
+                    load_string_to_map(blacklist, rule_blacklist)
                 end
 
                 filters_len = filters_len + 1
