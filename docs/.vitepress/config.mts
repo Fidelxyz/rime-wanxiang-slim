@@ -32,8 +32,12 @@ export default defineConfig({
         items: [
           { text: "辅助码", link: "/features/auxiliary-code" },
           { text: "反查 / 辅助筛选", link: "/features/reverse-lookup" },
+          { text: "字符集过滤", link: "/features/charset-filter" },
+          { text: "提示", link: "/features/hints" },
+          { text: "候选排序", link: "/features/candidate-sorting" },
+          { text: "非汉字词库输入", link: "/features/extra-dicts" },
           { text: "造词", link: "/features/user-dict" },
-          { text: "其他功能", link: "/features/others" },
+          { text: "其他功能", link: "/features/misc" },
         ],
       },
       {

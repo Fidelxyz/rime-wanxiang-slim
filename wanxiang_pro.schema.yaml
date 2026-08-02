@@ -442,7 +442,7 @@ editor:
     BackSpace: revert  # 向前删除
     Delete: delete  # 向后删除
     Control+BackSpace: back_syllable  # 删除一个音节
-    Control+Delete: delete_candidate  # 删除或降权候选项
+    Control+Delete: delete_candidate  # 删除候选项
     Escape: cancel  # 取消输入
 
 navigator:

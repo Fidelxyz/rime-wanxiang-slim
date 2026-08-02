@@ -72,3 +72,5 @@ patch:
 | `dicts/pharmaceutical` | 药品词库 |
 | `dicts/celebrity` | 名人词库 |
 | `dicts/artist` | 艺人词库 |
+| `dicts/dialect` | 方言词库 |
+| `dicts/typhoon` | 台风词库 |

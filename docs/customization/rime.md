@@ -10,7 +10,7 @@ Rime 配置文件的优先级为 `custom.yaml` > `schema.yaml` > `default.yaml`�
 
 ## 补丁
 
-关于自定义文件中 `patch` 补丁的用法和示例，详见[Rime 定制指南](https://github.com/rime/home/wiki/CustomizationGuide#%E5%AE%9A%E8%A3%BD%E6%8C%87%E5%8D%97)。
+关于自定义文件中 `patch` 补丁的用法和示例，详见 [Rime 定制指南](https://github.com/rime/home/wiki/CustomizationGuide#%E5%AE%9A%E8%A3%BD%E6%8C%87%E5%8D%97)。
 
 基本语法：
 
@@ -68,7 +68,7 @@ patch:
 
 ## 引用指令
 
-关于 `__include`、`__patch` 和 `__append` 引用指令的用法和示例，详见[Rime 配置文件](https://github.com/rime/home/wiki/Configuration)。
+关于 `__include`、`__patch` 和 `__append` 引用指令的用法和示例，详见 [Rime 配置文件](https://github.com/rime/home/wiki/Configuration)。
 
 > [!NOTE]
 > 自定义文件 `custom.yaml` 中的补丁只能针对**展开引用指令后**的配置进行修改，不能修改引用指令本身。
