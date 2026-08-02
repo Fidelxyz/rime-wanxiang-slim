@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/yixue.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/yixue.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: medical
-version: "16.0.1"
+version: "17.0.3"
 sort: by_weight
 ...
 输卵管癌	shū luǎn guǎn ái	486
@@ -124,7 +124,7 @@ sort: by_weight
 胞生痰核病	bāo shēng tán hé bìng	10
 暴受惊恐证	bào shòu jīng kǒng zhèng	10
 剥脱性唇炎	bāo tuō xìng chún yán	10
-剥脱性龈炎	bāo tuō xìng kěn yán	10
+剥脱性龈炎	bāo tuō xìng yín yán	10
 胞虚如球病	bāo xū rú qiú bìng	10
 胞衣不下病	bāo yī bú xià bìng	10
 暴饮暴食症	bào yǐn bào shí zhèng	10
@@ -252,7 +252,7 @@ sort: by_weight
 波韦二氏病	bō wéi èr shì bìng	10
 布布二氏病	bù bù èr shì bìng	10
 布加综合征	bù jiā zōng hé zhēng	10
-不洁性龈炎	bù jié xìng kěn yán	10
+不洁性龈炎	bù jié xìng yín yán	10
 布凯二氏病	bù kǎi èr shì bìng	10
 布拉德利病	bù lā dé lì bìng	10
 布勒二氏瘤	bù lè èr shì liú	10
@@ -669,10 +669,10 @@ sort: by_weight
 肺阿米巴病	fèi ā mǐ bā bìng	10
 肺包虫囊肿	fèi bāo chóng náng zhǒng	10
 腓侧肌腱炎	féi cè jī jiàn yán	10
-肥大性龈炎	féi dà xìng kěn yán	10
 肥大性湿疹	féi dà xìng shī zhěn	10
 肥大性胃炎	féi dà xìng wèi yán	10
 肥大性咽炎	féi dà xìng yān yán	10
+肥大性龈炎	féi dà xìng yín yán	10
 肺动静脉瘘	fèi dòng jìng mài lòu	10
 肺段切除术	fèi duàn qiē chú shù	10
 肺段支气管	fèi duàn zhī qì guǎn	10
@@ -711,7 +711,7 @@ sort: by_weight
 肺胚细胞瘤	fèi pēi xì bāo liú	10
 肺脾积热证	fèi pí jī rè zhèng	10
 肺脾两虚证	fèi pí liǎng xū zhèng	10
-肺脾气虚证	fèi pí qì xū zhèng	10
+肺脾气虚证	fèi pí qi xū zhèng	10
 肺脾湿热证	fèi pí shī rè zhèng	10
 肺气衰竭证	fèi qì shuāi jié zhèng	10
 肺气郁痹证	fèi qì yù bì zhèng	10
@@ -1835,8 +1835,8 @@ sort: by_weight
 浆膜腔积液	jiāng mó qiāng jī yè	10
 浆膜下肌瘤	jiāng mó xià jī liú	10
 僵人综合征	jiāng rén zōng hé zhēng	10
-浆细胞龈炎	jiāng xì bāo kěn yán	10
 浆细胞肉瘤	jiāng xì bāo ròu liú	10
+浆细胞龈炎	jiāng xì bāo yín yán	10
 浆液反应器	jiāng yè fǎn yìng qì	10
 交感神经节	jiāo gǎn shén jīng jié	10
 交感神经系	jiāo gǎn shén jīng xì	10
@@ -2042,8 +2042,8 @@ sort: by_weight
 卡梅综合征	kǎ méi zōng hé zhēng	10
 卡佩二氏病	kǎ pèi èr shì bìng	10
 卡斯尔曼症	kǎ sī ěr màn zhèng	10
-卡它性龈炎	kǎ tā xìng kěn yán	10
 卡他性炎症	kǎ tā xìng yán zhèng	10
+卡它性龈炎	kǎ tā xìng yín yán	10
 凯尔尼格征	kǎi ěr ní gé zhēng	10
 开放性血胸	kāi fàng xìng xuè xiōng	10
 开放折骨术	kāi fàng zhé gǔ shù	10
@@ -2386,7 +2386,7 @@ sort: by_weight
 门体分流术	mén tǐ fēn liú shù	10
 猛爆性肝炎	měng bào xìng gān yán	10
 萌出期囊肿	méng chū qī náng zhǒng	10
-萌出性龈炎	méng chū xìng kěn yán	10
+萌出性龈炎	méng chū xìng yín yán	10
 蒙道尔氏病	méng dào ěr shì bìng	10
 梦想的远征	mèng xiǎng de yuǎn zhēng	10
 米库利奇病	mǐ kù lì qí bìng	10
@@ -2625,7 +2625,6 @@ sort: by_weight
 皮肤橙色病	pí fū chéng sè bìng	10
 皮肤垢着病	pí fū gòu zhe bìng	10
 皮肤划痕症	pí fū huá hén zhèng	10
-皮肤化痕症	pí fū huà hén zhèng	10
 皮肤划纹症	pí fū huà wén zhèng	10
 皮肤混合瘤	pí fū hùn hé liú	10
 皮肤活检术	pí fū huó jiǎn shù	10
@@ -2653,10 +2652,10 @@ sort: by_weight
 脾皮样囊肿	pí pí yàng náng zhǒng	10
 皮片移植术	pí piàn yí zhí shù	10
 皮片植皮术	pí piàn zhí pí shù	10
-脾气不升证	pí qì bù shēng zhèng	10
-脾气不足证	pí qì bù zú zhèng	10
-脾气亏虚证	pí qì kuī xū zhèng	10
-脾气下陷证	pí qì xià xiàn zhèng	10
+脾气不升证	pí qi bù shēng zhèng	10
+脾气不足证	pí qi bù zú zhèng	10
+脾气亏虚证	pí qi kuī xū zhèng	10
+脾气下陷证	pí qi xià xiàn zhèng	10
 脾腔分流术	pí qiāng fēn liú shù	10
 脾区综合征	pí qū zōng hé zhēng	10
 脾曲综合征	pí qǔ zōng hé zhēng	10
@@ -3054,7 +3053,7 @@ sort: by_weight
 热灼胸膈证	rè zhuó xiōng gé zhèng	10
 热灼营阴证	rè zhuó yíng yīn zhèng	10
 热灼真阴证	rè zhuó zhēn yīn zhèng	10
-妊辰期龈炎	rèn chén qī kěn yán	10
+妊辰期龈炎	rèn chén qī yín yán	10
 人畜共患病	rén chù gòng huàn bìng	10
 人畜共通病	rén chù gòng tōng bìng	10
 人痘接种术	rén dòu jiē zhòng shù	10
@@ -3244,10 +3243,10 @@ sort: by_weight
 肾精亏虚证	shèn jīng kuī xū zhèng	10
 神经浪游者	shén jīng làng yóu zhě	10
 肾静脉肾素	shèn jìng mài shèn sù	10
-深静脉栓塞	shēn jìng mài shuān sè	10
+深静脉栓塞	shēn jìng mài shuān sè	12
 肾静脉栓塞	shèn jìng mài shuān sè	10
+深静脉血栓	shēn jìng mài xuè shuān	12
 肾静脉血栓	shèn jìng mài xuè shuān	10
-深静脉血栓	shēn jìng mài xuè shuān	10
 肾静脉造影	shèn jìng mài zào yǐng	10
 深静脉置管	shēn jìng mài zhì guǎn	10
 神经牵伸术	shén jīng qiān shēn shù	10
@@ -4156,7 +4155,7 @@ sort: by_weight
 心脾积热证	xīn pí jī rè zhèng	10
 心脾亏虚证	xīn pí kuī xū zhèng	10
 心脾两虚证	xīn pí liǎng xū zhèng	10
-心脾气虚证	xīn pí qì xū zhèng	10
+心脾气虚证	xīn pí qi xū zhèng	10
 心脾湿热证	xīn pí shī rè zhèng	10
 心脾受损证	xīn pí shòu sǔn zhèng	10
 心脾血虚证	xīn pí xuè xū zhèng	10
@@ -4936,9 +4935,18 @@ sort: by_weight
 指蜂窝织炎	zhǐ fēng wō zhī yán	10
 趾蜂窝织炎	zhǐ fēng wō zhī yán	10
 指骨关节病	zhǐ gǔ guān jié bìng	10
+指骨间关节	zhǐ gǔ jiān guān jié	10
+趾骨间关节	zhǐ gǔ jiān guān jié	10
+跖骨间关节	zhí gǔ jiān guān jié	10
 跖骨截骨术	zhí gǔ jié gǔ shù	10
+肢骨外上髁	zhī gǔ wài shàng kē	10
 指骨植骨术	zhǐ gǔ zhí gǔ shù	10
+支管胆管瘘	zhī guǎn dǎn guǎn lòu	10
 跖管减压术	zhí guǎn jiǎn yā shù	10
+指关节融合	zhǐ guān jié róng hé	10
+趾关节融合	zhǐ guān jié róng hé	10
+指关节脱位	zhǐ guān jié tuō wèi	10
+趾关节脱位	zhǐ guān jié tuō wèi	10
 指甲沟脓肿	zhǐ jia gōu nóng zhǒng	10
 趾甲移植术	zhǐ jiǎ yí zhí shù	10
 支架植入术	zhī jià zhí rù shù	10
@@ -8705,8 +8713,16 @@ sort: by_weight
 泰必氏综合征	tài bì shì zōng hé zhēng	10
 胎儿发育畸形	tāi ér fā yù jī xíng	10
 胎儿横纹肌瘤	tāi ér héng wén jī liú	10
+胎儿戒断症状	tāi ér jiè duàn zhèng zhuàng	10
 胎儿镜捡查术	tāi ér jìng jiǎn chá shù	10
 胎儿内倒转术	tāi ér nèi dào zhuǎn shù	10
+胎儿脐带绕颈	tāi ér qí dài rào jǐng	10
+胎儿亲子鉴定	tāi ér qīn zǐ jiàn dìng	10
+胎儿缺碘效应	tāi ér quē diǎn xiào yìng	10
+胎儿生长受限	tāi ér shēng zhǎng shòu xiàn	10
+胎儿心搏徐缓	tāi ér xīn bó xú huǎn	10
+胎儿心律失常	tāi ér xīn lǜ shī cháng	10
+胎儿智力发育	tāi ér zhì lì fā yù	10
 胎粪性腹膜炎	tāi fèn xìng fù mó yán	10
 胎热证胎寒证	tāi rè zhèng tāi hán zhèng	10
 苔藓样角化病	tái xiǎn yàng jiǎo huà bìng	10
@@ -9073,7 +9089,7 @@ sort: by_weight
 小脑幕脑膜瘤	xiǎo nǎo mù nǎo mó liú	10
 小脑慕脑膜瘤	xiǎo nǎo mù nǎo mó liú	10
 小泡性角膜炎	xiǎo pào xìng jiǎo mó yán	10
-小企鹅大长征	xiǎo qǐ é dà zhǎng zhēng	10
+小企鹅大长征	xiǎo qǐ é dà cháng zhēng	10
 小腿绀红皮病	xiǎo tuǐ gàn hóng pí bìng	10
 小腿骨间神经	xiǎo tuǐ gǔ jiān shén jīng	10
 小细胞骨肉瘤	xiǎo xì bāo gǔ ròu liú	10
@@ -13236,7 +13252,7 @@ sort: by_weight
 侵袭性纤维瘤病	qīn xí xìng xiān wéi liú bìng	10
 清创窦道清除术	qīng chuàng dòu dào qīng chú shù	10
 清创游离植皮术	qīng chuàng yóu lí zhí pí shù	10
-青春发育期龈炎	qīng chūn fā yù qī kěn yán	10
+青春发育期龈炎	qīng chūn fā yù qī yín yán	10
 青春期甲状腺肿	qīng chūn qī jiǎ zhuàng xiàn zhǒng	10
 青春前期牙周炎	qīng chūn qián qī yá zhōu yán	10
 轻度妊娠中毒症	qīng dù rèn shēn zhòng dú zhèng	10
@@ -13347,7 +13363,7 @@ sort: by_weight
 人工膜肺氧合器	rén gōng mó fèi yǎng hé qì	10
 人工气管置换术	rén gōng qì guǎn zhì huàn shù	10
 人工食管重建术	rén gōng shí guǎn chóng jiàn shù	10
-人工下巴植入术	rén gōng xià bā zhí rù shù	10
+人工下巴植入术	rén gōng xià ba zhí rù shù	10
 人工心脏起搏器	rén gōng xīn zàng qǐ bó qì	10
 人工血管置换术	rén gōng xuè guǎn zhì huàn shù	10
 人工阴道成形术	rén gōng yīn dào chéng xíng shù	10
@@ -14301,7 +14317,7 @@ sort: by_weight
 心内膜恶性肿瘤	xīn nèi mó è xìng zhǒng liú	10
 心内膜良性肿瘤	xīn nèi mó liáng xìng zhǒng liú	10
 心内异物取出术	xīn nèi yì wù qǔ chū shù	10
-心脾气血两虚证	xīn pí qì xuè liǎng xū zhèng	10
+心脾气血两虚证	xīn pí qi xuè liǎng xū zhèng	10
 心腔外伤修补术	xīn qiāng wài shāng xiū bǔ shù	10
 新生儿单纯疱疹	xīn shēng ér dān chún pào zhěn	10
 心室病损切除术	xīn shì bìng sǔn qiē chú shù	10
@@ -14574,7 +14590,7 @@ sort: by_weight
 牙科助手椅旁凳	yá kē zhù shǒu yǐ páng dèng	10
 牙科综合治疗机	yá kē zōng hé zhì liáo jī	10
 牙科综合治疗台	yá kē zōng hé zhì liáo tái	10
-牙列拥挤性龈炎	yá liè yōng jǐ xìng kěn yán	10
+牙列拥挤性龈炎	yá liè yōng jǐ xìng yín yán	10
 亚临床性糖尿病	yà lín chuáng xìng táng niào bìng	10
 芽生菌性脓皮病	yá shēng jūn xìng nóng pí bìng	10
 牙髓活力测验器	yá suǐ huó lì cè yàn qì	10

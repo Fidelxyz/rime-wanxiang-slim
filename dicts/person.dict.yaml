@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v16.0.1/dicts/renming.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/renming.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: person
-version: "16.0.1"
+version: "17.0.3"
 sort: by_weight
 ...
 白波	bái bō	76
@@ -454,6 +454,7 @@ sort: by_weight
 黄卡	huáng kǎ	76
 黄坑	huáng kēng	25
 黄葵	huáng kuí	47
+黄亮	huáng liàng	104
 黄敏	huáng mǐn	625
 黄明	huáng míng	1015
 黄某	huáng mǒu	1620
@@ -695,7 +696,6 @@ sort: by_weight
 李福	lǐ fú	61
 李刚	lǐ gāng	2370
 李光	lǐ guāng	587
-李鬼	lǐ guǐ	1047
 李海	lǐ hǎi	345
 李汉	lǐ hàn	479
 李航	lǐ háng	503
@@ -780,7 +780,6 @@ sort: by_weight
 李仁	lǐ rén	108
 李荣	lǐ róng	373
 李睿	lǐ ruì	301
-李嫂	lǐ sǎo	972
 李森	lǐ sēn	525
 李善	lǐ shàn	94
 李胜	lǐ shèng	76
@@ -1483,6 +1482,9 @@ sort: by_weight
 陶庵	táo ān	106
 陶钧	táo jūn	274
 陶楼	táo lóu	65
+佟佳	tóng jiā	134
+佟健	tóng jiàn	449
+童哲	tóng zhé	65
 王安	wáng ān	598
 王表	wáng biǎo	36
 王彬	wáng bīn	876
@@ -1570,9 +1572,9 @@ sort: by_weight
 王梅	wáng méi	1814
 王梦	wáng mèng	251
 王萌	wáng méng	200
+汪淼	wāng miǎo	1218
 王敏	wáng mǐn	6348
-王明	wáng míng	2795
-王宁	wáng níng	2292
+王明	wáng míng	395
 王雱	wáng pāng	25
 王袍	wáng páo	35
 王培	wáng péi	766
@@ -2118,6 +2120,7 @@ sort: by_weight
 余军	yú jūn	508
 余凯	yú kǎi	598
 余乐	yú lè	579
+俞亮	yú liàng	200
 余隆	yú lóng	42
 余明	yú míng	292
 余平	yú píng	211
@@ -2476,7 +2479,6 @@ sort: by_weight
 周庆	zhōu qìng	657
 周琼	zhōu qióng	98
 周荣	zhōu róng	99
-周锐	zhōu ruì	1661
 周蕊	zhōu ruǐ	469
 周舍	zhōu shě	23
 周申	zhōu shēn	676
@@ -2523,7 +2525,7 @@ sort: by_weight
 朱海	zhū hǎi	125
 朱恒	zhū héng	90
 朱洪	zhū hóng	288
-朱厚	zhū hòu	1472
+朱厚	zhū hòu	1003
 朱华	zhū huá	327
 朱慧	zhū huì	1120
 朱晦	zhū huì	64
@@ -2536,9 +2538,9 @@ sort: by_weight
 朱均	zhū jūn	48
 朱凯	zhū kǎi	608
 朱兰	zhū lán	80
-朱莉	zhū lì	2028
-朱丽	zhū lì	1491
-朱利	zhū lì	207
+朱莉	zhū lì	202
+朱丽	zhū lì	149
+朱利	zhū lì	77
 朱良	zhū liáng	97
 朱玲	zhū líng	792
 朱令	zhū lìng	713
@@ -5177,6 +5179,8 @@ sort: by_weight
 黄循财	huáng xún cái	0
 黄亚生	huáng yà shēng	400
 黄炎培	huáng yán péi	369
+黄媛媛	huáng yuàn yuàn	288
+黄月华	huáng yuè huá	266
 黄智万	huáng zhì wàn	238
 黄志伟	huáng zhì wěi	159
 黄志文	huáng zhì wén	554
@@ -8171,6 +8175,8 @@ sort: by_weight
 刘海涛	liú hǎi tāo	276
 柳鹤亭	liǔ hè tíng	302
 刘和珍	liú hé zhēn	159
+刘宏斌	liú hóng bīn	64
+刘红兵	liú hóng bīng	53
 刘洪波	liú hóng bō	166
 刘鸿儒	liú hóng rú	48
 刘鸿生	liú hóng shēng	37
@@ -10467,6 +10473,8 @@ sort: by_weight
 王翠英	wáng cuì yīng	25
 王大宝	wáng dà bǎo	51
 王大川	wáng dà chuān	1507
+汪大东	wāng dà dōng	378
+汪达尔	wāng dá ěr	688
 王大凡	wáng dà fán	63
 王大方	wáng dà fang	32
 王大富	wáng dà fù	64
@@ -10792,6 +10800,7 @@ sort: by_weight
 王建庆	wáng jiàn qìng	37
 王建荣	wáng jiàn róng	52
 王建生	wáng jiàn shēng	36
+汪剑通	wāng jiàn tōng	13
 王建伟	wáng jiàn wěi	106
 王建文	wáng jiàn wén	61
 王建武	wáng jiàn wǔ	33
@@ -10884,6 +10893,7 @@ sort: by_weight
 王凯旋	wáng kǎi xuán	198
 王闿运	wáng kǎi yùn	264
 王康明	wáng kāng míng	43
+汪克尔	wāng kè ěr	508
 王可可	wáng kě kě	340
 王克敏	wáng kè mǐn	71
 王柯敏	wáng kē mǐn	49
@@ -10970,6 +10980,9 @@ sort: by_weight
 王鲁彦	wáng lǔ yàn	27
 王路易	wáng lù yì	113
 王洛勇	wáng luò yǒng	67
+汪绿萍	wāng lǜ píng	234
+汪曼春	wāng màn chūn	495
+汪曼玲	wāng màn líng	256
 王满银	wáng mǎn yín	264
 王莽篡	wáng mǎng cuàn	284
 王莽岭	wáng mǎng lǐng	202
@@ -11825,6 +11838,7 @@ sort: by_weight
 王子今	wáng zǐ jīn	56
 王子君	wáng zǐ jūn	350
 王子里	wáng zǐ lǐ	58
+汪紫菱	wāng zǐ líng	243
 王子龙	wáng zǐ lóng	49
 王子鸣	wáng zǐ míng	65
 王子明	wáng zǐ míng	53
@@ -13892,6 +13906,7 @@ sort: by_weight
 余昌军	yú chāng jūn	238
 余长明	yú cháng míng	207
 余楚媛	yú chǔ yuàn	243
+俞岱岩	yú dài yán	261
 余德宝	yú dé bǎo	378
 余德龙	yú dé lóng	261
 余得水	yú dé shuǐ	338
@@ -13899,6 +13914,7 @@ sort: by_weight
 余东风	yú dōng fēng	216
 余东雄	yú dōng xióng	274
 余多多	yú duō duō	2792
+俞放鹤	yú fàng hè	364
 余桂英	yú guì yīng	76
 余国伟	yú guó wěi	543
 余海龙	yú hǎi lóng	201
@@ -13919,8 +13935,10 @@ sort: by_weight
 余俊贤	yú jùn xián	306
 余立奎	yú lì kuí	189
 余丽桥	yú lì qiáo	270
+俞莲舟	yú lián zhōu	493
 余良卿	yú liáng qīng	220
 余明生	yú míng shēng	288
+俞佩玉	yú pèi yù	585
 余佩真	yú pèi zhēn	266
 余鹏飞	yú péng fēi	378
 余倩雯	yú qiàn wén	279
@@ -13946,6 +13964,7 @@ sort: by_weight
 余心乐	yú xīn lè	91
 余欣沛	yú xīn pèi	364
 余欣荣	yú xīn róng	544
+俞秀莲	yú xiù lián	132
 余亚莲	yú yà lián	153
 余泱漪	yú yāng yī	29
 余奕沛	yú yì pèi	378
