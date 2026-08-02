@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.6.0-beta.4](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.3...v0.6.0-beta.4) (2026-08-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **lookup_filter:** use a single reverse lookup dictionary
+
+### Bug Fixes
+
+* correct Projection.load rule types ([0048c36](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0048c36ae03efa3936466bab84597e665675d1bf))
+* **utils:** correct magic character escaping in escape_for_pattern ([7fc6aac](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7fc6aacb6524047db8751b6a480526251d880e29))
+
+
+### Performance Improvements
+
+* **lookup_filter:** short-circuit lookup data sources ([282d5e6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/282d5e66c103a497b18df2721e20861935b0b7cf))
+* **lookup_filter:** smarter lookup cache eviction via segmented hot/cold cache ([67788dd](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/67788dd60524a0f9902a54f4ac5786c4f6df572c))
+
+
+### Code Refactoring
+
+* **lookup_filter:** use a single reverse lookup dictionary ([1507442](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/150744249f48443b95b29c717dc259a6fdc9ee18))
+
 ## [0.6.0-beta.3](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.2...v0.6.0-beta.3) (2026-07-07)
 
 
