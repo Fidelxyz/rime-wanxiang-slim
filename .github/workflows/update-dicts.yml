@@ -113,3 +113,31 @@ jobs:
           repository: ${{ github.event.repository.name }}
           commit_message: "chore(dicts): Update dictionaries to ${{ steps.upstream-latest-tag.outputs.tag }} from upstream"
           commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
+  sync-release-pr:
+    runs-on: ubuntu-latest
+    needs: update-schema-dicts
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Rebase the release-please PR branch onto the latest main
+        run: |-
+          set -euxo pipefail
+
+          pr_branch="release-please--branches--${GITHUB_REF_NAME}"
+
+          if ! git fetch origin "${pr_branch}"; then
+            echo "No release PR branch '${pr_branch}' yet; nothing to sync."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "${pr_branch}" "origin/${pr_branch}"
+          git rebase "origin/${GITHUB_REF_NAME}"
+          git push origin "${pr_branch}" --force
