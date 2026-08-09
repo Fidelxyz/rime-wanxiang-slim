@@ -18,8 +18,9 @@ MARKERS_TO_PINYIN_SCHEMAS = {
     ["Ⅺ"] = "自然龙",
     ["Ⅻ"] = "汉心龙",
     ["Ⅼ"] = "乱序17",
+    ["Ⅽ"] = "大牛双拼",
+    ["Ⅾ"] = "首道双拼",
     ["Ⅿ"] = "蓝天双拼",
-    ["ⅩⅢ"] = "首道双拼",
 }
 
 ---Auxiliary code schema markers to schema names mapping. The markers are defined in the algebra of each schema.
