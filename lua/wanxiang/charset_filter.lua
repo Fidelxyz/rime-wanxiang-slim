@@ -281,6 +281,12 @@ function M.func(input, env)
             goto continue
         end
 
+        -- Skip user-committed candidates (from user phrase/table dictionaries).
+        if cand.type == "user_phrase" or cand.type == "user_table" then
+            yield(cand)
+            goto continue
+        end
+
         -- Drop any candidate (single character or phrase) that contains an uncommon character.
         if is_text_allowed(text, active_rules, state) then
             yield(cand)
