@@ -178,11 +178,11 @@ grammar:
 # 自定义短语
 custom_phrase:
   dictionary: ""
-  user_dict: custom_phrase  #需要手动创建 custom_phrase.txt 文件
-  db_class: stabledb  #可设 tabledb〔文本〕或 userdb〔二进制〕
-  enable_completion: false  #补全提示
-  enable_sentence: false  #禁止造句
-  initial_quality: 99  #custom_phrase 的权重应该比 pinyin 和 wanxiang_en 大
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 99
 
 wanxiang_english:
   dictionary: wanxiang_english
@@ -199,7 +199,7 @@ wanxiang_mixedcode:
   enable_completion: true
   enable_sentence: false
   initial_quality: 2
-  comment_format:  #这里很重要如果残留带声调字母，剩余编码提示计算出错引发程序崩溃
+  comment_format:
     - xform/.*//
 
 # 部件拆字反查
@@ -311,10 +311,10 @@ candidate_type_marker:
 
 # 以词定字
 character_selector:
-  # 选择首个字符的按键。支持按键表达式（如 bracketleft）。
+  # 选择候选首个字符的按键。支持按键表达式（如 bracketleft）。
   select_first_key: "["
 
-  # 选择末尾字符的按键。支持按键表达式（如 bracketleft）。
+  # 选择候选末尾字符的按键。支持按键表达式（如 bracketleft）。
   select_last_key: "]"
 
 keypad_composer:

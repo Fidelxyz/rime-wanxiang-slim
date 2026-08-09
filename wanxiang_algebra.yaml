@@ -3123,7 +3123,6 @@ mixed:
 
 english:
   - derive|^(.{1,3})$|$1/|
-  # 派生无单个特殊字符的拼写
   - derive/[.]//
   - derive/[+]//
   - derive/[@]//
@@ -3134,73 +3133,77 @@ english:
   - derive/^./\U$0/
   - derive/^([a-z]{2})/\U$1/
 
+### 模糊音 ###
+
+# 模糊音：n - l
 模糊音_nl:
   __append:
-    # n - l
     - derive/^l/n
     - derive/^n/l
 
+# 模糊音：r - y
 模糊音_ry:
   __append:
-    # r - y 开头
     - derive/^y/r
     - derive/^r/y
 
+# 模糊音：h - f
 模糊音_hf:
   __append:
-    # h - f 开头
     - derive/^h/f
     - derive/^f/h
 
+# 模糊音：r - l
 模糊音_rl:
   __append:
-    # r - l 开头
     - derive/^r/l
     - derive/^l/r
 
+# 模糊音：k - g
 模糊音_kg:
   __append:
-    # k - g 开头
     - derive/^k/g
     - derive/^g/k
 
+# 模糊音：en - eng
 模糊音_en_eng:
   __append:
-    # en - eng
     - derive/(ē|é|ě|è|e)ng(.*)$/$1n$2
     - derive/(ē|é|ě|è|e)n([^g].*)?$/$1ng$2
 
+# 模糊音：in - ing
 模糊音_in_ing:
   __append:
-    # in - ing
     - derive/(ī|í|ǐ|ì|i)ng(.*)$/$1n$2
     - derive/(ī|í|ǐ|ì|i)n([^g].*)?$/$1ng$2
 
+# 模糊音：c - ch
 模糊音_c_ch:
   __append:
-    # c - ch
     - derive/^ch/c
     - derive/^c([^h]*)/ch$1
 
+# 模糊音：z - zh
 模糊音_z_zh:
   __append:
-    # z - zh
     - derive/^zh/z
     - derive/^z([^h]*)/zh$1
 
+# 模糊音：s - sh
 模糊音_s_sh:
   __append:
-    # s - sh
     - derive/^sh/s
     - derive/^s([^h]*)/sh$1
 
-#特殊优化：部分音节字极少，几乎不参与构词，则提升对应四码字的优先级，仅对小鹤双拼有效，其他双拼方案需作对应修改）
+### 针对特定方案的候选排序优化 ###
+
+# 针对小鹤双拼方案的候选排序优化。部分编码组合对应候选字极少，几乎不参与构词，对此类编码提升对应四码字的优先级。
 小鹤双拼提权:
   __append:
     - derive/^(.*?)(\d?);(bl|dx|df|eg|fn|kw|ny|tw|vw|yd|rx|fs|ix|eq)$/$1$3/
     - derive/^(.*?)(\d?);.*?,(bl|dx|df|eg|fn|kw|ny|tw|vw|yd|rx|fs|ix|eq)$/$1$3/
 
-#特殊优化：部分音节字极少，几乎不参与构词，则提升对应四码字的优先级，仅对自然码有效，其他双拼方案需作对应修改）
+# 针对自然码双拼方案的候选排序优化。部分编码组合对应候选字极少，几乎不参与构词，对此类编码提升对应四码字的优先级。
 自然码提权:
   __append:
     - derive/^(.*?)(\d?);(jb|wq|aq|av|dn|xh|bv|jz|hm|sn|cd|iw|xl|ak|zy|fy|uz|yx|wb|wr|yw|qz|ms|at|xf|gi|gn|or|ux|ww|nw|fs|qk|rl|cq|sw|jv|cy|sq|dd|fp|ae|ix|td|ep|ar|wm|pd|et|yz|eh|ct|os|hx|zq|ew|fm|ab|kc|tf|fx|we|sz|wx|bq|ic|ez|bs|ej|oh|ps|pw|fr|pq|au|wc|wp|dt|qf|zc|vx|im|br|mw|un|qb|fi|zm|vn|oz|kt|rq|ay|fn|yc|um|eq|eu|cz|yq|tq|oi|ek|az|fv|zx|ut|vz|ry|ac|ws|af|qv|ea|qj|al|ol|on|sx|ap|df|eg|rz|ey|em|ag|hi|iz|ki|xz|xj|ad|ft|pt|op|vt|oj|kn|pr|hq|eb|ev|cx|zd|am|ov|oq|ym|ef|ot|mr|rd|sy|oc|rc|oe|fq|cn|ok|rn|bp|yv|uc|wk|oy|bt|je|ow|xg|jj|rw|pp|ja|wt|lf|xe|wy|kx|sm|qe|fw|gc|xa|cw|zn|tn|cc|jo|md|sd|ql|kq|it|bd|sc|wv|fc|dw|ob|vm|ed|jl|xo|fl|gq|gt|of|pv|wd|qa|xk|yd|fe|og|iq|oa|uq|om|xv|mv|as|ox|km|zt|od|ht|el|hn|st|wn|mt|wi|tz|aj|yg|bw|jf|jg|kz|es|xb|ax|rt|gx|bb|qo|yf|ex|rx|tt|us|qg|pe|zw|mp|qh|rm|hc|np|jh|cm|yl|eo|ra|vc|aw|tw|fk|gm|ec|be|vq|fd|jk|in)$/$1$3/

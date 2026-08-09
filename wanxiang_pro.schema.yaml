@@ -187,7 +187,7 @@ custom_phrase:
   db_class: stabledb
   enable_completion: false
   enable_sentence: false
-  initial_quality: 99  # custom_phrase 的权重应该比 pinyin 和 wanxiang_en 大
+  initial_quality: 99
 
 wanxiang_english:
   dictionary: wanxiang_english
@@ -204,7 +204,7 @@ wanxiang_mixedcode:
   enable_completion: true
   enable_sentence: false
   initial_quality: 2
-  comment_format:  #这里很重要如果残留带声调字母，剩余编码提示计算出错引发程序崩溃
+  comment_format:
     - xform/.*//
 
 # 部件拆字反查
@@ -222,8 +222,8 @@ user_dict:
   enable_completion: false
   enable_sentence: false
   contextual_suggestions: false
-  core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
-  max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重
+  core_word_length: 4
+  max_word_length: 7
   max_homophones: 8
   spelling_hints: 50
   always_show_comments: true
