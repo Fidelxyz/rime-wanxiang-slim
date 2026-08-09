@@ -3136,31 +3136,31 @@ english:
 ### 模糊音 ###
 
 # 模糊音：n - l
-模糊音_nl:
+模糊音_n_l:
   __append:
     - derive/^l/n
     - derive/^n/l
 
 # 模糊音：r - y
-模糊音_ry:
+模糊音_r_y:
   __append:
     - derive/^y/r
     - derive/^r/y
 
 # 模糊音：h - f
-模糊音_hf:
+模糊音_h_f:
   __append:
     - derive/^h/f
     - derive/^f/h
 
 # 模糊音：r - l
-模糊音_rl:
+模糊音_r_l:
   __append:
     - derive/^r/l
     - derive/^l/r
 
 # 模糊音：k - g
-模糊音_kg:
+模糊音_k_g:
   __append:
     - derive/^k/g
     - derive/^g/k
