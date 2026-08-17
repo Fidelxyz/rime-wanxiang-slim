@@ -35,7 +35,7 @@ def run_command(cmd: list[str]) -> tuple[int, list[str]]:
     lines: list[str] = []
     assert process.stdout is not None
     for line in process.stdout:
-        print(line, end="")
+        print(line, end="", flush=True)
         lines.append(line.rstrip("\n"))
 
     returncode = process.wait()
