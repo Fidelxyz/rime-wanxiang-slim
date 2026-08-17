@@ -143,11 +143,13 @@ lookup_filter:
   # 反查引导符，需添加至 speller/alphabet。
   trigger: "`"
 
-  # 反查数据库。
-  dict: wanxiang_reverse
+  # 反查词典。
+  dictionary: wanxiang_reverse
 
   # 反查数据来源及顺序。
-  # aux: 词库携带的辅助码。
-  # db: 反查方案数据库。
-  data_source: [aux, db]
+  # aux_code: 词库携带的辅助码。
+  # dictionary: 反查词典。
+  sources:
+    - aux_code
+    - dictionary
 ```

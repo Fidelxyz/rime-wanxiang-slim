@@ -3,12 +3,12 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@alias LookupDataSource "aux"|"db"
+---@alias LookupSource "aux_code"|"dictionary"
 
 ---@class LookupFilterConfig
 ---@field tags string[]
 ---@field trigger string?
----@field data_sources LookupDataSource[]
+---@field sources LookupSource[]
 ---@field reverse_lookup ReverseLookup?
 ---@field component_projection Projection?
 ---@field stroke_projection Projection?
@@ -479,34 +479,34 @@ function F.init(env)
         trigger = nil
     end
 
-    ---@type LookupDataSource[]
-    local data_sources = {}
-    local data_sources_len = 0
-    ---@type table<LookupDataSource, boolean>
-    local seen_data_sources = {}
-    local has_db_source = false
-    local has_aux_source = false
-    local sources_list_item = cfg_root and cfg_root:get("data_source")
+    ---@type LookupSource[]
+    local sources = {}
+    local sources_len = 0
+    ---@type table<LookupSource, boolean>
+    local seen_sources = {}
+    local has_dictionary_source = false
+    local has_aux_code_source = false
+    local sources_list_item = cfg_root and cfg_root:get("sources")
     local sources_list = sources_list_item and sources_list_item:get_list()
     if sources_list then
         for i = 0, sources_list.size - 1 do
             local source_val = sources_list:get_value_at(i)
             local source = source_val and source_val:get_string()
-            if source ~= "aux" and source ~= "db" then
+            if source ~= "aux_code" and source ~= "dictionary" then
                 goto continue
             end
-            if seen_data_sources[source] then
+            if seen_sources[source] then
                 goto continue
             end
 
-            seen_data_sources[source] = true
-            data_sources_len = data_sources_len + 1
-            data_sources[data_sources_len] = source
+            seen_sources[source] = true
+            sources_len = sources_len + 1
+            sources[sources_len] = source
 
-            if source == "aux" then
-                has_aux_source = true
+            if source == "aux_code" then
+                has_aux_code_source = true
             else
-                has_db_source = true
+                has_dictionary_source = true
             end
 
             ::continue::
@@ -519,12 +519,12 @@ function F.init(env)
     local component_projection = nil
     ---@type Projection?
     local stroke_projection = nil
-    if has_db_source then
-        local db_val = cfg_root and cfg_root:get_value("dict")
-        local db_name = db_val and db_val:get_string()
-        if db_name and db_name ~= "" then
-            reverse_lookup = ReverseLookup(db_name)
-            local component_rules, stroke_rules = parse_schema_rules(db_name)
+    if has_dictionary_source then
+        local dict_val = cfg_root and cfg_root:get_value("dictionary")
+        local dict_name = dict_val and dict_val:get_string()
+        if dict_name and dict_name ~= "" then
+            reverse_lookup = ReverseLookup(dict_name)
+            local component_rules, stroke_rules = parse_schema_rules(dict_name)
             if #component_rules > 0 then
                 component_projection = Projection()
                 component_projection:load(component_rules)
@@ -538,7 +538,7 @@ function F.init(env)
 
     ---@type string?
     local comment_split_pattern = nil
-    if has_aux_source then
+    if has_aux_code_source then
         local delimiter = rime_config:get_string("speller/delimiter") or " '"
         if delimiter == "" then
             delimiter = " "
@@ -572,7 +572,7 @@ function F.init(env)
     env.lookup_filter_config = {
         tags = tags,
         trigger = trigger,
-        data_sources = data_sources,
+        sources = sources,
         reverse_lookup = reverse_lookup,
         component_projection = component_projection,
         stroke_projection = stroke_projection,
@@ -647,8 +647,8 @@ function F.func(translation, env)
 
         ---@type boolean
         local matched = false
-        for _, source in ipairs(config.data_sources) do
-            if source == "aux" then
+        for _, source in ipairs(config.sources) do
+            if source == "aux_code" then
                 if not config.comment_split_pattern then
                     goto continue
                 end
@@ -676,7 +676,7 @@ function F.func(translation, env)
                 else
                     matched = match_fuzzy_recursive(codes_sequence, 1, aux_code, 1, {}, false)
                 end
-            else -- if source == "db" then
+            else -- if source == "dictionary" then
                 if not config.reverse_lookup then
                     goto continue
                 end
@@ -760,7 +760,7 @@ function F.tags_match(segment, env)
     local config = env.lookup_filter_config
     assert(config)
 
-    if not config.trigger or next(config.data_sources) == nil then
+    if not config.trigger or next(config.sources) == nil then
         return false
     end
 
