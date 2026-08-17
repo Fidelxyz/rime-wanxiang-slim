@@ -76,6 +76,9 @@ deploy:
       # Emoji
       - send: haha
         assert: cand[2].text ~= "😄"
+      # Charset Filter
+      - send: ei
+        assert: has_cand("诶")
       # Unicode
       - send: U4f60
         assert: "eq(cand[1].text, '你') and eq(cand[1].comment, 'U4F60') and eq(cand[2].text, '\U0004F600') and eq(cand[2].comment, 'U4F60~0')"
@@ -135,6 +138,13 @@ deploy:
     tests:
       - send: ni
         assert: eq(cand[1].text, "你") and eq(cand[1].comment, "亻尔 re")
+
+  charset-filter:
+    options:
+      charset_filter: true
+    tests:
+      - send: ei
+        assert: not has_cand("诶")
 
   user-dict:
     tests:
