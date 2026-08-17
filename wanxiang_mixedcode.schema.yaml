@@ -20,7 +20,7 @@ engine:
 
 speller:
   algebra:
-    __include: wanxiang_algebra:/mixed/通用派生规则
+    __include: wanxiang_algebra:/mixed/common
     __patch: wanxiang_algebra:/mixed/全拼
 
 translator:
