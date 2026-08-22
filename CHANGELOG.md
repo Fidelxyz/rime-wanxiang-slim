@@ -1,5 +1,53 @@
 # Changelog
 
+## [0.6.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0...v0.6.0) (2026-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **lookup_filter:** rename lookup_filter config options
+* **algebra:** rename fuzzy input algebras
+* **charset_filter:** reorganize charset filter config
+* **lookup_filter:** use a single reverse lookup dictionary
+* remove automatic english spacing
+* **english_user_dict_appender:** unify trigger for chinese and english user dict appender
+* **comment_hint_displayer:** refactor super_comment
+
+### Features
+
+* **candidate_pinner:** add candidate pinner ([bd4efaa](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bd4efaa59be965d553be5fc5571c6f65020a4b54))
+* **user_dict_appender:** drop sentence candidate and always show tips in word creation mode ([e8d3fbc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/e8d3fbc6c1e86dacdb9ac2b6365f547ce99e26b0))
+* **version_displayer:** add version displayer ([055333c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/055333cf96214ee29c2326756a82e2cf35daa1dd))
+
+
+### Bug Fixes
+
+* **build:** skip processing for excluded dicts ([eee70d4](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/eee70d44248c5594c95474dee92f1c8a125426f8))
+* **charset_filter:** skip charset filtering for user dictionary candidates ([ecb8736](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ecb8736e5cddb38c009426c7e6b02dda93390a2e))
+* correct Projection.load rule types ([0048c36](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/0048c36ae03efa3936466bab84597e665675d1bf))
+* fix incorrect type annotation in librime contrib ([2bd92ca](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2bd92ca757158a8238d4f05dd854d800155acbff))
+* fix librime-lua stub ([8b073da](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/8b073da7f95dcdb2e8612db84e4cc1ac78201173))
+* flush subprocess output in mira_report for real-time display ([fe8d0e1](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/fe8d0e1f9cbd13b71d63161a55ce66f70b6cca80))
+* **utils:** correct magic character escaping in escape_for_pattern ([7fc6aac](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7fc6aacb6524047db8751b6a480526251d880e29))
+
+
+### Performance Improvements
+
+* **lookup_filter:** short-circuit lookup data sources ([282d5e6](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/282d5e66c103a497b18df2721e20861935b0b7cf))
+* **lookup_filter:** smarter lookup cache eviction via segmented hot/cold cache ([67788dd](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/67788dd60524a0f9902a54f4ac5786c4f6df572c))
+* optimize list appending operations ([81e1e32](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/81e1e32f61c2b2af0314d1a9bcdf530c0a11e484))
+
+
+### Code Refactoring
+
+* **algebra:** rename fuzzy input algebras ([58c9701](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/58c9701a7f88777e0991eb11f724498241633c9f))
+* **charset_filter:** reorganize charset filter config ([1b808b9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1b808b987d0e520f302edb2079750a2a51f010bf))
+* **comment_hint_displayer:** refactor super_comment ([9c0f440](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c0f44077e447b633701541fde8699c7c37b7ce2))
+* **english_user_dict_appender:** unify trigger for chinese and english user dict appender ([a628cc0](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/a628cc090951f3c9f23b00df93f394e69b8774d3))
+* **lookup_filter:** rename lookup_filter config options ([79b5038](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/79b5038d757a510a9e89c320451aa295055fb17a))
+* **lookup_filter:** use a single reverse lookup dictionary ([1507442](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/150744249f48443b95b29c717dc259a6fdc9ee18))
+* remove automatic english spacing ([34358ab](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/34358ab77a30226236a8b30049916505d2e4481a))
+
 ## [0.6.0-beta.4](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0-beta.3...v0.6.0-beta.4) (2026-08-02)
 
 
