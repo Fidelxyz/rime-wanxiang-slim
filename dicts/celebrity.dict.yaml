@@ -1,0 +1,5847 @@
+# Rime dictionary
+# encoding: utf-8
+#
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/mingren.dict.yaml
+# Copyright (c) amzxyz, licensed under CC BY 4.0.
+---
+name: celebrity
+version: "17.0.3"
+sort: by_weight
+...
+边亮	biān;lz liàng;wj	238
+蔡畅	cài;cx chàng;lv	512
+蔡锷	cài;cx è;jk	223
+蔡孚	cài;cx fú;pz	35
+蔡京	cài;cx jīng;wx	797
+蔡戡	cài;cx kān;ch	1496
+蔡澜	cài;cx lán;um	128
+蔡伦	cài;cx lún;rr	144
+蔡瑁	cài;cx mào;wl	90
+蔡薿	cài;cx nǐ;cr	35
+蔡奇	cài;cx qí;ls	444
+蔡牵	cài;cx qiān;ls	407
+蔡确	cài;cx què;bg	500
+蔡伸	cài;cx shēn;rl	239
+蔡襄	cài;cx xiāng;wd	105
+蔡琰	cài;cx yǎn;wq	15
+蔡阳	cài;cx yáng;el	508
+蔡邕	cài;cx yōng;vv	664
+蔡泽	cài;cx zé;uy	558
+曹昂	cáo;hl áng;ls	706
+曹彬	cáo;hl bīn;mp	345
+曹豳	cáo;hl bīn;ss	202
+曹参	cáo;hl cān;ip	955
+曹操	cáo;hl cāo;fk	39350
+曹冲	cáo;hl chōng;dk	1127
+曹娥	cáo;hl é;np	6
+曹芳	cáo;hl fāng;cp	963
+曹洪	cáo;hl hóng;uc	1049
+曹姬	cáo;hl jī;nh	127
+曹节	cáo;hl jié;cs	216
+曹军	cáo;hl jūn;dc	1181
+曹锟	cáo;hl kūn;jl	878
+曹刘	cáo;hl liú;wo	95
+曹髦	cáo;hl máo;hv	684
+曹丕	cáo;hl pī;hh	979
+曹仁	cáo;hl rén;rh	2574
+曹叡	cáo;hl ruì;	828
+曹睿	cáo;hl ruì;sl	787
+曹爽	cáo;hl shuǎng;hd	917
+曹松	cáo;hl sōng;mb	374
+曹嵩	cáo;hl sōng;gk	194
+曹唐	cáo;hl táng;xk	302
+曹襄	cáo;hl xiāng;wd	17
+曹休	cáo;hl xiū;rm	1504
+曹邺	cáo;hl yè;se	60
+曹寅	cáo;hl yín;bb	684
+曹禺	cáo;hl yú;ld	301
+曹宇	cáo;hl yǔ;bs	240
+曹缘	cáo;hl yuán;iv	536
+曹彰	cáo;hl zhāng;wp	932
+曹真	cáo;hl zhēn;fb	824
+曹植	cáo;hl zhí;mf	643
+陈安	chén;eh ān;bn	1120
+陈策	chén;eh cè;gd	580
+陈诚	chén;eh chéng;ah	160
+陈到	chén;eh dào;ho	142
+陈登	chén;eh dēng;vh	295
+陈赓	chén;eh gēng;xb	484
+陈宫	chén;eh gōng;bk	534
+陈光	chén;eh guāng;sv	1166
+陈珪	chén;eh guī;wt	58
+陈矫	chén;eh jiǎo;pp	48
+陈菊	chén;eh jú;cj	783
+陈亮	chén;eh liàng;wj	837
+陈漫	chén;eh màn;ul	489
+陈美	chén;eh měi;dl	994
+陈欧	chén;eh ōu;hg	783
+陈群	chén;eh qún;vd	761
+陈睿	chén;eh ruì;sl	647
+陈深	chén;eh shēn;ud	846
+陈胜	chén;eh shèng;yp	318
+陈寿	chén;eh shòu;hc	1007
+陈泰	chén;eh tài;hu	375
+陈汤	chén;eh tāng;uv	658
+陈豨	chén;eh xī;hc	40
+陈毅	chén;eh yì;wj	612
+陈仪	chén;eh yí;rd	312
+陈馀	chén;eh yú;sr	71
+陈云	chén;eh yún;hi	1052
+陈朝	chén;eh zhāo;fy	950
+陈真	chén;eh zhēn;fb	1083
+陈轸	chén;eh zhěn;cr	40
+陈祗	chén;eh zhī;dp	31
+种谔	chóng;ek è;ak	11
+楚王	chǔ;mr wáng;wh	178
+崔澹	cuī;gq dàn;ug	205
+崔涤	cuī;gq dí;uw	509
+崔峒	cuī;gq dòng;gs	193
+崔藩	cuī;gq fān;cu	45
+崔恭	cuī;gq gōng;cx	323
+崔瓘	cuī;gq guàn;wc	288
+崔珪	cuī;gq guī;wt	252
+崔浩	cuī;gq hào;up	110
+崔颢	cuī;gq hào;lh	94
+崔橹	cuī;gq lǔ;mg	83
+崔璞	cuī;gq pú;ws	171
+崔琦	cuī;gq qí;wl	616
+崔翘	cuī;gq qiào;hh	230
+崔融	cuī;gq róng;ho	387
+崔湜	cuī;gq shí;ul	209
+崔曙	cuī;gq shǔ;ls	572
+崔枢	cuī;gq shū;mh	161
+崔涂	cuī;gq tú;ur	279
+崔铉	cuī;gq xuàn;jw	387
+崔琰	cuī;gq yǎn;wq	170
+崔郾	cuī;gq yǎn;he	7
+崔液	cuī;gq yè;uw	209
+崔膺	cuī;gq yīng;xy	26
+崔杼	cuī;gq zhù;mv	148
+戴妃	dài;fb fēi;nv	135
+戴进	dài;fb jìn;hz	139
+戴军	dài;fb jūn;dc	756
+戴逵	dài;fb kuí;tz	423
+戴笠	dài;fb lì;gh	445
+戴琳	dài;fb lín;wm	729
+戴旭	dài;fb xù;pl	529
+戴震	dài;fb zhèn;yd	639
+戴宗	dài;fb zōng;bx	1192
+邓艾	dèng;ye ài;cc	3350
+邓迪	dèng;ye dí;sz	451
+邓飞	dèng;ye fēi;vd	706
+邓公	dèng;ye gōng;bi	729
+邓华	dèng;ye huá;rf	42
+邓肯	dèng;ye kěn;sy	4195
+邓铿	dèng;ye kēng;js	436
+邓肃	dèng;ye sù;vd	116
+邓绥	dèng;ye suí;ip	450
+邓通	dèng;ye tōng;vz	621
+邓拓	dèng;ye tuò;fb	585
+邓禹	dèng;ye yǔ;pd	630
+邓愈	dèng;ye yù;rx	271
+邓芝	dèng;ye zhī;cd	567
+邓骘	dèng;ye zhì;eh	364
+邓陟	dèng;ye zhì;es	35
+邓忠	dèng;ye zhōng;kx	128
+丁度	dīng;hs dù;xy	450
+丁奉	dīng;hs fèng;hs	158
+丁复	dīng;hs fù;pw	418
+丁黼	dīng;hs fǔ;sh	205
+丁固	dīng;hs gù;sk	18
+丁兰	dīng;hs lán;dh	86
+丁磊	dīng;hs lěi;bb	1724
+丁玲	dīng;hs líng;wr	824
+丁满	dīng;hs mǎn;uc	66
+丁墨	dīng;hs mò;st	680
+丁宁	dīng;hs níng;bs	273
+丁谓	dīng;hs wèi;at	45
+丁蟹	dīng;hs xiè;go	212
+丁仪	dīng;hs yí;rd	412
+丁原	dīng;hs yuán;hx	90
+丁真	dīng;hs zhēn;fb	2123
+董卓	dǒng;ch zhuó;sf	4550
+樊川	fán;ml chuān;ps	88
+樊纲	fán;ml gāng;is	102
+范公	fàn;cu gōng;bi	192
+樊晃	fán;ml huǎng;lv	153
+范进	fàn;cu jìn;hz	931
+范雎	fàn;cu jū;sr	1559
+范宽	fàn;cu kuān;bv	598
+范蠡	fàn;cu lǐ;vo	646
+樊敏	fán;ml mǐn;pw	226
+范钦	fàn;cu qīn;jg	1
+樊瑞	fán;ml ruì;wg	567
+范睢	fàn;cu suī;lr	562
+范闲	fàn;cu xián;mm	112
+樊珣	fán;ml xún;wb	90
+范扬	fàn;cu yáng;fv	868
+范遥	fàn;cu yáo;pz	233
+范晔	fàn;cu yè;lr	445
+范瑛	fàn;cu yīng;wc	360
+范云	fàn;cu yún;hi	380
+范增	fàn;cu zēng;td	1011
+范曾	fàn;cu zēng;dl	960
+方腊	fāng;wp là;yc	441
+冯飞	féng;dv fēi;vd	765
+冯劫	féng;dv jié;tl	46
+冯轲	féng;dv kē;ch	1022
+冯仑	féng;dv lún;rv	332
+冯唐	féng;dv táng;xk	966
+顾城	gù;hh chéng;th	671
+顾况	gù;hh kuàng;dk	522
+关羽	guān;dl yǔ;vv	21571
+郭川	guō;we chuān;ps	1146
+郭淮	guō;we huái;ur	1032
+郭槐	guō;we huái;mp	466
+郭解	guō;we jiě;go	84
+郭巨	guō;we jù;hv	210
+郭开	guō;we kāi;hc	143
+郭隗	guō;we kuí;ep	83
+郭汜	guō;we sì;uv	478
+韩琮	hán;fh cóng;wb	320
+韩当	hán;fh dāng;sx	283
+韩非	hán;fh fēi;ss	398
+韩广	hán;fh guǎng;xp	94
+韩寒	hán;fh hán;bd	2157
+韩翃	hán;fh hóng;hv	468
+韩璜	hán;fh huáng;wc	122
+韩暨	hán;fh jì;xh	8
+韩绛	hán;fh jiàng;iw	44
+韩驹	hán;fh jū;vb	265
+韩琦	hán;fh qí;wl	655
+韩烁	hán;fh shuò;qp	732
+韩遂	hán;fh suì;dz	480
+韩王	hán;fh wáng;wh	2100
+韩信	hán;fh xìn;ra	1353
+韩休	hán;fh xiū;rm	139
+韩玄	hán;fh xuán;wi	164
+韩弇	hán;fh yǎn;rc	1
+韩愈	hán;fh yù;rx	2245
+韩昭	hán;fh zhāo;lo	639
+韩缜	hán;fh zhěn;if	342
+韩正	hán;fh zhèng;hh	178
+何常	hé;rh cháng;sj	252
+贺昌	hè;lb chāng;ll	244
+何澹	hé;rh dàn;ug	414
+何帆	hé;rh fān;jj	576
+何键	hé;rh jiàn;jv	76
+何鸾	hé;rh luán;wn	180
+何平	hé;rh píng;hf	13009
+何适	hé;rh shì;pz	32
+何瑭	hé;rh táng;wx	120
+何新	hé;rh xīn;wp	1089
+何晏	hé;rh yàn;ln	71
+何勇	hé;rh yǒng;vl	613
+何焯	hé;rh zhuó;qs	1094
+华妃	huà;rf fēi;nv	1428
+华歆	huà;rf xīn;wg	345
+华雄	huà;rf xióng;hr	622
+华胥	huà;rf xū;vy	112
+华筝	huà;rf zhēng;gs	624
+黄巢	huáng;cb cháo;vm	898
+黄福	huáng;cb fú;dh	1228
+黄盖	huáng;cb gài;dh	1730
+黄侃	huáng;cb kǎn;rk	104
+黄昆	huáng;cb kūn;lv	698
+黄筌	huáng;cb quán;gw	360
+黄歇	huáng;cb xiē;lg	652
+黄兴	huáng;cb xīng;db	50
+黄章	huáng;cb zhāng;wf	3126
+黄胄	huáng;cb zhòu;sy	1698
+黄自	huáng;cb zì;pl	632
+黄宗	huáng;cb zōng;bx	895
+霍查	huò;yq chá;mh	765
+霍达	huò;yq dá;lz	647
+霍都	huò;yq dōu;te	657
+霍顿	huò;yq dùn;hh	176
+霍金	huò;yq jīn;jh	3159
+霍峻	huò;yq jùn;gi	81
+霍弋	huò;yq yì;hd	29
+霍禹	huò;yq yǔ;pd	66
+江澄	jiāng;uh chéng;uv	68
+蒋川	jiǎng;cc chuān;ps	283
+蒋凡	jiǎng;cc fán;jd	650
+江藩	jiāng;uh fān;cu	286
+江妃	jiāng;uh fēi;nv	58
+蒋干	jiǎng;cc gàn;hf	949
+姜戈	jiāng;dn gē;hd	477
+江歌	jiāng;uh gē;hg	381
+江革	jiāng;uh gé;cs	157
+蒋公	jiǎng;cc gōng;bi	867
+蒋涣	jiǎng;cc huàn;ug	220
+蒋济	jiǎng;cc jì;uw	125
+姜皎	jiāng;dn jiǎo;pw	749
+江姐	jiāng;uh jiě;ns	386
+蒋捷	jiǎng;cc jié;fh	127
+姜夔	jiāng;dn kuí;dw	320
+江平	jiāng;uh píng;hf	286
+蒋钦	jiǎng;cc qīn;jg	182
+江青	jiāng;uh qīng;qy	125
+姜戎	jiāng;dn róng;hd	626
+蒋蓉	jiǎng;cc róng;ck	595
+姜尚	jiāng;dn shàng;sk	596
+姜涛	jiāng;dn tāo;uh	968
+蒋琬	jiǎng;cc wǎn;wb	121
+姜晞	jiāng;dn xī;lc	59
+蒋勋	jiǎng;cc xūn;kl	900
+江淹	jiāng;uh yān;ul	99
+姜岩	jiāng;dn yán;gb	89
+江永	jiāng;uh yǒng;dd	1513
+金九	jīn;jh jiǔ;pv	310
+金农	jīn;jh nóng;dd	878
+金庸	jīn;jh yōng;xs	2628
+金吒	jīn;jh zhā;kp	22
+孔辉	kǒng;zv huī;sd	221
+孔明	kǒng;zv míng;ly	3259
+孔丘	kǒng;zv qiū;ph	229
+孔融	kǒng;zv róng;ho	741
+孔笙	kǒng;zv shēng;gq	242
+孔宣	kǒng;zv xuān;bh	169
+孔夷	kǒng;zv yí;hd	110
+孔颙	kǒng;zv yóng;lh	4
+孔侑	kǒng;zv yòu;rh	128
+孔子	kǒng;zv zǐ;zh	12817
+李安	lǐ;mz ān;bn	1431
+李昂	lǐ;mz áng;ls	361
+李敖	lǐ;mz áo;qw	467
+李白	lǐ;mz bái;pl	5570
+李闯	lǐ;mz chuǎng;mh	1031
+厉兑	lì;hp duì;dv	290
+厉鹗	lì;hp è;kn	19
+李广	lǐ;mz guǎng;xp	1629
+李靖	lǐ;mz jìng;wq	401
+李傕	lǐ;mz jué;rd	728
+李逵	lǐ;mz kuí;tz	1400
+李悝	lǐ;mz kuī;xl	179
+李鹏	lǐ;mz péng;yn	197
+李儒	lǐ;mz rú;ry	134
+李斯	lǐ;mz sī;cp	3934
+李肃	lǐ;mz sù;vd	109
+厉王	lì;hp wáng;wh	872
+李卫	lǐ;mz wèi;vh	32
+李想	lǐ;mz xiǎng;mx	361
+李严	lǐ;mz yán;hp	1067
+李由	lǐ;mz yóu;sh	134
+李渔	lǐ;mz yú;ug	106
+李渊	lǐ;mz yuān;up	2895
+李治	lǐ;mz zhì;ui	5419
+林白	lín;mm bái;pl	819
+林彪	lín;mm biāo;sp	700
+林斌	lín;mm bīn;wh	670
+林逋	lín;mm bū;hz	97
+林超	lín;mm chāo;tk	896
+林冲	lín;mm chōng;dk	1451
+林聪	lín;mm cōng;hd	31
+林达	lín;mm dá;lz	326
+林旦	lín;mm dàn;lh	378
+林动	lín;mm dòng;hl	818
+林铎	lín;mm duó;jy	450
+林枫	lín;mm fēng;mp	952
+林皋	lín;mm gāo;pf	141
+林海	lín;mm hǎi;up	301
+林虎	lín;mm hǔ;sj	68
+林肯	lín;mm kěn;sy	3071
+林立	lín;mm lì;wh	1567
+林奈	lín;mm nài;lx	832
+林宁	lín;mm níng;bs	657
+林奇	lín;mm qí;ls	323
+林强	lín;mm qiáng;gk	157
+林全	lín;mm quán;rw	868
+林群	lín;mm qún;vd	986
+林森	lín;mm sēn;mm	122
+林申	lín;mm shēn;ls	309
+林殊	lín;mm shū;hp	790
+林纾	lín;mm shū;iv	749
+林涛	lín;mm tāo;uh	173
+林夕	lín;mm xī;pd	6855
+林希	lín;mm xī;cj	428
+林萧	lín;mm xiāo;cd	1017
+林燮	lín;mm xiè;ay	273
+林旭	lín;mm xù;pl	144
+林璎	lín;mm yīng;wb	632
+林藻	lín;mm zǎo;cu	279
+林昭	lín;mm zhāo;lo	675
+林植	lín;mm zhí;mf	316
+林钟	lín;mm zhōng;jk	504
+林洙	lín;mm zhū;up	45
+林滋	lín;mm zī;ud	224
+刘安	liú;wo ān;bn	811
+刘巴	liú;wo bā;vv	292
+刘邦	liú;wo bāng;he	30744
+刘备	liú;wo bèi;wt	32311
+刘濞	liú;wo bì;up	251
+刘辩	liú;wo biàn;wa	54
+刘表	liú;wo biǎo;qd	1700
+刘彻	liú;wo chè;rh	361
+刘德	liú;wo dé;rf	100
+刘肥	liú;wo féi;yv	221
+刘封	liú;wo fēng;tc	830
+刘馥	liú;wo fù;ep	63
+刘贺	liú;wo hè;lb	850
+刘鹤	liú;wo hè;dn	784
+刘恒	liú;wo héng;xh	879
+刘弘	liú;wo hóng;gi	61
+刘基	liú;wo jī;ct	546
+刘瑾	liú;wo jǐn;wc	342
+刘据	liú;wo jù;fs	120
+刘骏	liú;wo jùn;vi	76
+刘能	liú;wo néng;ip	157
+刘辟	liú;wo pì;sw	558
+刘琦	liú;wo qí;wl	810
+刘启	liú;wo qǐ;dk	138
+刘谦	liú;wo qiān;ad	326
+刘禅	liú;wo shàn;dd	5385
+刘劭	liú;wo shào;ol	54
+刘胜	liú;wo shèng;yp	850
+刘宋	liú;wo sòng;bm	898
+刘炜	liú;wo wěi;qh	73
+刘向	liú;wo xiàng;pk	248
+刘襄	liú;wo xiāng;wd	108
+刘勰	liú;wo xié;lt	1095
+刘协	liú;wo xié;fl	178
+刘歆	liú;wo xīn;wg	268
+刘玄	liú;wo xuán;wi	364
+刘琰	liú;wo yǎn;wq	144
+刘曜	liú;wo yào;lv	695
+刘繇	liú;wo yáo;pp	151
+刘晔	liú;wo yè;lr	335
+刘毅	liú;wo yì;wj	298
+刘廙	liú;wo yì;xb	16
+刘盈	liú;wo yíng;vh	157
+刘墉	liú;wo yōng;tx	150
+刘裕	liú;wo yù;db	620
+刘瑜	liú;wo yú;wr	496
+刘虞	liú;wo yú;sl	143
+刘源	liú;wo yuán;uh	122
+刘渊	liú;wo yuān;up	57
+刘璋	liú;wo zhāng;ww	273
+刘桢	liú;wo zhēn;ms	103
+刘仲	liú;wo zhòng;rk	64
+娄烨	lóu;jn yè;qr	241
+陆翱	lù;eh áo;pv	107
+陆川	lù;eh chuān;ps	251
+陆昊	lù;eh hào;ll	526
+陆机	lù;eh jī;mj	225
+陆绩	lù;eh jì;iq	144
+陆贾	lù;eh jiǎ;sb	292
+鲁炅	lǔ;gl jiǒng;lq	122
+陆慷	lù;eh kāng;xx	738
+陆康	lù;eh kāng;xu	260
+陆抗	lù;eh kàng;fw	208
+陆磊	lù;eh lěi;bb	522
+陆奇	lù;eh qí;ls	499
+陆叡	lù;eh ruì;	333
+陆压	lù;eh yā;hd	121
+陆扆	lù;eh yǐ;dd	20
+陆游	lù;eh yóu;uw	1426
+陆羽	lù;eh yǔ;vv	436
+陆云	lù;eh yún;hi	330
+陆终	lù;eh zhōng;iw	71
+罗本	luó;sd běn;mh	2136
+罗丹	luó;sd dān;ph	474
+罗敷	luó;sd fū;hw	81
+罗京	luó;sd jīng;wx	44
+罗兰	luó;sd lán;dh	2025
+罗琳	luó;sd lín;wm	1372
+罗曼	luó;sd màn;ly	471
+罗素	luó;sd sù;qi	103
+吕布	lǚ;kk bù;hj	1336
+吕公	lǚ;kk gōng;bi	1269
+吕后	lǚ;kk hòu;pk	1012
+吕嘉	lǚ;kk jiā;tk	1320
+吕克	lǚ;kk kè;fv	1003
+吕林	lǚ;kk lín;mm	210
+吕蒙	lǚ;kk méng;cd	1022
+吕尚	lǚ;kk shàng;sk	444
+吕渭	lǚ;kk wèi;ut	77
+吕温	lǚ;kk wēn;ul	372
+吕乂	lǚ;kk yì;cd	9
+吕岳	lǚ;kk yuè;pg	296
+吕雉	lǚ;kk zhì;pr	144
+吕祖	lǚ;kk zǔ;ds	734
+马岱	mǎ;vh dài;rg	800
+马戴	mǎ;vh dài;fb	512
+马登	mǎ;vh dēng;vh	404
+马恩	mǎ;vh ēn;sx	198
+马芳	mǎ;vh fāng;cp	74
+马逢	mǎ;vh féng;wz	104
+马钢	mǎ;vh gāng;js	9
+马汉	mǎ;vh hàn;uy	100
+马建	mǎ;vh jiàn;vd	620
+马凯	mǎ;vh kǎi;gj	129
+马勒	mǎ;vh lè;cl	2408
+马林	mǎ;vh lín;mm	376
+马麟	mǎ;vh lín;xj	300
+马隆	mǎ;vh lóng;ew	693
+马鸣	mǎ;vh míng;kn	701
+马奈	mǎ;vh nài;lx	120
+马融	mǎ;vh róng;ho	140
+马谡	mǎ;vh sù;at	160
+马太	mǎ;vh tài;ld	144
+马王	mǎ;vh wáng;wh	1108
+马武	mǎ;vh wǔ;hd	738
+马殷	mǎ;vh yīn;pj	666
+马原	mǎ;vh yuán;hx	6789
+马援	mǎ;vh yuán;fp	326
+马远	mǎ;vh yuǎn;hz	260
+马云	mǎ;vh yún;hi	15163
+马忠	mǎ;vh zhōng;kx	342
+马周	mǎ;vh zhōu;pk	45
+马祖	mǎ;vh zǔ;ds	138
+孟昶	mèng;zh chǎng;dl	60
+孟迟	mèng;zh chí;sz	197
+孟德	mèng;zh dé;rf	521
+孟珙	mèng;zh gǒng;wc	147
+孟贯	mèng;zh guàn;vb	144
+孟光	mèng;zh guāng;sv	38
+孟获	mèng;zh huò;cd	417
+孟简	mèng;zh jiǎn;gl	315
+孟郊	mèng;zh jiāo;we	173
+孟康	mèng;zh kāng;xu	508
+孟轲	mèng;zh kē;ch	131
+孟良	mèng;zh liáng;dd	788
+孟母	mèng;zh mǔ;vd	78
+孟起	mèng;zh qǐ;tv	151
+孟森	mèng;zh sēn;mm	621
+孟优	mèng;zh yōu;rh	68
+孟子	mèng;zh zǐ;zh	4179
+孟宗	mèng;zh zōng;bx	104
+缪斌	miào;iv bīn;wh	423
+穆旦	mù;ep dàn;lh	270
+穆迪	mù;ep dí;sz	128
+穆公	mù;ep gōng;bi	932
+穆青	mù;ep qīng;qy	29
+穆圣	mù;ep shèng;yt	646
+穆王	mù;ep wáng;wh	838
+穆宗	mù;ep zōng;bx	976
+聂耳	niè;hy ěr;hh	129
+聂风	niè;hy fēng;pc	163
+聂政	niè;hy zhèng;hw	135
+庞涓	páng;xd juān;uk	266
+裴漼	péi;sd cuǐ;ug	270
+裴迪	péi;sd dí;sz	50
+裴度	péi;sd dù;xy	157
+裴航	péi;sd háng;vw	356
+裴寂	péi;sd jì;by	524
+裴矩	péi;sd jǔ;ph	526
+裴潾	péi;sd lín;uj	101
+裴杞	péi;sd qǐ;mv	120
+裴潜	péi;sd qián;uh	12
+裴说	péi;sd shuō;ad	289
+裴休	péi;sd xiū;rm	720
+裴秀	péi;sd xiù;ep	684
+裴谞	péi;sd xū;av	207
+裴炎	péi;sd yán;qq	33
+裴贽	péi;sd zhì;fb	163
+齐妃	qí;ws fēi;nv	326
+齐浣	qí;ws huàn;ub	168
+戚姬	qī;hd jī;nh	9
+齐己	qí;ws jǐ;vv	7
+齐秦	qí;ws qín;he	681
+齐泰	qí;ws tài;hu	604
+齐王	qí;ws wáng;wh	1862
+乔巴	qiáo;ps bā;vv	1099
+乔丹	qiáo;ps dān;ph	14366
+乔峰	qiáo;ps fēng;gw	1441
+乔良	qiáo;ps liáng;dd	513
+乔琪	qiáo;ps qí;wc	116
+乔燃	qiáo;ps rán;qp	540
+乔石	qiáo;ps shí;bk	158
+乔叟	qiáo;ps sǒu;py	603
+乔托	qiáo;ps tuō;fp	670
+乔羽	qiáo;ps yǔ;vv	80
+乔治	qiáo;ps zhì;ui	11816
+秦刚	qín;he gāng;so	53
+秦观	qín;he guān;ys	600
+秦桧	qín;he huì;mr	3928
+秦晖	qín;he huī;ld	652
+秦嘉	qín;he jiā;tk	338
+秦君	qín;he jūn;vk	7058
+秦朗	qín;he lǎng;dy	100
+秦宓	qín;he mì;bd	138
+秦琼	qín;he qióng;ww	317
+秦升	qín;he shēng;pc	893
+秦王	qín;he wáng;wh	3202
+秦越	qín;he yuè;td	28
+秦钟	qín;he zhōng;jk	966
+秦仲	qín;he zhòng;rk	361
+仇英	qiú;rp yīng;cd	644
+冉闵	rǎn;sh mǐn;mc	502
+冉求	rǎn;sh qiú;hd	472
+冉有	rǎn;sh yǒu;hy	580
+阮籍	ruǎn;eh jí;gl	778
+阮瑀	ruǎn;eh yǔ;wp	85
+阮阅	ruǎn;eh yuè;mv	212
+邵华	shào;oe huá;rf	52
+邵谒	shào;oe yè;al	193
+邵雍	shào;oe yōng;wq	1816
+沈崇	shěn;ud chóng;gx	706
+沈飞	shěn;ud fēi;vd	1089
+沈复	shěn;ud fù;pw	80
+沈浩	shěn;ud hào;up	775
+沈晦	shěn;ud huì;lp	185
+沈括	shěn;ud kuò;fp	424
+沈炼	shěn;ud liàn;qh	691
+沈邈	shěn;ud miǎo;pz	93
+沈鹏	shěn;ud péng;yn	50
+沈约	shěn;ud yuē;ib	125
+沈周	shěn;ud zhōu;pk	166
+沈醉	shěn;ud zuì;sw	616
+施琅	shī;wp láng;wd	427
+施洋	shī;wp yáng;ud	109
+宋慈	sòng;bm cí;dx	341
+宋健	sòng;bm jiàn;rv	511
+宋江	sòng;bm jiāng;uh	1406
+宋柯	sòng;bm kē;mh	165
+宋濂	sòng;bm lián;ux	693
+宋平	sòng;bm píng;hf	688
+宋祁	sòng;bm qí;de	150
+宋万	sòng;bm wàn;hp	524
+宋琬	sòng;bm wǎn;wb	257
+宋雍	sòng;bm yōng;wq	332
+孙膑	sūn;zx bìn;yb	1834
+孙斌	sūn;zx bīn;wh	415
+孙策	sūn;zx cè;gd	3423
+孙恩	sūn;zx ēn;sx	107
+孙鲂	sūn;zx fáng;gw	153
+孙皓	sūn;zx hào;pp	345
+孙峻	sūn;zx jùn;gi	101
+孙科	sūn;zx kē;ed	881
+孙亮	sūn;zx liàng;wj	201
+孙乾	sūn;zx qián;fp	422
+孙权	sūn;zx quán;my	15687
+孙文	sūn;zx wén;wc	163
+孙武	sūn;zx wǔ;hd	1630
+孙吴	sūn;zx wú;kl	1450
+孙休	sūn;zx xiū;rm	684
+孙瑜	sūn;zx yú;wr	60
+滕飞	téng;yd fēi;vd	594
+王贲	wáng;wh bēn;fb	163
+王弼	wáng;wh bì;gh	308
+王勃	wáng;wh bó;fl	178
+王粲	wáng;wh càn;sj	530
+王充	wáng;wh chōng;wv	122
+王宠	wáng;wh chǒng;bd	97
+王丹	wáng;wh dān;ph	69
+王导	wáng;wh dǎo;vc	763
+王敦	wáng;wh dūn;ww	89
+王符	wáng;wh fú;gc	58
+王翰	wáng;wh hàn;fr	603
+王龁	wáng;wh hé;sp	198
+汪华	wāng;uw huá;rf	351
+汪晖	wāng;uw huī;ld	896
+王吉	wáng;wh jí;tk	148
+王基	wáng;wh jī;ct	118
+王绩	wáng;wh jì;iq	38
+王坚	wáng;wh jiān;st	222
+王健	wáng;wh jiàn;rv	97
+王翦	wáng;wh jiǎn;dh	77
+王建	wáng;wh jiàn;vd	48
+王朗	wáng;wh lǎng;dy	983
+王力	wáng;wh lì;lp	135
+王离	wáng;wh lí;wd	54
+汪伦	wāng;uw lún;rr	405
+王伦	wáng;wh lún;rr	307
+王莽	wáng;wh mǎng;cc	2926
+王猛	wáng;wh měng;qz	314
+王冕	wáng;wh miǎn;lv	850
+王宁	wáng;wh níng;bs	2292
+汪莘	wāng;uw shēn;cf	144
+王澍	wáng;wh shù;ut	449
+王朔	wáng;wh shuò;dy	996
+王肃	wáng;wh sù;vd	77
+王维	wáng;wh wéi;ir	279
+王微	wáng;wh wēi;rg	48
+王吸	wáng;wh xī;kp	78
+王献	wáng;wh xiàn;fl	832
+王祥	wáng;wh xiáng;dd	65
+王脩	wáng;wh xiū;rs	28
+王选	wáng;wh xuǎn;pz	141
+王衍	wáng;wh yǎn;ru	32
+王毅	wáng;wh yì;wj	279
+王垠	wáng;wh yín;tx	323
+王允	wáng;wh yǔn;iv	1022
+汪藻	wāng;uw zǎo;cu	378
+汪直	wāng;uw zhí;fh	204
+汪晫	wāng;uw zhuó;ls	4
+汪遵	wāng;uw zūn;dz	266
+王佐	wáng;wh zuǒ;rh	764
+魏东	wèi;ep dōng;hd	348
+魏扶	wèi;ep fú;fh	7
+卫瓘	wèi;vh guàn;wc	150
+魏宏	wèi;ep hóng;bi	157
+卫觊	wèi;vh jì;gs	7
+魏杰	wèi;ep jié;mq	12
+卫伉	wèi;vh kàng;rw	33
+魏克	wèi;ep kè;fv	135
+魏坤	wèi;ep kūn;tl	729
+魏明	wèi;ep míng;ly	1023
+魏谟	wèi;ep mó;ac	198
+魏朴	wèi;ep pǔ;ms	4
+魏杞	wèi;ep qǐ;mv	9
+卫青	wèi;vh qīng;qy	213
+魏冉	wèi;ep rǎn;sh	104
+魏收	wèi;ep shōu;vw	108
+魏斯	wèi;ep sī;cp	1152
+魏延	wèi;ep yán;pd	1598
+魏源	wèi;ep yuán;uh	514
+卫哲	wèi;vh zhé;fk	100
+卫臻	wèi;vh zhēn;hh	21
+魏征	wèi;ep zhēng;rh	527
+卫庄	wèi;vh zhuāng;xt	7028
+温格	wēn;ul gé;mw	424
+温公	wēn;ul gōng;bi	1197
+温侯	wēn;ul hóu;rv	134
+温恢	wēn;ul huī;xh	122
+温峤	wēn;ul jiào;gp	367
+温王	wēn;ul wáng;wh	612
+温宪	wēn;ul xiàn;bv	332
+吴澄	wú;kl chéng;uv	24
+吴凤	wú;kl fèng;py	168
+吴广	wú;kl guǎng;xp	584
+吴晗	wú;kl hán;lr	182
+吴汉	wú;kl hàn;uy	145
+吴宓	wú;kl mì;bd	67
+吴起	wú;kl qǐ;tv	222
+吴思	wú;kl sī;tx	238
+吴王	wú;kl wáng;wh	1111
+吴邪	wú;kl xié;he	411
+吴用	wú;kl yòng;ys	775
+吴子	wú;kl zǐ;zh	76
+奚斤	xī;pl jīn;ps	106
+奚仲	xī;pl zhòng;rk	540
+肖邦	xiāo;sy bāng;he	6180
+肖钢	xiāo;sy gāng;js	857
+肖红	xiāo;sy hóng;ih	150
+肖华	xiāo;sy huá;rf	92
+肖奈	xiāo;sy nài;lx	914
+肖钦	xiāo;sy qīn;jg	280
+肖全	xiāo;sy quán;rw	342
+肖扬	xiāo;sy yáng;fv	106
+萧绎	xiāo;cd yì;iy	36
+萧意	xiāo;cd yì;wx	2
+萧翼	xiāo;cd yì;vb	1
+肖鹰	xiāo;sy yīng;xn	28
+谢安	xiè;ap ān;bn	1048
+谢彬	xiè;ap bīn;mp	671
+谢丹	xiè;ap dān;ph	876
+谢端	xiè;ap duān;wg	705
+谢顿	xiè;ap dùn;hh	630
+谢飞	xiè;ap fēi;vd	176
+谢非	xiè;ap fēi;ss	158
+谢锋	xiè;ap fēng;jw	221
+谢公	xiè;ap gōng;bi	18
+谢赫	xiè;ap hè;tt	166
+谢华	xiè;ap huá;rf	661
+谢晦	xiè;ap huì;lp	73
+谢绛	xiè;ap jiàng;iw	361
+谢科	xiè;ap kē;ed	89
+谢薖	xiè;ap kē;	72
+谢朗	xiè;ap lǎng;dy	626
+谢磊	xiè;ap lěi;bb	303
+谢林	xiè;ap lín;mm	850
+谢懋	xiè;ap mào;mx	144
+谢邈	xiè;ap miǎo;pz	51
+谢平	xiè;ap píng;hf	31
+谢迁	xiè;ap qiān;pz	864
+谢尚	xiè;ap shàng;sk	584
+谢特	xiè;ap tè;pt	752
+谢添	xiè;ap tiān;uh	34
+谢伟	xiè;ap wěi;rh	435
+谢燮	xiè;ap xiè;ay	40
+谢玄	xiè;ap xuán;wi	179
+谢逊	xiè;ap xùn;zz	1890
+谢琰	xiè;ap yǎn;wq	424
+谢偃	xiè;ap yǎn;rh	161
+谢烨	xiè;ap yè;qr	125
+徐冰	xú;rr bīng;du	720
+徐晨	xú;rr chén;ld	742
+许褚	xǔ;ap chǔ;dt	1630
+徐达	xú;rr dá;lz	1743
+徐妃	xú;rr fēi;nv	172
+徐福	xú;rr fú;dh	336
+许负	xǔ;ap fù;gb	174
+徐晃	xú;rr huǎng;lv	304
+徐惠	xú;rr huì;hx	1071
+许浑	xǔ;ap hún;ud	477
+许稷	xǔ;ap jì;et	91
+许将	xǔ;ap jiāng;dp	83
+许靖	xǔ;ap jìng;wq	172
+徐克	xú;rr kè;fv	2631
+徐亮	xú;rr liàng;wj	364
+徐邈	xú;rr miǎo;pz	27
+徐明	xú;rr míng;ly	1064
+许慎	xǔ;ap shèn;xf	684
+徐盛	xú;rr shèng;hh	389
+徐庶	xú;rr shù;xq	356
+许棠	xǔ;ap táng;sm	602
+徐渭	xú;rr wèi;ut	376
+许仙	xǔ;ap xiān;rg	480
+徐翔	xú;rr xiáng;dv	276
+徐宣	xú;rr xuān;bh	20
+徐奕	xú;rr yì;wl	41
+许攸	xǔ;ap yōu;rs	182
+许由	xǔ;ap yóu;sh	104
+许哲	xǔ;ap zhé;fk	876
+薛霸	xuē;cf bà;yy	475
+薛逢	xuē;cf féng;wz	81
+薛刚	xuē;cf gāng;so	16
+薛稷	xuē;cf jì;et	25
+薛举	xuē;cf jǔ;ds	579
+薛据	xuē;cf jù;fs	64
+薛礼	xuē;cf lǐ;dv	102
+薛讷	xuē;cf nè;as	446
+薛能	xuē;cf néng;ip	1351
+薛蟠	xuē;cf pán;op	214
+薛绍	xuē;cf shào;io	915
+薛式	xuē;cf shì;hd	35
+薛燧	xuē;cf suì;qd	38
+薛涛	xuē;cf tāo;uh	680
+薛瑄	xuē;cf xuān;wb	13
+薛雪	xuē;cf xuě;yx	169
+薛洋	xuē;cf yáng;ud	170
+薛曜	xuē;cf yào;lv	64
+薛莹	xuē;cf yíng;cd	564
+薛岳	xuē;cf yuè;pg	112
+闫安	yán;mh ān;bn	440
+严彬	yán;hp bīn;mp	7
+闫芳	yán;mh fāng;cp	128
+阎防	yán;mh fáng;ew	32
+严复	yán;hp fù;pw	135
+阎罗	yán;mh luó;sd	195
+阎魔	yán;mh mó;xi	76
+燕青	yān;cq qīng;qy	364
+阎柔	yán;mh róu;vm	16
+燕顺	yān;cq shùn;ph	616
+严嵩	yán;hp sōng;gk	1047
+阎王	yán;mh wang;wh	1319
+阎行	yán;mh xíng;rh	14
+阎焱	yán;mh yàn;qq	100
+阎宇	yán;mh yǔ;bs	52
+阎志	yán;mh zhì;tx	94
+杨度	yáng;mv dù;xy	927
+杨妃	yáng;mv fēi;nv	116
+杨阜	yáng;mv fù;pf	80
+杨广	yáng;mv guǎng;xp	1047
+杨过	yáng;mv guò;cz	5787
+杨弘	yáng;mv hóng;gi	108
+杨戬	yáng;mv jiǎn;hh	977
+杨坚	yáng;mv jiān;st	106
+杨绛	yáng;mv jiàng;iw	307
+杨炯	yáng;mv jiǒng;qs	50
+杨骏	yáng;mv jùn;vi	778
+杨浚	yáng;mv jùn;ui	102
+杨濬	yáng;mv jùn;	47
+杨康	yáng;mv kāng;xu	949
+杨宽	yáng;mv kuān;bv	698
+杨逵	yáng;mv kuí;tz	558
+杨夔	yáng;mv kuí;dw	137
+杨牢	yáng;mv láo;bs	46
+杨朴	yáng;mv pǔ;ms	95
+杨任	yáng;mv rèn;rp	110
+杨荣	yáng;mv róng;cm	475
+杨慎	yáng;mv shèn;xf	134
+杨素	yáng;mv sù;qi	474
+杨损	yáng;mv sǔn;fk	234
+杨雄	yáng;mv xióng;hr	914
+杨修	yáng;mv xiū;rs	958
+杨业	yáng;mv yè;sh	2704
+杨仪	yáng;mv yí;rd	477
+杨昭	yáng;mv zhāo;lo	910
+杨震	yáng;mv zhèn;yd	242
+杨朱	yáng;mv zhū;pd	163
+姚滨	yáo;np bīn;ub	517
+姚苌	yáo;np cháng;cd	232
+姚崇	yáo;np chóng;gx	166
+姚合	yáo;np hé;rk	168
+姚泓	yáo;np hóng;ug	433
+姚鹄	yáo;np hú;pn	116
+姚贾	yáo;np jiǎ;sb	20
+姚揆	yáo;np kuí;fv	4
+姚勉	yáo;np miǎn;gl	53
+姚敏	yáo;np mǐn;pw	66
+姚明	yáo;np míng;ly	5783
+姚鼐	yáo;np nài;vv	50
+姚谦	yáo;np qiān;ad	6136
+姚仙	yáo;np xiān;rg	125
+姚襄	yáo;np xiāng;wd	117
+姚兴	yáo;np xīng;db	64
+姚洋	yáo;np yáng;ud	1296
+姚莹	yáo;np yíng;cd	299
+叶凡	yè;kf fán;jd	1026
+叶飞	yè;kf fēi;vd	131
+叶公	yè;kf gōng;bi	85
+叶桂	yè;kf guì;mt	390
+叶开	yè;kf kāi;hc	986
+叶澜	yè;kf lán;um	280
+叶朗	yè;kf lǎng;dy	200
+叶莉	yè;kf lì;co	76
+叶茂	yè;kf mào;cd	87
+叶梅	yè;kf méi;mp	233
+叶秋	yè;kf qiū;eq	1048
+叶群	yè;kf qún;vd	778
+叶适	yè;kf shì;pz	68
+叶帅	yè;kf shuài;sj	572
+叶檀	yè;kf tán;mw	207
+叶挺	yè;kf tǐng;fp	483
+叶问	yè;kf wèn;mk	9816
+叶修	yè;kf xiū;rs	922
+叶芝	yè;kf zhī;cd	637
+尤权	yóu;hd quán;my	163
+尤侗	yóu;hd tóng;rs	88
+俞斌	yú;ro bīn;wh	661
+俞浩	yú;ro hào;up	115
+余靖	yú;rm jìng;wq	109
+俞军	yú;ro jūn;dc	581
+郁亮	yù;he liàng;wj	392
+俞渝	yú;ro yú;ur	222
+俞樾	yú;ro yuè;mt	147
+袁安	yuán;td ān;bn	276
+袁彬	yuán;td bīn;mp	549
+袁庚	yuán;td gēng;xd	504
+袁瓘	yuán;td guàn;wc	71
+袁洪	yuán;td hóng;uc	122
+袁宏	yuán;td hóng;bi	110
+袁涣	yuán;td huàn;ug	7
+袁郊	yuán;td jiāo;we	24
+袁珂	yuán;td kē;wh	74
+袁朗	yuán;td lǎng;dy	262
+袁枚	yuán;td méi;mw	486
+袁敏	yuán;td mǐn;pw	450
+袁尚	yuán;td shàng;sk	1292
+袁术	yuán;td shù;md	1000
+袁殊	yuán;td shū;hp	81
+袁谭	yuán;td tán;as	212
+袁绹	yuán;td táo;ib	38
+袁熙	yuán;td xī;hq	70
+袁耀	yuán;td yào;sv	414
+袁鹰	yuán;td yīng;xn	202
+袁岳	yuán;td yuè;pg	191
+臧霸	zāng;hd bà;yy	826
+臧洪	zāng;hd hóng;uc	437
+曾诚	zēng;dl chéng;ah	238
+曾巩	zēng;dl gǒng;hj	389
+曾江	zēng;dl jiāng;uh	447
+曾揆	zēng;dl kuí;fv	45
+曾子	zēng;dl zǐ;zh	873
+张敖	zhāng;gp áo;qw	122
+张宝	zhāng;gp bǎo;bd	178
+张楚	zhāng;gp chǔ;mr	4728
+张纯	zhāng;gp chún;ih	1074
+张达	zhāng;gp dá;lz	180
+张岱	zhāng;gp dài;rg	405
+张耳	zhāng;gp ěr;hh	107
+张范	zhāng;gp fàn;cu	126
+张飞	zhāng;gp fēi;vd	7960
+张菲	zhāng;gp fēi;ch	765
+张嘎	zhāng;gp gā;kh	6
+张郃	zhāng;gp hé;re	191
+张衡	zhāng;gp héng;rg	817
+张纮	zhāng;gp hóng;ih	62
+张华	zhāng;gp huá;rf	471
+张继	zhāng;gp jì;ij	1152
+张籍	zhāng;gp jí;gl	472
+张济	zhāng;gp jì;uw	366
+张既	zhāng;gp jì;xh	0
+张謇	zhāng;gp jiǎn;ba	92
+张角	zhāng;gp jiǎo;gs	1762
+张洁	zhāng;gp jié;ut	238
+张矩	zhāng;gp jǔ;ph	226
+张闿	zhāng;gp kǎi;mv	20
+张磊	zhāng;gp lěi;bb	1184
+张亮	zhāng;gp liàng;wj	5721
+张良	zhāng;gp liáng;dd	775
+张鲁	zhāng;gp lǔ;gl	898
+张茂	zhāng;gp mào;cd	774
+张宁	zhāng;gp níng;bs	223
+张骞	zhāng;gp qiān;bh	695
+张说	zhāng;gp shuō;ad	986
+张松	zhāng;gp sōng;mb	886
+张庭	zhāng;gp tíng;xd	2492
+张炜	zhāng;gp wěi;qh	542
+张绣	zhāng;gp xiù;ie	590
+张旭	zhāng;gp xù;pl	327
+张悬	zhāng;gp xuán;sx	914
+张勋	zhāng;gp xūn;kl	855
+张巡	zhāng;gp xún;vz	812
+张毅	zhāng;gp yì;wj	172
+张仪	zhāng;gp yí;rd	109
+张嶷	zhāng;gp yí;gr	0
+张宇	zhāng;gp yǔ;bs	960
+张载	zhāng;gp zài;fc	2604
+张昭	zhāng;gp zhāo;lo	716
+张照	zhāng;gp zhào;lq	644
+张震	zhāng;gp zhèn;yd	1105
+赵高	zhào;tc gāo;wk	2525
+赵构	zhào;tc gòu;mb	1316
+赵恒	zhào;tc héng;xh	788
+赵姬	zhào;tc jī;nh	132
+赵佶	zhào;tc jí;rt	105
+赵普	zhào;tc pǔ;dl	697
+赵奢	zhào;tc shē;ll	1394
+赵佗	zhào;tc tuó;rb	742
+赵王	zhào;tc wáng;wh	2528
+赵俨	zhào;tc yǎn;rh	35
+赵翼	zhào;tc yì;vb	208
+赵云	zhào;tc yún;hi	7900
+郑和	zhèng;de hé;ek	1563
+郑经	zhèng;de jīng;iv	798
+郑獬	zhèng;de xiè;qg	240
+郑信	zhèng;de xìn;ra	60
+郑袖	zhèng;de xiù;ds	339
+郑玄	zhèng;de xuán;wi	238
+钟华	zhōng;jk huá;rf	134
+钟辂	zhōng;jk lù;cw	25
+钟谟	zhōng;jk mó;ac	256
+钟嵘	zhōng;jk róng;gc	299
+钟王	zhōng;jk wáng;wh	71
+钟繇	zhōng;jk yáo;pp	386
+钟毓	zhōng;jk yù;pw	51
+周勃	zhōu;pk bó;fl	1483
+周仓	zhōu;pk cāng;rv	217
+周昌	zhōu;pk chāng;ll	648
+周处	zhōu;pk chǔ;wd	41
+周鲂	zhōu;pk fáng;gw	121
+周公	zhōu;pk gōng;bi	2173
+周后	zhōu;pk hòu;pk	1193
+周济	zhōu;pk jì;uw	122
+周郎	zhōu;pk láng;de	301
+周密	zhōu;pk mì;bg	1052
+周强	zhōu;pk qiáng;gk	88
+周锐	zhōu;pk ruì;jd	1661
+周泰	zhōu;pk tài;hu	942
+周王	zhōu;pk wáng;wh	954
+朱褒	zhū;pd bāo;wd	380
+朱标	zhū;pd biāo;mh	346
+朱德	zhū;pd dé;rf	2047
+朱棣	zhū;pd dì;mv	1959
+朱放	zhū;pd fàng;ww	156
+朱枫	zhū;pd fēng;mp	310
+朱服	zhū;pd fú;yv	32
+朱贵	zhū;pd guì;kb	724
+朱涣	zhū;pd huàn;ug	310
+朱骏	zhū;pd jùn;vi	150
+朱逵	zhū;pd kuí;tz	252
+朱穆	zhū;pd mù;ep	95
+朱权	zhū;pd quán;my	684
+朱然	zhū;pd rán;pq	138
+朱松	zhū;pd sōng;mb	36
+朱仝	zhū;pd tóng;rh	163
+朱鲔	zhū;pd wěi;gh	21
+朱温	zhū;pd wēn;ul	104
+朱武	zhū;pd wǔ;hd	42
+朱祐	zhū;pd yòu;dh	224
+朱治	zhū;pd zhì;ui	62
+庄奴	zhuāng;xt nú;ny	922
+庄王	zhuāng;xt wáng;wh	968
+庄羽	zhuāng;xt yǔ;vv	80
+庄周	zhuāng;xt zhōu;pk	612
+庄子	zhuāng;xt zǐ;zh	4481
+庄宗	zhuāng;xt zōng;bx	110
+邹忌	zōu;ge jì;vx	229
+邹容	zōu;ge róng;bk	28
+邹衍	zōu;ge yǎn;ru	139
+薄一波	bó;cu yì;hq bō;uv	247
+蔡哀侯	cài;cx āi;wd hóu;rv	82
+蔡百铨	cài;cx bǎi;hl quán;jr	328
+蔡邦华	cài;cx bāng;he huá;rf	270
+蔡秉德	cài;cx bǐng;pd dé;rf	292
+蔡炳坤	cài;cx bǐng;qh kūn;tl	315
+蔡伯喈	cài;cx bó;rp jiē;kh	320
+蔡伯励	cài;cx bó;rp lì;hl	284
+蔡辰洲	cài;cx chén;hd zhōu;ud	351
+蔡承甲	cài;cx chéng;vd jiǎ;ls	50
+蔡成勋	cài;cx chéng;hd xūn;kl	387
+蔡崇达	cài;cx chóng;gx dá;lz	94
+蔡崇信	cài;cx chóng;gx xìn;ra	720
+蔡楚生	cài;cx chǔ;mr shēng;pq	395
+蔡达标	cài;cx dá;lz biāo;mh	630
+蔡达峰	cài;cx dá;lz fēng;gw	3
+蔡道恭	cài;cx dào;dz gōng;cx	220
+蔡德芳	cài;cx dé;rf fāng;cp	346
+蔡丁贵	cài;cx dīng;hs guì;kb	504
+蔡鼎甲	cài;cx dǐng;lv jiǎ;ls	45
+蔡丁赞	cài;cx dīng;hs zàn;pb	130
+蔡东藩	cài;cx dōng;hd fān;cu	94
+蔡东青	cài;cx dōng;hd qīng;qy	53
+蔡尔德	cài;cx ěr;gx dé;rf	333
+蔡尔康	cài;cx ěr;gx kāng;xu	270
+蔡根培	cài;cx gēn;mx péi;tw	279
+蔡公时	cài;cx gōng;bi shí;lc	16
+蔡冠伦	cài;cx guān;dc lún;rr	369
+蔡冠深	cài;cx guān;dc shēn;ud	432
+蔡官治	cài;cx guān;bh zhì;ui	243
+蔡国公	cài;cx guó;sd gōng;bi	342
+蔡国强	cài;cx guó;sd qiáng;gk	345
+蔡国声	cài;cx guó;sd shēng;tp	378
+蔡汉卿	cài;cx hàn;uy qīng;px	306
+蔡和森	cài;cx hé;ek sēn;mm	44
+蔡洪平	cài;cx hóng;uc píng;hf	338
+蔡鸿生	cài;cx hóng;un shēng;pq	230
+蔡桓公	cài;cx huán;mh gōng;bi	57
+蔡桓侯	cài;cx huán;mh hóu;rv	288
+蔡煌瑯	cài;cx huáng;qp láng;	378
+蔡惠如	cài;cx huì;hx rú;nk	369
+蔡济民	cài;cx jì;uw mín;vv	396
+蔡继明	cài;cx jì;ij míng;ly	6
+蔡加敏	cài;cx jiā;lk mǐn;pw	288
+蔡加怡	cài;cx jiā;lk yí;xi	243
+蔡加赞	cài;cx jiā;lk zàn;pb	3
+蔡建华	cài;cx jiàn;vd huá;rf	288
+蔡金涂	cài;cx jīn;jh tú;ur	328
+蔡景侯	cài;cx jǐng;lx hóu;rv	261
+蔡景璋	cài;cx jǐng;lx zhāng;ww	297
+蔡礼旭	cài;cx lǐ;dv xù;pl	405
+蔡良蝉	cài;cx liáng;dd chán;od	504
+蔡林森	cài;cx lín;mm sēn;mm	369
+蔡灵侯	cài;cx líng;xq hóu;rv	297
+蔡龙云	cài;cx lóng;hd yún;hi	28
+蔡美彪	cài;cx měi;dl biāo;sp	396
+蔡孟坚	cài;cx mèng;zh jiān;st	31
+蔡铭超	cài;cx míng;jp chāo;tk	35
+蔡明介	cài;cx míng;ly jiè;rs	274
+蔡明亮	cài;cx míng;ly liàng;wj	680
+蔡名照	cài;cx míng;pk zhào;lq	423
+蔡明忠	cài;cx míng;ly zhōng;kx	364
+蔡南海	cài;cx nán;ff hǎi;up	144
+蔡攀龙	cài;cx pān;mf lóng;hd	284
+蔡培慧	cài;cx péi;tw huì;hx	346
+蔡培火	cài;cx péi;tw huǒ;qr	540
+蔡平侯	cài;cx píng;hf hóu;rv	194
+蔡其昌	cài;cx qí;cb chāng;ll	477
+蔡启芳	cài;cx qǐ;dk fāng;cp	369
+蔡启僔	cài;cx qǐ;dk zǔn;rd	171
+蔡清祥	cài;cx qīng;uq xiáng;dd	297
+蔡荣祖	cài;cx róng;cm zǔ;ds	252
+蔡儒楷	cài;cx rú;ry kǎi;mh	279
+蔡瑞月	cài;cx ruì;wg yuè;yh	464
+蔡若虹	cài;cx ruò;ck hóng;oh	266
+蔡若莲	cài;cx ruò;ck lián;cz	464
+蔡善继	cài;cx shàn;dk jì;ij	220
+蔡尚君	cài;cx shàng;sk jūn;vk	364
+蔡绍基	cài;cx shào;io jī;ct	306
+蔡申熙	cài;cx shēn;ls xī;hq	16
+蔡诗萍	cài;cx shī;at píng;cu	310
+蔡士英	cài;cx shì;th yīng;cd	207
+蔡世远	cài;cx shì;cv yuǎn;hz	38
+蔡守训	cài;cx shǒu;bc xùn;ap	310
+蔡叔度	cài;cx shū;sy dù;xy	31
+蔡树藩	cài;cx shù;my fān;cu	378
+蔡枢衡	cài;cx shū;mh héng;rg	189
+蔡松年	cài;cx sōng;mb nián;ps	324
+蔡松坡	cài;cx sōng;mb pō;tv	6
+蔡嵩松	cài;cx sōng;gk sōng;mb	185
+蔡天铎	cài;cx tiān;hl duó;jy	243
+蔡天新	cài;cx tiān;hl xīn;wp	526
+蔡廷锴	cài;cx tíng;pd kǎi;jh	13
+蔡廷兰	cài;cx tíng;pd lán;dh	310
+蔡同荣	cài;cx tóng;sk róng;cm	648
+蔡万霖	cài;cx wàn;hp lín;ym	464
+蔡文恭	cài;cx wén;wc gōng;cx	4
+蔡文侯	cài;cx wén;wc hóu;rv	207
+蔡文姬	cài;cx wén;wc jī;nh	948
+蔡文胜	cài;cx wén;wc shèng;yp	531
+蔡希寂	cài;cx xī;cj jì;by	4
+蔡细历	cài;cx xì;it lì;hl	405
+蔡希陶	cài;cx xī;cj táo;eb	225
+蔡锡勇	cài;cx xī;jl yǒng;vl	248
+蔡献臣	cài;cx xiàn;fl chén;hv	207
+蔡孝干	cài;cx xiào;tz gàn;hf	621
+蔡笑晚	cài;cx xiào;gl wǎn;lg	324
+蔡兴麟	cài;cx xīng;db lín;xj	328
+蔡兴宗	cài;cx xīng;db zōng;bx	382
+蔡押衙	cài;cx yā;fl yá;rh	45
+蔡言厚	cài;cx yán;ak hòu;hz	378
+蔡衍明	cài;cx yǎn;ru míng;ly	13
+蔡义江	cài;cx yì;dc jiāng;uh	334
+蔡易余	cài;cx yì;lp yú;rm	450
+蔡隐丘	cài;cx yǐn;eg qiū;ph	50
+蔡英挺	cài;cx yīng;cd tǐng;fp	356
+蔡英文	cài;cx yīng;cd wén;wc	273
+蔡永祥	cài;cx yǒng;dd xiáng;dd	364
+蔡毓荣	cài;cx yù;pw róng;cm	310
+蔡元定	cài;cx yuán;hv dìng;br	360
+蔡元放	cài;cx yuán;hv fàng;ww	266
+蔡元培	cài;cx yuán;hv péi;tw	625
+蔡元云	cài;cx yuán;hv yún;hi	288
+蔡允恭	cài;cx yǔn;iv gōng;cx	179
+蔡章献	cài;cx zhāng;wf xiàn;fl	320
+蔡昭侯	cài;cx zhāo;lo hóu;rv	35
+蔡哲夫	cài;cx zhé;fk fū;hl	202
+蔡振华	cài;cx zhèn;fh huá;rf	414
+蔡正国	cài;cx zhèng;hh guó;sd	266
+蔡正元	cài;cx zhèng;hh yuán;hv	688
+蔡智堪	cài;cx zhì;pl kān;tc	252
+蔡志忠	cài;cx zhì;tx zhōng;kx	44
+蔡中郎	cài;cx zhōng;ks láng;de	346
+蔡仲南	cài;cx zhòng;rk nán;ff	382
+蔡庄侯	cài;cx zhuāng;xt hóu;rv	266
+蔡子民	cài;cx zǐ;zh mín;vv	356
+蔡子明	cài;cx zǐ;zh míng;ly	47
+曹阿瞒	cáo;hl ā;eh mán;lc	104
+曹安民	cáo;hl ān;bn mín;vv	69
+曹保平	cáo;hl bǎo;rk píng;hf	229
+曹变蛟	cáo;hl biàn;wy jiāo;ow	22
+曹德旺	cáo;hl dé;rf wàng;lw	741
+曹荻秋	cáo;hl dí;cq qiū;eq	428
+曹凤岐	cáo;hl fèng;py qí;gf	531
+曹刚川	cáo;hl gāng;so chuān;ps	410
+曹光彪	cáo;hl guāng;sv biāo;sp	450
+曹国公	cáo;hl guó;sd gōng;bi	25
+曹国舅	cáo;hl guó;sd jiù;pl	536
+曹国伟	cáo;hl guó;sd wěi;rh	132
+曹化淳	cáo;hl huà;rp chún;uw	57
+曹皇后	cáo;hl huáng;pw hòu;pk	464
+曹吉祥	cáo;hl jí;tk xiáng;dd	38
+曹建明	cáo;hl jiàn;vd míng;ly	16
+曹景宗	cáo;hl jǐng;lx zōng;bx	88
+曹炯芳	cáo;hl jiǒng;qs fāng;cp	369
+曹聚仁	cáo;hl jù;hd rén;rh	72
+曹漫之	cáo;hl màn;ul zhī;dd	369
+曹孟德	cáo;hl mèng;zh dé;rf	521
+曹汝霖	cáo;hl rǔ;un lín;ym	25
+曹瑞原	cáo;hl ruì;wg yuán;hx	356
+曹太后	cáo;hl tài;ld hòu;pk	526
+曹文轩	cáo;hl wén;wc xuān;ch	465
+曹文诏	cáo;hl wén;wc zhào;ao	6
+曹兴诚	cáo;hl xīng;db chéng;ah	441
+曹修古	cáo;hl xiū;rs gǔ;fk	144
+曹雪芹	cáo;hl xuě;yx qín;cs	1645
+曹雪涛	cáo;hl xuě;yx tāo;uh	78
+曹薰铉	cáo;hl xūn;cq xuàn;jw	66
+曹燕华	cáo;hl yàn;cq huá;rf	16
+曹云祥	cáo;hl yún;hi xiáng;dd	400
+曹振镛	cáo;hl zhèn;fh yōng;jx	22
+曹忠荣	cáo;hl zhōng;kx róng;cm	333
+曹庄公	cáo;hl zhuāng;xt gōng;bi	212
+曹子建	cáo;hl zǐ;zh jiàn;vd	229
+陈阿娇	chén;eh ā;eh jiāo;np
+陈安之	chén;eh ān;bn zhī;dd	223
+陈安众	chén;eh ān;bn zhòng;rr	698
+陈霸先	chén;eh bà;yy xiān;pv	198
+陈白露	chén;eh bái;pl lù;yk	16
+陈宝生	chén;eh bǎo;bd shēng;pq	22
+陈璧君	chén;eh bì;sd jūn;vk	113
+陈伯达	chén;eh bó;rp dá;lz	44
+陈布雷	chén;eh bù;hj léi;yt	63
+陈昌浩	chén;eh chāng;ll hào;up	25
+陈澄波	chén;eh chéng;uv bō;uv	603
+陈春花	chén;eh chūn;hl huā;cv	630
+陈大年	chén;eh dà;ld nián;ps	60
+陈东升	chén;eh dōng;hd shēng;pc	88
+陈独秀	chén;eh dú;qo xiù;ep	3143
+陈二狗	chén;eh èr;hh gǒu;qb	13
+陈公博	chén;eh gōng;bi bó;fh	38
+陈光标	chén;eh guāng;sv biāo;mh	981
+陈光诚	chén;eh guāng;sv chéng;ah	598
+陈光甫	chén;eh guāng;sv fǔ;hd	3
+陈光尧	chén;eh guāng;sv yáo;hv	351
+陈国富	chén;eh guó;sd fù;bt	648
+陈果夫	chén;eh guǒ;lm fū;hl	521
+陈浩南	chén;eh hào;up nán;ff	484
+陈鹤琴	chén;eh hè;dn qín;wv	78
+陈后主	chén;eh hòu;pk zhǔ;wt	97
+陈皇后	chén;eh huáng;pw hòu;pk	173
+陈辉阳	chén;eh huī;sd yáng;el	97
+陈吉宁	chén;eh jí;tk níng;bs	13
+陈济棠	chén;eh jì;uw táng;sm	135
+陈嘉庚	chén;eh jiā;tk gēng;xd	166
+陈家洛	chén;eh jiā;bd luò;uw	226
+陈嘉上	chén;eh jiā;tk shàng;sh	88
+陈家瑛	chén;eh jiā;bd yīng;wc	132
+陈建仁	chén;eh jiàn;vd rén;rh	9
+陈洁如	chén;eh jié;ut rú;nk	63
+陈近南	chén;eh jìn;pz nán;ff	424
+陈镜湖	chén;eh jìng;jw hú;uf	315
+陈经纶	chén;eh jīng;iv lún;ir	3
+陈景润	chén;eh jǐng;lx rùn;um	182
+陈炯明	chén;eh jiǒng;qs míng;ly	270
+陈俊生	chén;eh jùn;ri shēng;pq	41
+陈可辛	chén;eh kě;hs xīn;wf	427
+陈老莲	chén;eh lǎo;tv lián;cz	22
+陈立夫	chén;eh lì;wh fū;hl	91
+陈良宇	chén;eh liáng;dd yǔ;bs	3
+陈留王	chén;eh liú;pt wáng;wh	69
+陈茂波	chén;eh mào;cd bō;uv	630
+陈敏尔	chén;eh mǐn;pw ěr;gx	616
+陈明仁	chén;eh míng;ly rén;rh	44
+陈铭枢	chén;eh míng;jp shū;mh	35
+陈木胜	chén;eh mù;md shèng;yp	421
+陈纳德	chén;eh nà;is dé;rf	53
+陈盆滨	chén;eh pén;bh bīn;ub	788
+陈启礼	chén;eh qǐ;dk lǐ;dv	13
+陈其迈	chén;eh qí;cb mài;hz	634
+陈其美	chén;eh qí;cb měi;dl	104
+陈庆炎	chén;eh qìng;xl yán;qq	621
+陈庆之	chén;eh qìng;xl zhī;dd	392
+陈省身	chén;eh shěng;xl shēn;pp	720
+陈世美	chén;eh shì;cv měi;dl	116
+陈时中	chén;eh shí;lc zhōng;ks	524
+陈叔宝	chén;eh shū;sy bǎo;bd	119
+陈水扁	chén;eh shuǐ;ud biǎn;dc	141
+陈潭秋	chén;eh tán;us qiū;eq	16
+陈唐山	chén;eh táng;xk shān;gs	567
+陈天桥	chén;eh tiān;hl qiáo;mp	1382
+陈伟鸿	chén;eh wěi;rh hóng;un	13
+陈文帝	chén;eh wén;wc dì;wj	35
+陈文茜	chén;eh wén;wc qiàn;cs	22
+陈锡联	chén;eh xī;jl lián;hd	19
+陈香梅	chén;eh xiāng;el méi;mp	3
+陈小千	chén;eh xiǎo;xd qiān;pf	2631
+陈晓卿	chén;eh xiǎo;lh qīng;px	392
+陈孝正	chén;eh xiào;tz zhèng;hh	1470
+陈戌源	chén;eh xū;hd yuán;uh	860
+陈宣帝	chén;eh xuān;bh dì;wj	28
+陈岩石	chén;eh yán;gb shí;bk	35
+陈一丹	chén;eh yī;hq dān;ph	31
+陈逸飞	chén;eh yì;gz fēi;vd	25
+陈一舟	chén;eh yì;hq zhōu;vd	371
+陈寅恪	chén;eh yín;bb kè;xw	1149
+陈永贵	chén;eh yǒng;dd guì;kb	13
+陈永华	chén;eh yǒng;dd huá;rf	60
+陈永仁	chén;eh yǒng;dd rén;rh	487
+陈友谅	chén;eh yǒu;hy liàng;aw	929
+陈雨露	chén;eh yǔ;yd lù;yk	580
+陈圆圆	chén;eh yuán;sb yuán;sb	160
+陈云林	chén;eh yún;hi lín;mm	616
+陈泽民	chén;eh zé;uy mín;vv	50
+陈正道	chén;eh zhèng;hh dào;dz	38
+陈政高	chén;eh zhèng;hw gāo;wk	3
+陈之汉	chén;eh zhī;dd hàn;uy	102
+陈志全	chén;eh zhì;tx quán;rw	590
+陈志武	chén;eh zhì;tx wǔ;hd	126
+陈仲金	chén;eh zhòng;rk jīn;jh	585
+陈忠实	chén;eh zhōng;kx shí;bl	414
+陈子昂	chén;eh zǐ;zh áng;ls	349
+种师道	chóng;ek shī;sh dào;dz	152
+种世衡	chóng;ek shì;cv héng;rg	20
+种师中	chóng;ek shī;sh zhōng;ks	62
+楚哀王	chǔ;mr āi;wd wáng;wh	306
+楚霸王	chǔ;mr bà;yy wáng;wh	267
+楚成王	chǔ;mr chéng;hd wáng;wh	414
+楚悼王	chǔ;mr dào;xs wáng;wh	85
+褚福灵	chǔ;dt fú;dh líng;xq	562
+楚共王	chǔ;mr gòng;cb wáng;wh	9
+楚寒镜	chǔ;mr hán;bd jìng;jw	230
+楚怀王	chǔ;mr huái;xh wáng;wh	914
+楚惠王	chǔ;mr huì;hx wáng;wh	25
+楚简王	chǔ;mr jiǎn;gl wáng;wh	266
+楚江王	chǔ;mr jiāng;uh wáng;wh	338
+楚康王	chǔ;mr kāng;xu wáng;wh	13
+楚灵王	chǔ;mr líng;xq wáng;wh	78
+楚留香	chǔ;mr liú;pt xiāng;el	885
+楚穆王	chǔ;mr mù;ep wáng;wh	94
+楚南公	chǔ;mr nán;ff gōng;bi	324
+楚平王	chǔ;mr píng;hf wáng;wh	97
+楚人美	chǔ;mr rén;rd měi;dl	97
+褚时健	chǔ;dt shí;lc jiàn;rv	266
+楚肃王	chǔ;mr sù;vd wáng;wh	22
+褚遂良	chǔ;dt suì;dz liáng;dd	524
+褚太后	chǔ;dt tài;ld hòu;pk	306
+楚天骄	chǔ;mr tiān;hl jiāo;vp	603
+楚图南	chǔ;mr tú;sd nán;ff	486
+楚威后	chǔ;mr wēi;hd hòu;pk	5
+楚威王	chǔ;mr wēi;hd wáng;wh	35
+楚文王	chǔ;mr wén;wc wáng;wh	75
+楚武王	chǔ;mr wǔ;hd wáng;wh	163
+楚襄王	chǔ;mr xiāng;wd wáng;wh	44
+楚孝王	chǔ;mr xiào;tz wáng;wh	256
+楚宣王	chǔ;mr xuān;bh wáng;wh	25
+楚义帝	chǔ;mr yì;dc dì;wj	346
+楚幽王	chǔ;mr yōu;ss wáng;wh	107
+楚雨荨	chǔ;mr yǔ;yd xún;cc	91
+楚元王	chǔ;mr yuán;hv wáng;wh	50
+楚云飞	chǔ;mr yún;hi fēi;vd	144
+楚昭王	chǔ;mr zhāo;lo wáng;wh	122
+楚庄王	chǔ;mr zhuāng;xt wáng;wh	732
+楚子航	chǔ;mr zǐ;zh háng;vw	1036
+崔安潜	cuī;gq ān;bn qián;uh	396
+崔昌益	cuī;gq chāng;ll yì;dh	356
+崔承喜	cuī;gq chéng;vd xǐ;tk	405
+崔东树	cuī;gq dōng;hd shù;my	41
+崔敦礼	cuī;gq dūn;ww lǐ;dv	297
+崔国辅	cuī;gq guó;sd fǔ;ch	274
+崔季卿	cuī;gq jì;ez qīng;px	76
+崔建远	cuī;gq jiàn;vd yuǎn;hz	245
+崔居俭	cuī;gq jū;sk jiǎn;rr	180
+崔龙海	cuī;gq lóng;hd hǎi;up	612
+崔龙洙	cuī;gq lóng;hd zhū;up	53
+崔判官	cuī;gq pàn;do guān;bh	378
+崔日用	cuī;gq rì;lh yòng;ys	351
+崔日知	cuī;gq rì;lh zhī;pk	225
+崔若砺	cuī;gq ruò;ck lì;bh	50
+崔世安	cuī;gq shì;cv ān;bn	752
+崔顺实	cuī;gq shùn;ph shí;bl	19
+崔泰之	cuī;gq tài;hu zhī;dd	180
+崔信明	cuī;gq xìn;ra míng;ly	202
+崔兴宗	cuī;gq xīng;db zōng;bx	180
+崔玄亮	cuī;gq xuán;wi liàng;wj	256
+崔莺儿	cuī;gq yīng;cn ér;pv	675
+崔永元	cuī;gq yǒng;dd yuán;hv	2308
+崔玉涛	cuī;gq yù;wd tāo;uh	57
+崔与之	cuī;gq yǔ;hh zhī;dd	292
+崔元范	cuī;gq yuán;hv fàn;cu	45
+崔元翰	cuī;gq yuán;hv hàn;fr	189
+崔元略	cuī;gq yuán;hv lüè;tw	270
+崔宗之	cuī;gq zōng;bx zhī;dd	13
+戴安澜	dài;fb ān;bn lán;um	44
+戴安娜	dài;fb ān;bn nà;nv	1159
+戴葆庭	dài;fb bǎo;cm tíng;xd	360
+戴本孝	dài;fb běn;mh xiào;tz	189
+戴表元	dài;fb biǎo;qd yuán;hv	205
+戴秉国	dài;fb bǐng;pd guó;sd	500
+戴炳南	dài;fb bǐng;qh nán;ff	292
+戴潮春	dài;fb cháo;uf chūn;hl	662
+戴春林	dài;fb chūn;hl lín;mm	306
+戴道晋	dài;fb dào;dz jìn;hl	405
+戴德丰	dài;fb dé;rf fēng;hs	302
+戴德生	dài;fb dé;rf shēng;pq	562
+戴东昌	dài;fb dōng;hd chāng;ll	266
+戴敦邦	dài;fb dūn;ww bāng;he	16
+戴恩赛	dài;fb ēn;sx sài;bb	266
+戴法兴	dài;fb fǎ;ut xīng;db	2
+戴芳澜	dài;fb fāng;cp lán;um	6
+戴复古	dài;fb fù;pw gǔ;fk	35
+戴高乐	dài;fb gāo;wk lè;px	1093
+戴鸿慈	dài;fb hóng;un cí;dx	396
+戴季陶	dài;fb jì;ez táo;eb	144
+戴季英	dài;fb jì;ez yīng;cd	6
+戴建业	dài;fb jiàn;vd yè;sh	4
+戴锦华	dài;fb jǐn;jp huá;rf	540
+戴克林	dài;fb kè;fv lín;mm	238
+戴名世	dài;fb míng;pk shì;cv	6
+戴乃迭	dài;fb nǎi;vp dié;pz	63
+戴卿尧	dài;fb qīng;px yáo;hv	230
+戴琼海	dài;fb qióng;ww hǎi;up	130
+戴衢亨	dài;fb qú;rl hēng;ws	252
+戴叔伦	dài;fb shū;sy lún;rr	75
+戴顺智	dài;fb shùn;ph zhì;pl	310
+戴思聪	dài;fb sī;tx cōng;hd	35
+戴思恭	dài;fb sī;tx gōng;cx	454
+戴思杰	dài;fb sī;tx jié;mq	356
+戴铁郎	dài;fb tiě;jp láng;de	57
+戴望舒	dài;fb wàng;ww shū;rv	257
+戴维德	dài;fb wéi;ir dé;rf	558
+戴伟浚	dài;fb wěi;rh jùn;ui	6
+戴维斯	dài;fb wéi;ir sī;cp	3953
+戴相龙	dài;fb xiāng;ml lóng;hd	38
+戴晓莲	dài;fb xiǎo;lh lián;cz	243
+戴秀丽	dài;fb xiù;ep lì;hd	189
+戴休颜	dài;fb xiū;rm yán;wh	310
+戴炎辉	dài;fb yán;qq huī;sd	333
+戴耀廷	dài;fb yào;sv tíng;pd	22
+戴永革	dài;fb yǒng;dd gé;cs	189
+戴雨森	dài;fb yǔ;yd sēn;mm	310
+戴运轨	dài;fb yùn;hz guǐ;cp	364
+戴志坚	dài;fb zhì;tx jiān;st	274
+戴志康	dài;fb zhì;tx kāng;xu	44
+戴自更	dài;fb zì;pl gèng;hd	310
+戴资颖	dài;fb zī;db yǐng;pe	57
+邓巴顿	dèng;ye bā;vv dùn;hh	464
+邓百川	dèng;ye bǎi;hl chuān;ps	6
+邓白氏	dèng;ye bái;pl shì;pv	47
+邓邦述	dèng;ye bāng;he shù;mz	248
+邓宝珊	dèng;ye bǎo;bd shān;wp	526
+邓本殷	dèng;ye běn;mh yīn;pj	464
+邓碧珊	dèng;ye bì;wb shān;wp	234
+邓炳强	dèng;ye bǐng;qh qiáng;gk	3
+邓婵玉	dèng;ye chán;nd yù;wd	35
+邓昌国	dèng;ye chāng;ll guó;sd	315
+邓昌友	dèng;ye chāng;ll yǒu;hy	3
+邓成波	dèng;ye chéng;hd bō;uv	351
+邓处讷	dèng;ye chù;wd nè;as	266
+邓传楷	dèng;ye chuán;rh kǎi;mh	396
+邓萃英	dèng;ye cuì;cf yīng;cd	315
+邓达智	dèng;ye dá;lz zhì;pl	351
+邓定侯	dèng;ye dìng;br hóu;rv	460
+邓恩铭	dèng;ye ēn;sx míng;jp	9
+邓尔雅	dèng;ye ěr;gx yǎ;hr	220
+邓符协	dèng;ye fú;gc xié;fl	284
+邓广汉	dèng;ye guǎng;xp hàn;uy	230
+邓广铭	dèng;ye guǎng;xp míng;jp	312
+邓涵文	dèng;ye hán;uv wén;wc	104
+邓惠文	dèng;ye huì;hx wén;wc	328
+邓季惺	dèng;ye jì;ez xīng;xl	353
+邓继增	dèng;ye jì;ij zēng;td	238
+邓家彪	dèng;ye jiā;bd biāo;sp	432
+邓稼先	dèng;ye jià;eb xiān;pv	867
+邓家彦	dèng;ye jiā;bd yàn;wp	266
+邓建国	dèng;ye jiàn;vd guó;sd	585
+邓镜波	dèng;ye jìng;jw bō;uv	468
+邓景煌	dèng;ye jǐng;lx huáng;qp	252
+邓九公	dèng;ye jiǔ;pv gōng;bi	428
+邓俊辉	dèng;ye jùn;ri huī;sd	346
+邓乐军	dèng;ye lè;px jūn;dc	351
+邓力群	dèng;ye lì;lp qún;vd	3
+邓利维	dèng;ye lì;eo wéi;ir	60
+邓莲如	dèng;ye lián;cz rú;nk	482
+邓龙光	dèng;ye lóng;hd guāng;sv	374
+邓茂七	dèng;ye mào;cd qī;hv	3
+邓猛女	dèng;ye měng;qz nǚ;nh	284
+邓南遮	dèng;ye nán;ff zhē;xz	490
+邓尼茨	dèng;ye ní;sv cí;cr	41
+邓尼金	dèng;ye ní;sv jīn;jh	38
+邓普顿	dèng;ye pǔ;dl dùn;hh	126
+邓朴方	dèng;ye pǔ;ms fāng;wp	477
+邓普斯	dèng;ye pǔ;dl sī;cp	22
+邓普西	dèng;ye pǔ;dl xī;sh	35
+邓普希	dèng;ye pǔ;dl xī;cj	29
+邓清河	dèng;ye qīng;uq hé;uh	266
+邓清明	dèng;ye qīng;uq míng;ly	396
+邓散木	dèng;ye sàn;cw mù;md	28
+邓森悦	dèng;ye sēn;mm yuè;xd	266
+邓世昌	dèng;ye shì;cv chāng;ll	110
+邓世平	dèng;ye shì;cv píng;hf	333
+邓石如	dèng;ye shí;bk rú;nk	97
+邓士载	dèng;ye shì;th zài;fc	279
+邓书弟	dèng;ye shū;vd dì;dp	356
+邓树荣	dèng;ye shù;my róng;cm	320
+邓斯坦	dèng;ye sī;cp tǎn;tl	405
+邓太后	dèng;ye tài;ld hòu;pk	25
+邓铁梅	dèng;ye tiě;jp méi;mp	76
+邓铁涛	dèng;ye tiě;jp tāo;uh	78
+邓廷桢	dèng;ye tíng;pd zhēn;ms	459
+邓伟标	dèng;ye wěi;rh biāo;mh	230
+邓伟杰	dèng;ye wěi;rh jié;mq	284
+邓伟雄	dèng;ye wěi;rh xióng;hr	378
+邓文迪	dèng;ye wén;wc dí;sz	320
+邓文仪	dèng;ye wén;wc yí;rd	490
+邓文原	dèng;ye wén;wc yuán;hx	436
+邓锡侯	dèng;ye xī;jl hóu;rv	554
+邓希贤	dèng;ye xī;cj xián;sb	3
+邓显鹤	dèng;ye xiǎn;lh hè;dn	220
+邓先群	dèng;ye xiān;pv qún;vd	194
+邓向阳	dèng;ye xiàng;pk yáng;el	320
+邓小刚	dèng;ye xiǎo;xd gāng;so	369
+邓晓芒	dèng;ye xiǎo;lh máng;cv	355
+邓秀新	dèng;ye xiù;ep xīn;wp	9
+邓演达	dèng;ye yǎn;ub dá;lz	41
+邓艳红	dèng;ye yàn;hg hóng;ih	324
+邓一光	dèng;ye yī;hq guāng;sv	9
+邓以海	dèng;ye yǐ;vr hǎi;up	324
+邓以蛰	dèng;ye yǐ;vr zhé;fo	306
+邓荫南	dèng;ye yīn;cy nán;ff	369
+邓颖超	dèng;ye yǐng;pe chāo;tk	182
+邓迎香	dèng;ye yíng;pz xiāng;el	351
+邓永锵	dèng;ye yǒng;dd qiāng;jd	296
+邓友梅	dèng;ye yǒu;hy méi;mp	22
+邓玉芬	dèng;ye yù;wd fēn;co	374
+邓玉函	dèng;ye yù;wd hán;vs	320
+邓育昆	dèng;ye yù;wy kūn;lv	382
+邓玉麟	dèng;ye yù;wd lín;xj	400
+邓禹平	dèng;ye yǔ;pd píng;hf	374
+邓裕强	dèng;ye yù;db qiáng;gk	320
+邓玉婷	dèng;ye yù;wd tíng;nw	102
+邓聿文	dèng;ye yù;vs wén;wc	356
+邓雨贤	dèng;ye yǔ;yd xián;sb	500
+邓元觉	dèng;ye yuán;hv jué;dv	9
+邓月薇	dèng;ye yuè;yh wēi;cw	320
+邓泽如	dèng;ye zé;uy rú;nk	500
+邓肇坚	dèng;ye zhào;ds jiān;st	639
+邓兆棠	dèng;ye zhào;pd táng;sm	378
+邓兆祥	dèng;ye zhào;pd xiáng;dd	6
+邓振中	dèng;ye zhèn;fh zhōng;ks	320
+邓正来	dèng;ye zhèng;hh lái;hj	405
+邓之诚	dèng;ye zhī;dd chéng;ah	410
+邓志刚	dèng;ye zhì;tx gāng;so	194
+邓志谟	dèng;ye zhì;tx mó;ac	306
+邓智伟	dèng;ye zhì;pl wěi;rh	281
+邓中翰	dèng;ye zhōng;ks hàn;fr	6
+邓中夏	dèng;ye zhōng;ks xià;hw	53
+邓仲元	dèng;ye zhòng;rk yuán;hv	284
+邓卓棣	dèng;ye zhuó;sf dì;mv	536
+邓子恢	dèng;ye zǐ;zh huī;xh	28
+邓子龙	dèng;ye zǐ;zh lóng;hd	22
+邓子瑜	dèng;ye zǐ;zh yú;wr	252
+丁宝桢	dīng;hs bǎo;bd zhēn;ms	204
+丁承宗	dīng;hs chéng;vd zōng;bx	45
+丁春秋	dīng;hs chūn;hl qiū;eq	283
+丁大全	dīng;hs dà;ld quán;rw	450
+丁甘仁	dīng;hs gān;ch rén;rh	28
+丁甘如	dīng;hs gān;ch rú;nk	171
+丁关根	dīng;hs guān;dl gēn;mx	446
+丁光宏	dīng;hs guāng;sv hóng;bi	207
+丁光训	dīng;hs guāng;sv xùn;ap	432
+丁几仲	dīng;hs jǐ;jv zhòng;rk	90
+丁建华	dīng;hs jiàn;vd huá;rf	423
+丁拉基	dīng;hs lā;fw jī;ct	459
+丁立国	dīng;hs lì;wh guó;sd	207
+丁敏君	dīng;hs mǐn;pw jūn;vk	204
+丁能通	dīng;hs néng;ip tōng;vz	212
+丁瓯石	dīng;hs ōu;hh shí;bk	45
+丁确庵	dīng;hs què;bg ān;xv	45
+丁日昌	dīng;hs rì;lh chāng;ll	3
+丁汝昌	dīng;hs rǔ;un chāng;ll	113
+丁若镛	dīng;hs ruò;ck yōng;jx	423
+丁三石	dīng;hs sān;hh shí;bk	116
+丁善德	dīng;hs shàn;dk dé;rf	327
+丁山人	dīng;hs shān;gs rén;rd	252
+丁尚彪	dīng;hs shàng;sk biāo;sp	19
+丁绍光	dīng;hs shào;io guāng;sv	378
+丁石僧	dīng;hs shí;bk sēng;rd	50
+丁石生	dīng;hs shí;bk shēng;pq	45
+丁石孙	dīng;hs shí;bk sūn;zx	97
+丁书苗	dīng;hs shū;vd miáo;ct	454
+丁思甜	dīng;hs sī;tx tián;pc	66
+丁太升	dīng;hs tài;ld shēng;pc	135
+丁西林	dīng;hs xī;sh lín;mm	19
+丁羲叟	dīng;hs xī;dd sǒu;py	4
+丁小柔	dīng;hs xiǎo;xd róu;vm	50
+丁义珍	dīng;hs yì;dc zhēn;wr	110
+丁元英	dīng;hs yuán;hv yīng;cd	248
+丁肇中	dīng;hs zhào;ds zhōng;ks	148
+丁仲礼	dīng;hs zhòng;rk lǐ;dv	367
+董存瑞	dǒng;ch cún;hz ruì;wg	267
+范艾克	fàn;cu ài;cc kè;fv	518
+范艾伦	fàn;cu ài;cc lún;rr	490
+范爱农	fàn;cu ài;py nóng;dd	446
+樊爱贞	fán;ml ài;py zhēn;sb	374
+范百禄	fàn;cu bǎi;hl lù;dv	356
+范比滕	fàn;cu bǐ;hp téng;yd	428
+范伯伦	fàn;cu bó;rp lún;rr	472
+范布伦	fàn;cu bù;hj lún;rr	22
+范长江	fàn;cu cháng;pd jiāng;uh	13
+范长龙	fàn;cu cháng;pd lóng;hd	702
+范长生	fàn;cu cháng;pd shēng;pq	378
+樊长使	fán;ml cháng;pd shǐ;rh	0
+樊昌信	fán;ml chāng;ll xìn;ra	328
+范成大	fàn;cu chéng;hd dà;ld	330
+范承谟	fàn;cu chéng;vd mó;ac	364
+范承勋	fàn;cu chéng;vd xūn;kl	225
+樊崇义	fán;ml chóng;gx yì;dc	310
+范厨师	fàn;cu chú;hc shī;sh	163
+范传正	fàn;cu chuán;rh zhèng;hh	320
+范传质	fàn;cu chuán;rh zhì;pb	90
+樊春海	fán;ml chūn;hl hǎi;up	171
+范纯仁	fàn;cu chún;ih rén;rh	214
+樊粹庭	fán;ml cuì;jw tíng;xd	220
+范达姆	fàn;cu dá;lz mǔ;nv	234
+范戴克	fàn;cu dài;fb kè;fv	1309
+樊代明	fán;ml dài;rh míng;ly	396
+范德彪	fàn;cu dé;rf biāo;sp	129
+范德华	fàn;cu dé;rf huá;rf	57
+范德萨	fàn;cu dé;rf sà;cp	295
+范迪安	fàn;cu dí;sz ān;bn	19
+范迪克	fàn;cu dí;sz kè;fv	732
+范恩斯	fàn;cu ēn;sx sī;cp	482
+范甘迪	fàn;cu gān;ch dí;sz	342
+范光陵	fàn;cu guāng;sv líng;et	279
+樊国梁	fán;ml guó;sd liáng;um	297
+范海伦	fàn;cu hǎi;up lún;rr	69
+范海涛	fàn;cu hǎi;up tāo;uh	315
+范海辛	fàn;cu hǎi;up xīn;wf	78
+范汉杰	fàn;cu hàn;uy jié;mq	9
+范恒山	fàn;cu héng;xh shān;gs	3
+范鸿劼	fàn;cu hóng;un jié;tl	270
+范鸿龄	fàn;cu hóng;un líng;sr	297
+范鸿仙	fàn;cu hóng;un xiān;rg	270
+范华平	fàn;cu huá;rf píng;hf	243
+范霍夫	fàn;cu huò;yq fū;hl	333
+范霍文	fàn;cu huò;yq wén;wc	482
+范加尔	fàn;cu jiā;lk ěr;gx	4248
+樊建川	fán;ml jiàn;vd chuān;ps	6
+范剑平	fàn;cu jiàn;ro píng;hf	346
+樊锦诗	fán;ml jǐn;jp shī;at	261
+范景文	fàn;cu jǐng;lx wén;wc	3
+范景翔	fàn;cu jǐng;lx xiáng;dv	364
+范敬宜	fàn;cu jìng;cw yí;bh	261
+范景中	fàn;cu jǐng;lx zhōng;ks	364
+范可新	fàn;cu kě;hs xīn;wp	245
+范立础	fàn;cu lì;wh chǔ;bv	230
+樊梨花	fán;ml lí;em huā;cv	16
+范丽青	fàn;cu lì;hd qīng;qy	486
+范良极	fàn;cu liáng;dd jí;mp	891
+范凌志	fàn;cu líng;dt zhì;tx	338
+范柳原	fàn;cu liǔ;mp yuán;hx	38
+范龙佩	fàn;cu lóng;hd pèi;rp	405
+樊路远	fán;ml lù;zw yuǎn;hz	225
+范履冰	fàn;cu lǚ;sw bīng;du	310
+范美忠	fàn;cu měi;dl zhōng;kx	9
+范跑跑	fàn;cu pǎo;zb pǎo;zb	50
+范佩西	fàn;cu pèi;rp xī;sh	2327
+范平明	fàn;cu píng;hf míng;ly	522
+樊其辉	fán;ml qí;cb huī;sd	243
+范荣康	fàn;cu róng;cm kāng;xu	230
+范瑞平	fàn;cu ruì;wg píng;hf	356
+范锐平	fàn;cu ruì;jd píng;hf	65
+范若若	fàn;cu ruò;ck ruò;ck	138
+范桑特	fàn;cu sāng;ym tè;pt	351
+范绍增	fàn;cu shào;io zēng;td	6
+樊胜美	fán;ml shèng;yp měi;dl	232
+范时崇	fàn;cu shí;lc chóng;gx	189
+范师道	fàn;cu shī;sh dào;dz	297
+范石生	fàn;cu shí;bk shēng;pq	3
+范寿康	fàn;cu shòu;hc kāng;xu	6
+樊守义	fán;ml shǒu;bc yì;dc	288
+樊树志	fán;ml shù;my zhì;tx	396
+范思辙	fàn;cu sī;tx zhé;cw	225
+范苏圆	fàn;cu sū;cd yuán;sb	531
+范廷钰	fàn;cu tíng;pd yù;jw	6
+范托夫	fàn;cu tuō;fp fū;hl	364
+樊於期	fán;ml wū;wr jī;cy	482
+范武子	fàn;cu wǔ;hd zǐ;zh	279
+范喜良	fàn;cu xǐ;tk liáng;dd	364
+范西屏	fàn;cu xī;sh píng;sc	9
+范熙壬	fàn;cu xī;hq rén;pt	297
+范现国	fàn;cu xiàn;ws guó;sd	234
+范献子	fàn;cu xiàn;fl zǐ;zh	274
+范祥雍	fàn;cu xiáng;dd yōng;wq	248
+樊馨蔓	fán;ml xīn;tl màn;cy	446
+范秀明	fàn;cu xiù;ep míng;ly	266
+范旭东	fàn;cu xù;pl dōng;hd	19
+范宣子	fàn;cu xuān;bh zǐ;zh	405
+范尧佐	fàn;cu yáo;hv zuǒ;rh	45
+樊映川	fán;ml yìng;ls chuān;ps	202
+范勇宏	fàn;cu yǒng;vl hóng;bi	252
+范雨素	fàn;cu yǔ;yd sù;qi	13
+范源濂	fàn;cu yuán;uh lián;ux	410
+范允临	fàn;cu yǔn;iv lín;sp	266
+范蕴若	fàn;cu yùn;ch ruò;ck	454
+樊增祥	fán;ml zēng;td xiáng;dd	6
+范昭子	fàn;cu zhāo;lo zǐ;zh	180
+范振绪	fàn;cu zhèn;fh xù;it	212
+范正辞	fàn;cu zhèng;hh cí;pw	261
+樊知古	fán;ml zhī;pk gǔ;fk	189
+范志红	fàn;cu zhì;tx hóng;ih	126
+范忠信	fàn;cu zhōng;kx xìn;ra	9
+樊钟秀	fán;ml zhōng;jk xiù;ep	60
+范仲淹	fàn;cu zhòng;rk yān;ul	1265
+范筑先	fàn;cu zhù;gd xiān;pv	320
+樊子盖	fán;ml zǐ;zh gài;dh	310
+樊子鹄	fán;ml zǐ;zh hú;pn	224
+范子侠	fàn;cu zǐ;zh xiá;rh	270
+范宗沛	fàn;cu zōng;bx pèi;uh	22
+樊宗师	fán;ml zōng;bx shī;sh	252
+范宗尹	fàn;cu zōng;bx yǐn;vp	320
+范祖禹	fàn;cu zǔ;ds yǔ;pd	63
+冯楚瞻	féng;dv chǔ;mr zhān;lg	50
+冯大辉	féng;dv dà;ld huī;sd	148
+冯国璋	féng;dv guó;sd zhāng;ww	122
+冯焕阙	féng;dv huàn;qg quē;mr	200
+冯皇后	féng;dv huáng;pw hòu;pk	300
+冯骥才	féng;dv jì;vs cái;hp	182
+冯卡门	féng;dv kǎ;sd mén;mv	590
+冯梦龙	féng;dv mèng;md lóng;hd	327
+冯珊珊	féng;dv shān;wp shān;wp	25
+冯时可	féng;dv shí;lc kě;hs	189
+冯太后	féng;dv tài;ld hòu;pk	69
+冯天薇	féng;dv tiān;hl wēi;cw	72
+冯潇霆	féng;dv xiāo;uc tíng;yd	810
+冯雪峰	féng;dv xuě;yx fēng;gw	232
+冯友兰	féng;dv yǒu;hy lán;dh	791
+冯玉祥	féng;dv yù;wd xiáng;dd	1645
+高秉涵	gāo;wk bǐng;pd hán;uv	374
+高秉钧	gāo;wk bǐng;pd jūn;jb	99
+高丙中	gāo;wk bǐng;hd zhōng;ks	144
+高伯龙	gāo;wk bó;rp lóng;hd	306
+高成炫	gāo;wk chéng;hd xuàn;qw	562
+高崇文	gāo;wk chóng;gx wén;wc	387
+高崇熙	gāo;wk chóng;gx xī;hq	315
+高春明	gāo;wk chūn;hl míng;ly	180
+高凤阁	gāo;wk fèng;py gé;mk	22
+高凤翰	gāo;wk fèng;py hàn;fr	436
+高洪波	gāo;wk hóng;uc bō;uv	958
+高鸿钧	gāo;wk hóng;un jūn;jb	31
+高洪胜	gāo;wk hóng;uc shèng;yp	338
+高弘图	gāo;wk hóng;gi tú;sd	306
+高红卫	gāo;wk hóng;ih wèi;vh	482
+高鸿业	gāo;wk hóng;un yè;sh	1272
+高宏志	gāo;wk hóng;bi zhì;tx	382
+高厚良	gāo;wk hòu;hz liáng;dd	346
+高华德	gāo;wk huá;rf dé;rf	544
+高华斯	gāo;wk huá;rf sī;cp	266
+高华柱	gāo;wk huá;rf zhù;mw	428
+高怀德	gāo;wk huái;xh dé;rf	13
+高纪凡	gāo;wk jì;iv fán;jd	220
+高季兴	gāo;wk jì;ez xīng;db	281
+高继勋	gāo;wk jì;ij xūn;kl	256
+高建成	gāo;wk jiàn;vd chéng;hd	378
+高剑父	gāo;wk jiàn;ro fù;bc	16
+高建国	gāo;wk jiàn;vd guó;sd	346
+高建华	gāo;wk jiàn;vd huá;rf	3
+高建军	gāo;wk jiàn;vd jūn;dc	356
+高渐离	gāo;wk jiàn;uc lí;wd	1046
+高建民	gāo;wk jiàn;vd mín;vv	19
+高建平	gāo;wk jiàn;vd píng;hf	400
+高建群	gāo;wk jiàn;vd qún;vd	13
+高居翰	gāo;wk jū;sk hàn;fr	450
+高卷杏	gāo;wk juǎn;dv xìng;mk	22
+高觉敷	gāo;wk jué;dv fū;hw	44
+高君雅	gāo;wk jūn;vk yǎ;hr	19
+高君宇	gāo;wk jūn;vk yǔ;bs	9
+高立新	gāo;wk lì;wh xīn;wp	261
+高名衡	gāo;wk míng;pk héng;rg	540
+高铭暄	gāo;wk míng;jp xuān;lb	66
+高明远	gāo;wk míng;ly yuǎn;hz	91
+高墨达	gāo;wk mò;st dá;lz	234
+高模翰	gāo;wk mó;mc hàn;fr	248
+高培勇	gāo;wk péi;tw yǒng;vl	19
+高其佩	gāo;wk qí;cb pèi;rp	346
+高起潜	gāo;wk qǐ;tv qián;uh	9
+高启强	gāo;wk qǐ;dk qiáng;gk	1372
+高启盛	gāo;wk qǐ;dk shèng;hh	151
+高润霖	gāo;wk rùn;um lín;ym	382
+高若讷	gāo;wk ruò;ck nè;as	256
+高绍德	gāo;wk shào;io dé;rf	288
+高升泰	gāo;wk shēng;pc tài;hu	342
+高西庆	gāo;wk xī;sh qìng;xl	400
+高希舜	gāo;wk xī;cj shùn;ps	256
+高仙芝	gāo;wk xiān;rg zhī;cd	317
+高孝珩	gāo;wk xiào;tz héng;wr	351
+高彦俦	gāo;wk yàn;wp chóu;rh	324
+高延宗	gāo;wk yán;pd zōng;bx	405
+高耀洁	gāo;wk yào;sv jié;ut	540
+高怡平	gāo;wk yí;xi píng;hf	333
+高永文	gāo;wk yǒng;dd wén;wc	526
+高育良	gāo;wk yù;wy liáng;dd	289
+高玉伦	gāo;wk yù;wd lún;rr	382
+高育仁	gāo;wk yù;wy rén;rh	365
+高云龙	gāo;wk yún;hi lóng;hd	333
+高甑生	gāo;wk zèng;dh shēng;pq	288
+高志丹	gāo;wk zhì;tx dān;ph	308
+高志航	gāo;wk zhì;tx háng;vw	526
+高志凯	gāo;wk zhì;tx kǎi;gj	9
+高志鹏	gāo;wk zhì;tx péng;yn	2
+高智升	gāo;wk zhì;pl shēng;pc	25
+高仲密	gāo;wk zhòng;rk mì;bg	364
+高仲武	gāo;wk zhòng;rk wǔ;hd	252
+高宗武	gāo;wk zōng;bx wǔ;hd	598
+高遵裕	gāo;wk zūn;dz yù;db	320
+公冶长	gōng;bi yě;di cháng;pd	522
+顾拜旦	gù;hh bài;fh dàn;lh	104
+顾雏军	gù;hh chú;gr jūn;dc	25
+顾方舟	gù;hh fāng;wp zhōu;vd	44
+顾非熊	gù;hh fēi;ss xióng;iq	202
+顾观光	gù;hh guān;ys guāng;sv	225
+顾横波	gù;hh héng;mc bō;uv	392
+顾闳中	gù;hh hóng;mi zhōng;ks	410
+顾皇后	gù;hh huáng;pw hòu;pk	567
+顾觊之	gù;hh jì;gs zhī;dd	336
+顾嘉辉	gù;hh jiā;tk huī;sd	60
+顾家明	gù;hh jiā;bd míng;ly	418
+顾颉刚	gù;hh jié;th gāng;so	801
+顾介石	gù;hh jiè;rs shí;bk	90
+顾景舟	gù;hh jǐng;lx zhōu;vd	16
+顾恺之	gù;hh kǎi;xg zhī;dd	176
+顾立雄	gù;hh lì;wh xióng;hr	495
+顾明远	gù;hh míng;ly yuǎn;hz	513
+顾南风	gù;hh nán;ff fēng;pc	414
+顾平生	gù;hh píng;hf shēng;pq	1170
+顾千帆	gù;hh qiān;pf fān;jj	25
+顾倾城	gù;hh qīng;rh chéng;th	734
+顾清风	gù;hh qīng;uq fēng;pc	630
+顾清欢	gù;hh qīng;uq huān;yg	423
+顾绍培	gù;hh shào;io péi;tw	450
+顾胜男	gù;hh shèng;yp nán;tl	31
+顾顺章	gù;hh shùn;ph zhāng;wf	160
+顾太清	gù;hh tài;ld qīng;uq	255
+顾亭林	gù;hh tíng;ws lín;mm	418
+顾维钧	gù;hh wéi;ir jūn;jb	248
+顾薇薇	gù;hh wēi;cw wēi;cw	1269
+顾兮兮	gù;hh xī;bv xī;bv	891
+顾宪成	gù;hh xiàn;bv chéng;hd	28
+顾小白	gù;hh xiǎo;xd bái;pl	3
+顾小北	gù;hh xiǎo;xd běi;sp	28
+顾晓梦	gù;hh xiǎo;lh mèng;md	116
+顾星辰	gù;hh xīng;lq chén;hd	626
+顾秀莲	gù;hh xiù;ep lián;cz	536
+顾炎武	gù;hh yán;qq wǔ;hd	550
+顾忆罗	gù;hh yì;xv luó;sd	212
+顾云昌	gù;hh yún;hi chāng;ll	626
+顾贞观	gù;hh zhēn;sb guàn;ys	91
+顾祝同	gù;hh zhù;dk tóng;sk	242
+顾祖禹	gù;hh zǔ;ds yǔ;pd	69
+郭伯雄	guō;we bó;rp xióng;hr	824
+郭凡生	guō;we fán;jd shēng;pq	41
+郭奉孝	guō;we fèng;hs xiào;tz	72
+郭刚堂	guō;we gāng;so táng;st	756
+郭广昌	guō;we guǎng;xp chāng;ll	742
+郭贵妃	guō;we guì;kb fēi;nv	57
+郭皇后	guō;we huáng;pw hòu;pk	170
+郭惠妃	guō;we huì;hx fēi;nv	234
+郭稽中	guō;we jī;eh zhōng;ks	45
+郭金龙	guō;we jīn;jh lóng;hd	666
+郭敬仲	guō;we jìng;cw zhòng;rk	45
+郭居易	guō;we jū;sk yì;lp	45
+郭履道	guō;we lǚ;sw dào;dz	38
+郭沬若	guō;we mèi; ruò;ck	162
+郭明𫓹	guō;we míng;ly jī;	45
+郭沫若	guō;we mò;uh ruò;ck	9508
+郭日生	guō;we rì;lh shēng;pq	50
+郭汝端	guō;we rǔ;un duān;wg	45
+郭声琨	guō;we shēng;tp kūn;wl	720
+郭圣通	guō;we shèng;yt tōng;vz	647
+郭守敬	guō;we shǒu;bc jìng;cw	380
+郭树清	guō;we shù;my qīng;uq	151
+郭嵩焘	guō;we sōng;gk dào;hq	85
+郭松龄	guō;we sōng;mb líng;sr	706
+郭太后	guō;we tài;ld hòu;pk	135
+郭台铭	guō;we tái;ik míng;jp	132
+郭田勇	guō;we tián;ts yǒng;vl	6
+郭药师	guō;we yào;cd shī;sh	97
+郭永怀	guō;we yǒng;dd huái;xh	374
+郭右陶	guō;we yòu;hk táo;eb	45
+郭正亮	guō;we zhèng;hh liàng;wj	22
+郭子仪	guō;we zǐ;zh yí;rd	650
+郭子章	guō;we zǐ;zh zhāng;wf	3
+韩安国	hán;fh ān;bn guó;sd	170
+韩拔陵	hán;fh bá;fh líng;et	392
+韩昌黎	hán;fh chāng;ll lí;eu	44
+韩春雨	hán;fh chūn;hl yǔ;yd	198
+韩德勤	hán;fh dé;rf qín;cl	44
+韩德让	hán;fh dé;rf ràng;as	60
+韩非子	hán;fh fēi;ss zǐ;zh	1281
+韩复矩	hán;fh fù;pw jǔ;ph	702
+韩复龄	hán;fh fù;pw líng;sr	288
+韩国瑜	hán;fh guó;sd yú;wr	900
+韩浩月	hán;fh hào;up yuè;yh	3
+韩嘉彦	hán;fh jiā;tk yàn;wp	189
+韩康子	hán;fh kāng;xu zǐ;zh	132
+韩匡嗣	hán;fh kuāng;hv sì;kv	3
+韩林儿	hán;fh lín;mm ér;pv	185
+韩菱纱	hán;fh líng;cw shā;ix	995
+韩美林	hán;fh měi;dl lín;mm	53
+韩梅梅	hán;fh méi;mp méi;mp	320
+韩慕侠	hán;fh mù;cx xiá;rh	44
+韩全诲	hán;fh quán;rw huì;ap	405
+韩山童	hán;fh shān;gs tóng;wh	122
+韩少功	hán;fh shǎo;xp gōng;hl	126
+韩世忠	hán;fh shì;cv zhōng;kx	405
+韩书力	hán;fh shū;vd lì;lp	300
+韩思复	hán;fh sī;tx fù;pw	297
+韩思彦	hán;fh sī;tx yàn;wp	297
+韩素音	hán;fh sù;qi yīn;wl	19
+韩侂胄	hán;fh tuō;rx zhòu;sy	644
+韩王信	hán;fh wáng;wh xìn;ra	248
+韩武子	hán;fh wǔ;hd zǐ;zh	320
+韩熙载	hán;fh xī;hq zài;fc	69
+韩湘子	hán;fh xiāng;um zǐ;zh	16
+韩小莹	hán;fh xiǎo;xd yíng;cd	60
+韩新月	hán;fh xīn;wp yuè;yh	333
+韩宣子	hán;fh xuān;bh zǐ;zh	396
+韩彦古	hán;fh yàn;wp gǔ;fk	346
+韩幼娘	hán;fh yòu;vl niáng;nd	729
+韩元吉	hán;fh yuán;hv jí;tk	266
+韩昭侯	hán;fh zhāo;lo hóu;rv	35
+韩兆琦	hán;fh zhào;pd qí;wl	410
+韩昭裔	hán;fh zhāo;lo yì;wk	99
+韩仲宣	hán;fh zhòng;rk xuān;bh	4
+韩杼滨	hán;fh zhù;mv bīn;ub	364
+何宝荣	hé;rh bǎo;bd róng;cm	1061
+何弼学	hé;rh bì;gh xué;dz	414
+何伯权	hé;rh bó;rp quán;my	35
+何超凤	hé;rh chāo;tk fèng;py	360
+何超莲	hé;rh chāo;tk lián;cz	13
+何超琼	hé;rh chāo;tk qióng;ww	22
+何超盈	hé;rh chāo;tk yíng;vh	338
+何朝宗	hé;rh cháo;fy zōng;bx	324
+何锄翁	hé;rh chú;js wēng;bh	90
+何冠昌	hé;rh guān;dc chāng;ll	47
+何光远	hé;rh guāng;sv yuǎn;hz	369
+何国舅	hé;rh guó;sd jiù;pl	138
+何鸿銮	hé;rh hóng;un luán;wj	410
+何鸿燊	hé;rh hóng;un shēn;qm	148
+何红药	hé;rh hóng;ih yào;cd	13
+何鸿章	hé;rh hóng;un zhāng;wf	364
+何厚铧	hé;rh hòu;hz huá;jr	16
+何怀宏	hé;rh huái;xh hóng;bi	19
+何皇后	hé;rh huáng;pw hòu;pk	513
+何基沣	hé;rh jī;ct fēng;uh	3
+何经华	hé;rh jīng;iv huá;rf	171
+何景明	hé;rh jǐng;lx míng;ly	16
+何君尧	hé;rh jūn;vk yáo;hv	13
+何立伟	hé;rh lì;wh wěi;rh	360
+何良俊	hé;rh liáng;dd jùn;ri	315
+何莫修	hé;rh mò;cl xiū;rs	248
+何其沧	hé;rh qí;cb cāng;ur	230
+何其芳	hé;rh qí;cb fāng;cp	41
+何清涟	hé;rh qīng;uq lián;uc	6
+何叔衡	hé;rh shū;sy héng;rg	41
+何书桓	hé;rh shū;vd huán;mh	91
+何太冲	hé;rh tài;ld chòng;dk	188
+何太后	hé;rh tài;ld hòu;pk	163
+何腾蛟	hé;rh téng;yd jiāo;ow	13
+何铁手	hé;rh tiě;jp shǒu;fs	16
+何文秀	hé;rh wén;wc xiù;ep	6
+何仙姑	hé;rh xiān;rg gū;nf	13
+何香凝	hé;rh xiāng;el níng;dp	75
+何小鹏	hé;rh xiǎo;xd péng;yn	132
+何以琛	hé;rh yǐ;vr chēn;wd	842
+何应钦	hé;rh yīng;xh qīn;jg	261
+何泽慧	hé;rh zé;uy huì;hx	38
+何兆武	hé;rh zhào;pd wǔ;hd	295
+何振梁	hé;rh zhèn;fh liáng;um	495
+何志平	hé;rh zhì;tx píng;hf	464
+何柱国	hé;rh zhù;mw guó;sd	16
+胡燕青	hú;fy yàn;cq qīng;qy	297
+华天龙	huà;rf tiān;hl lóng;hd	279
+华文漪	huà;rf wén;wc yī;uq	284
+华锡钧	huà;rf xī;jl jūn;jb	310
+华胥国	huà;rf xū;vy guó;sd	315
+华胥氏	huà;rf xū;vy shì;pv	85
+华学明	huà;rf xué;dz míng;ly	40
+华以刚	huà;rf yǐ;vr gāng;so	16
+华益慰	huà;rf yì;dh wèi;sx	297
+华英雄	huà;rf yīng;cd xióng;hr	35
+华云龙	huà;rf yún;hi lóng;hd	6
+华子良	huà;rf zǐ;zh liáng;dd	306
+黄安年	huáng;cb ān;bn nián;ps	446
+黄安源	huáng;cb ān;bn yuán;uh	261
+黄百家	huáng;cb bǎi;hl jiā;bd	315
+黄百韬	huáng;cb bǎi;hl tāo;hp	308
+黄宝妹	huáng;cb bǎo;bd mèi;nh	194
+黄碧端	huáng;cb bì;wb duān;wg	292
+黄碧云	huáng;cb bì;wb yún;hi	572
+黄宾虹	huáng;cb bīn;bb hóng;oh	126
+黄秉干	huáng;cb bǐng;pd gàn;hf	356
+黄秉槐	huáng;cb bǐng;pd huái;mp	234
+黄秉维	huáng;cb bǐng;pd wéi;ir	220
+黄伯度	huáng;cb bó;rp dù;xy	130
+黄般若	huáng;cb bō;vj rě;ck	212
+黄伯荣	huáng;cb bó;rp róng;cm	351
+黄伯思	huáng;cb bó;rp sī;tx	6
+黄伯韬	huáng;cb bó;rp tāo;hp	292
+黄博文	huáng;cb bó;fh wén;wc	349
+黄伯云	huáng;cb bó;rp yún;hi	320
+黄灿然	huáng;cb càn;qg rán;pq	418
+黄长烨	huáng;cb cháng;pd yè;qr	432
+黄朝琴	huáng;cb cháo;fy qín;wv	459
+黄朝天	huáng;cb cháo;fy tiān;hl	360
+黄晟峰	huáng;cb chéng;ld fēng;gw	171
+黄澄海	huáng;cb chéng;uv hǎi;up	45
+黄成希	huáng;cb chéng;hd xī;cj	13
+黄承彦	huáng;cb chéng;vd yàn;wp	107
+黄赤波	huáng;cb chì;td bō;uv	180
+黄崇嘏	huáng;cb chóng;gx gǔ;fv	243
+黄楚标	huáng;cb chǔ;mr biāo;mh	436
+黄楚九	huáng;cb chǔ;mr jiǔ;pv	6
+黄楚平	huáng;cb chǔ;mr píng;hf	387
+黄初平	huáng;cb chū;do píng;hf	300
+黄淳梁	huáng;cb chún;uw liáng;um	392
+黄春明	huáng;cb chūn;hl míng;ly	3
+黄淳耀	huáng;cb chún;uw yào;sv	6
+黄光锐	huáng;cb guāng;sv ruì;jd	284
+黄光裕	huáng;cb guāng;sv yù;db	188
+黄瑰芬	huáng;cb guī;wp fēn;co	3
+黄龟理	huáng;cb guī;gv lǐ;wl	342
+黄国昌	huáng;cb guó;sd chāng;ll	6
+黄国恩	huáng;cb guó;sd ēn;sx	288
+黄国健	huáng;cb guó;sd jiàn;rv	423
+黄国平	huáng;cb guó;sd píng;hf	25
+黄国书	huáng;cb guó;sd shū;vd	116
+黄国桐	huáng;cb guó;sd tóng;ms	387
+黄海昆	huáng;cb hǎi;up kūn;lv	225
+黄汉升	huáng;cb hàn;uy shēng;pc	31
+黄和平	huáng;cb hé;ek píng;hf	306
+黄和祥	huáng;cb hé;ek xiáng;dd	293
+黄恒美	huáng;cb héng;xh měi;dl	207
+黄鸿超	huáng;cb hóng;un chāo;tk	225
+黄宏成	huáng;cb hóng;bi chéng;hd	315
+黄宏发	huáng;cb hóng;bi fā;vd	392
+黄宏生	huáng;cb hóng;bi shēng;pq	572
+黄厚霖	huáng;cb hòu;hz lín;ym	117
+黄幻吾	huáng;cb huàn;vv wú;hk	279
+黄煌雄	huáng;cb huáng;qp xióng;hr	423
+黄蕙兰	huáng;cb huì;cx lán;dh	369
+黄火青	huáng;cb huǒ;qr qīng;qy	441
+黄火星	huáng;cb huǒ;qr xīng;lq	338
+黄几复	huáng;cb jǐ;jv fù;pw	369
+黄继光	huáng;cb jì;ij guāng;sv	232
+黄季陆	huáng;cb jì;ez lù;eh	3
+黄汲清	huáng;cb jí;up qīng;uq	369
+黄集伟	huáng;cb jí;rm wěi;rh	292
+黄继新	huáng;cb jì;ij xīn;wp	756
+黄嘉略	huáng;cb jiā;tk lüè;tw	436
+黄嘉谟	huáng;cb jiā;tk mó;ac	274
+黄家驷	huáng;cb jiā;bd sì;vs	19
+黄嘉伟	huáng;cb jiā;tk wěi;rh	228
+黄健庭	huáng;cb jiàn;rv tíng;xd	423
+黄教安	huáng;cb jiào;tw ān;bn	508
+黄洁夫	huáng;cb jié;ut fū;hl	16
+黄介正	huáng;cb jiè;rs zhèng;hh	243
+黄景仁	huáng;cb jǐng;lx rén;rh	104
+黄静远	huáng;cb jìng;qg yuǎn;hz	306
+黄九郎	huáng;cb jiǔ;pv láng;de	13
+黄久生	huáng;cb jiǔ;pd shēng;pq	297
+黄君璧	huáng;cb jūn;vk bì;sd	3
+黄君壁	huáng;cb jūn;vk bì;st	2
+黄俊华	huáng;cb jùn;ri huá;rf	3
+黄开基	huáng;cb kāi;hc jī;ct	310
+黄开甲	huáng;cb kāi;hc jiǎ;ls	252
+黄开湘	huáng;cb kāi;hc xiāng;um	304
+黄克诚	huáng;cb kè;fv chéng;ah	251
+黄克功	huáng;cb kè;fv gōng;hl	22
+黄克强	huáng;cb kè;fv qiáng;gk	364
+黄克武	huáng;cb kè;fv wǔ;hd	428
+黄宽重	huáng;cb kuān;bv zhòng;ph	212
+黄坤明	huáng;cb kūn;tl míng;ly	6
+黄昆岩	huáng;cb kūn;lv yán;gb	266
+黄兰香	huáng;cb lán;dh xiāng;el	374
+黄乐平	huáng;cb lè;px píng;hf	536
+黄利斌	huáng;cb lì;eo bīn;wh	549
+黄立冲	huáng;cb lì;wh chōng;dk	472
+黄丽松	huáng;cb lì;hd sōng;mb	418
+黄莉新	huáng;cb lì;co xīn;wp	209
+黄礼攸	huáng;cb lǐ;dv yōu;rs	238
+黄梨洲	huáng;cb lí;em zhōu;ud	333
+黄良财	huáng;cb liáng;dd cái;bh	266
+黄铃娟	huáng;cb líng;jr juān;nk	238
+黄龙士	huáng;cb lóng;hd shì;th	9
+黄龙云	huáng;cb lóng;hd yún;hi	382
+黄璐琦	huáng;cb lù;wz qí;wl	35
+黄鲁直	huáng;cb lǔ;gl zhí;fh	297
+黄罗斌	huáng;cb luó;sd bīn;wh	346
+黄洛峰	huáng;cb luò;uw fēng;gw	212
+黄妈庆	huáng;cb mā;nv qìng;xl	320
+黄茂如	huáng;cb mào;cd rú;nk	428
+黄茂兴	huáng;cb mào;cd xīng;db	333
+黄孟复	huáng;cb mèng;zh fù;pw	324
+黄妙珠	huáng;cb miào;nx zhū;wp	360
+黄苗子	huáng;cb miáo;ct zi;zh	454
+黄明端	huáng;cb míng;ly duān;wg	72
+黄鸣俊	huáng;cb míng;kn jùn;ri	171
+黄鸣龙	huáng;cb míng;kn lóng;hd	25
+黄明堂	huáng;cb míng;ly táng;st	396
+黄明正	huáng;cb míng;ly zhèng;hh	220
+黄明宗	huáng;cb míng;ly zōng;bx	252
+黄牧甫	huáng;cb mù;pw fǔ;hd	53
+黄慕兰	huáng;cb mù;cx lán;dh	306
+黄慕松	huáng;cb mù;cx sōng;mb	400
+黄乃裳	huáng;cb nǎi;vp shang;sd	482
+黄乃扬	huáng;cb nǎi;vp yáng;fv	266
+黄楠森	huáng;cb nán;mf sēn;mm	171
+黄培芳	huáng;cb péi;tw fāng;cp	202
+黄锫坚	huáng;cb péi;jw jiān;st	76
+黄培松	huáng;cb péi;tw sōng;mb	252
+黄彭年	huáng;cb péng;tp nián;ps	274
+黄启东	huáng;cb qǐ;dk dōng;hd	3
+黄奇帆	huáng;cb qí;ls fān;jj	91
+黄其萍	huáng;cb qí;cb píng;cu	338
+黄绮石	huáng;cb qǐ;il shí;bk	50
+黄樵松	huáng;cb qiáo;mr sōng;mb	405
+黄仁勋	huáng;cb rén;rh xūn;kl	85
+黄仁宇	huáng;cb rén;rh yǔ;bs	1507
+黄森屏	huáng;cb sēn;mm píng;sc	243
+黄善春	huáng;cb shàn;dk chūn;hl	212
+黄山谷	huáng;cb shān;gs gǔ;bk	60
+黄善洪	huáng;cb shàn;dk hóng;uc	9
+黄世芳	huáng;cb shì;cv fāng;cp	130
+黄石公	huáng;cb shí;bk gōng;bi	110
+黄士衡	huáng;cb shì;th héng;rg	243
+黄士陵	huáng;cb shì;th líng;et	9
+黄士松	huáng;cb shì;th sōng;mb	117
+黄石斋	huáng;cb shí;bk zhāi;ws	81
+黄世钊	huáng;cb shì;cv zhāo;jo	346
+黄世忠	huáng;cb shì;cv zhōng;kx	258
+黄守魁	huáng;cb shǒu;bc kuí;pf	194
+黄思静	huáng;cb sī;tx jìng;qg	378
+黄思路	huáng;cb sī;tx lù;zw	252
+黄松有	huáng;cb sōng;mb yǒu;hy	369
+黄素琼	huáng;cb sù;qi qióng;ww	234
+黄太吉	huáng;cb tài;ld jí;tk	691
+黄台吉	huáng;cb tái;ik jí;tk	100
+黄泰岩	huáng;cb tài;hu yán;gb	230
+黄体芳	huáng;cb tǐ;rm fāng;cp	3
+黄体仁	huáng;cb tǐ;rm rén;rh	117
+黄天霸	huáng;cb tiān;hl bà;yy	207
+黄天戈	huáng;cb tiān;hl gē;hd	292
+黄天华	huáng;cb tiān;hl huā;rf	450
+黄天化	huáng;cb tiān;hl huà;rp	209
+黄天明	huáng;cb tiān;hl míng;ly	207
+黄天鹏	huáng;cb tiān;hl péng;yn	292
+黄天启	huáng;cb tiān;hl qǐ;dk	212
+黄天树	huáng;cb tiān;hl shù;my	256
+黄天文	huáng;cb tiān;hl wén;wc	374
+黄天祥	huáng;cb tiān;hl xiáng;dd	270
+黄铁军	huáng;cb tiě;jp jūn;dc	225
+黄万里	huáng;cb wàn;hp lǐ;lt	60
+黄伟芬	huáng;cb wěi;rh fēn;co	16
+黄炜华	huáng;cb wěi;qh huá;rf	248
+黄委会	huáng;cb wěi;en huì;ri	190
+黄纬禄	huáng;cb wěi;ih lù;dv	308
+黄伟纶	huáng;cb wěi;rh lún;ir	346
+黄伟民	huáng;cb wěi;rh mín;vv	396
+黄伟权	huáng;cb wěi;rh quán;my	202
+黄维仁	huáng;cb wéi;ir rén;rh	180
+黄伟森	huáng;cb wěi;rh sēn;mm	117
+黄伟贤	huáng;cb wěi;rh xián;sb	428
+黄伟雄	huáng;cb wěi;rh xióng;hr	270
+黄玮仪	huáng;cb wěi;wh yí;rd	153
+黄文弼	huáng;cb wén;wc bì;gh	25
+黄文斌	huáng;cb wén;wc bīn;wh	5
+黄文波	huáng;cb wén;wc bō;uv	405
+黄文超	huáng;cb wén;wc chāo;tk	256
+黄文峰	huáng;cb wén;wc fēng;gw	194
+黄文广	huáng;cb wén;wc guǎng;xp	76
+黄文华	huáng;cb wén;wc huá;rf	418
+黄文辉	huáng;cb wén;wc huī;sd	405
+黄文杰	huáng;cb wén;wc jié;mq	508
+黄文静	huáng;cb wén;wc jìng;qg	248
+黄文龙	huáng;cb wén;wc lóng;hd	234
+黄文明	huáng;cb wén;wc míng;ly	315
+黄文荣	huáng;cb wén;wc róng;cm	130
+黄文山	huáng;cb wén;wc shān;gs	302
+黄文婷	huáng;cb wén;wc tíng;nw	266
+黄文祥	huáng;cb wén;wc xiáng;dd	144
+黄文秀	huáng;cb wén;wc xiù;ep	19
+黄文政	huáng;cb wén;wc zhèng;hw	238
+黄文志	huáng;cb wén;wc zhì;tx	202
+黄文忠	huáng;cb wén;wc zhōng;kx	472
+黄武雄	huáng;cb wǔ;hd xióng;hr	374
+黄喜灿	huáng;cb xǐ;tk càn;qg	85
+黄锡衮	huáng;cb xī;jl gǔn;wd	252
+黄溪河	huáng;cb xī;up hé;uh	297
+黄细花	huáng;cb xì;it huā;cv	342
+黄锡璆	huáng;cb xī;jl qiú;wv	202
+黄希庭	huáng;cb xī;cj tíng;xd	306
+黄希扬	huáng;cb xī;cj yáng;fv	526
+黄喜忠	huáng;cb xǐ;tk zhōng;kx	302
+黄夏柏	huáng;cb xià;hw bǎi;mp	171
+黄现璠	huáng;cb xiàn;ws fán;wp	25
+黄显辉	huáng;cb xiǎn;lh huī;sd	302
+黄显声	huáng;cb xiǎn;lh shēng;tp	410
+黄湘詅	huáng;cb xiāng;um líng;	212
+黄向墨	huáng;cb xiàng;pk mò;st	396
+黄晓薇	huáng;cb xiǎo;lh wēi;cw	495
+黄筱雯	huáng;cb xiǎo;gw wén;yc	153
+黄潇潇	huáng;cb xiāo;uc xiāo;uc	266
+黄萧养	huáng;cb xiāo;cd yǎng;ds	3
+黄燮清	huáng;cb xiè;ay qīng;uq	292
+黄心川	huáng;cb xīn;xd chuān;ps	212
+黄雪辰	huáng;cb xuě;yx chén;hd	38
+黄学禄	huáng;cb xué;dz lù;dv	297
+黄学增	huáng;cb xué;dz zēng;td	225
+黄亚福	huáng;cb yà;hh fú;dh	360
+黄燕铭	huáng;cb yàn;cq míng;jp	9
+黄延秋	huáng;cb yán;pd qiū;eq	13
+黄彦蓉	huáng;cb yàn;wp róng;ck	306
+黄养辉	huáng;cb yǎng;ds huī;sd	243
+黄药眠	huáng;cb yào;cd mián;lv	351
+黄异庵	huáng;cb yì;vc ān;xv	76
+黄艺博	huáng;cb yì;cv bó;fh	446
+黄逸梵	huáng;cb yì;gz fàn;md	194
+黄宜弘	huáng;cb yí;bh hóng;gi	436
+黄义交	huáng;cb yì;dc jiāo;wc	342
+黄一孟	huáng;cb yī;hq mèng;zh	78
+黄益平	huáng;cb yì;dh píng;hf	28
+黄毅清	huáng;cb yì;wj qīng;uq	896
+黄翼升	huáng;cb yì;vb shēng;pc	289
+黄奕中	huáng;cb yì;wl zhōng;ks	328
+黄义助	huáng;cb yì;dc zhù;sl	6
+黄英豪	huáng;cb yīng;cd háo;wd	396
+黄英琦	huáng;cb yīng;cd qí;wl	320
+黄英伟	huáng;cb yīng;cd wěi;rh	162
+黄永宏	huáng;cb yǒng;dd hóng;bi	369
+黄永淮	huáng;cb yǒng;dd huái;ur	252
+黄永砯	huáng;cb yǒng;dd pīng;	266
+黄永棋	huáng;cb yǒng;dd qí;mc	346
+黄永胜	huáng;cb yǒng;dd shèng;yp	258
+黄永松	huáng;cb yǒng;dd sōng;mb	418
+黄永武	huáng;cb yǒng;dd wǔ;hd	356
+黄永玉	huáng;cb yǒng;dd yù;wd	352
+黄友棣	huáng;cb yǒu;hy dì;mv	378
+黄有光	huáng;cb yǒu;hy guāng;sv	22
+黄玉斌	huáng;cb yù;wd bīn;wh	6
+黄虞稷	huáng;cb yú;sl jì;et	342
+黄玉阶	huáng;cb yù;wd jiē;er	152
+黄玉昆	huáng;cb yù;wd kūn;lv	292
+黄昱宁	huáng;cb yù;lh níng;bs	225
+黄玉山	huáng;cb yù;wd shān;gs	356
+黄雨石	huáng;cb yǔ;yd shí;bk	148
+黄赞汤	huáng;cb zàn;pb tāng;uv	194
+黄正民	huáng;cb zhèng;hh mín;vv	79
+黄志达	huáng;cb zhì;tx dá;lz	266
+黄志豪	huáng;cb zhì;tx háo;wd	454
+黄志红	huáng;cb zhì;tx hóng;ih	9
+黄志龙	huáng;cb zhì;tx lóng;hd	441
+黄志民	huáng;cb zhì;tx mín;vv	194
+黄志明	huáng;cb zhì;tx míng;ly	6
+黄智权	huáng;cb zhì;pl quán;my	220
+黄志祥	huáng;cb zhì;tx xiáng;dd	6
+黄志雄	huáng;cb zhì;tx xióng;hr	450
+黄智勇	huáng;cb zhì;pl yǒng;vl	3
+黄执中	huáng;cb zhí;fp zhōng;ks	109
+黄忠义	huáng;cb zhōng;kx yì;dc	356
+黄仲则	huáng;cb zhòng;rk zé;bo	22
+黄仲昭	huáng;cb zhòng;rk zhāo;lo	292
+黄周星	huáng;cb zhōu;pk xīng;lq	256
+黄竹斋	huáng;cb zhú;gs zhāi;ws	25
+黄紫昌	huáng;cb zǐ;si chāng;ll	31
+黄子澄	huáng;cb zǐ;zh chéng;uv	72
+黄子功	huáng;cb zǐ;zh gōng;hl	45
+黄宗汉	huáng;cb zōng;bx hàn;uy	346
+黄宗羲	huáng;cb zōng;bx xī;dd	336
+黄宗仰	huáng;cb zōng;bx yǎng;rp	238
+黄宗智	huáng;cb zōng;bx zhì;pl	201
+黄宗治	huáng;cb zōng;bx zhì;ui	181
+黄尊秋	huáng;cb zūn;dc qiū;eq	252
+黄尊素	huáng;cb zūn;dc sù;qi	346
+黄遵宪	huáng;cb zūn;dz xiàn;bv	44
+黄佐临	huáng;cb zuǒ;rh lín;sp	405
+黄作梅	huáng;cb zuò;rp méi;mp	306
+霍秉权	huò;yq bǐng;pd quán;my	292
+霍布斯	huò;yq bù;hj sī;cp	2936
+霍成君	huò;yq chéng;hd jūn;vk	317
+霍春阳	huò;yq chūn;hl yáng;el	6
+霍殿阁	huò;yq diàn;sj gé;mk	248
+霍东阁	huò;yq dōng;hd gé;mk	13
+霍尔丹	huò;yq ěr;gx dān;ph	41
+霍费尔	huò;yq fèi;gb ěr;gx	504
+霍夫曼	huò;yq fū;hl màn;ly	1064
+霍华德	huò;yq huá;rf dé;rf	749
+霍集占	huò;yq jí;rm zhàn;sk	16
+霍加木	huò;yq jiā;lk mù;md	189
+霍建宁	huò;yq jiàn;vd níng;bs	6
+霍克尼	huò;yq kè;fv ní;sv	176
+霍梅尼	huò;yq méi;mp ní;sv	214
+霍姆斯	huò;yq mǔ;nv sī;cp	264
+霍诺留	huò;yq nuò;ac liú;pt	459
+霍启刚	huò;yq qǐ;dk gāng;so	399
+霍启山	huò;yq qǐ;dk shān;gs	129
+霍青桐	huò;yq qīng;qy tóng;ms	38
+霍去病	huò;yq qù;ti bìng;zd	6340
+霍守业	huò;yq shǒu;bc yè;sh	302
+霍守义	huò;yq shǒu;bc yì;dc	9
+霍水仙	huò;yq shuǐ;ud xiān;rg	220
+霍斯劳	huò;yq sī;cp láo;cl	639
+霍韬晦	huò;yq tāo;hp huì;lp	292
+霍汶希	huò;yq wèn;uw xī;cj	16
+霍仙姑	huò;yq xiān;rg gū;nf	338
+霍啸林	huò;yq xiào;kv lín;mm	22
+霍秀秀	huò;yq xiù;ep xiù;ep	57
+霍彦威	huò;yq yàn;wp wēi;hd	436
+霍耀良	huò;yq yào;sv liáng;dd	25
+霍英东	huò;yq yīng;cd dōng;hd	138
+霍雨浩	huò;yq yǔ;yd hào;up	50
+霍元甲	huò;yq yuán;hv jiǎ;ls	2104
+霍震寰	huò;yq zhèn;yd huán;bd	387
+霍震霆	huò;yq zhèn;yd tíng;yd	119
+霍仲孺	huò;yq zhòng;rk rú;zy	41
+蒋百里	jiǎng;cc bǎi;hl lǐ;lt	254
+姜白石	jiāng;dn bái;pl shí;bk	436
+江宝钗	jiāng;uh bǎo;bd chāi;jy	414
+姜保红	jiāng;dn bǎo;rk hóng;ih	297
+江本胜	jiāng;uh běn;mh shèng;yp	382
+蒋碧微	jiǎng;cc bì;wb wēi;rg	472
+蒋碧薇	jiǎng;cc bì;wb wēi;cw	315
+江必新	jiāng;uh bì;dd xīn;wp	19
+江别鹤	jiāng;uh bié;ko hè;dn	41
+江滨柳	jiāng;uh bīn;ub liǔ;mp	410
+蒋丙煌	jiǎng;cc bǐng;hd huáng;qp	360
+江丙坤	jiāng;uh bǐng;hd kūn;tl	544
+姜伯约	jiāng;dn bó;rp yuē;ib	163
+江采苹	jiāng;uh cǎi;pm píng;cf	224
+江采萍	jiāng;uh cǎi;pm píng;cu	88
+蒋采苹	jiǎng;cc cǎi;pm píng;cf	26
+蒋昌建	jiǎng;cc chāng;ll jiàn;vd	283
+蒋超良	jiǎng;cc chāo;tk liáng;dd	3
+姜宸英	jiāng;dn chén;bd yīng;cd	324
+蒋承缙	jiǎng;cc chéng;vd jìn;ih	256
+蒋崇璟	jiǎng;cc chóng;gx jǐng;wl	171
+蒋传海	jiǎng;cc chuán;rh hǎi;up	238
+江川卓	jiāng;uh chuān;ps zhuó;sf	338
+蒋春霖	jiǎng;cc chūn;hl lín;ym	292
+江春霖	jiāng;uh chūn;hl lín;ym	198
+姜春云	jiāng;dn chūn;hl yún;hi	400
+江达琳	jiāng;uh dá;lz lín;wm	99
+姜大明	jiāng;dn dà;ld míng;ly	536
+江德量	jiāng;uh dé;rf liàng;lh	76
+江德藻	jiāng;uh dé;rf zǎo;cu	207
+姜登选	jiāng;dn dēng;vh xuǎn;pz	91
+姜帝圭	jiāng;dn dì;wj guī;tt	518
+蒋鼎文	jiǎng;cc dǐng;lv wén;wc	63
+江冬秀	jiāng;uh dōng;wd xiù;ep	508
+蒋方良	jiǎng;cc fāng;wp liáng;dd	3
+蒋方舟	jiǎng;cc fāng;wp zhōu;vd	964
+江枫眠	jiāng;uh fēng;mp mián;lv	312
+江港生	jiāng;uh gǎng;uc shēng;pq	324
+蒋高明	jiǎng;cc gāo;wk míng;ly	356
+姜公辅	jiāng;dn gōng;bi fǔ;ch	315
+蒋光慈	jiǎng;cc guāng;sv cí;dx	28
+蒋光鼐	jiǎng;cc guāng;sv nài;vv	16
+江国豪	jiāng;uh guó;sd háo;wd	410
+江寒汀	jiāng;uh hán;bd tīng;uh	374
+江浩然	jiāng;uh hào;up rán;pq	608
+江宏杰	jiāng;uh hóng;bi jié;mq	526
+江建民	jiāng;uh jiàn;vd mín;vv	436
+姜建清	jiāng;dn jiàn;vd qīng;uq	19
+蒋洁敏	jiǎng;cc jié;ut mǐn;pw	832
+蒋介卿	jiǎng;cc jiè;rs qīng;px	6
+蒋介石	jiǎng;cc jiè;rs shí;bk	513
+蒋经国	jiǎng;cc jīng;iv guó;sd	699
+江凯文	jiāng;uh kǎi;gj wén;wc	207
+江亢虎	jiāng;uh kàng;wj hǔ;sj	13
+姜克实	jiāng;dn kè;fv shí;bl	388
+江坤宇	jiāng;uh kūn;tl yǔ;bs	284
+蒋丽芸	jiǎng;cc lì;hd yún;ci	504
+姜亮夫	jiāng;dn liàng;wj fū;hl	423
+江流儿	jiāng;uh liú;uw ér;pv	688
+江茂森	jiāng;uh mào;cd sēn;mm	180
+蒋门神	jiǎng;cc mén;mv shén;dl	176
+蒋梦麟	jiǎng;cc mèng;md lín;xj	60
+江绵恒	jiāng;uh mián;ip héng;xh	3
+江鸣久	jiāng;uh míng;kn jiǔ;pd	202
+江明学	jiāng;uh míng;ly xué;dz	387
+蒋南翔	jiǎng;cc nán;ff xiáng;dv	9
+蒋能杰	jiǎng;cc néng;ip jié;mq	166
+姜培琳	jiāng;dn péi;tw lín;wm	297
+江佩珍	jiāng;uh pèi;rp zhēn;wr	238
+江鹏坚	jiāng;uh péng;yn jiān;st	418
+江启臣	jiāng;uh qǐ;dk chén;hv	558
+姜奇平	jiāng;dn qí;ls píng;hf	396
+江奇涛	jiāng;uh qí;ls tāo;uh	6
+蒋庆泉	jiǎng;cc qìng;xl quán;pu	252
+江日升	jiāng;uh rì;lh shēng;pc	310
+姜汝祥	jiāng;dn rǔ;un xiáng;dd	3
+江上达	jiāng;uh shàng;sh dá;lz	162
+江上青	jiāng;uh shàng;sh qīng;qy	400
+江绍基	jiāng;uh shào;io jī;ct	153
+江少虞	jiāng;uh shǎo;xp yú;sl	160
+蒋胜男	jiǎng;cc shèng;yp nán;tl	702
+姜世离	jiāng;dn shì;cv lí;wd	270
+蒋士铨	jiǎng;cc shì;th quán;jr	331
+蒋树声	jiǎng;cc shù;my shēng;tp	302
+姜思达	jiāng;dn sī;tx dá;lz	756
+江孙芸	jiāng;uh sūn;zx yún;ci	351
+姜太公	jiāng;dn tài;ld gōng;bi	226
+姜太后	jiāng;dn tài;ld hòu;pk	238
+姜特立	jiāng;dn tè;pt lì;wh	144
+江腾蛟	jiāng;uh téng;yd jiāo;ow	472
+江天铎	jiāng;uh tiān;hl duó;jy	153
+江天勇	jiāng;uh tiān;hl yǒng;vl	369
+蒋廷黻	jiǎng;cc tíng;pd fú;sh	132
+蒋万安	jiǎng;cc wàn;hp ān;bn	482
+江万里	jiāng;uh wàn;hp lǐ;lt	456
+蒋纬国	jiǎng;cc wěi;ih guó;sd	44
+蒋伟宁	jiǎng;cc wěi;rh níng;bs	418
+江味农	jiāng;uh wèi;kh nóng;dd	274
+蒋维乔	jiǎng;cc wéi;ir qiáo;ps	3
+江渭清	jiāng;uh wèi;ut qīng;uq	414
+蒋渭水	jiǎng;cc wèi;ut shuǐ;ud	648
+江文湛	jiāng;uh wén;wc zhàn;uc	310
+姜锡柱	jiāng;dn xī;jl zhù;mw	274
+蒋显斌	jiǎng;cc xiǎn;lh bīn;wh	248
+蒋先云	jiǎng;cc xiān;pv yún;hi	28
+江小涓	jiāng;uh xiǎo;xd juān;uk	346
+蒋孝文	jiǎng;cc xiào;tz wén;wc	495
+蒋孝严	jiǎng;cc xiào;tz yán;hp	626
+江小鱼	jiāng;uh xiǎo;xd yú;gh	422
+江晓原	jiāng;uh xiǎo;lh yuán;hx	365
+蒋孝章	jiǎng;cc xiào;tz zhāng;wf	211
+江燮元	jiāng;uh xiè;ay yuán;hv	261
+蒋兴权	jiǎng;cc xīng;db quán;my	66
+江休复	jiāng;uh xiū;rm fù;pw	160
+姜旭光	jiāng;dn xù;pl guāng;sv	45
+蒋学模	jiǎng;cc xué;dz mó;mc	400
+蒋彦士	jiǎng;cc yàn;wp shì;th	102
+蒋耀平	jiǎng;cc yào;sv píng;hf	160
+江逸尘	jiāng;uh yì;gz chén;xt	189
+江宜桦	jiāng;uh yí;bh huà;mr	688
+姜异康	jiāng;dn yì;vc kāng;xu	446
+蒋翊武	jiǎng;cc yì;wv wǔ;hd	246
+江映月	jiāng;uh yìng;ls yuè;yh	1012
+江永华	jiāng;uh yǒng;dd huá;rf	288
+江拥辉	jiāng;uh yōng;fy huī;sd	292
+蒋友柏	jiǎng;cc yǒu;hy bǎi;mp	518
+蒋玉菡	jiǎng;cc yù;wd hàn;cs	85
+江玉郎	jiāng;uh yù;wd láng;de	63
+江玉燕	jiāng;uh yù;wd yàn;cq	334
+姜云凡	jiāng;dn yún;hi fán;jd	182
+江泽涵	jiāng;uh zé;uy hán;uv	346
+江泽慧	jiāng;uh zé;uy huì;hx	346
+江泽林	jiāng;uh zé;uy lín;mm	382
+江泽民	jiāng;uh zé;uy mín;vv	85
+姜增伟	jiāng;dn zēng;td wěi;rh	333
+蒋兆和	jiǎng;cc zhào;pd hé;ek	28
+江兆申	jiāng;uh zhào;pd shēn;ls	306
+蒋正华	jiǎng;cc zhèng;hh huá;rf	418
+江志强	jiāng;uh zhì;tx qiáng;gk	536
+江直树	jiāng;uh zhí;fh shù;my	418
+江忠源	jiāng;uh zhōng;kx yuán;uh	365
+蒋中正	jiǎng;cc zhōng;ks zhèng;hh	157
+江铸久	jiāng;uh zhù;jh jiǔ;pd	57
+江竹筠	jiāng;uh zhú;gs jūn;gh	382
+蒋子龙	jiǎng;cc zǐ;zh lóng;hd	28
+姜子牙	jiāng;dn zǐ;zh yá;hp	1755
+蒋作宾	jiǎng;cc zuò;rp bīn;bb	3
+江作良	jiāng;uh zuò;rp liáng;dd	333
+金炳万	jīn;jh bǐng;qh wàn;hp	6
+金灿荣	jīn;jh càn;qg róng;cm	82
+金蝉子	jīn;jh chán;od zǐ;zh	254
+金蟾子	jīn;jh chán;og zǐ;zh	229
+金冲及	jīn;jh chōng;dk jí;pd	25
+金钏儿	jīn;jh chuàn;jp ér;pv	16
+金翠莲	jīn;jh cuì;vf lián;cz	31
+金大坚	jīn;jh dà;ld jiān;st	100
+金达康	jīn;jh dá;lz kāng;xu	261
+金大升	jīn;jh dà;ld shēng;pc	261
+金大中	jīn;jh dà;ld zhōng;ks	148
+金德宗	jīn;jh dé;rf zōng;bx	189
+金地藏	jīn;jh dì;tv cáng;cd	342
+金冬心	jīn;jh dōng;wd xīn;xd	382
+金冬雁	jīn;jh dōng;wd yàn;hq	25
+金甫炅	jīn;jh fǔ;hd jiǒng;lq	315
+金富轼	jīn;jh fù;bt shì;ch	300
+金观涛	jīn;jh guān;ys tāo;uh	432
+金光瑶	jīn;jh guāng;sv yáo;wp	540
+金韩松	jīn;jh hán;fh sōng;mb	279
+金亨稷	jīn;jh hēng;ws jì;et	410
+金弘道	jīn;jh hóng;gi dào;dz	320
+金弘集	jīn;jh hóng;gi jí;rm	432
+金皇后	jīn;jh huáng;pw hòu;pk	423
+金基德	jīn;jh jī;ct dé;rf	152
+金开诚	jīn;jh kāi;hc chéng;ah	297
+金凯瑞	jīn;jh kǎi;gj ruì;wg	254
+金克木	jīn;jh kè;fv mù;md	154
+金克丝	jīn;jh kè;fv sī;ih	100
+金里奇	jīn;jh lǐ;lt qí;ls	6
+金立群	jīn;jh lì;wh qún;vd	47
+金罗汉	jīn;jh luó;sd hàn;uy	396
+金履祥	jīn;jh lǚ;sw xiáng;dd	248
+金美龄	jīn;jh měi;dl líng;sr	351
+金末帝	jīn;jh mò;hm dì;wj	297
+金木研	jīn;jh mù;md yán;bh	35
+金尼阁	jīn;jh ní;sv gé;mk	396
+金培达	jīn;jh péi;tw dá;lz	6
+金枪客	jīn;jh qiāng;mr kè;bk	364
+金枪手	jīn;jh qiāng;mr shǒu;fs	382
+金乔觉	jīn;jh qiáo;ps jué;dv	387
+金人庆	jīn;jh rén;rd qìng;xl	9
+金仁问	jīn;jh rén;rh wèn;mk	292
+金日成	jīn;jh rì;lh chéng;hd	288
+金软景	jīn;jh ruǎn;cg jǐng;lx	9
+金睿宗	jīn;jh ruì;sl zōng;bx	256
+金润发	jīn;jh rùn;um fā;vd	526
+金世遗	jīn;jh shì;cv yí;kz	100
+金世宗	jīn;jh shì;cv zōng;bx	66
+金世祖	jīn;jh shì;cv zǔ;ds	258
+金首露	jīn;jh shǒu;dl lù;yk	360
+金素月	jīn;jh sù;qi yuè;yh	212
+金太狼	jīn;jh tài;ld láng;qd	675
+金太郎	jīn;jh tài;ld láng;de	429
+金太宗	jīn;jh tài;ld zōng;bx	35
+金太祖	jīn;jh tài;ld zǔ;ds	47
+金天氏	jīn;jh tiān;hl shì;pv	340
+金铁霖	jīn;jh tiě;jp lín;ym	464
+金廷标	jīn;jh tíng;pd biāo;mh	288
+金头陀	jīn;jh tóu;dl tuó;eb	441
+金万德	jīn;jh wàn;hp dé;rf	289
+金王孙	jīn;jh wáng;wh sūn;zx	320
+金维刚	jīn;jh wéi;ir gāng;so	684
+金维映	jīn;jh wéi;ir yìng;ls	288
+金文声	jīn;jh wén;wc shēng;tp	405
+金玟哉	jīn;jh wén;ww zāi;fk	195
+金无怠	jīn;jh wú;hv dài;ix	3
+金兀术	jīn;jh wù;hv zhú;md	580
+金熙宗	jīn;jh xī;hq zōng;bx	630
+金信煜	jīn;jh xìn;ra yù;ql	41
+金性尧	jīn;jh xìng;xp yáo;hv	306
+金雄白	jīn;jh xióng;hr bái;pl	342
+金宣宗	jīn;jh xuān;bh zōng;bx	63
+金训华	jīn;jh xùn;ap huá;rf	306
+金雅朗	jīn;jh yǎ;hr lǎng;dy	153
+金眼彪	jīn;jh yǎn;lx biāo;sp	356
+金妍儿	jīn;jh yán;nh ér;pv	716
+金延璟	jīn;jh yán;pd jǐng;wl	350
+金岩石	jīn;jh yán;gb shí;bk	236
+金燕西	jīn;jh yàn;cq xī;sh	352
+金耀基	jīn;jh yào;sv jī;ct	387
+金怡濂	jīn;jh yí;xi lián;ux	180
+金依萌	jīn;jh yī;rw méng;cy	364
+金一南	jīn;jh yì;hq nán;ff	60
+金英权	jīn;jh yīng;cd quán;my	163
+金永南	jīn;jh yǒng;dd nán;ff	554
+金泳三	jīn;jh yǒng;ud sān;hh	38
+金幼孜	jīn;jh yòu;vl zī;zw	3
+金宇澄	jīn;jh yǔ;bs chéng;uv	72
+金毓黻	jīn;jh yù;pw fú;sh	423
+金鱼姬	jīn;jh yú;gh jī;nh	554
+金鱼精	jīn;jh yú;gh jīng;jq	279
+金玉均	jīn;jh yù;wd jūn;tb	486
+金玉奴	jīn;jh yù;wd nú;ny	19
+金庾信	jīn;jh yǔ;xl xìn;ra	482
+金宇中	jīn;jh yǔ;bs zhōng;ks	13
+金元凤	jīn;jh yuán;hv fèng;py	297
+金鸳鸯	jīn;jh yuān;pn yāng;sn	297
+金岳霖	jīn;jh yuè;pg lín;ym	371
+金运昌	jīn;jh yùn;hz chāng;ll	252
+金韵蓉	jīn;jh yùn;wb róng;ck	400
+金载圭	jīn;jh zài;fc guī;tt	513
+金章宗	jīn;jh zhāng;wf zōng;bx	60
+金兆蕃	jīn;jh zhào;pd fān;ct	238
+金兆钧	jīn;jh zhào;pd jūn;jb	310
+金正恩	jīn;jh zhèng;hh ēn;sx	185
+金正男	jīn;jh zhèng;hh nán;tl	16
+金正日	jīn;jh zhèng;hh rì;lh	60
+金正淑	jīn;jh zhèng;hh shū;us	243
+金钟泌	jīn;jh zhōng;jk mì;ud	16
+金逐流	jīn;jh zhú;hz liú;uw	230
+金壮龙	jīn;jh zhuàng;dt lóng;hd	356
+金子轩	jīn;jh zi;zh xuān;ch	162
+金宗瑞	jīn;jh zōng;bx ruì;wg	374
+金祖淳	jīn;jh zǔ;ds chún;uw	279
+金祖同	jīn;jh zǔ;ds tóng;sk	256
+孔多塞	kǒng;zv duō;pd sāi;bt	540
+孔繁森	kǒng;zv fán;pi sēn;mm	16
+孔飞力	kǒng;zv fēi;vd lì;lp	91
+孔父嘉	kǒng;zv fù;bc jiā;tk	48
+孔夫子	kǒng;zv fū;hl zǐ;zh	829
+孔老二	kǒng;zv lǎo;tv èr;hh	151
+孔令华	kǒng;zv lìng;rd huá;rf	410
+孔令辉	kǒng;zv lìng;rd huī;sd	330
+孔令伟	kǒng;zv lìng;rd wěi;rh	400
+孔平仲	kǒng;zv píng;hf zhòng;rk	13
+孔庆东	kǒng;zv qìng;xl dōng;hd	236
+孔仁玉	kǒng;zv rén;rh yù;wd	400
+孔尚任	kǒng;zv shàng;sk rèn;rp	91
+孔绍安	kǒng;zv shào;io ān;bn	238
+孔圣人	kǒng;zv shèng;yt rén;rd	144
+孔四贞	kǒng;zv sì;sv zhēn;sb	490
+孔祥熙	kǒng;zv xiáng;dd xī;hq	151
+孔孝真	kǒng;zv xiào;tz zhēn;fb	66
+孔乙己	kǒng;zv yǐ;vq jǐ;vv	1768
+孔颖达	kǒng;zv yǐng;pe dá;lz	195
+孔有德	kǒng;zv yǒu;hy dé;rf	369
+孔稚圭	kǒng;zv zhì;er guī;tt	37
+厉槟源	lì;hp bīn;mb yuán;uh	190
+李承乾	lǐ;mz chéng;vd qián;fp	94
+李淳风	lǐ;mz chún;uw fēng;pc	94
+李达康	lǐ;mz dá;lz kāng;xu	308
+李大钊	lǐ;mz dà;ld zhāo;jo	1149
+李登辉	lǐ;mz dēng;vh huī;sd	295
+厉飞雨	lì;hp fēi;vd yǔ;yd	526
+李光弼	lǐ;mz guāng;sv bì;gh	289
+李光耀	lǐ;mz guāng;sv yào;sv	703
+李鸿章	lǐ;mz hóng;un zhāng;wf	4299
+李家超	lǐ;mz jiā;bd chāo;tk	527
+李嘉诚	lǐ;mz jiā;tk chéng;ah	1755
+李佳薇	lǐ;mz jiā;rt wēi;cw	129
+李建成	lǐ;mz jiàn;vd chéng;hd	823
+厉景琛	lì;hp jǐng;lx chēn;wd	788
+李开复	lǐ;mz kāi;hc fù;pw	1212
+李克农	lǐ;mz kè;fv nóng;dd	50
+李克强	lǐ;mz kè;fv qiáng;gk	82
+李立国	lǐ;mz lì;wh guó;sd	594
+李立三	lǐ;mz lì;wh sān;hh	135
+李莲英	lǐ;mz lián;cz yīng;cd	122
+李靓蕾	lǐ;mz liàng;qs lěi;ct	756
+李烈钧	lǐ;mz liè;hq jūn;jb	9
+李林甫	lǐ;mz lín;mm fǔ;hd	386
+厉麟似	lì;hp lín;xj sì;rv	328
+李龙大	lǐ;mz lóng;hd dà;ld	648
+李隆基	lǐ;mz lóng;ew jī;ct	1583
+厉曼婷	lì;hp màn;ly tíng;nw	310
+李茂贞	lǐ;mz mào;cd zhēn;sb	449
+李明博	lǐ;mz míng;ly bó;fh	141
+李莫愁	lǐ;mz mò;cl chóu;ex	449
+李瓶儿	lǐ;mz píng;dh ér;pv	317
+李清照	lǐ;mz qīng;uq zhào;lq	1733
+李秋平	lǐ;mz qiū;eq píng;hf	38
+李秋水	lǐ;mz qiū;eq shuǐ;ud	170
+李如松	lǐ;mz rú;nk sōng;mb	258
+李瑞环	lǐ;mz ruì;wg huán;wh	25
+厉若海	lì;hp ruò;ck hǎi;up	680
+李森科	lǐ;mz sēn;mm kē;ed	630
+李善长	lǐ;mz shàn;dk cháng;pd	110
+李商隐	lǐ;mz shāng;wk yǐn;eg	1513
+厉胜男	lì;hp shèng;yp nán;tl	378
+李士材	lǐ;mz shì;th cái;mh	130
+李石曾	lǐ;mz shí;bk céng;dl	361
+李世民	lǐ;mz shì;cv mín;vv	10302
+李士群	lǐ;mz shì;th qún;vd	9
+李世石	lǐ;mz shì;cv shí;bk	128
+李师师	lǐ;mz shī;sh shī;sh	120
+李时珍	lǐ;mz shí;lc zhēn;wr	644
+李书福	lǐ;mz shū;vd fú;dh	314
+李叔同	lǐ;mz shū;sy tóng;sk	273
+李舜臣	lǐ;mz shùn;ps chén;hv	132
+李四光	lǐ;mz sì;sv guāng;sv	192
+李斯特	lǐ;mz sī;cp tè;pt	2364
+李嗣业	lǐ;mz sì;kv yè;sh	252
+李嗣源	lǐ;mz sì;kv yuán;uh	248
+李太白	lǐ;mz tài;ld bái;pl	443
+厉天闰	lì;hp tiān;hl rùn;mw	16
+李天一	lǐ;mz tiān;hl yī;hq	783
+李铁拐	lǐ;mz tiě;jp guǎi;fk	432
+李维汉	lǐ;mz wéi;ir hàn;uy	16
+李维斯	lǐ;mz wéi;ir sī;cp	766
+李文亮	lǐ;mz wén;wc liàng;wj	135
+李文秀	lǐ;mz wén;wc xiù;ep	57
+李文正	lǐ;mz wén;wc zhèng;hh	44
+李文忠	lǐ;mz wén;wc zhōng;kx	317
+厉无畏	lì;hp wú;hv wèi;td	410
+李显龙	lǐ;mz xiǎn;lh lóng;hd	69
+李先念	lǐ;mz xiān;pv niàn;rx	113
+李香君	lǐ;mz xiāng;el jūn;vk	19
+李小加	lǐ;mz xiǎo;xd jiā;lk	53
+李笑来	lǐ;mz xiào;gl lái;hj	810
+李小龙	lǐ;mz xiǎo;xd lóng;hd	12503
+李小男	lǐ;mz xiǎo;xd nán;tl	693
+李逍遥	lǐ;mz xiāo;sz yáo;pz	2465
+李兴霸	lǐ;mz xīng;db bà;yy	171
+李秀成	lǐ;mz xiù;ep chéng;hd	163
+李秀满	lǐ;mz xiù;ep mǎn;uc	364
+李雪峰	lǐ;mz xuě;yx fēng;gw	9
+李雪莲	lǐ;mz xuě;yx lián;cz	999
+李学勤	lǐ;mz xué;dz qín;cl	173
+李寻欢	lǐ;mz xún;xc huān;yg	578
+李迅雷	lǐ;mz xùn;vz léi;yt	680
+李彦宏	lǐ;mz yàn;wp hóng;bi	420
+李延年	lǐ;mz yán;pd nián;ps	182
+李一男	lǐ;mz yì;hq nán;tl	426
+厉以宁	lì;hp yǐ;vr níng;bs	69
+李忆如	lǐ;mz yì;xv rú;nk	254
+李银河	lǐ;mz yín;jx hé;uh	650
+李银桥	lǐ;mz yín;jx qiáo;mp	102
+李永乐	lǐ;mz yǒng;dd lè;px	2490
+李宇明	lǐ;mz yǔ;bs míng;ly	279
+李元霸	lǐ;mz yuán;hv bà;yy	380
+李源潮	lǐ;mz yuán;uh cháo;uf	13
+李元芳	lǐ;mz yuán;hv fāng;cp	349
+李元昊	lǐ;mz yuán;hv hào;ll	226
+李元吉	lǐ;mz yuán;hv jí;tk	377
+李远哲	lǐ;mz yuǎn;hz zhé;fk	25
+李约瑟	lǐ;mz yuē;ib sè;wd	301
+李云龙	lǐ;mz yún;hi lóng;hd	1363
+李在明	lǐ;mz zài;ht míng;ly	35
+李在镕	lǐ;mz zài;ht róng;jb	122
+李泽厚	lǐ;mz zé;uy hòu;hz	465
+李泽钜	lǐ;mz zé;uy jù;jh	6
+李泽楷	lǐ;mz zé;uy kǎi;mh	135
+李章洙	lǐ;mz zhāng;wf zhū;up	100
+李肇星	lǐ;mz zhào;ds xīng;lq	621
+李镇西	lǐ;mz zhèn;jf xī;sh	28
+李政道	lǐ;mz zhèng;hw dào;dz	427
+李柱铭	lǐ;mz zhù;mw míng;jp	3
+李卓人	lǐ;mz zhuó;sf rén;rd	652
+李自成	lǐ;mz zì;pl chéng;hd	1900
+李子君	lǐ;mz zi;zh jūn;vk	644
+李总兵	lǐ;mz zǒng;dx bīng;pb	238
+李宗仁	lǐ;mz zōng;bx rén;rh	999
+李宗伟	lǐ;mz zōng;bx wěi;rh	1121
+李宗吾	lǐ;mz zōng;bx wú;hk	22
+李作鹏	lǐ;mz zuò;rp péng;yn	13
+林白水	lín;mm bái;pl shuǐ;ud	13
+林百欣	lín;mm bǎi;hl xīn;pg	6
+林伯强	lín;mm bó;rp qiáng;gk	6
+林伯渠	lín;mm bó;rp qú;um	31
+林采宜	lín;mm cǎi;pm yí;bh	69
+林昶佐	lín;mm chǎng;dl zuǒ;rh	603
+林朝栋	lín;mm cháo;fy dòng;mh	477
+林超攀	lín;mm chāo;tk pān;mf	428
+林超贤	lín;mm chāo;tk xián;sb	242
+林崇德	lín;mm chóng;gx dé;rf	464
+林岱桦	lín;mm dài;rg huà;mr	428
+林黛玉	lín;mm dài;rq yù;wd	1529
+林丹汗	lín;mm dān;ph hàn;uh	176
+林道静	lín;mm dào;dz jìng;qg	25
+林迪安	lín;mm dí;sz ān;bn	369
+林帝浣	lín;mm dì;wj huàn;ub	306
+林栋甫	lín;mm dòng;mh fǔ;hd	6
+林豆豆	lín;mm dòu;hh dòu;hh	418
+林多美	lín;mm duō;pd měi;dl	9
+林飞帆	lín;mm fēi;vd fān;jj	612
+林风眠	lín;mm fēng;pc mián;lv	612
+林凤祥	lín;mm fèng;py xiáng;dd	25
+林富士	lín;mm fù;bt shì;th	333
+林甘泉	lín;mm gān;ch quán;pu	374
+林格伦	lín;mm gé;mw lún;rr	38
+林谷芳	lín;mm gǔ;bk fāng;cp	6
+林桂生	lín;mm guì;mt shēng;pq	387
+林海峰	lín;mm hǎi;up fēng;gw	141
+林海音	lín;mm hǎi;up yīn;wl	104
+林汉达	lín;mm hàn;uy dá;lz	35
+林行规	lín;mm háng;rh guī;hs	194
+林浩然	lín;mm hào;up rán;pq	414
+林和靖	lín;mm hé;ek jìng;wq	69
+林合隆	lín;mm hé;rk lóng;ew	400
+林鹤年	lín;mm hè;dn nián;ps	342
+林红玉	lín;mm hóng;ih yù;wd	9
+林怀民	lín;mm huái;xh mín;vv	22
+林焕彰	lín;mm huàn;qg zhāng;wp	414
+林徽因	lín;mm huī;rg yīn;sl	2722
+林徽音	lín;mm huī;rg yīn;wl	450
+林基路	lín;mm jī;ct lù;zw	428
+林加德	lín;mm jiā;lk dé;rf	673
+林佳龙	lín;mm jiā;rt lóng;hd	680
+林嘉茉	lín;mm jiā;tk mò;cd	53
+林建岳	lín;mm jiàn;vd yuè;pg	50
+林教头	lín;mm jiào;tw tóu;dl	135
+林教主	lín;mm jiào;tw zhǔ;wt	207
+林斤澜	lín;mm jīn;ps lán;um	3
+林觉民	lín;mm jué;dv mín;vv	47
+林克昌	lín;mm kè;fv chāng;ll	338
+林克庆	lín;mm kè;fv qìng;xl	378
+林可胜	lín;mm kě;hs shèng;yp	38
+林立果	lín;mm lì;wh guǒ;lm	41
+林良实	lín;mm liáng;dd shí;bl	680
+林岭东	lín;mm lǐng;gr dōng;hd	634
+林灵素	lín;mm líng;xq sù;qi	9
+林洛景	lín;mm luò;uw jǐng;lx	504
+林罗山	lín;mm luó;sd shān;gs	428
+林洛雪	lín;mm luò;uw xuě;yx	9
+林迈可	lín;mm mài;hz kě;hs	657
+林妹妹	lín;mm mèi;nh mei;nh	336
+林楠笙	lín;mm nán;mf shēng;gq	195
+林娘子	lín;mm niáng;nd zǐ;zh	464
+林品如	lín;mm pǐn;kk rú;nk	306
+林平侯	lín;mm píng;hf hóu;rv	310
+林平之	lín;mm píng;hf zhī;dd	923
+林启正	lín;mm qǐ;dk zhèng;hh	3
+林巧稚	lín;mm qiǎo;hh zhì;er	270
+林清玄	lín;mm qīng;uq xuán;wi	411
+林秋离	lín;mm qiū;eq lí;wd	459
+林权泽	lín;mm quán;my zé;uy	423
+林仁肇	lín;mm rén;rh zhào;ds	333
+林容生	lín;mm róng;bk shēng;pq	315
+林如海	lín;mm rú;nk hǎi;up	116
+林若宁	lín;mm ruò;ck níng;bs	549
+林散之	lín;mm sàn;cw zhī;dd	3
+林森浩	lín;mm sēn;mm hào;up	837
+林姗姗	lín;mm shān;np shān;np	44
+林尚义	lín;mm shàng;sk yì;dc	441
+林少春	lín;mm shǎo;xp chūn;hl	382
+林少华	lín;mm shǎo;xp huá;rf	706
+林生斌	lín;mm shēng;pq bīn;wh	210
+林盛斌	lín;mm shèng;hh bīn;wh	189
+林世功	lín;mm shì;cv gōng;hl	410
+林士弘	lín;mm shì;th hóng;gi	3
+林世杰	lín;mm shì;cv jié;mq	567
+林世玲	lín;mm shì;cv líng;wr	414
+林世荣	lín;mm shì;cv róng;cm	38
+林诗音	lín;mm shī;at yīn;wl	16
+林实之	lín;mm shí;bl zhī;dd	90
+林式之	lín;mm shì;hd zhī;dd	76
+林寿图	lín;mm shòu;hc tú;sd	230
+林书成	lín;mm shū;vd chéng;hd	297
+林淑芬	lín;mm shū;us fēn;co	9
+林书豪	lín;mm shū;vd háo;wd	2481
+林树梅	lín;mm shù;my méi;mp	220
+林述庆	lín;mm shù;mz qìng;xl	292
+林树森	lín;mm shù;my sēn;mm	9
+林书纬	lín;mm shū;vd wěi;ih	450
+林书炜	lín;mm shū;vd wěi;qh	209
+林书宇	lín;mm shū;vd yǔ;bs	364
+林爽文	lín;mm shuǎng;hd wén;wc	19
+林水镜	lín;mm shuǐ;ud jìng;jw	338
+林顺潮	lín;mm shùn;ph cháo;uf	3
+林四娘	lín;mm sì;sv niáng;nd	297
+林太医	lín;mm tài;ld yī;hv	428
+林腾蛟	lín;mm téng;yd jiāo;ow	378
+林天爱	lín;mm tiān;hl ài;py	171
+林天南	lín;mm tiān;hl nán;ff	163
+林庭机	lín;mm tíng;xd jī;mj	194
+林挺生	lín;mm tǐng;fp shēng;pq	374
+林同炎	lín;mm tóng;sk yán;qq	405
+林韦翰	lín;mm wéi;hs hàn;fr	382
+林伟贤	lín;mm wěi;rh xián;sb	392
+林维源	lín;mm wéi;ir yuán;uh	410
+林文庆	lín;mm wén;wc qìng;xl	418
+林希妤	lín;mm xī;cj yú;nv	3
+林下樗	lín;mm xià;hd chū;my	4
+林仙儿	lín;mm xiān;rg ér;pv	598
+林献堂	lín;mm xiàn;fl táng;st	657
+林贤治	lín;mm xián;sb zhì;ui	405
+林祥谦	lín;mm xiáng;dd qiān;ad	450
+林孝埈	lín;mm xiào;tz jùn;	38
+林小宅	lín;mm xiǎo;xd zhái;bv	28
+林兴珠	lín;mm xīng;db zhū;wp	410
+林燕妮	lín;mm yàn;cq nī;ns	35
+林耀华	lín;mm yào;sv huá;rf	22
+林诣彬	lín;mm yì;ap bīn;mp	562
+林毅夫	lín;mm yì;wj fū;hl	685
+林奕含	lín;mm yì;wl hán;rk	455
+林奕华	lín;mm yì;wl huá;rf	75
+林姨娘	lín;mm yí;nh niáng;nd	562
+林益世	lín;mm yì;dh shì;cv	48
+林义雄	lín;mm yì;dc xióng;hr	693
+林永升	lín;mm yǒng;dd shēng;pc	6
+林玉芬	lín;mm yù;wd fēn;co	387
+林育南	lín;mm yù;wy nán;ff	441
+林毓生	lín;mm yù;pw shēng;pq	236
+林语堂	lín;mm yǔ;ah táng;st	1718
+林育英	lín;mm yù;wy yīng;cd	508
+林远图	lín;mm yuǎn;hz tú;sd	60
+林岳平	lín;mm yuè;pg píng;hf	396
+林月琴	lín;mm yuè;yh qín;wv	392
+林月如	lín;mm yuè;yh rú;nk	882
+林昀儒	lín;mm yún;lb rú;ry	97
+林则徐	lín;mm zé;bo xú;rr	1187
+林占梅	lín;mm zhàn;sk méi;mp	428
+林兆华	lín;mm zhào;pd huá;rf	38
+林震南	lín;mm zhèn;yd nán;ff	176
+林振强	lín;mm zhèn;fh qiáng;gk	154
+林真心	lín;mm zhēn;fb xīn;xd	544
+林镇夷	lín;mm zhèn;jf yí;hd	274
+林正疆	lín;mm zhèng;hh jiāng;gh	634
+林智坚	lín;mm zhì;pl jiān;st	598
+林直勉	lín;mm zhí;fh miǎn;gl	3
+林之孝	lín;mm zhī;dd xiào;tz	9
+林中斌	lín;mm zhōng;ks bīn;wh	495
+林忠钦	lín;mm zhōng;kx qīn;jg	6
+林卓廷	lín;mm zhuó;sf tíng;pd	3
+刘病已	liú;wo bìng;zd yǐ;vv	318
+刘伯承	liú;wo bó;rp chéng;vd	226
+刘伯明	liú;wo bó;rp míng;ly	229
+刘伯温	liú;wo bó;rp wēn;ul	320
+刘炽平	liú;wo chì;qk píng;hf	195
+刘纯燕	liú;wo chún;ih yàn;cq	31
+刘赐贵	liú;wo cì;bl guì;kb	590
+刘慈欣	liú;wo cí;dx xīn;pg	5539
+刘大为	liú;wo dà;ld wéi;dd	524
+刘德华	liú;wo dé;rf huá;rf	4126
+刘弗陵	liú;wo fú;gs líng;et	581
+刘畊宏	liú;wo gēng; hóng;bi	774
+刘黑闼	liú;wo hēi;sq tà;mz	223
+刘胡兰	liú;wo hú;fy lán;dh	82
+刘华清	liú;wo huá;rf qīng;uq	597
+刘皇发	liú;wo huáng;pw fā;vd	590
+刘皇叔	liú;wo huáng;pw shū;sy	308
+刘惠云	liú;wo huì;hx yún;hi	626
+刘寄奴	liú;wo jì;bs nú;ny	41
+刘家良	liú;wo jiā;bd liáng;dd	232
+刘建国	liú;wo jiàn;vd guó;sd	66
+刘建宏	liú;wo jiàn;vd hóng;bi	82
+刘建明	liú;wo jiàn;vd míng;ly	399
+刘靖康	liú;wo jìng;wq kāng;xu	44
+刘珂矣	liú;wo kē;wh yǐ;il	428
+刘坤一	liú;wo kūn;tl yī;hq	141
+刘兰芝	liú;wo lán;dh zhī;cd	371
+刘姥姥	liú;wo lǎo;nt lao;nt	480
+刘牢之	liú;wo láo;bs zhī;dd	41
+刘銮雄	liú;wo luán;wj xióng;hr	113
+刘铭传	liú;wo míng;jp chuán;rh	66
+刘强东	liú;wo qiáng;gk dōng;hd	4534
+刘青山	liú;wo qīng;qy shān;gs	19
+刘如意	liú;wo rú;nk yì;wx	553
+刘少奇	liú;wo shào;xp qí;ls	276
+刘世锦	liú;wo shì;cv jǐn;jp	40
+刘士余	liú;wo shì;th yú;rm	158
+刘太公	liú;wo tài;ld gōng;bi	78
+刘铁男	liú;wo tiě;jp nán;tl	774
+刘孝孙	liú;wo xiào;tz sūn;zx	324
+刘心武	liú;wo xīn;xd wǔ;hd	386
+刘玄德	liú;wo xuán;wi dé;rf	364
+刘亚楼	liú;wo yà;hh lóu;mj	104
+刘亚洲	liú;wo yà;hh zhōu;ud	554
+刘延东	liú;wo yán;pd dōng;hd	13
+刘义隆	liú;wo yì;dc lóng;ew	44
+刘益谦	liú;wo yì;dh qiān;ad	74
+刘永福	liú;wo yǒng;dd fú;dh	38
+刘永好	liú;wo yǒng;dd hǎo;nz	113
+刘语熙	liú;wo yǔ;ah xī;hq	820
+刘禹锡	liú;wo yǔ;pd xī;jl	644
+刘云山	liú;wo yún;hi shān;gs	3
+刘长卿	liú;wo zhǎng;pd qīng;px	572
+刘招华	liú;wo zhāo;fo huá;rf	1419
+刘镇伟	liú;wo zhèn;jf wěi;rh	647
+刘震云	liú;wo zhèn;yd yún;hi	543
+刘志丹	liú;wo zhì;tx dān;ph	273
+刘志军	liú;wo zhì;tx jūn;dc	41
+刘知远	liú;wo zhī;pk yuǎn;hz	201
+刘梓晨	liú;wo zǐ;mw chén;ld	44
+隆科多	lóng;ew kē;ed duō;pd	75
+娄勤俭	lóu;jn qín;cl jiǎn;rr	16
+娄师白	lóu;jn shī;sh bái;pl	3
+娄师德	lóu;jn shī;sh dé;rf	138
+娄太后	lóu;jn tài;ld hòu;pk	270
+娄一晨	lóu;jn yī;hq chén;ld	252
+娄昭君	lóu;jn zhāo;lo jūn;vk	522
+陆伯言	lù;eh bó;rp yán;ak	129
+陆步轩	lù;eh bù;sp xuān;ch	60
+陆长源	lù;eh cháng;pd yuán;uh	292
+陆乘风	lù;eh chéng;pd fēng;pc	13
+陆春龄	lù;eh chūn;hl líng;sr	288
+陆次云	lù;eh cì;dg yún;hi	194
+陆大有	lù;eh dà;ld yǒu;hy	69
+陆丹林	lù;eh dān;ph lín;mm	207
+陆德明	lù;eh dé;rf míng;ly	41
+陆定一	lù;eh dìng;br yī;hq	31
+陆东福	lù;eh dōng;hd fú;dh	3
+陆法言	lù;eh fǎ;ut yán;ak	22
+陆放翁	lù;eh fàng;ww wēng;bh	25
+陆费逵	lù;eh fèi;gb kuí;tz	16
+陆复礼	lù;eh fù;pw lǐ;dv	90
+陆恭蕙	lù;eh gōng;cx huì;cx	392
+陆冠英	lù;eh guān;dc yīng;cd	41
+陆光祖	lù;eh guāng;sv zǔ;ds	356
+陆龟蒙	lù;eh guī;gv méng;cd	38
+陆皓东	lù;eh hào;pp dōng;hd	19
+陆浩明	lù;eh hào;up míng;ly	504
+陆鸿渐	lù;eh hóng;un jiàn;uc	220
+陆弘休	lù;eh hóng;gi xiū;rm	50
+陆惠玲	lù;eh huì;hx líng;wr	670
+陆继辂	lù;eh jì;ij lù;cw	194
+陆建章	lù;eh jiàn;vd zhāng;wf	472
+陆晶清	lù;eh jīng;ll qīng;uq	266
+陆景融	lù;eh jǐng;lx róng;ho	549
+陆九渊	lù;eh jiǔ;pv yuān;up	223
+陆久之	lù;eh jiǔ;pd zhī;dd	346
+陆居仁	lù;eh jū;sk rén;rh	186
+陆侃如	lù;eh kǎn;rk rú;nk	418
+陆克文	lù;eh kè;fv wén;wc	47
+陆肯堂	lù;eh kěn;sy táng;st	238
+陆兰秀	lù;eh lán;dh xiù;ep	284
+陆励成	lù;eh lì;hl chéng;hd	567
+陆林轩	lù;eh lín;mm xuān;ch	31
+陆令萱	lù;eh lìng;rd xuān;ch	423
+陆陇其	lù;eh lǒng;eh qí;cb	9
+陆敏全	lù;eh mǐn;pw quán;rw	423
+陆平原	lù;eh píng;hf yuán;hx	508
+陆桥山	lù;eh qiáo;mp shān;gs	310
+陆刃波	lù;eh rèn;od bō;uv	392
+陆荣廷	lù;eh róng;cm tíng;pd	242
+陆如萍	lù;eh rú;nk píng;cu	252
+陆润庠	lù;eh rùn;um xiáng;xs	400
+陆三金	lù;eh sān;hh jīn;jh	82
+陆士谔	lù;eh shì;th è;ak	356
+陆士衡	lù;eh shì;th héng;rg	252
+陆士嘉	lù;eh shì;th jiā;tk	346
+陆世仪	lù;eh shì;cv yí;rd	243
+陆树声	lù;eh shù;my shēng;tp	284
+陆颂雄	lù;eh sòng;bh xióng;hr	392
+陆探微	lù;eh tàn;fd wēi;rg	328
+陆天明	lù;eh tiān;hl míng;ly	47
+陆维钊	lù;eh wéi;ir zhāo;jo	31
+陆文夫	lù;eh wén;wc fū;hl	44
+陆文龙	lù;eh wén;wc lóng;hd	405
+陆武成	lù;eh wǔ;hd chéng;hd	423
+陆无双	lù;eh wú;hv shuāng;yy	116
+陆希道	lù;eh xī;cj dào;dz	243
+陆希声	lù;eh xī;cj shēng;tp	310
+陆小凤	lù;eh xiǎo;xd fèng;py	631
+陆小曼	lù;eh xiǎo;xd màn;ly	3310
+陆小千	lù;eh xiǎo;xd qiān;pf	3
+陆心源	lù;eh xīn;xd yuán;uh	28
+陆星儿	lù;eh xīng;lq ér;pv	518
+陆行鸟	lù;eh xíng;rh niǎo;nh	144
+陆秀夫	lù;eh xiù;ep fū;hl	144
+陆修静	lù;eh xiū;rs jìng;qg	459
+陆雪琪	lù;eh xuě;yx qí;wc	72
+陆学艺	lù;eh xué;dz yì;cv	3
+陆俨少	lù;eh yǎn;rh shǎo;xp	44
+陆焉识	lù;eh yān;hq shí;ak	471
+陆亦可	lù;eh yì;wd kě;hs	9
+陆依萍	lù;eh yī;rw píng;cu	9
+陆渊雷	lù;eh yuān;up léi;yt	315
+陆增祥	lù;eh zēng;td xiáng;dd	238
+陆展博	lù;eh zhǎn;sd bó;fh	369
+陆展元	lù;eh zhǎn;sd yuán;hv	19
+陆兆禧	lù;eh zhào;pd xǐ;dt	122
+陆振华	lù;eh zhèn;fh huá;rf	464
+陆征祥	lù;eh zhēng;rh xiáng;dd	13
+陆正耀	lù;eh zhèng;hh yào;sv	254
+陆之昂	lù;eh zhī;dd áng;ls	223
+陆志廉	lù;eh zhì;tx lián;xd	346
+陆志韦	lù;eh zhì;tx wéi;hs	378
+陆治原	lù;eh zhì;ui yuán;hx	208
+陆仲亨	lù;eh zhòng;rk hēng;ws	320
+陆子刚	lù;eh zǐ;zh gāng;so	418
+陆子冈	lù;eh zǐ;zh gāng;sc	160
+陆宗舆	lù;eh zōng;bx yú;pb	418
+罗保铭	luó;sd bǎo;rk míng;jp	576
+罗炳辉	luó;sd bǐng;qh huī;sd	13
+罗超毅	luó;sd chāo;tk yì;wj	324
+罗尔纲	luó;sd ěr;gx gāng;is	22
+罗芳伯	luó;sd fāng;cp bó;rp	428
+罗福助	luó;sd fú;dh zhù;sl	418
+罗工柳	luó;sd gōng;hh liǔ;mp	3
+罗贯中	luó;sd guàn;vb zhōng;ks	1413
+罗豪才	luó;sd háo;wd cái;hp	9
+罗洪先	luó;sd hóng;uc xiān;pv	405
+罗弘信	luó;sd hóng;gi xìn;ra	428
+罗泓轸	luó;sd hóng;ug zhěn;cr	428
+罗嘉良	luó;sd jiā;tk liáng;dd	60
+罗家伦	luó;sd jiā;bd lún;rr	44
+罗家英	luó;sd jiā;bd yīng;cd	85
+罗乐林	luó;sd lè;px lín;mm	9
+罗隆基	luó;sd lóng;ew jī;ct	6
+罗美薇	luó;sd měi;dl wēi;cw	9
+罗密欧	luó;sd mì;bg ōu;hg	568
+罗纳德	luó;sd nà;is dé;rf	367
+罗启锐	luó;sd qǐ;dk ruì;jd	454
+罗青长	luó;sd qīng;qy cháng;pd	508
+罗荣桓	luó;sd róng;cm huán;mh	113
+罗汝才	luó;sd rǔ;un cái;hp	13
+罗瑞卿	luó;sd ruì;wg qīng;px	57
+罗时丰	luó;sd shí;lc fēng;hs	459
+罗士信	luó;sd shì;th xìn;ra	28
+罗斯福	luó;sd sī;cp fú;dh	2314
+罗永浩	luó;sd yǒng;dd hào;up	10268
+罗泽南	luó;sd zé;uy nán;ff	53
+罗振玉	luó;sd zhèn;fh yù;wd	185
+罗志祥	luó;sd zhì;tx xiáng;dd	1039
+罗仲谦	luó;sd zhòng;rk qiān;ad	9
+罗卓瑶	luó;sd zhuó;sf yáo;wp	356
+罗卓英	luó;sd zhuó;sf yīng;cd	9
+吕本富	lǚ;kk běn;mh fù;bt	288
+吕本中	lǚ;kk běn;mh zhōng;ks	414
+吕碧城	lǚ;kk bì;wb chéng;th	544
+吕伯奢	lǚ;kk bó;rp shē;ll	490
+吕不韦	lǚ;kk bù;hd wéi;hs	932
+吕纯阳	lǚ;kk chún;ih yáng;el	450
+吕大防	lǚ;kk dà;ld fáng;ew	428
+吕大临	lǚ;kk dà;ld lín;sp	374
+吕洞宾	lǚ;kk dòng;us bīn;bb	842
+吕奉先	lǚ;kk fèng;hs xiān;pv	450
+吕凤子	lǚ;kk fèng;py zǐ;zh	392
+吕归尘	lǚ;kk guī;sx chén;xt	666
+吕赫若	lǚ;kk hè;tt ruò;ck	500
+吕会会	lǚ;kk huì;ri huì;ri	369
+吕惠卿	lǚ;kk huì;hx qīng;px	576
+吕留良	lǚ;kk liú;pt liáng;dd	616
+吕马童	lǚ;kk mǎ;vh tóng;wh	418
+吕蒙正	lǚ;kk méng;cd zhèng;hh	540
+吕南公	lǚ;kk nán;ff gōng;bi	99
+吕品昌	lǚ;kk pǐn;kk chāng;ll	274
+吕其恩	lǚ;kk qí;cb ēn;sx	441
+吕泉生	lǚ;kk quán;pu shēng;pq	423
+吕日周	lǚ;kk rì;lh zhōu;pk	225
+吕世浩	lǚ;kk shì;cv hào;up	436
+吕斯百	lǚ;kk sī;cp bǎi;hl	297
+吕思勉	lǚ;kk sī;tx miǎn;gl	810
+吕四娘	lǚ;kk sì;sv niáng;nd	472
+吕思清	lǚ;kk sī;tx qīng;uq	544
+吕太后	lǚ;kk tài;ld hòu;pk	531
+吕廷杰	lǚ;kk tíng;pd jié;mq	194
+吕渭老	lǚ;kk wèi;ut lǎo;tv	144
+吕文德	lǚ;kk wén;wc dé;rf	454
+吕希纯	lǚ;kk xī;cj chún;ih	162
+吕锡文	lǚ;kk xī;jl wén;wc	608
+吕秀才	lǚ;kk xiù;ep cái;hp	644
+吕秀莲	lǚ;kk xiù;ep lián;cz	729
+吕岩松	lǚ;kk yán;gb sōng;mb	288
+吕颐浩	lǚ;kk yí;hh hào;up	396
+吕永岩	lǚ;kk yǒng;dd yán;gb	279
+吕振羽	lǚ;kk zhèn;fh yǔ;vv	382
+吕正操	lǚ;kk zhèng;hh cāo;fk	630
+吕直夫	lǚ;kk zhí;fh fū;hl	45
+吕忠梅	lǚ;kk zhōng;kx méi;mp	297
+吕紫剑	lǚ;kk zǐ;si jiàn;ro	410
+吕子明	lǚ;kk zǐ;zh míng;ly	320
+吕子乔	lǚ;kk zǐ;zh qiáo;ps	572
+吕祖善	lǚ;kk zǔ;ds shàn;dk	324
+马爱农	mǎ;vh ài;py nóng;dd	472
+马邦德	mǎ;vh bāng;he dé;rf	1156
+马伯庸	mǎ;vh bó;rp yōng;xs	446
+马步芳	mǎ;vh bù;sp fāng;cp	50
+马布里	mǎ;vh bù;hj lǐ;lt	750
+马查多	mǎ;vh chá;mh duō;pd	3
+马朝旭	mǎ;vh cháo;fy xù;pl	382
+马春花	mǎ;vh chūn;hl huā;cv	31
+马大帅	mǎ;vh dà;ld shuài;sj	66
+马德兴	mǎ;vh dé;rf xīng;db	13
+马蒂奇	mǎ;vh dì;cj qí;ls	1002
+马蒂斯	mǎ;vh dì;cj sī;cp	471
+马鼎盛	mǎ;vh dǐng;lv shèng;hh	378
+马冬梅	mǎ;vh dōng;wd méi;mp	2182
+马东敏	mǎ;vh dōng;hd mǐn;pw	603
+马杜罗	mǎ;vh dù;mt luó;sd	19
+马尔福	mǎ;vh ěr;gx fú;dh	1454
+马尔罗	mǎ;vh ěr;gx luó;sd	594
+马尔斯	mǎ;vh ěr;gx sī;cp	298
+马盖蒂	mǎ;vh gài;dh dì;cj	35
+马国翰	mǎ;vh guó;sd hàn;fr	16
+马哈迪	mǎ;vh hā;kr dí;sz	9
+马哈尔	mǎ;vh hā;kr ěr;gx	500
+马哈木	mǎ;vh hā;kr mù;md	163
+马海德	mǎ;vh hǎi;up dé;rf	330
+马赫迪	mǎ;vh hè;tt dí;sz	662
+马鹤凌	mǎ;vh hè;dn líng;dt	396
+马黑麻	mǎ;vh hēi;sq má;xm	486
+马恒昌	mǎ;vh héng;xh chāng;ll	261
+马鸿逵	mǎ;vh hóng;un kuí;tz	13
+马化龙	mǎ;vh huà;rp lóng;hd	468
+马化腾	mǎ;vh huà;rp téng;yd	3909
+马怀素	mǎ;vh huái;xh sù;qi	256
+马皇后	mǎ;vh huáng;pw hòu;pk	236
+马季奇	mǎ;vh jì;ez qí;ls	13
+马加比	mǎ;vh jiā;lk bǐ;hp	598
+马加尔	mǎ;vh jiā;lk ěr;gx	414
+马佳佳	mǎ;vh jiā;rt jiā;rt	648
+马加爵	mǎ;vh jiā;lk jué;pc	480
+马加什	mǎ;vh jiā;lk shí;rf	680
+马加特	mǎ;vh jiā;lk tè;pt	333
+马建忠	mǎ;vh jiàn;vd zhōng;kx	31
+马金凤	mǎ;vh jīn;jh fèng;py	446
+马君武	mǎ;vh jūn;vk wǔ;hd	41
+马克白	mǎ;vh kè;fv bái;pl	634
+马克龙	mǎ;vh kè;fv lóng;hd	769
+马可尼	mǎ;vh kě;hs ní;sv	69
+马克思	mǎ;vh kè;fv sī;tx	9203
+马奎尔	mǎ;vh kuí;lt ěr;gx	770
+马雷克	mǎ;vh léi;yt kè;fv	119
+马雷斯	mǎ;vh léi;yt sī;cp	576
+马里昂	mǎ;vh lǐ;lt áng;ls	512
+马利基	mǎ;vh lì;eo jī;ct	680
+马立克	mǎ;vh lì;wh kè;fv	465
+马利克	mǎ;vh lì;eo kè;fv	418
+马俪文	mǎ;vh lì;rh wén;wc	13
+马礼逊	mǎ;vh lǐ;dv xùn;zz	72
+马利亚	mǎ;vh lì;eo yà;hh	178
+马联甲	mǎ;vh lián;hd jiǎ;ls	333
+马连良	mǎ;vh lián;cz liáng;dd	239
+马伦科	mǎ;vh lún;rr kē;ed	189
+马洛里	mǎ;vh luò;uw lǐ;lt	662
+马洛伊	mǎ;vh luò;uw yī;rv	28
+马吕斯	mǎ;vh lǚ;kk sī;cp	828
+马孟起	mǎ;vh mèng;zh qǐ;tv	19
+马明心	mǎ;vh míng;ly xīn;xd	364
+马明哲	mǎ;vh míng;ly zhé;fk	738
+马末沙	mǎ;vh mò;hm shā;ux	459
+马翩然	mǎ;vh piān;dv rán;pq	630
+马亲王	mǎ;vh qīn;wm wáng;wh	680
+马清伟	mǎ;vh qīng;uq wěi;rh	490
+马荣成	mǎ;vh róng;cm chéng;hd	75
+马萨林	mǎ;vh sà;cp lín;mm	540
+马萨乔	mǎ;vh sà;cp qiáo;ps	57
+马塞尔	mǎ;vh sāi;bt ěr;gx	261
+马塞洛	mǎ;vh sāi;bt luò;uw	907
+马三娘	mǎ;vh sān;hh niáng;nd	251
+马士兵	mǎ;vh shì;th bīng;pb	57
+马识途	mǎ;vh shí;ak tú;rz	35
+马思聪	mǎ;vh sī;tx cōng;hd	50
+马斯克	mǎ;vh sī;cp kè;fv	10541
+马斯洛	mǎ;vh sī;cp luò;uw	612
+马松亭	mǎ;vh sōng;mb tíng;ws	356
+马苏德	mǎ;vh sū;cd dé;rf	657
+马滕斯	mǎ;vh téng;yd sī;cp	410
+马廷鸾	mǎ;vh tíng;pd luán;wn	243
+马图林	mǎ;vh tú;sd lín;mm	405
+马万祺	mǎ;vh wàn;hp qí;dc	684
+马王爷	mǎ;vh wáng;wh yé;bs	35
+马文瑞	mǎ;vh wén;wc ruì;wg	428
+马文升	mǎ;vh wén;wc shēng;pc	44
+马希尔	mǎ;vh xī;cj ěr;gx	472
+马西尼	mǎ;vh xī;sh ní;sv	482
+马锡五	mǎ;vh xī;jl wǔ;hh	392
+马湘兰	mǎ;vh xiāng;um lán;dh	9
+马晓春	mǎ;vh xiǎo;lh chūn;hl	515
+马晓光	mǎ;vh xiǎo;lh guāng;sv	6
+马晓霖	mǎ;vh xiǎo;lh lín;ym	228
+马小跳	mǎ;vh xiǎo;xd tiào;zp	75
+马歇尔	mǎ;vh xiē;lg ěr;gx	1234
+马些路	mǎ;vh xiē;sh lù;zw	414
+马兴瑞	mǎ;vh xīng;db ruì;wg	16
+马星野	mǎ;vh xīng;lq yě;lv	598
+马修斯	mǎ;vh xiū;rs sī;cp	609
+马叙伦	mǎ;vh xù;ry lún;rr	50
+马寅初	mǎ;vh yín;bb chū;do	78
+马英九	mǎ;vh yīng;cd jiǔ;pv	232
+马友友	mǎ;vh yǒu;hy yǒu;hy	179
+马元义	mǎ;vh yuán;hv yì;dc	396
+马悦凌	mǎ;vh yuè;xd líng;dt	464
+马占鳌	mǎ;vh zhàn;sk áo;qh	364
+马占山	mǎ;vh zhàn;sk shān;gs	116
+马致远	mǎ;vh zhì;hw yuǎn;hz	160
+马仲英	mǎ;vh zhòng;rk yīng;cd	3
+孟宾于	mèng;zh bīn;bb yú;hs	144
+孟尝君	mèng;zh cháng;si jūn;vk	597
+孟超然	mèng;zh chāo;tk rán;pq	364
+孟称舜	mèng;zh chēng;eg shùn;ps	202
+孟德尔	mèng;zh dé;rf ěr;gx	609
+孟德海	mèng;zh dé;rf hǎi;up	97
+孟恩远	mèng;zh ēn;sx yuǎn;hz	382
+孟二冬	mèng;zh èr;hh dōng;wd	306
+孟繁华	mèng;zh fán;pi huá;rf	16
+孟烦了	mèng;zh fán;qh le;vs	62
+孟凡利	mèng;zh fán;jd lì;eo	378
+孟扶摇	mèng;zh fú;fh yáo;fp	279
+孟公绰	mèng;zh gōng;bi chuò;is	180
+孟公威	mèng;zh gōng;bi wēi;hd	302
+孟关良	mèng;zh guān;dl liáng;dd	3
+孟广禄	mèng;zh guǎng;xp lù;dv	38
+孟海公	mèng;zh hǎi;up gōng;bi	3
+孟浩然	mèng;zh hào;up rán;pq	851
+孟宏伟	mèng;zh hóng;bi wěi;rh	418
+孟怀玉	mèng;zh huái;xh yù;wd	261
+孟皇后	mèng;zh huáng;pw hòu;pk	360
+孟建民	mèng;zh jiàn;vd mín;vv	13
+孟建柱	mèng;zh jiàn;vd zhù;mw	247
+孟姜女	mèng;zh jiāng;dn nǚ;nh	860
+孟锦云	mèng;zh jǐn;jp yún;hi	57
+孟静娴	mèng;zh jìng;qg xián;nm	490
+孟丽君	mèng;zh lì;hd jūn;vk	38
+孟禄丁	mèng;zh lù;dv dīng;hs	180
+孟洛川	mèng;zh luò;uw chuān;ps	274
+孟明视	mèng;zh míng;ly shì;ds	454
+孟穆伯	mèng;zh mù;ep bó;rp	387
+孟佩杰	mèng;zh pèi;rp jié;mq	248
+孟祈佑	mèng;zh qí;dp yòu;rh	230
+孟乔芳	mèng;zh qiáo;ps fāng;cp	310
+孟乔森	mèng;zh qiáo;ps sēn;mm	418
+孟神通	mèng;zh shén;dl tōng;vz	248
+孟苏平	mèng;zh sū;cd píng;hf	369
+孟孙氏	mèng;zh sūn;zx shì;pv	6
+孟庭苇	mèng;zh tíng;xd wěi;cs	66
+孟卫东	mèng;zh wèi;vh dōng;hd	360
+孟席斯	mèng;zh xí;xj sī;cp	28
+孟宪承	mèng;zh xiàn;bv chéng;vd	333
+孟宪实	mèng;zh xiàn;bv shí;bl	360
+孟献子	mèng;zh xiàn;fl zǐ;zh	356
+孟祥斌	mèng;zh xiáng;dd bīn;wh	13
+孟祥青	mèng;zh xiáng;dd qīng;qy	225
+孟祥伟	mèng;zh xiáng;dd wěi;rh	486
+孟小冬	mèng;zh xiǎo;xd dōng;wd	879
+孟晓骏	mèng;zh xiǎo;lh jùn;vi	66
+孟晓苏	mèng;zh xiǎo;lh sū;cd	3
+孟星魂	mèng;zh xīng;lq hún;hp	60
+孟玄朗	mèng;zh xuán;wi lǎng;dy	3
+孟学农	mèng;zh xué;dz nóng;dd	428
+孟懿子	mèng;zh yì;td zǐ;zh	364
+孟玉楼	mèng;zh yù;wd lóu;mj	88
+孟羽童	mèng;zh yǔ;vv tóng;wh	31
+孟元老	mèng;zh yuán;hv lǎo;tv	428
+孟云卿	mèng;zh yún;hi qīng;px	212
+孟昭文	mèng;zh zhāo;lo wén;wc	328
+孟知祥	mèng;zh zhī;pk xiáng;dd	31
+穆迪埃	mù;ep dí;sz āi;ti	53
+穆尔西	mù;ep ěr;gx xī;sh	57
+穆法沙	mù;ep fǎ;ut shā;ux	266
+穆逢春	mù;ep féng;wz chūn;hl	238
+穆桂英	mù;ep guì;mt yīng;cd	254
+穆加贝	mù;ep jiā;lk bèi;br	38
+穆鸠平	mù;ep jiū;pn píng;hf	220
+穆坎乔	mù;ep kǎn;tg qiáo;ps	212
+穆克登	mù;ep kè;fv dēng;vh	464
+穆克吉	mù;ep kè;fv jí;tk	22
+穆克什	mù;ep kè;fv shí;rf	16
+穆拉丁	mù;ep lā;fw dīng;hs	584
+穆里尔	mù;ep lǐ;lt ěr;gx	482
+穆里奇	mù;ep lǐ;lt qí;ls	670
+穆尼尔	mù;ep ní;sv ěr;gx	69
+穆念慈	mù;ep niàn;rx cí;dx	188
+穆藕初	mù;ep ǒu;cd chū;do	324
+穆齐尔	mù;ep qí;ws ěr;gx	410
+穆人清	mù;ep rén;rd qīng;uq	41
+穆萨维	mù;ep sà;cp wéi;ir	3
+穆塔基	mù;ep tǎ;tc jī;ct	256
+穆塔兹	mù;ep tǎ;tc zī;di	333
+穆提婆	mù;ep tí;fl pó;un	396
+穆图善	mù;ep tú;sd shàn;dk	306
+穆希卡	mù;ep xī;cj kǎ;sd	639
+穆夏拉	mù;ep xià;hw lā;fw	57
+穆祥雄	mù;ep xiáng;dd xióng;hr	288
+穆晓光	mù;ep xiǎo;lh guāng;sv	25
+穆谢奎	mù;ep xiè;ap kuí;lt	3
+穆玄英	mù;ep xuán;wi yīng;cd	234
+穆雅斓	mù;ep yǎ;hr lán;wm	405
+穆彰阿	mù;ep zhāng;wp ā;eh	72
+聂辰席	niè;hy chén;hd xí;xj	6
+聂崇义	niè;hy chóng;gx yì;dc	212
+聂德权	niè;hy dé;rf quán;my	450
+聂凤智	niè;hy fèng;py zhì;pl	3
+聂绀弩	niè;hy gàn;ic nǔ;ng	53
+聂海胜	niè;hy hǎi;up shèng;yp	286
+聂赫留	niè;hy hè;tt liú;pt	387
+聂鹤亭	niè;hy hè;dn tíng;ws	3
+聂华苓	niè;hy huá;rf líng;cd	490
+聂辉华	niè;hy huī;sd huá;rf	50
+聂缉椝	niè;hy jī;ik guī;	346
+聂鲁达	niè;hy lǔ;gl dá;lz	706
+聂梅生	niè;hy méi;mp shēng;pq	432
+聂明玦	niè;hy míng;ly jué;wv	266
+聂荣臻	niè;hy róng;cm zhēn;hh	279
+聂慎儿	niè;hy shèn;xf ér;pv	212
+聂胜琼	niè;hy shèng;yp qióng;ww	252
+聂士成	niè;hy shì;th chéng;hd	66
+聂腾飞	niè;hy téng;yd fēi;vd	328
+聂腾云	niè;hy téng;yd yún;hi	346
+聂危谷	niè;hy wēi;gv gǔ;bk	225
+聂卫平	niè;hy wèi;vh píng;hf	901
+聂宪藩	niè;hy xiàn;bv fān;cu	153
+聂小凤	niè;hy xiǎo;xd fèng;py	270
+聂小倩	niè;hy xiǎo;xd qiàn;rq	119
+聂鑫森	niè;hy xīn;jj sēn;mm	288
+聂夷中	niè;hy yí;hd zhōng;ks	270
+聂隐娘	niè;hy yǐn;eg niáng;nd	220
+聂永真	niè;hy yǒng;dd zhēn;fb	482
+聂宇晟	niè;hy yǔ;bs chéng;ld	234
+聂元梓	niè;hy yuán;hv zǐ;mw	247
+聂云台	niè;hy yún;hi tái;ik	369
+聂震宁	niè;hy zhèn;yd níng;bs	25
+裴昌会	péi;sd chāng;ll huì;ri	22
+裴春亮	péi;sd chūn;hl liàng;wj	230
+裴存藩	péi;sd cún;hz fān;cu	220
+裴大章	péi;sd dà;ld zhāng;wf	45
+裴多菲	péi;sd duō;pd fēi;ch	41
+裴恩才	péi;sd ēn;sx cái;hp	3
+裴光庭	péi;sd guāng;sv tíng;xd	374
+裴怀古	péi;sd huái;xh gǔ;fk	302
+裴怀亮	péi;sd huái;xh liàng;wj	252
+裴交泰	péi;sd jiāo;wc tài;hu	45
+裴金佳	péi;sd jīn;jh jiā;rt	508
+裴景福	péi;sd jǐng;lx fú;dh	328
+裴礼康	péi;sd lǐ;dv kāng;xu	342
+裴虔馀	péi;sd qián;sc yú;sr	117
+裴虔余	péi;sd qián;sc yú;rm	4
+裴擒虎	péi;sd qín;fr hǔ;sj	308
+裴仁基	péi;sd rén;rh jī;ct	428
+裴尚轩	péi;sd shàng;sk xuān;ch	734
+裴石民	péi;sd shí;bk mín;vv	400
+裴世清	péi;sd shì;cv qīng;uq	297
+裴士淹	péi;sd shì;th yān;ul	153
+裴守真	péi;sd shǒu;bc zhēn;fb	256
+裴树唐	péi;sd shù;my táng;xk	212
+裴叔业	péi;sd shū;sy yè;sh	482
+裴思谦	péi;sd sī;tx qiān;ad	234
+裴松之	péi;sd sōng;mb zhī;dd	653
+裴廷裕	péi;sd tíng;pd yù;db	130
+裴文中	péi;sd wén;wc zhōng;ks	3
+裴行俭	péi;sd xíng;rh jiǎn;rr	185
+裴行俨	péi;sd xíng;rh yǎn;rh	310
+裴虚己	péi;sd xū;sh jǐ;vv	234
+裴玄智	péi;sd xuán;wi zhì;pl	45
+裴艳玲	péi;sd yàn;hg líng;wr	53
+裴耀卿	péi;sd yào;sv qīng;px	387
+裴逸辰	péi;sd yì;gz chén;hd	1179
+裴夷直	péi;sd yí;hd zhí;fh	212
+裴荫森	péi;sd yīn;cy sēn;mm	284
+裴元庆	péi;sd yuán;hv qìng;xl	28
+裴元绍	péi;sd yuán;hv shào;io	13
+裴伷先	péi;sd zhòu; xiān;pv	256
+裴子野	péi;sd zǐ;zh yě;lv	338
+朴恩善	piáo;ms ēn;sx shàn;dk	454
+朴恒绪	piáo;ms héng;xh xù;it	342
+朴惠莲	piáo;ms huì;hx lián;cz	212
+朴槿惠	piáo;ms jǐn;mc huì;hx	289
+朴南基	piáo;ms nán;ff jī;ct	288
+朴仁妃	piáo;ms rén;rh fēi;nv	356
+朴胜羲	piáo;ms shèng;yp xī;dd	194
+朴世莉	piáo;ms shì;cv lì;co	387
+朴泰桓	piáo;ms tài;hu huán;mh	850
+朴泰夏	piáo;ms tài;hu xià;hw	554
+朴廷桓	piáo;ms tíng;pd huán;mh	765
+朴文垚	piáo;ms wén;wc yáo;tt	400
+朴殷植	piáo;ms yīn;pj zhí;mf	360
+朴泳孝	piáo;ms yǒng;ud xiào;tz	418
+朴永训	piáo;ms yǒng;dd xùn;ap	454
+朴裕河	piáo;ms yù;db hé;uh	171
+朴元淳	piáo;ms yuán;hv chún;uw	454
+朴渊次	piáo;ms yuān;up cì;dg	248
+朴元宗	piáo;ms yuán;hv zōng;bx	297
+朴赞浩	piáo;ms zàn;pb hào;up	374
+朴赞郁	piáo;ms zàn;pb yù;he	711
+朴正熙	piáo;ms zhèng;hh xī;hq	540
+朴智星	piáo;ms zhì;pl xīng;lq	598
+朴趾源	piáo;ms zhǐ;zs yuán;uh	262
+朴周永	piáo;ms zhōu;pk yǒng;dd	320
+朴柱奉	piáo;ms zhù;mw fèng;hs	346
+朴柱昊	piáo;ms zhù;mw hào;ll	405
+朴主永	piáo;ms zhǔ;wt yǒng;dd	378
+齐哀王	qí;ws āi;wd wáng;wh	0
+戚百草	qī;hd bǎi;hl cǎo;cf	400
+齐白石	qí;ws bái;pl shí;bk	1093
+齐邦媛	qí;ws bāng;he yuàn;np	16
+戚本禹	qī;hd běn;mh yǔ;pd	9
+齐柏林	qí;ws bó;mp lín;mm	264
+戚长发	qī;hd cháng;pd fà;vd	490
+齐达内	qí;ws dá;lz nèi;sd	4493
+齐悼公	qí;ws dào;xs gōng;bi	6
+齐丁公	qí;ws dīng;hs gōng;bi	328
+戚发轫	qī;hd fā;vd rèn;co	327
+戚夫人	qī;hd fū;hl rén;rd	1130
+齐高帝	qí;ws gāo;wk dì;wj	608
+齐格飞	qí;ws gé;mw fēi;vd	91
+齐菡萏	qí;ws hàn;cs dàn;ch	45
+齐和帝	qí;ws hé;ek dì;wj	418
+齐恒公	qí;ws héng;xh gōng;bi	22
+齐后主	qí;ws hòu;pk zhǔ;wt	558
+齐桓公	qí;ws huán;mh gōng;bi	1473
+齐惠公	qí;ws huì;hx gōng;bi	382
+戚继光	qī;hd jì;ij guāng;sv	2270
+戚建波	qī;hd jiàn;vd bō;uv	324
+齐简公	qí;ws jiǎn;gl gōng;bi	35
+戚建国	qī;hd jiàn;vd guó;sd	369
+齐杰拉	qí;ws jié;mq lā;fw	122
+戚金兴	qī;hd jīn;jh xīng;db	255
+齐景公	qí;ws jǐng;lx gōng;bi	166
+齐康公	qí;ws kāng;xu gōng;bi	28
+齐克果	qí;ws kè;fv guǒ;lm	410
+齐良迟	qí;ws liáng;dd chí;sz	266
+戚蓼生	qī;hd liǎo;cp shēng;pq	324
+齐灵公	qí;ws líng;xq gōng;bi	13
+齐美尔	qí;ws měi;dl ěr;gx	598
+齐闵王	qí;ws mǐn;mc wáng;wh	100
+齐湣王	qí;ws mǐn;uv wáng;wh	90
+齐愍王	qí;ws mǐn;vx wáng;wh	81
+齐默曼	qí;ws mò;sl màn;ly	41
+戚其义	qī;hd qí;cb yì;dc	391
+齐顷公	qí;ws qǐng;hh gōng;bi	3
+齐如山	qí;ws rú;nk shān;gs	28
+戚少商	qī;hd shǎo;xp shāng;wk	217
+齐世荣	qí;ws shì;cv róng;cm	369
+齐世英	qí;ws shì;cv yīng;cd	35
+齐漱溟	qí;ws shù;uh míng;ud	338
+齐思和	qí;ws sī;tx hé;ek	99
+齐塔瑞	qí;ws tǎ;tc ruì;wg	53
+齐太公	qí;ws tài;ld gōng;bi	53
+齐铁嘴	qí;ws tiě;jp zuǐ;ks	698
+戚同文	qī;hd tóng;sk wén;wc	288
+齐万年	qí;ws wàn;hp nián;ps	319
+齐王建	qí;ws wáng;wh jiàn;vd	138
+齐王冏	qí;ws wáng;wh jiǒng;sk	405
+齐王田	qí;ws wáng;wh tián;ts	116
+齐威王	qí;ws wēi;hd wáng;wh	418
+齐武帝	qí;ws wǔ;hd dì;wj	41
+齐僖公	qí;ws xī;rt gōng;bi	69
+齐向东	qí;ws xiàng;pk dōng;hd	16
+齐襄公	qí;ws xiāng;wd gōng;bi	353
+齐襄王	qí;ws xiāng;wd wáng;wh	79
+齐孝公	qí;ws xiào;tz gōng;bi	19
+戚逍遥	qī;hd xiāo;sz yáo;pz	45
+齐燮元	qí;ws xiè;ay yuán;hv	549
+齐宣王	qí;ws xuān;bh wáng;wh	349
+齐玄宗	qí;ws xuán;wi zōng;bx	69
+齐学启	qí;ws xué;dz qǐ;dk	288
+齐亚诺	qí;ws yà;hh nuò;ac	25
+齐燕铭	qí;ws yàn;cq míng;jp	410
+齐乙公	qí;ws yǐ;vq gōng;bi	369
+齐懿公	qí;ws yì;td gōng;bi	175
+齐泽克	qí;ws zé;uy kè;fv	424
+齐扎拉	qí;ws zhā;fv lā;fw	324
+齐庄公	qí;ws zhuāng;xt gōng;bi	31
+钱伯常	qián;jh bó;rp cháng;sj	45
+钱伯海	qián;jh bó;rp hǎi;up	99
+钱伯钧	qián;jh bó;rp jūn;jb	45
+钱伯斯	qián;jh bó;rp sī;cp	182
+钱昌照	qián;jh chāng;ll zhào;lq	454
+钱澄海	qián;jh chéng;uv hǎi;up	284
+钱春湖	qián;jh chūn;hl hú;uf	45
+钱大成	qián;jh dà;ld chéng;hd	117
+钱达尔	qián;jh dá;lz ěr;gx	396
+钱大钧	qián;jh dà;ld jūn;jb	9
+钱大昕	qián;jh dà;ld xīn;lp	69
+钱大用	qián;jh dà;ld yòng;ys	4
+钱德洪	qián;jh dé;rf hóng;uc	6
+钱德拉	qián;jh dé;rf lā;fw	141
+钱德勒	qián;jh dé;rf lè;cl	1394
+钱东奇	qián;jh dōng;hd qí;ls	292
+钱逢胜	qián;jh féng;wz shèng;yp	176
+钱国宾	qián;jh guó;sd bīn;bb	4
+钱国伟	qián;jh guó;sd wěi;rh	446
+钱经纶	qián;jh jīng;iv lún;ir	45
+钱均夫	qián;jh jūn;tb fū;hl	346
+钱君陶	qián;jh jūn;vk táo;eb	220
+钱立富	qián;jh lì;wh fù;bt	266
+钱理群	qián;jh lǐ;wl qún;vd	323
+钱良玉	qián;jh liáng;dd yù;wd	45
+钱能训	qián;jh néng;ip xùn;ap	414
+钱其琛	qián;jh qí;cb chēn;wd	41
+钱七虎	qián;jh qī;hv hǔ;sj	129
+钱汝砺	qián;jh rǔ;un lì;bh	45
+钱三强	qián;jh sān;hh qiáng;gk	337
+钱石庵	qián;jh shí;bk ān;xv	45
+钱石臣	qián;jh shí;bk chén;hv	45
+钱石义	qián;jh shí;bk yì;dc	42
+钱石中	qián;jh shí;bk zhōng;ks	45
+钱思亮	qián;jh sī;tx liàng;wj	414
+钱松汉	qián;jh sōng;mb hàn;uy	45
+钱松岩	qián;jh sōng;mb yán;gb	279
+钱萚石	qián;jh tuò;cs shí;bk	4
+钱伟长	qián;jh wěi;rh cháng;pd	286
+钱维城	qián;jh wéi;ir chéng;th	3
+钱闻礼	qián;jh wén;mh lǐ;dv	320
+钱文忠	qián;jh wén;wc zhōng;kx	574
+钱秀昌	qián;jh xiù;ep chāng;ll	4
+钱玄同	qián;jh xuán;wi tóng;sk	455
+钱学森	qián;jh xué;dz sēn;mm	6114
+钱彦深	qián;jh yàn;wp shēn;ud	45
+钱亦石	qián;jh yì;wd shí;bk	67
+钱颖一	qián;jh yǐng;pe yī;hq	842
+钱愈庵	qián;jh yù;rx ān;xv	45
+钱原濬	qián;jh yuán;hx jùn;	45
+钱运录	qián;jh yùn;hz lù;vu	369
+钱云岩	qián;jh yún;hi yán;gb	45
+钱正英	qián;jh zhèng;hh yīng;cd	3
+钱仲联	qián;jh zhòng;rk lián;hd	396
+钱锺书	qián;jh zhōng;jp shū;vd	182
+钱中文	qián;jh zhōng;ks wén;wc	225
+钱仲阳	qián;jh zhòng;rk yáng;el	50
+钱众仲	qián;jh zhòng;rr zhòng;rk	45
+钱壮飞	qián;jh zhuàng;dt fēi;vd	85
+钱宗道	qián;jh zōng;bx dào;dz	45
+乔阿伦	qiáo;ps ā;eh lún;rr	472
+乔巴山	qiáo;ps bā;vv shān;gs	28
+乔拜登	qiáo;ps bài;fh dēng;vh	968
+乔帮主	qiáo;ps bāng;hj zhǔ;wt	738
+乔北溟	qiáo;ps běi;sp míng;ud	25
+乔碧萝	qiáo;ps bì;wb luó;cd	236
+乔布斯	qiáo;ps bù;hj sī;cp	8870
+乔春燕	qiáo;ps chūn;hl yàn;cq	41
+乔达摩	qiáo;ps dá;lz mó;xf	598
+乔答摩	qiáo;ps dá;gk mó;xf	281
+乔道清	qiáo;ps dào;dz qīng;uq	44
+乔佛里	qiáo;ps fó;rg lǐ;lt	308
+乔弗里	qiáo;ps fú;gs lǐ;lt	536
+乔冠华	qiáo;ps guàn;dc huá;rf	35
+乔国老	qiáo;ps guó;sd lǎo;tv	3
+乔哈特	qiáo;ps hā;kr tè;pt	621
+乔建军	qiáo;ps jiàn;vd jūn;dc	657
+乔靖夫	qiáo;ps jìng;wq fū;hl	400
+乔晶晶	qiáo;ps jīng;ll jīng;ll	53
+乔莲房	qiáo;ps lián;cz fáng;dp	243
+乔灵儿	qiáo;ps líng;xq ér;pv	6
+乔鲁诺	qiáo;ps lǔ;gl nuò;ac	31
+乔普拉	qiáo;ps pǔ;dl lā;fw	35
+乔普林	qiáo;ps pǔ;dl lín;mm	513
+乔琪乔	qiáo;ps qí;wc qiáo;ps	113
+乔任梁	qiáo;ps rèn;rp liáng;um	91
+乔三槐	qiáo;ps sān;hh huái;mp	346
+乔森潘	qiáo;ps sēn;mm pān;up	450
+乔十光	qiáo;ps shí;fs guāng;sv	328
+乔斯达	qiáo;ps sī;cp dá;lz	88
+乔司南	qiáo;ps sī;vk nán;ff	3
+乔松年	qiáo;ps sōng;mb nián;ps	288
+乔夕颜	qiáo;ps xī;pd yán;wh	45
+乔晓光	qiáo;ps xiǎo;lh guāng;sv	292
+乔小乔	qiáo;ps xiǎo;xd qiáo;ps	536
+乔晓阳	qiáo;ps xiǎo;lh yáng;el	423
+乔新生	qiáo;ps xīn;wp shēng;pq	342
+乔行简	qiáo;ps xíng;rh jiǎn;gl	225
+乔一帆	qiáo;ps yī;hq fān;jj	346
+乔姨娘	qiáo;ps yí;nh niáng;nd	364
+乔伊斯	qiáo;ps yī;rv sī;cp	663
+乔应甲	qiáo;ps yīng;xh jiǎ;ls	230
+乔友林	qiáo;ps yǒu;hy lín;mm	9
+乔治王	qiáo;ps zhì;ui wáng;wh	756
+乔致庸	qiáo;ps zhì;hw yōng;xs	19
+乔知之	qiáo;ps zhī;pk zhī;dd	279
+秦哀公	qín;he āi;wd gōng;bi	16
+秦伯未	qín;he bó;rp wèi;hm	16
+秦成公	qín;he chéng;hd gōng;bi	9
+秦出公	qín;he chū;vs gōng;bi	15
+秦出子	qín;he chū;vs zǐ;zh	116
+秦大河	qín;he dà;ld hé;uh	22
+秦悼公	qín;he dào;xs gōng;bi	194
+秦德纯	qín;he dé;rf chún;ih	19
+秦德公	qín;he dé;rf gōng;bi	22
+秦二世	qín;he èr;hh shì;cv	741
+秦非子	qín;he fēi;ss zǐ;zh	135
+秦公伯	qín;he gōng;bi bó;rp	12
+秦共公	qín;he gòng;cb gōng;bi	0
+禽滑厘	qín;rd gǔ;us lí;hh	25
+秦广王	qín;he guǎng;xp wáng;wh	47
+秦红棉	qín;he hóng;ih mián;mp	31
+秦怀公	qín;he huái;xh gōng;bi	315
+秦桓公	qín;he huán;mh gōng;bi	364
+秦皇帝	qín;he huáng;pw dì;wj	508
+秦惠公	qín;he huì;hx gōng;bi	312
+秦惠王	qín;he huì;hx wáng;wh	66
+秦基伟	qín;he jī;ct wěi;rh	35
+秦简公	qín;he jiǎn;gl gōng;bi	369
+秦景公	qín;he jǐng;lx gōng;bi	22
+秦九韶	qín;he jiǔ;pv sháo;wo	63
+秦康公	qín;he kāng;xu gōng;bi	423
+秦康王	qín;he kāng;xu wáng;wh	194
+秦可卿	qín;he kě;hs qīng;px	279
+秦良玉	qín;he liáng;dd yù;wd	113
+秦灵公	qín;he líng;xq gōng;bi	97
+秦鸣鹤	qín;he míng;kn hè;dn	225
+秦穆公	qín;he mù;ep gōng;bi	468
+秦南琴	qín;he nán;ff qín;wv	9
+秦仁昌	qín;he rén;rh chāng;ll	306
+秦日纲	qín;he rì;lh gāng;is	3
+秦三世	qín;he sān;hh shì;cv	0
+秦始皇	qín;he shǐ;ni huáng;pw	13810
+秦叔宝	qín;he shū;sy bǎo;bd	163
+秦韬玉	qín;he tāo;hp yù;wd	19
+秦王妃	qín;he wáng;wh fēi;nv	414
+秦王孙	qín;he wáng;wh sūn;zx	238
+秦王政	qín;he wáng;wh zhèng;hw	738
+秦文公	qín;he wén;wc gōng;bi	44
+秦武公	qín;he wǔ;hd gōng;bi	35
+秦武王	qín;he wǔ;hd wáng;wh	148
+秦献公	qín;he xiàn;fl gōng;bi	342
+秦宪公	qín;he xiàn;bv gōng;bi	308
+秦襄公	qín;he xiāng;wd gōng;bi	151
+秦香莲	qín;he xiāng;el lián;cz	63
+秦孝公	qín;he xiào;tz gōng;bi	829
+秦宣公	qín;he xuān;bh gōng;bi	30
+秦夷公	qín;he yí;hd gōng;bi	12
+秦宜禄	qín;he yí;bh lù;dv	198
+秦玉海	qín;he yù;wd hǎi;up	765
+秦羽墨	qín;he yǔ;vv mò;st	22
+秦玥飞	qín;he yuè;wy fēi;vd	264
+秦越人	qín;he yuè;td rén;rd	288
+秦躁公	qín;he zào;zk gōng;bi	0
+秦昭王	qín;he zhāo;lo wáng;wh	716
+秦仲文	qín;he zhòng;rk wén;wc	3
+秦庄公	qín;he zhuāng;xt gōng;bi	16
+秦庄王	qín;he zhuāng;xt wáng;wh	189
+仇保兴	qiú;rp bǎo;rk xīng;db	504
+仇池公	qiú;rp chí;uv gōng;bi	297
+裘德考	qiú;hd dé;rf kǎo;tv	78
+裘东耀	qiú;hd dōng;hd yào;sv	270
+裘法祖	qiú;hd fǎ;ut zǔ;ds	38
+裘桂仙	qiú;hd guì;mt xiān;rg	220
+裘国根	qiú;hd guó;sd gēn;mx	558
+仇国仕	qiú;rp guó;sd shì;rt	405
+裘锦秋	qiú;hd jǐn;jp qiū;eq	405
+裘丽琳	qiú;hd lì;hd lín;wm	252
+仇鹿鸣	qiú;rp lù;xv míng;kn	374
+裘千尺	qiú;hd qiān;pf chǐ;sd	66
+裘千仞	qiú;hd qiān;pf rèn;ro	405
+裘千丈	qiú;hd qiān;pf zhàng;hd	66
+裘盛戎	qiú;hd shèng;hh róng;hd	50
+仇士良	qiú;rp shì;th liáng;dd	572
+仇十洲	qiú;rp shí;fs zhōu;ud	266
+裘维蕃	qiú;hd wéi;ir fān;ct	202
+裘锡圭	qiú;hd xī;jl guī;tt	295
+仇彦英	qiú;rp yàn;wp yīng;cd	320
+仇焱之	qiú;rp yàn;qq zhī;dd	194
+裘曰修	qiú;hd yuē;ll xiū;rs	252
+仇兆鳌	qiú;rp zhào;pd áo;qh	333
+仇志强	qiú;rp zhì;tx qiáng;gk	310
+仇子明	qiú;rp zǐ;zh míng;ly	378
+全红婵	quán;rw hóng;ih chán;nd	1517
+冉阿让	rǎn;sh ā;eh ràng;as	135
+冉伯牛	rǎn;sh bó;rp niú;ps	315
+冉承其	rǎn;sh chéng;vd qí;cb	320
+冉高鸣	rǎn;sh gāo;wk míng;kn	414
+任光禄	rén;rp guāng;sv lù;dv	567
+阮步兵	ruǎn;eh bù;sp bīng;pb	310
+阮成发	ruǎn;eh chéng;hd fā;vd	9
+阮春福	ruǎn;eh chūn;hl fú;dh	544
+阮次山	ruǎn;eh cì;dg shān;gs	9
+阮大铖	ruǎn;eh dà;ld chéng;jh	9
+阮小二	ruǎn;eh xiǎo;xd èr;hh	50
+阮小七	ruǎn;eh xiǎo;xd qī;hv	60
+阮小五	ruǎn;eh xiǎo;xd wǔ;hh	28
+阮宗泽	ruǎn;eh zōng;bx zé;uy	526
+赛典赤	sài;bb diǎn;sb chì;td	454
+赛尚阿	sài;bb shàng;sk ā;eh	40
+邵大箴	shào;oe dà;ld zhēn;gd	450
+邵华泽	shào;oe huá;rf zé;uy	315
+邵晋涵	shào;oe jìn;hl hán;uv	9
+邵康节	shào;oe kāng;xu jié;cs	141
+邵力子	shào;oe lì;lp zǐ;zh	69
+邵飘萍	shào;oe piāo;sp píng;cu	25
+邵琪伟	shào;oe qí;wc wěi;rh	495
+邵荃麟	shào;oe quán;cw lín;xj	387
+邵式平	shào;oe shì;hd píng;hf	387
+邵炜刚	shào;oe wěi;qh gāng;so	13
+邵象华	shào;oe xiàng;gd huá;rf	189
+邵洵美	shào;oe xún;ub měi;dl	9
+邵燕祥	shào;oe yàn;cq xiáng;dd	459
+邵亦波	shào;oe yì;wd bō;uv	38
+邵逸夫	shào;oe yì;gz fū;hl	317
+邵友濂	shào;oe yǒu;hy lián;ux	450
+邵元冲	shào;oe yuán;hv chōng;dk	9
+邵云环	shào;oe yún;hi huán;wh	13
+沈葆桢	shěn;ud bǎo;cm zhēn;ms	154
+沈璧君	shěn;ud bì;sd jūn;vk	16
+沈昌祥	shěn;ud chāng;ll xiáng;dd	464
+沈传师	shěn;ud chuán;rh shī;sh	285
+沈春华	shěn;ud chūn;hl huā;rf	6
+沈从文	shěn;ud cóng;rr wén;wc	1460
+沈大成	shěn;ud dà;ld chéng;hd	113
+沈丹阳	shěn;ud dān;ph yáng;el	806
+沈德符	shěn;ud dé;rf fú;gc	25
+沈端节	shěn;ud duān;wg jié;cs	99
+沈光文	shěn;ud guāng;sv wén;wc	428
+沈国军	shěn;ud guó;sd jūn;dc	594
+沈皇后	shěn;ud huáng;pw hòu;pk	540
+沈家本	shěn;ud jiā;bd běn;mh	28
+沈嘉伟	shěn;ud jiā;tk wěi;rh	41
+沈佳宜	shěn;ud jiā;rt yí;bh	333
+沈建光	shěn;ud jiàn;vd guāng;sv	3
+沈兼士	shěn;ud jiān;dd shì;th	405
+沈敬东	shěn;ud jìng;cw dōng;hd	396
+沈钧儒	shěn;ud jūn;jb rú;ry	22
+沈培平	shěn;ud péi;tw píng;hf	486
+沈庆之	shěn;ud qìng;xl zhī;dd	441
+沈佺期	shěn;ud quán;rr qī;cy	47
+沈全期	shěn;ud quán;rw qī;cy	42
+沈铨期	shěn;ud quán;jr qī;cy	38
+沈少民	shěn;ud shǎo;xp mín;vv	238
+沈胜衣	shěn;ud shèng;yp yī;wd	338
+沈世钧	shěn;ud shì;cv jūn;jb	224
+沈石溪	shěn;ud shí;bk xī;up	66
+沈铁梅	shěn;ud tiě;jp méi;mp	396
+沈万三	shěn;ud wàn;hp sān;hh	122
+沈祥福	shěn;ud xiáng;dd fú;dh	41
+沈晓明	shěn;ud xiǎo;lh míng;ly	648
+沈旭晖	shěn;ud xù;pl huī;ld	464
+沈雁冰	shěn;ud yàn;hq bīng;du	44
+沈尧伊	shěn;ud yáo;hv yī;rv	396
+沈一贯	shěn;ud yí;hq guàn;vb	13
+沈银河	shěn;ud yín;jx hé;uh	3
+沈尹默	shěn;ud yǐn;vp mò;sl	91
+沈永革	shěn;ud yǒng;dd gé;cs	256
+沈攸之	shěn;ud yōu;rs zhī;dd	549
+沈泽民	shěn;ud zé;uy mín;vv	6
+沈振盈	shěn;ud zhèn;fh yíng;vh	261
+沈志华	shěn;ud zhì;tx huá;rf	170
+沈祖炎	shěn;ud zǔ;ds yán;qq	212
+施爱东	shī;wp ài;py dōng;hd	248
+施崇棠	shī;wp chóng;gx táng;sm	428
+施从滨	shī;wp cóng;rr bīn;ub	25
+施存统	shī;wp cún;hz tǒng;iw	396
+施蒂纳	shī;wp dì;cj nà;is	572
+施定柔	shī;wp dìng;br róu;vm	279
+施复亮	shī;wp fù;pw liàng;wj	333
+施光南	shī;wp guāng;sv nán;ff	3
+施光耀	shī;wp guāng;sv yào;sv	297
+施国祁	shī;wp guó;sd qí;de	194
+施怀雅	shī;wp huái;xh yǎ;hr	333
+施剑翘	shī;wp jiàn;ro qiào;hh	185
+施肩吾	shī;wp jiān;dy wú;hk	374
+施建祥	shī;wp jiàn;vd xiáng;dd	281
+施坚雅	shī;wp jiān;st yǎ;hr	382
+施今墨	shī;wp jīn;rv mò;st	22
+施进卿	shī;wp jìn;hz qīng;px	356
+施可汗	shī;wp kè;hs hán;uh	418
+施罗德	shī;wp luó;sd dé;rf	1331
+施密特	shī;wp mì;bg tè;pt	628
+施米特	shī;wp mǐ;jm tè;pt	565
+施明德	shī;wp míng;ly dé;rf	271
+施耐庵	shī;wp nài;hc ān;xv	414
+施南生	shī;wp nán;ff shēng;pq	441
+施启扬	shī;wp qǐ;dk yáng;fv	338
+施人诚	shī;wp rén;rd chéng;ah	446
+施荣怀	shī;wp róng;cm huái;xh	369
+施闰章	shī;wp rùn;mw zhāng;wf	320
+施世榜	shī;wp shì;cv bǎng;mw	296
+施世骠	shī;wp shì;cv biāo;vs	251
+施士洁	shī;wp shì;th jié;ut	293
+施世纶	shī;wp shì;cv lún;ir	482
+施叔青	shī;wp shū;sy qīng;qy	281
+施伟贤	shī;wp wěi;rh xián;sb	277
+施一公	shī;wp yì;hq gōng;bi	430
+施夷光	shī;wp yí;hd guāng;sv	3
+释印乐	shì;py yìn;pv lè;px	158
+施永青	shī;wp yǒng;dd qīng;qy	3
+施愚山	shī;wp yú;lx shān;gs	230
+施肇基	shī;wp zhào;ds jī;ct	454
+施蛰存	shī;wp zhé;fo cún;hz	126
+施振荣	shī;wp zhèn;fh róng;cm	13
+施正锋	shī;wp zhèng;hh fēng;jw	436
+施正荣	shī;wp zhèng;hh róng;cm	486
+施正文	shī;wp zhèng;hh wén;wc	504
+施之皓	shī;wp zhī;dd hào;pp	25
+施子清	shī;wp zǐ;zh qīng;uq	251
+宋蔼龄	sòng;bm ǎi;cv líng;sr	536
+宋霭龄	sòng;bm ǎi;yv líng;sr	369
+宋秉畯	sòng;bm bǐng;pd jùn;ti	338
+宋伯鲁	sòng;bm bó;rp lǔ;gl	302
+宋楚瑜	sòng;bm chǔ;mr yú;wr	28
+宋德福	sòng;bm dé;rf fú;dh	392
+宋度宗	sòng;bm dù;xy zōng;bx	50
+宋端宗	sòng;bm duān;wg zōng;bx	16
+宋高宗	sòng;bm gāo;wk zōng;bx	499
+宋鸿兵	sòng;bm hóng;un bīng;pb	480
+宋皇后	sòng;bm huáng;pw hòu;pk	454
+宋徽宗	sòng;bm huī;rg zōng;bx	1372
+宋嘉澍	sòng;bm jiā;tk shù;ut	382
+宋教仁	sòng;bm jiào;tw rén;rh	286
+宋金刚	sòng;bm jīn;jh gāng;so	132
+宋康昊	sòng;bm kāng;xu hào;ll	267
+宋理宗	sòng;bm lǐ;wl zōng;bx	160
+宋美龄	sòng;bm měi;dl líng;sr	414
+宋民国	sòng;bm mín;vv guó;sd	572
+宋明帝	sòng;bm míng;ly dì;wj	19
+宋宁宗	sòng;bm níng;bs zōng;bx	85
+宋齐丘	sòng;bm qí;ws qiū;ph	477
+宋秦观	sòng;bm qín;he guān;ys	410
+宋钦宗	sòng;bm qīn;jg zōng;bx	220
+宋庆礼	sòng;bm qìng;xl lǐ;dv	238
+宋庆龄	sòng;bm qìng;xl líng;sr	261
+宋青书	sòng;bm qīng;qy shū;vd	490
+宋任穷	sòng;bm rèn;rp qióng;bl	22
+宋仁宗	sòng;bm rén;rh zōng;bx	524
+宋若昭	sòng;bm ruò;ck zhāo;lo	297
+宋尚节	sòng;bm shàng;sk jié;cs	360
+宋申锡	sòng;bm shēn;ls xī;jl	472
+宋神宗	sòng;bm shén;dl zōng;bx	1115
+宋师道	sòng;bm shī;sh dào;dz	657
+宋士杰	sòng;bm shì;th jié;mq	500
+宋时轮	sòng;bm shí;lc lún;cr	248
+宋思衡	sòng;bm sī;tx héng;rg	19
+宋思明	sòng;bm sī;tx míng;ly	13
+宋太宗	sòng;bm tài;ld zōng;bx	584
+宋太祖	sòng;bm tài;ld zǔ;ds	474
+宋卫平	sòng;bm wèi;vh píng;hf	60
+宋文帝	sòng;bm wén;wc dì;wj	110
+宋武帝	sòng;bm wǔ;hd dì;wj	44
+宋务光	sòng;bm wù;wl guāng;sv	180
+宋希濂	sòng;bm xī;cj lián;ux	41
+宋献策	sòng;bm xiàn;fl cè;gd	927
+宋襄公	sòng;bm xiāng;wd gōng;bi	951
+宋孝宗	sòng;bm xiào;tz zōng;bx	170
+宋秀岩	sòng;bm xiù;ep yán;gb	423
+宋应星	sòng;bm yīng;xh xīng;lq	154
+宋英宗	sòng;bm yīng;cd zōng;bx	129
+宋雨桂	sòng;bm yǔ;yd guì;mt	207
+宋玉致	sòng;bm yù;wd zhì;hw	6
+宋远桥	sòng;bm yuǎn;hz qiáo;mp	864
+宋哲元	sòng;bm zhé;fk yuán;hv	75
+宋哲宗	sòng;bm zhé;fk zōng;bx	333
+宋真宗	sòng;bm zhēn;fb zōng;bx	424
+宋之问	sòng;bm zhī;dd wèn;mk	192
+宋庄公	sòng;bm zhuāng;xt gōng;bi	13
+宋子安	sòng;bm zǐ;zh ān;bn	594
+宋子侯	sòng;bm zǐ;zh hóu;rv	129
+宋子文	sòng;bm zǐ;zh wén;wc	295
+宋祖德	sòng;bm zǔ;ds dé;rf	9
+孙承宗	sūn;zx chéng;vd zōng;bx	148
+孙传芳	sūn;zx chuán;rh fāng;cp	367
+孙传庭	sūn;zx chuán;rh tíng;xd	386
+孙春兰	sūn;zx chūn;hl lán;dh	6
+孙殿英	sūn;zx diàn;sj yīng;cd	198
+孙二娘	sūn;zx èr;hh niáng;nd	148
+孙培青	sūn;zx péi;tw qīng;qy	392
+孙其峰	sūn;zx qí;cb fēng;gw	3
+孙瑞雪	sūn;zx ruì;wg xuě;yx	585
+孙思邈	sūn;zx sī;tx miǎo;pz	399
+孙太后	sūn;zx tài;ld hòu;pk	13
+孙武子	sūn;zx wǔ;hd zǐ;zh	97
+孙兴民	sūn;zx xīng;db mín;vv	810
+孙兴慜	sūn;zx xīng;db mǐn;	509
+孙亚芳	sūn;zx yà;hh fāng;cp	16
+孙逸仙	sūn;zx yì;gz xiān;rg	25
+孙宇晨	sūn;zx yǔ;bs chén;ld	1793
+孙元良	sūn;zx yuán;hv liáng;dd	176
+孙越崎	sūn;zx yuè;td qí;gl	585
+孙云晓	sūn;zx yún;hi xiǎo;lh	22
+孙运璇	sūn;zx yùn;hz xuán;ww	598
+孙政才	sūn;zx zhèng;hw cái;hp	3
+孙正义	sūn;zx zhèng;hh yì;dc	534
+孙中山	sūn;zx zhōng;ks shān;gs	3008
+孙仲旭	sūn;zx zhòng;rk xù;pl	495
+佟伯达	tóng;rw bó;rp dá;lz	261
+佟国纲	tóng;rw guó;sd gāng;is	6
+佟国器	tóng;rw guó;sd qì;kk	176
+佟国维	tóng;rw guó;sd wéi;ir	526
+佟丽华	tóng;rw lì;hd huá;rf	279
+佟石头	tóng;rw shí;bk tou;dl	315
+佟铁鑫	tóng;rw tiě;jp xīn;jj	9
+佟湘玉	tóng;rw xiāng;um yù;wd	2192
+佟养甲	tóng;rw yǎng;ds jiǎ;ls	333
+佟养真	tóng;rw yǎng;ds zhēn;fb	342
+佟养正	tóng;rw yǎng;ds zhèng;hh	230
+佟禹林	tóng;rw yǔ;pd lín;mm	171
+佟振保	tóng;rw zhèn;fh bǎo;rk	266
+佟忠义	tóng;rw zhōng;kx yì;dc	194
+王安石	wáng;wh ān;bn shí;bk	9232
+王保保	wáng;wh bǎo;rk bǎo;rk	948
+王宝钏	wáng;wh bǎo;bd chuàn;jp	295
+汪伯彦	wāng;uw bó;rp yàn;wp	19
+汪采白	wāng;uw cǎi;pm bái;pl	225
+王昌龄	wáng;wh chāng;ll líng;sr	722
+王潮歌	wáng;wh cháo;uf gē;hg	684
+王朝阳	wáng;wh cháo;fy yáng;el	1337
+汪潮涌	wāng;uw cháo;uf yǒng;uv	9
+王宠惠	wáng;wh chǒng;bd huì;hx	97
+王重阳	wáng;wh chóng;ph yáng;el	1030
+王春英	wáng;wh chūn;hl yīng;cd	16
+汪春源	wāng;uw chūn;hl yuán;uh	234
+汪大燮	wāng;uw dà;ld xiè;ay	418
+汪大渊	wāng;uw dà;ld yuān;up	6
+汪道涵	wāng;uw dào;dz hán;uv	6
+汪道昆	wāng;uw dào;dz kūn;lv	19
+汪德臣	wāng;uw dé;rf chén;hv	324
+汪德耀	wāng;uw dé;rf yào;sv	256
+汪德昭	wāng;uw dé;rf zhāo;lo	320
+王登峰	wáng;wh dēng;vh fēng;gw	688
+汪丁丁	wāng;uw dīng;hs dīng;hs	38
+王定国	wáng;wh dìng;br guó;sd	119
+王丁棉	wáng;wh dīng;hs mián;mp	576
+王东明	wáng;wh dōng;hd míng;ly	35
+汪东兴	wāng;uw dōng;hd xīng;db	9
+王尔德	wáng;wh ěr;gx dé;rf	1692
+王凤仪	wáng;wh fèng;py yí;rd	598
+汪凤藻	wāng;uw fèng;py zǎo;cu	212
+王夫之	wáng;wh fū;hl zhī;dd	506
+王夫子	wáng;wh fū;hl zǐ;zh	32
+王功权	wáng;wh gōng;hl quán;my	41
+王冠雄	wáng;wh guān;dc xióng;hr	540
+汪光焘	wāng;uw guāng;sv dào;hq	320
+王光美	wáng;wh guāng;sv měi;dl	13
+汪广洋	wāng;uw guǎng;xp yáng;ud	22
+王贵妃	wáng;wh guì;kb fēi;nv	585
+汪桂芬	wāng;uw guì;mt fēn;co	310
+王国生	wáng;wh guó;sd shēng;pq	630
+王国维	wáng;wh guó;sd wéi;ir	1086
+汪国真	wāng;uw guó;sd zhēn;fb	226
+汪海粟	wāng;uw hǎi;up sù;sj	225
+王洪文	wáng;wh hóng;uc wén;wc	22
+汪鸿雁	wāng;uw hóng;un yàn;hq	382
+王后雄	wáng;wh hòu;pk xióng;hr	666
+王沪宁	wáng;wh hù;ud níng;bs	6
+汪胡桢	wāng;uw hú;fy zhēn;ms	256
+王皇后	wáng;wh huáng;pw hòu;pk	1344
+王辉耀	wáng;wh huī;sd yào;sv	3
+汪辉祖	wāng;uw huī;sd zǔ;ds	3
+汪嘉伟	wāng;uw jiā;tk wěi;rh	279
+王稼祥	wáng;wh jià;eb xiáng;dd	35
+汪建国	wāng;uw jiàn;vd guó;sd	305
+王健林	wáng;wh jiàn;rv lín;mm	1416
+王建民	wáng;wh jiàn;vd mín;vv	57
+王建平	wáng;wh jiàn;vd píng;hf	198
+汪建平	wāng;uw jiàn;vd píng;hf	178
+汪金丁	wāng;uw jīn;jh dīng;hs	171
+王金平	wáng;wh jīn;jh píng;hf	31
+王近山	wáng;wh jìn;pz shān;gs	154
+汪劲松	wāng;uw jìn;vl sōng;mb	205
+王进喜	wáng;wh jìn;hz xǐ;tk	60
+汪锦元	wāng;uw jǐn;jp yuán;hv	256
+汪静波	wāng;uw jìng;qg bō;uv	382
+汪景祺	wāng;uw jǐng;lx qí;dc	369
+汪精卫	wāng;uw jīng;jq wèi;vh	1344
+汪敬熙	wāng;uw jìng;cw xī;hq	209
+汪敬煦	wāng;uw jìng;cw xù;lq	288
+汪俊林	wāng;uw jùn;ri lín;mm	279
+王凯歆	wáng;wh kǎi;gj xīn;wg	185
+汪康年	wāng;uw kāng;xu nián;ps	3
+王昆仑	wáng;wh kūn;lv lún;rv	594
+王澜堂	wáng;wh lán;um táng;st	200
+王利芬	wáng;wh lì;eo fēn;co	38
+王立军	wáng;wh lì;wh jūn;dc	31
+王俪桥	wáng;wh lì;rh qiáo;mp	58
+王立群	wáng;wh lì;wh qún;vd	201
+汪林朋	wāng;uw lín;mm péng;yy	338
+王洛宾	wáng;wh luò;uw bīn;bb	50
+王麻子	wáng;wh má;xm zi;zh	185
+汪懋麟	wāng;uw mào;mx lín;xj	220
+王梦恕	wáng;wh mèng;md shù;nx	16
+汪孟邹	wāng;uw mèng;zh zōu;ge	279
+汪鸣銮	wāng;uw míng;kn luán;wj	256
+王尼玛	wáng;wh ní;sv mǎ;wv	352
+汪辟疆	wāng;uw pì;sw jiāng;gh	346
+王岐山	wáng;wh qí;gf shān;gs	22
+汪启淑	wāng;uw qǐ;dk shū;us	20
+汪乔年	wāng;uw qiáo;ps nián;ps	6
+王全安	wáng;wh quán;rw ān;bn	166
+汪日章	wāng;uw rì;lh zhāng;wf	315
+汪荣宝	wāng;uw róng;cm bǎo;bd	6
+汪荣华	wāng;uw róng;cm huá;rf	288
+汪荣祖	wāng;uw róng;cm zǔ;ds	441
+王儒林	wáng;wh rú;ry lín;mm	598
+汪若海	wāng;uw ruò;ck hǎi;up	598
+王三运	wáng;wh sān;hh yùn;hz	3
+王僧辩	wáng;wh sēng;rd biàn;wa	82
+王僧孺	wáng;wh sēng;rd rú;zy	284
+汪慎生	wāng;uw shèn;xf shēng;pq	202
+王审知	wáng;wh shěn;bs zhī;pk	60
+王世充	wáng;wh shì;cv chōng;wv	556
+汪士铎	wāng;uw shì;th duó;jy	292
+王实甫	wáng;wh shí;bl fǔ;hd	590
+汪师韩	wāng;uw shī;sh hán;fh	248
+王世杰	wáng;wh shì;cv jié;mq	608
+汪世清	wāng;uw shì;cv qīng;uq	220
+汪士慎	wāng;uw shì;th shèn;xf	3
+王世襄	wáng;wh shì;cv xiāng;wd	292
+王世贞	wáng;wh shì;cv zhēn;sb	207
+汪寿华	wāng;uw shòu;hc huá;rf	518
+王守仁	wáng;wh shǒu;bc rén;rh	889
+王守业	wáng;wh shǒu;bc yè;sh	486
+王守义	wáng;wh shǒu;bc yì;dc	44
+汪恕诚	wāng;uw shù;nx chéng;ah	6
+王书金	wáng;wh shū;vd jīn;jh	16
+王树声	wáng;wh shù;my shēng;tp	9
+王树增	wáng;wh shù;my zēng;td	41
+王思聪	wáng;wh sī;tx cōng;hd	2996
+王司马	wáng;wh sī;vk mǎ;vh	950
+王司徒	wáng;wh sī;vk tú;rt	349
+王太妃	wáng;wh tài;ld fēi;nv	540
+王太后	wáng;wh tài;ld hòu;pk	239
+汪廷珍	wāng;uw tíng;pd zhēn;wr	225
+王伟忠	wáng;wh wěi;rh zhōng;kx	41
+王文彪	wáng;wh wén;wc biāo;sp	608
+汪文斌	wāng;uw wén;wc bīn;wh	38
+王文涛	wáng;wh wén;wc tāo;uh	13
+汪文言	wāng;uw wén;wc yán;ak	6
+王熙凤	wáng;wh xī;hq fèng;py	590
+王羲之	wáng;wh xī;dd zhī;dd	1718
+王献之	wáng;wh xiàn;fl zhī;dd	490
+王小波	wáng;wh xiǎo;xd bō;uv	4798
+王小川	wáng;wh xiǎo;xd chuān;ps	688
+王晓东	wáng;wh xiǎo;lh dōng;hd	19
+汪小菲	wāng;uw xiǎo;xd fēi;ch	364
+汪啸风	wāng;uw xiào;kv fēng;pc	40
+王孝杰	wáng;wh xiào;tz jié;mq	235
+汪筱林	wāng;uw xiǎo;gw lín;mm	378
+汪笑侬	wāng;uw xiào;gl nóng;rd	306
+汪兴祖	wāng;uw xīng;db zǔ;ds	230
+王旭东	wáng;wh xù;pl dōng;hd	31
+王旭光	wáng;wh xù;pl guāng;sv	792
+王雪红	wáng;wh xuě;yx hóng;ih	63
+汪亚尘	wāng;uw yà;hh chén;xt	338
+王亚伟	wáng;wh yà;hh wěi;rh	257
+王阳明	wáng;wh yáng;el míng;ly	2594
+王耀武	wáng;wh yào;sv wǔ;hd	82
+汪野亭	wāng;uw yě;lv tíng;ws	225
+汪毅夫	wāng;uw yì;wj fū;hl	382
+汪寅仙	wāng;uw yín;bb xiān;rg	423
+汪应辰	wāng;uw yīng;xh chén;hd	243
+汪永晨	wāng;uw yǒng;dd chén;ld	351
+王永春	wáng;wh yǒng;dd chūn;hl	580
+王永庆	wáng;wh yǒng;dd qìng;xl	188
+汪永清	wāng;uw yǒng;dd qīng;uq	169
+汪由敦	wāng;uw yóu;sh dūn;ww	28
+王右军	wáng;wh yòu;hk jūn;dc	38
+汪玉凯	wāng;uw yù;wd kǎi;gj	603
+汪元量	wāng;uw yuán;hv liàng;lh	13
+汪远孙	wāng;uw yuǎn;hz sūn;zx	207
+王泽鉴	wáng;wh zé;uy jiàn;sj	860
+汪曾祺	wāng;uw zēng;dl qí;dc	900
+汪兆铭	wāng;uw zhào;pd míng;jp	78
+汪兆镛	wāng;uw zhào;pd yōng;jx	266
+王贞白	wáng;wh zhēn;sb bái;pl	69
+王镇恶	wáng;wh zhèn;jf è;hx	549
+王正廷	wáng;wh zhèng;hh tíng;pd	13
+王志安	wáng;wh zhì;tx ān;bn	308
+王之臣	wáng;wh zhī;dd chén;hv	414
+王之道	wáng;wh zhī;dd dào;dz	72
+王之涣	wáng;wh zhī;dd huàn;ug	201
+汪志伊	wāng;uw zhì;tx yī;rv	107
+王中军	wáng;wh zhōng;ks jūn;dc	129
+汪中求	wāng;uw zhōng;ks qiú;hd	292
+王自如	wáng;wh zì;pl rú;nk	1084
+汪子嵩	wāng;uw zi;zh sōng;gk	194
+王总兵	wáng;wh zǒng;dx bīng;pb	266
+王佐良	wáng;wh zuǒ;rh liáng;dd	60
+魏邦平	wèi;ep bāng;he píng;hf	405
+魏伯勤	wèi;ep bó;rp qín;cl	598
+魏伯阳	wèi;ep bó;rp yáng;el	16
+卫长君	wèi;vh cháng;pd jūn;vk	292
+魏承班	wèi;ep chéng;vd bān;wd	194
+卫成公	wèi;vh chéng;hd gōng;bi	215
+卫出公	wèi;vh chū;vs gōng;bi	13
+魏道明	wèi;ep dào;dz míng;ly	6
+魏德林	wèi;ep dé;rf lín;mm	432
+魏德迈	wèi;ep dé;rf mài;hz	13
+魏德圣	wèi;ep dé;rf shèng;yt	75
+魏丁格	wèi;ep dīng;hs gé;mw	238
+魏定国	wèi;ep dìng;br guó;sd	53
+魏尔德	wèi;ep ěr;gx dé;rf	432
+魏尔伦	wèi;ep ěr;gx lún;rr	452
+魏斐德	wèi;ep fěi;sc dé;rf	44
+魏奉古	wèi;ep fèng;hs gǔ;fk	130
+卫夫人	wèi;vh fū;hl rén;rd	62
+魏格尔	wèi;ep gé;mw ěr;gx	53
+魏广君	wèi;ep guǎng;xp jūn;vk	153
+卫国公	wèi;vh guó;sd gōng;bi	74
+魏海敏	wèi;ep hǎi;up mǐn;pw	410
+卫怀公	wèi;vh huái;xh gōng;bi	99
+卫怀君	wèi;vh huái;xh jūn;vk	171
+卫桓公	wèi;vh huán;mh gōng;bi	364
+魏桓子	wèi;ep huán;mh zǐ;zh	129
+卫皇后	wèi;vh huáng;pw hòu;pk	90
+魏皇后	wèi;ep huáng;pw hòu;pk	81
+魏惠娥	wèi;ep huì;hx é;np	576
+卫惠公	wèi;vh huì;hx gōng;bi	428
+魏徽徽	wèi;ep huī;rg huī;rg	414
+魏惠王	wèi;ep huì;hx wáng;wh	446
+魏佳庆	wèi;ep jiā;rt qìng;xl	9
+魏建功	wèi;ep jiàn;vd gōng;hl	432
+魏建国	wèi;ep jiàn;vd guó;sd	410
+魏建军	wèi;ep jiàn;vd jūn;dc	657
+卫将军	wèi;vh jiāng;dp jūn;dc	741
+卫靖伯	wèi;vh jìng;wq bó;rp	99
+卫敬公	wèi;vh jìng;cw gōng;bi	130
+魏骏杰	wèi;ep jùn;vi jié;mq	22
+魏坤琳	wèi;ep kūn;tl lín;wm	144
+卫拉特	wèi;vh lā;fw tè;pt	276
+魏了翁	wèi;ep le;vs wēng;bh	405
+卫立煌	wèi;vh lì;wh huáng;qp	82
+魏良辅	wèi;ep liáng;dd fǔ;ch	346
+魏良磊	wèi;ep liáng;dd lěi;bb	324
+卫灵公	wèi;vh líng;xq gōng;bi	327
+卫留成	wèi;vh liú;pt chéng;hd	279
+魏美人	wèi;ep měi;dl rén;rd	28
+魏明帝	wèi;ep míng;ly dì;wj	380
+魏明谷	wèi;ep míng;ly gǔ;bk	423
+魏明伦	wèi;ep míng;ly lún;rr	132
+魏铭言	wèi;ep míng;jp yán;ak	153
+卫穆公	wèi;vh mù;ep gōng;bi	202
+魏鹏远	wèi;ep péng;yn yuǎn;hz	846
+卫平侯	wèi;vh píng;hf hóu;rv	180
+魏如萱	wèi;ep rú;nk xuān;ch	498
+魏如昀	wèi;ep rú;nk yún;lb	28
+魏掞之	wèi;ep shàn;fq zhī;dd	4
+卫少儿	wèi;vh shào;xp ér;pv	351
+魏圣美	wèi;ep shèng;yt měi;dl	9
+魏顺之	wèi;ep shùn;ph zhī;dd	76
+卫斯理	wèi;vh sī;cp lǐ;wl	261
+卫斯里	wèi;vh sī;cp lǐ;lt	60
+魏太武	wèi;ep tài;ld wǔ;hd	729
+卫太子	wèi;vh tài;ld zǐ;zh	312
+魏太祖	wèi;ep tài;ld zǔ;ds	356
+魏庭玉	wèi;ep tíng;xd yù;wd	45
+魏王豹	wèi;ep wáng;wh bào;pb	126
+魏文帝	wèi;ep wén;wc dì;wj	319
+魏文侯	wèi;ep wén;wc hóu;rv	882
+魏翁河	wèi;ep wēng;bh hé;uh	50
+魏武帝	wèi;ep wǔ;hd dì;wj	132
+卫武公	wèi;vh wǔ;hd gōng;bi	38
+魏武侯	wèi;ep wǔ;hd hòu;rv	323
+魏武王	wèi;ep wǔ;hd wáng;wh	414
+魏无羡	wèi;ep wú;hv xiàn;dr	179
+魏襄王	wèi;ep xiāng;wd wáng;wh	91
+魏小安	wèi;ep xiǎo;xd ān;bn	396
+魏小楼	wèi;ep xiǎo;xd lóu;mj	45
+卫兴华	wèi;vh xīng;db huá;rf	144
+魏雪漫	wèi;ep xuě;yx màn;ul	25
+魏延之	wèi;ep yán;pd zhī;dd	28
+魏野畴	wèi;ep yě;lv chóu;th	364
+魏翊东	wèi;ep yì;wv dōng;hd	315
+卫懿公	wèi;vh yì;td gōng;bi	41
+卫奕信	wèi;vh yì;wl xìn;ra	38
+魏元忠	wèi;ep yuán;hv zhōng;kx	104
+魏知古	wèi;ep zhī;pk gǔ;fk	320
+魏忠贤	wèi;ep zhōng;kx xián;sb	1206
+卫庄公	wèi;vh zhuāng;xt gōng;bi	25
+卫子夫	wèi;vh zǐ;zh fū;hl	1482
+魏子敬	wèi;ep zǐ;zh jìng;cw	45
+温宝裕	wēn;ul bǎo;bd yù;db	508
+温碧泉	wēn;ul bì;wb quán;pu	16
+温蒂妮	wēn;ul dì;cj nī;ns	9
+温迪妮	wēn;ul dí;sz nī;ns	4
+温飞卿	wēn;ul fēi;vd qīng;px	382
+温弗瑞	wēn;ul fú;gs ruì;wg	504
+温覆之	wēn;ul fù;sw zhī;dd	45
+温儒敏	wēn;ul rú;ry mǐn;pw	60
+温如言	wēn;ul rú;nk yán;ak	616
+温瑞安	wēn;ul ruì;wg ān;bn	292
+温塞特	wēn;ul sāi;bt tè;pt	266
+温生才	wēn;ul shēng;pq cái;hp	320
+温世霖	wēn;ul shì;cv lín;ym	238
+温世仁	wēn;ul shì;cv rén;rh	450
+温斯顿	wēn;ul sī;cp dùn;hh	615
+温斯坦	wēn;ul sī;cp tǎn;tl	63
+温太医	wēn;ul tài;ld yī;hv	630
+温体仁	wēn;ul tǐ;rm rén;rh	16
+温庭筠	wēn;ul tíng;xd yún;gh	659
+温彦博	wēn;ul yàn;wp bó;fh	184
+温玉成	wēn;ul yù;wd chéng;hd	400
+温云松	wēn;ul yún;hi sōng;mb	302
+温子仁	wēn;ul zǐ;zh rén;rh	471
+温子升	wēn;ul zǐ;zh shēng;pc	42
+温总理	wēn;ul zǒng;dx lǐ;wl	69
+温宗仁	wēn;ul zōng;bx rén;rh	220
+温宗尧	wēn;ul zōng;bx yáo;hv	392
+温祚王	wēn;ul zuò;dp wáng;wh	364
+吴阿顺	wú;kl ā;eh shùn;ph	562
+吴邦国	wú;kl bāng;he guó;sd	9
+吴伯雄	wú;kl bó;rp xióng;hr	621
+吴昌硕	wú;kl chāng;ll shuò;bh	389
+吴承恩	wú;kl chéng;vd ēn;sx	455
+吴存荣	wú;kl cún;hz róng;cm	562
+吴大帝	wú;kl dà;ld dì;wj	562
+吴大猷	wú;kl dà;ld yóu;dl	72
+吴淡如	wú;kl dàn;uq rú;nk	19
+吴道子	wú;kl dào;dz zǐ;zh	223
+吴敦义	wú;kl dūn;ww yì;dc	9
+吴恩达	wú;kl ēn;sx dá;lz	1064
+吴法宪	wú;kl fǎ;ut xiàn;bv	532
+吴冠中	wú;kl guàn;dc zhōng;ks	422
+吴国平	wú;kl guó;sd píng;hf	670
+吴国桢	wú;kl guó;sd zhēn;ms	6
+吴湖帆	wú;kl hú;uf fān;jj	47
+吴皇后	wú;kl huáng;pw hòu;pk	391
+吴建民	wú;kl jiàn;vd mín;vv	41
+吴鉴泉	wú;kl jiàn;sj quán;pu	378
+吴健雄	wú;kl jiàn;rv xióng;hr	166
+吴阶平	wú;kl jiē;er píng;hf	25
+吴敬琏	wú;kl jìng;cw liǎn;wc	97
+吴静钰	wú;kl jìng;qg yù;jw	16
+吴敬梓	wú;kl jìng;cw zǐ;mw	490
+吴觉农	wú;kl jué;dv nóng;dd	400
+吴孟超	wú;kl mèng;zh chāo;tk	25
+吴敏霞	wú;kl mǐn;pw xiá;yy	703
+吴奈温	wú;kl nài;lx wēn;ul	315
+吴念真	wú;kl niàn;rx zhēn;fb	716
+吴佩孚	wú;kl pèi;rp fú;pz	565
+吴清源	wú;kl qīng;uq yuán;uh	810
+吴三桂	wú;kl sān;hh guì;mt	794
+吴三连	wú;kl sān;hh lián;cz	648
+吴胜利	wú;kl shèng;yp lì;eo	372
+吴淑珍	wú;kl shū;us zhēn;wr	594
+吴天明	wú;kl tiān;hl míng;ly	484
+吴铁城	wú;kl tiě;jp chéng;th	22
+吴廷琰	wú;kl tíng;pd yǎn;wq	138
+吴欣鸿	wú;kl xīn;pg hóng;un	19
+吴亚军	wú;kl yà;hh jūn;dc	580
+吴玉章	wú;kl yù;wd zhāng;wf	75
+吴朝晖	wú;kl zhāo;fy huī;ld	16
+吴钊燮	wú;kl zhāo;jo xiè;ay	3
+吴政隆	wú;kl zhèng;hw lóng;ew	3
+吴稚晖	wú;kl zhì;er huī;ld	380
+吴浊流	wú;kl zhuó;uo liú;uw	41
+吴作栋	wú;kl zuò;rp dòng;mh	598
+奚国华	xī;pl guó;sd huá;rf	540
+奚康生	xī;pl kāng;xu shēng;pq	702
+奚啸伯	xī;pl xiào;kv bó;rp	41
+奚志康	xī;pl zhì;tx kāng;xu	320
+奚志农	xī;pl zhì;tx nóng;dd	405
+奚仲文	xī;pl zhòng;rk wén;wc	405
+夏宝龙	xià;hw bǎo;bd lóng;hd	598
+夏伯阳	xià;hw bó;rp yáng;el	477
+夏伯渝	xià;hw bó;rp yú;ur	232
+夏承焘	xià;hw chéng;vd dào;hq	44
+夏德仁	xià;hw dé;rf rén;rh	320
+夏东海	xià;hw dōng;hd hǎi;up	508
+夏冬青	xià;hw dōng;wd qīng;qy	410
+夏斗寅	xià;hw dòu;df yín;bb	13
+夏尔丹	xià;hw ěr;gx dān;ph	19
+夏孤临	xià;hw gū;zp lín;sp	117
+夏海钧	xià;hw hǎi;up jūn;jb	13
+夏红民	xià;hw hóng;ih mín;vv	378
+夏侯霸	xià;hw hóu;rv bà;yy	289
+夏侯称	xià;hw hóu;rv chēng;eg	212
+夏侯亶	xià;hw hóu;rv dǎn;wh	279
+夏侯德	xià;hw hóu;rv dé;rf	288
+夏侯惇	xià;hw hóu;rv dūn;xw	1752
+夏侯恩	xià;hw hóu;rv ēn;sx	47
+夏侯衡	xià;hw hóu;rv héng;rg	248
+夏侯徽	xià;hw hóu;rv huī;rg	310
+夏侯建	xià;hw hóu;rv jiàn;vd	225
+夏侯兰	xià;hw hóu;rv lán;dh	41
+夏侯楙	xià;hw hóu;rv mào;mv	424
+夏后启	xià;hw hòu;pk qǐ;dk	315
+夏侯尚	xià;hw hóu;rv shàng;sk	499
+夏侯审	xià;hw hóu;rv shěn;bs	225
+夏侯详	xià;hw hóu;rv xiáng;ad	320
+夏侯玄	xià;hw hóu;rv xuán;wi	355
+夏侯仪	xià;hw hóu;rv yí;rd	378
+夏侯婴	xià;hw hóu;rv yīng;bn	534
+夏侯渊	xià;hw hóu;rv yuān;up	1306
+夏侯湛	xià;hw hóu;rv zhàn;uc	364
+夏侯孜	xià;hw hóu;rv zī;zw	423
+夏黄公	xià;hw huáng;cb gōng;bi	9
+夏惠宗	xià;hw huì;hx zōng;bx	396
+夏加尔	xià;hw jiā;lk ěr;gx	75
+夏佳理	xià;hw jiā;rt lǐ;wl	387
+夏金桂	xià;hw jīn;jh guì;mt	63
+夏敬观	xià;hw jìng;cw guān;ys	288
+夏菊花	xià;hw jú;cj huā;cv	20
+夏克立	xià;hw kè;fv lì;wh	22
+夏克梁	xià;hw kè;fv liáng;um	342
+夏莲居	xià;hw lián;cz jū;sk	225
+夏林清	xià;hw lín;mm qīng;uq	567
+夏洛蒂	xià;hw luò;uw dì;cj	138
+夏洛克	xià;hw luò;uw kè;fv	2509
+夏丏尊	xià;hw miǎn;hv zūn;dc	500
+夏明翰	xià;hw míng;ly hàn;fr	31
+夏茗悠	xià;hw míng;ck yōu;rx	9
+夏末帝	xià;hw mò;hm dì;wj	256
+夏奈尔	xià;hw nài;lx ěr;gx	47
+夏奇拉	xià;hw qí;ls lā;fw	166
+夏七夕	xià;hw qī;hv xī;pd	346
+夏青青	xià;hw qīng;qy qīng;qy	382
+夏寿康	xià;hw shòu;hc kāng;xu	288
+夏寿田	xià;hw shòu;hc tián;ts	266
+夏孙桐	xià;hw sūn;zx tóng;ms	266
+夏太后	xià;hw tài;ld hòu;pk	319
+夏太祖	xià;hw tài;ld zǔ;ds	302
+夏完淳	xià;hw wán;bv chún;uw	82
+夏未央	xià;hw wèi;hm yāng;sd	374
+夏无且	xià;hw wú;hv qiě;sh	369
+夏无踪	xià;hw wú;hv zōng;zb	76
+夏筱筱	xià;hw xiǎo;gw xiǎo;gw	468
+夏学銮	xià;hw xué;dz luán;wj	392
+夏雪宜	xià;hw xuě;yx yí;bh	57
+夏业良	xià;hw yè;sh liáng;dd	410
+夏迎春	xià;hw yíng;pz chūn;hl	454
+夏盈盈	xià;hw yíng;vh yíng;vh	500
+夏瀛洲	xià;hw yíng;uw zhōu;ud	306
+夏友善	xià;hw yǒu;hy shàn;dk	212
+夏雨荷	xià;hw yǔ;yd hé;cs	41
+夏玉顺	xià;hw yù;wd shùn;ph	378
+夏元鼎	xià;hw yuán;hv dǐng;lv	220
+夏原吉	xià;hw yuán;hx jí;tk	13
+夏允彝	xià;hw yǔn;iv yí;vc	392
+夏赞忠	xià;hw zàn;pb zhōng;kx	225
+夏志清	xià;hw zhì;tx qīng;uq	85
+夏紫薇	xià;hw zǐ;si wēi;cw	356
+肖伯纳	xiāo;sy bó;rp nà;is	261
+肖楚女	xiāo;sy chǔ;mr nǚ;nh	428
+肖传国	xiāo;sy chuán;rh guó;sd	113
+肖尔茨	xiāo;sy ěr;gx cí;cr	360
+肖复兴	xiāo;sy fù;pw xīng;db	361
+肖古王	xiāo;sy gǔ;fk wáng;wh	477
+肖国栋	xiāo;sy guó;sd dòng;mh	407
+肖海亮	xiāo;sy hǎi;up liàng;wj	346
+肖鹤云	xiāo;sy hè;dn yún;hi	204
+肖建华	xiāo;sy jiàn;vd huá;rf	522
+肖金成	xiāo;sy jīn;jh chéng;hd	374
+肖劲光	xiāo;sy jìn;vl guāng;sv	9
+肖劲松	xiāo;sy jìn;vl sōng;mb	194
+肖开提	xiāo;sy kāi;hc tí;fl	392
+肖克利	xiāo;sy kè;fv lì;eo	540
+肖全夫	xiāo;sy quán;rw fū;hl	279
+肖申克	xiāo;sy shēn;ls kè;fv	201
+肖特基	xiāo;sy tè;pt jī;ct	19
+肖蔚云	xiāo;sy wèi;cc yún;hi	333
+肖晓琳	xiāo;sy xiǎo;lh lín;wm	220
+肖秀荣	xiāo;sy xiù;ep róng;cm	11012
+肖亚非	xiāo;sy yà;hh fēi;ss	328
+肖亚庆	xiāo;sy yà;hh qìng;xl	6
+肖玉璧	xiāo;sy yù;wd bì;sd	387
+肖云儒	xiāo;sy yún;hi rú;ry	288
+谢阿蛮	xiè;ap ā;eh mán;wo	225
+谢安石	xiè;ap ān;bn shí;bk	288
+谢柏德	xiè;ap bǎi;mp dé;rf	414
+谢百三	xiè;ap bǎi;hl sān;hh	217
+谢葆璋	xiè;ap bǎo;cm zhāng;ww	288
+谢必安	xiè;ap bì;dd ān;bn	57
+谢冰岩	xiè;ap bīng;du yán;gb	76
+谢冰莹	xiè;ap bīng;du yíng;cd	472
+谢才萍	xiè;ap cái;hp píng;cu	410
+谢沧行	xiè;ap cāng;ur xíng;rh	110
+谢长亨	xiè;ap cháng;pd hēng;ws	369
+谢长廷	xiè;ap cháng;pd tíng;pd	16
+谢朝阳	xiè;ap cháo;fy yáng;el	418
+谢辰生	xiè;ap chén;hd shēng;pq	338
+谢春涛	xiè;ap chūn;hl tāo;uh	468
+谢茨基	xiè;ap cí;cr jī;ct	320
+谢道清	xiè;ap dào;dz qīng;uq	360
+谢德林	xiè;ap dé;rf lín;mm	405
+谢德谦	xiè;ap dé;rf qiān;ad	369
+谢德庆	xiè;ap dé;rf qìng;xl	428
+谢涤葵	xiè;ap dí;uw kuí;cl	19
+谢东闵	xiè;ap dōng;hd mǐn;mc	616
+谢东娜	xiè;ap dōng;hd nà;nv	225
+谢尔比	xiè;ap ěr;gx bǐ;hp	837
+谢尔登	xiè;ap ěr;gx dēng;vh	544
+谢尔顿	xiè;ap ěr;gx dùn;hh	509
+谢耳朵	xiè;ap ěr;hh duo;jm	669
+谢尔盖	xiè;ap ěr;gx gài;dh	622
+谢尔豪	xiè;ap ěr;gx háo;wd	19
+谢尔曼	xiè;ap ěr;gx màn;ly	295
+谢枋得	xiè;ap fāng;mw dé;rl	190
+谢弗勒	xiè;ap fú;gs lè;cl	382
+谢扶民	xiè;ap fú;fh mín;vv	279
+谢伏瞻	xiè;ap fú;rl zhān;lg	6
+谢富治	xiè;ap fù;bt zhì;ui	16
+谢根荣	xiè;ap gēn;mx róng;cm	66
+谢琯樵	xiè;ap guǎn;wb qiáo;mr	230
+谢冠生	xiè;ap guān;dc shēng;pq	351
+谢贯一	xiè;ap guàn;vb yī;hq	230
+谢广坤	xiè;ap guǎng;xp kūn;tl	75
+谢贵妃	xiè;ap guì;kb fēi;nv	423
+谢国城	xiè;ap guó;sd chéng;th	333
+谢国梁	xiè;ap guó;sd liáng;um	536
+谢国民	xiè;ap guó;sd mín;vv	464
+谢国明	xiè;ap guó;sd míng;ly	256
+谢国强	xiè;ap guó;sd qiáng;gk	225
+谢国桢	xiè;ap guó;sd zhēn;ms	38
+谢国忠	xiè;ap guó;sd zhōng;kx	35
+谢和赓	xiè;ap hé;ek gēng;xb	238
+谢和平	xiè;ap hé;ek píng;hf	13
+谢华安	xiè;ap huá;rf ān;bn	144
+谢怀栻	xiè;ap huái;xh shì;mh	306
+谢皇后	xiè;ap huáng;pw hòu;pk	662
+谢惠连	xiè;ap huì;hx lián;cz	320
+谢济世	xiè;ap jì;uw shì;cv	351
+谢家麟	xiè;ap jiā;bd lín;xj	194
+谢家齐	xiè;ap jiā;bd qí;ws	333
+谢家荣	xiè;ap jiā;bd róng;cm	428
+谢佳贤	xiè;ap jiā;rt xián;sb	441
+谢建国	xiè;ap jiàn;vd guó;sd	252
+谢建华	xiè;ap jiàn;vd huá;rf	248
+谢建军	xiè;ap jiàn;vd jūn;dc	212
+谢建平	xiè;ap jiàn;vd píng;hf	320
+谢建新	xiè;ap jiàn;vd xīn;wp	194
+谢金河	xiè;ap jīn;jh hé;uh	297
+谢金吾	xiè;ap jīn;jh wú;hk	220
+谢晋元	xiè;ap jìn;hl yuán;hv	179
+谢景仁	xiè;ap jǐng;lx rén;rh	234
+谢景温	xiè;ap jǐng;lx wēn;ul	364
+谢静宜	xiè;ap jìng;qg yí;bh	423
+谢觉哉	xiè;ap jué;dv zāi;fk	3
+谢康乐	xiè;ap kāng;xu lè;px	279
+谢克尔	xiè;ap kè;fv ěr;gx	44
+谢克家	xiè;ap kè;fv jiā;bd	202
+谢坤山	xiè;ap kūn;tl shān;gs	423
+谢里丹	xiè;ap lǐ;lt dān;ph	44
+谢里登	xiè;ap lǐ;lt dēng;vh	19
+谢里尔	xiè;ap lǐ;lt ěr;gx	634
+谢丽尔	xiè;ap lì;hd ěr;gx	308
+谢莉尔	xiè;ap lì;co ěr;gx	177
+谢里夫	xiè;ap lǐ;lt fū;hl	69
+谢黎明	xiè;ap lí;eu míng;ly	230
+谢莉斯	xiè;ap lì;co sī;cp	356
+谢立新	xiè;ap lì;wh xīn;wp	396
+谢良辅	xiè;ap liáng;dd fǔ;ch	99
+谢良佐	xiè;ap liáng;dd zuǒ;rh	225
+谢廖沙	xiè;ap liào;xp shā;ux	459
+谢灵运	xiè;ap líng;xq yùn;hz	320
+谢龙介	xiè;ap lóng;hd jiè;rs	6
+谢罗夫	xiè;ap luó;sd fū;hl	400
+谢孟媛	xiè;ap mèng;zh yuàn;np	423
+谢念祖	xiè;ap niàn;rx zǔ;ds	234
+谢帕德	xiè;ap pà;jp dé;rf	558
+谢泼德	xiè;ap pō;uv dé;rf	380
+谢启昆	xiè;ap qǐ;dk kūn;lv	266
+谢清高	xiè;ap qīng;uq gāo;wk	225
+谢清海	xiè;ap qīng;uq hǎi;up	243
+谢秋娘	xiè;ap qiū;eq niáng;nd	266
+谢若林	xiè;ap ruò;ck lín;mm	9
+谢时臣	xiè;ap shí;lc chén;hv	238
+谢世煌	xiè;ap shì;cv huáng;qp	486
+谢世杰	xiè;ap shì;cv jié;mq	320
+谢士炎	xiè;ap shì;th yán;qq	104
+谢寿康	xiè;ap shòu;hc kāng;xu	261
+谢淑薇	xiè;ap shū;us wēi;cw	594
+谢思明	xiè;ap sī;tx míng;ly	238
+谢太后	xiè;ap tài;ld hòu;pk	25
+谢铁骊	xiè;ap tiě;jp lí;vh	31
+谢廷骏	xiè;ap tíng;pd jùn;vi	356
+谢通祥	xiè;ap tōng;vz xiáng;dd	248
+谢伟铨	xiè;ap wěi;rh quán;jr	356
+谢文德	xiè;ap wén;wc dé;rf	333
+谢文东	xiè;ap wén;wc dōng;hd	477
+谢无量	xiè;ap wú;hv liàng;lh	450
+谢希德	xiè;ap xī;cj dé;rf	28
+谢希孟	xiè;ap xī;cj mèng;zh	212
+谢侠逊	xiè;ap xiá;rh xùn;zz	297
+谢小娥	xiè;ap xiǎo;xd é;np	382
+谢晓峰	xiè;ap xiǎo;lh fēng;gw	270
+谢小秋	xiè;ap xiǎo;xd qiū;eq	342
+谢旭人	xiè;ap xù;pl rén;rd	436
+谢选骏	xiè;ap xuǎn;pz jùn;vi	252
+谢雪红	xiè;ap xuě;yx hóng;ih	644
+谢亚芳	xiè;ap yà;hh fāng;cp	189
+谢亚龙	xiè;ap yà;hh lóng;hd	116
+谢亚轩	xiè;ap yà;hh xuān;ch	621
+谢烟客	xiè;ap yān;qs kè;bk	25
+谢彦章	xiè;ap yàn;wp zhāng;wf	234
+谢瑶环	xiè;ap yáo;wp huán;wh	6
+谢依旻	xiè;ap yī;rw mín;lc	418
+谢映登	xiè;ap yìng;ls dēng;vh	180
+谢影雪	xiè;ap yǐng;lp xuě;yx	428
+谢颖颖	xiè;ap yǐng;pe yǐng;pe	19
+谢有顺	xiè;ap yǒu;hy shùn;ph	3
+谢育新	xiè;ap yù;wy xīn;wp	12
+谢裕兴	xiè;ap yù;db xīng;db	225
+谢云流	xiè;ap yún;hi liú;uw	22
+谢章铤	xiè;ap zhāng;wf dìng;jp	238
+谢哲青	xiè;ap zhé;fk qīng;qy	284
+谢振定	xiè;ap zhèn;fh dìng;br	261
+谢振华	xiè;ap zhèn;fh huá;rf	2
+谢震武	xiè;ap zhèn;yd wǔ;hd	378
+谢政鹏	xiè;ap zhèng;hw péng;yn	306
+谢正义	xiè;ap zhèng;hh yì;dc	486
+谢之光	xiè;ap zhī;dd guāng;sv	252
+谢稚柳	xiè;ap zhì;er liǔ;mp	562
+谢治宇	xiè;ap zhì;ui yǔ;bs	1247
+谢中博	xiè;ap zhōng;ks bó;fh	292
+谢仲宣	xiè;ap zhòng;rk xuān;bh	50
+谢子长	xiè;ap zǐ;zh cháng;pd	16
+谢子龙	xiè;ap zǐ;zh lóng;hd	486
+谢缵泰	xiè;ap zuǎn;ip tài;hu	374
+许鞍华	xǔ;ap ān;cb huá;rf	628
+徐安仁	xú;rr ān;bn rén;rh	45
+徐悲鸿	xú;rr bēi;sx hóng;un	411
+徐碧城	xú;rr bì;wb chéng;th	639
+徐滨士	xú;rr bīn;ub shì;th	207
+徐才厚	xú;rr cái;hp hòu;hz	828
+徐成伯	xú;rr chéng;hd bó;rp	99
+许诚毅	xǔ;ap chéng;ah yì;wj	25
+许崇智	xǔ;ap chóng;gx zhì;pl	154
+徐春甫	xú;rr chūn;hl fǔ;hd	99
+徐大椿	xú;rr dà;ld chūn;mh	19
+徐道度	xú;rr dào;dz dù;xy	144
+许尔勒	xǔ;ap ěr;gx lè;cl	311
+徐复观	xú;rr fù;pw guān;ys	198
+徐根宝	xú;rr gēn;mx bǎo;bd	885
+徐公明	xú;rr gōng;bi míng;ly	261
+许广平	xǔ;ap guǎng;xp píng;hf	148
+徐光启	xú;rr guāng;sv qǐ;dk	452
+徐海东	xú;rr hǎi;up dōng;hd	176
+许海峰	xǔ;ap hǎi;up fēng;gw	182
+徐和谊	xú;rr hé;ek yì;ab	6
+徐洪才	xú;rr hóng;uc cái;hp	590
+许皇后	xǔ;ap huáng;pw hòu;pk	198
+徐皇后	xú;rr huáng;pw hòu;pk	178
+徐继畬	xú;rr jì;ij shē;rt	657
+徐建一	xú;rr jiàn;vd yī;hq	891
+许晋亨	xǔ;ap jìn;hl hēng;ws	50
+许镜清	xǔ;ap jìng;jw qīng;uq	116
+许昆林	xǔ;ap kūn;lv lín;mm	756
+许利平	xǔ;ap lì;eo píng;hf	549
+徐灵胎	xú;rr líng;xq tāi;yi	78
+徐茂栋	xú;rr mào;cd dòng;mh	16
+徐明朝	xú;rr míng;ly cháo;fy	585
+许平君	xǔ;ap píng;hf jūn;vk	939
+许其亮	xǔ;ap qí;cb liàng;wj	594
+徐秋夫	xú;rr qiū;eq fū;hl	189
+许荣茂	xǔ;ap róng;cm mào;cd	6
+许三多	xǔ;ap sān;hh duō;pd	323
+许善达	xǔ;ap shàn;dk dá;lz	22
+徐绍史	xú;rr shào;io shǐ;kd	621
+徐师曾	xú;rr shī;sh céng;dl	162
+徐世昌	xú;rr shì;cv chāng;ll	132
+徐世平	xú;rr shì;cv píng;hf	450
+许世友	xǔ;ap shì;cv yǒu;hy	126
+徐守盛	xú;rr shǒu;bc shèng;hh	6
+徐树铮	xú;rr shù;my zhēng;jg	377
+徐嗣伯	xú;rr sì;kv bó;rp	76
+徐特立	xú;rr tè;pt lì;wh	19
+许文强	xǔ;ap wén;wc qiáng;gk	251
+徐霞客	xú;rr xiá;yy kè;bk	311
+徐向前	xú;rr xiàng;pk qián;do	97
+徐晓东	xú;rr xiǎo;lh dōng;hd	904
+徐晓冬	xú;rr xiǎo;lh dōng;wd	578
+许小年	xǔ;ap xiǎo;xd nián;ps	66
+徐小平	xú;rr xiǎo;xd píng;hf	644
+许信良	xǔ;ap xìn;ra liáng;dd	644
+徐永昌	xú;rr yǒng;dd chāng;ll	66
+许渊冲	xǔ;ap yuān;up chōng;dk	295
+徐元直	xú;rr yuán;hv zhí;fh	28
+徐云龙	xú;rr yún;hi lóng;hd	22
+徐之才	xú;rr zhī;dd cái;hp	297
+许智峰	xǔ;ap zhì;pl fēng;gw	608
+徐知诰	xú;rr zhī;pk gào;ap	630
+徐直军	xú;rr zhí;fh jūn;dc	249
+徐志摩	xú;rr zhì;tx mó;xf	4632
+许知远	xǔ;ap zhī;pk yuǎn;hz	1231
+许庄公	xǔ;ap zhuāng;xt gōng;bi	284
+许倬云	xǔ;ap zhuō;rs yún;hi	568
+薛宝钗	xuē;cf bǎo;bd chāi;jy	257
+薛宝琴	xuē;cf bǎo;bd qín;wv	22
+薛存诚	xuē;cf cún;hz chéng;ah	212
+薛道衡	xuē;cf dào;dz héng;rg	38
+薛定谔	xuē;cf dìng;br è;ak	2810
+薛丁山	xuē;cf dīng;hs shān;gs	38
+薛福成	xuē;cf fú;dh chéng;hd	281
+薛怀义	xuē;cf huái;xh yì;dc	242
+薛居正	xuē;cf jū;sk zhèng;hh	19
+薛克构	xuē;cf kè;fv gòu;mb	225
+薛灵芸	xuē;cf líng;xq yún;ci	6
+薛令之	xuē;cf lìng;rd zhī;dd	135
+薛蛮子	xuē;cf mán;wo zi;zh	850
+薛暮桥	xuē;cf mù;cl qiáo;mp	500
+薛平贵	xuē;cf píng;hf guì;kb	273
+薛其坤	xuē;cf qí;cb kūn;tl	82
+薛奇童	xuē;cf qí;ls tóng;wh	76
+薛仁杲	xuē;cf rén;rh gǎo;lm	44
+薛仁贵	xuē;cf rén;rh guì;kb	550
+薛万彻	xuē;cf wàn;hp chè;rh	99
+薛西斯	xuē;cf xī;sh sī;cp	295
+薛湘灵	xuē;cf xiāng;um líng;xq	31
+薛晓路	xuē;cf xiǎo;lh lù;zw	395
+薛晓璐	xuē;cf xiǎo;lh lù;wz	177
+薛宜僚	xuē;cf yí;bh liáo;rl	4
+薛姨妈	xuē;cf yí;nh mā;nv	69
+薛元超	xuē;cf yuán;hv chāo;tk	369
+薛兆丰	xuē;cf zhào;pd fēng;hs	493
+薛昭纬	xuē;cf zhāo;lo wěi;ih	189
+薛昭蕴	xuē;cf zhāo;lo yùn;ch	202
+阎宝航	yán;mh bǎo;bd háng;vw	518
+阎伯屿	yán;mh bó;rp yǔ;gh	38
+阎步克	yán;mh bù;sp kè;fv	459
+阎朝隐	yán;mh cháo;fy yǐn;eg	230
+阎崇年	yán;mh chóng;gx nián;ps	239
+阎德隐	yán;mh dé;rf yǐn;eg	45
+阎东叟	yán;mh dōng;hd sǒu;py	99
+严范孙	yán;hp fàn;cu sūn;zx	333
+严歌苓	yán;hp gē;hg líng;cd	286
+严公弼	yán;hp gōng;bi bì;gh	99
+严公贶	yán;hp gōng;bi kuàng;bk	50
+阎贵妃	yán;mh guì;kb fēi;nv	320
+阎海文	yán;mh hǎi;up wén;wc	292
+阎红彦	yán;mh hóng;ih yàn;wp	3
+闫怀礼	yán;mh huái;xh lǐ;dv	35
+阎惠昌	yán;mh huì;hx chāng;ll	289
+严济慈	yán;hp jì;uw cí;dx	50
+严家淦	yán;hp jiā;bd gàn;uj	13
+严鉴铂	yán;hp jiàn;sj bó;jp	45
+阎建钢	yán;mh jiàn;vd gāng;js	3
+严介和	yán;hp jiè;rs hé;ek	6
+严金海	yán;hp jīn;jh hǎi;up	346
+阎晶明	yán;mh jīng;ll míng;ly	396
+阎敬铭	yán;mh jìng;cw míng;jp	296
+严隽琪	yán;hp juàn;rp qí;wc	304
+严凯泰	yán;hp kǎi;gj tài;hu	346
+严可均	yán;hp kě;hs jūn;tb	35
+阎立本	yán;mh lì;wh běn;mh	195
+阎立德	yán;mh lì;wh dé;rf	188
+闫丽梦	yán;mh lì;hd mèng;md	3
+严陆根	yán;hp lù;eh gēn;mx	284
+阎罗王	yán;mh luó;sd wáng;wh	257
+阎明复	yán;mh míng;ly fù;pw	446
+阎魔王	yán;mh mó;xi wáng;wh	266
+闫鹏飞	yán;mh péng;yn fēi;vd	310
+阎婆惜	yán;mh pó;un xī;xc	104
+阎庆民	yán;mh qìng;xl mín;vv	3
+阎瑞生	yán;mh ruì;wg shēng;pq	400
+阎若璩	yán;mh ruò;ck qú;ws	428
+阎世铎	yán;mh shì;cv duó;jy	342
+严世蕃	yán;hp shì;cv fān;ct	88
+严文井	yán;hp wén;wc jǐng;hc	3
+阎惜娇	yán;mh xī;xc jiāo;np	230
+闫希军	yán;mh xī;cj jūn;dc	387
+阎锡山	yán;mh xī;jl shān;gs	1052
+闫相闯	yán;mh xiāng;ml chuǎng;mh	279
+阎相闯	yán;mh xiāng;ml chuǎng;mh	224
+阎相文	yán;mh xiāng;ml wén;wc	324
+阎晓宏	yán;mh xiǎo;lh hóng;bi	262
+阎晓明	yán;mh xiǎo;lh míng;ly	302
+严休复	yán;hp xiū;rm fù;pw	117
+阎学通	yán;mh xué;dz tōng;vz	22
+阎应元	yán;mh yīng;xh yuán;hv	31
+闫永喜	yán;mh yǒng;dd xǐ;tk	189
+阎又文	yán;mh yòu;yd wén;wc	423
+严幼韵	yán;hp yòu;vl yùn;wb	9
+严跃进	yán;hp yuè;zp jìn;hz	868
+严振声	yán;hp zhèn;fh shēng;tp	76
+阎知微	yán;mh zhī;pk wēi;rg	190
+阎仲川	yán;mh zhòng;rk chuān;ps	266
+闫子贝	yán;mh zǐ;zh bèi;br	6
+杨白冰	yáng;mv bái;pl bīng;du	3
+杨白劳	yáng;mv bái;pl láo;cl	440
+杨百顺	yáng;mv bǎi;hl shùn;ph	644
+杨宝玲	yáng;mv bǎo;bd líng;wr	428
+杨伯峻	yáng;mv bó;rp jùn;gi	257
+杨不悔	yáng;mv bù;hd huǐ;xp	352
+杨步伟	yáng;mv bù;sp wěi;rh	75
+杨成武	yáng;mv chéng;hd wǔ;hd	63
+杨传堂	yáng;mv chuán;rh táng;st	621
+杨春霞	yáng;mv chūn;hl xiá;yy	432
+杨德昌	yáng;mv dé;rf chāng;ll	783
+杨德龙	yáng;mv dé;rf lóng;hd	22
+杨得志	yáng;mv dé;rl zhì;tx	104
+杨登魁	yáng;mv dēng;vh kuí;pf	490
+杨复光	yáng;mv fù;pw guāng;sv	356
+杨福家	yáng;mv fú;dh jiā;bd	35
+杨公卿	yáng;mv gōng;bi qīng;px	648
+杨冠卿	yáng;mv guān;dc qīng;px	99
+杨贵妃	yáng;mv guì;kb fēi;nv	1831
+杨国平	yáng;mv guó;sd píng;hf	351
+杨国强	yáng;mv guó;sd qiáng;gk	25
+杨国庆	yáng;mv guó;sd qìng;xl	405
+杨国忠	yáng;mv guó;sd zhōng;kx	914
+杨浩涌	yáng;mv hào;up yǒng;uv	94
+杨亨燮	yáng;mv hēng;ws xiè;ay	279
+杨红樱	yáng;mv hóng;ih yīng;mb	63
+杨虎城	yáng;mv hǔ;sj chéng;th	286
+杨徽之	yáng;mv huī;rg zhī;dd	162
+杨继盛	yáng;mv jì;ij shèng;hh	47
+杨继业	yáng;mv jì;ij yè;sh	266
+杨家将	yáng;mv jiā;bd jiàng;dp	1454
+杨建平	yáng;mv jiàn;vd píng;hf	648
+杨洁篪	yáng;mv jié;ut chí;gj	31
+杨锦麟	yáng;mv jǐn;jp lín;xj	3
+杨静仁	yáng;mv jìng;qg rén;rh	405
+杨靖宇	yáng;mv jìng;wq yǔ;bs	308
+杨敬之	yáng;mv jìng;cw zhī;dd	212
+杨九红	yáng;mv jiǔ;pv hóng;ih	78
+杨巨源	yáng;mv jù;hv yuán;uh	9
+杨开慧	yáng;mv kāi;hc huì;hx	119
+杨凯生	yáng;mv kǎi;gj shēng;pq	6
+杨奎松	yáng;mv kuí;lt sōng;mb	616
+杨利伟	yáng;mv lì;eo wěi;rh	983
+杨联升	yáng;mv lián;hd shēng;pc	28
+杨莲亭	yáng;mv lián;cz tíng;ws	88
+杨令公	yáng;mv lìng;rd gōng;bi	63
+杨露禅	yáng;mv lù;yk chán;dd	590
+杨露蝉	yáng;mv lù;yk chán;od	334
+杨鸣章	yáng;mv míng;kn zhāng;wf	369
+杨慕琦	yáng;mv mù;cx qí;wl	598
+杨乃武	yáng;mv nǎi;vp wǔ;hd	35
+杨凝式	yáng;mv níng;dp shì;hd	41
+杨叛儿	yáng;mv pàn;dp ér;pv	144
+杨培东	yáng;mv péi;tw dōng;hd	356
+杨七郎	yáng;mv qī;hv láng;de	75
+杨日礼	yáng;mv rì;lh lǐ;dv	382
+杨汝岱	yáng;mv rǔ;un dài;rg	338
+杨汝士	yáng;mv rǔ;un shì;th	288
+杨善深	yáng;mv shàn;dk shēn;ud	284
+杨善洲	yáng;mv shàn;dk zhōu;ud	6
+杨尚昆	yáng;mv shàng;sk kūn;lv	35
+杨深秀	yáng;mv shēn;ud xiù;ep	6
+杨师道	yáng;mv shī;sh dào;dz	369
+杨士奇	yáng;mv shì;th qí;ls	28
+杨石先	yáng;mv shí;bk xiān;pv	3
+杨受成	yáng;mv shòu;py chéng;hd	100
+杨守敬	yáng;mv shǒu;bc jìng;cw	57
+杨嗣复	yáng;mv sì;kv fù;pw	472
+杨四郎	yáng;mv sì;sv láng;de	122
+杨思玄	yáng;mv sī;tx xuán;wi	162
+杨肃观	yáng;mv sù;vd guān;ys	13
+杨太后	yáng;mv tài;ld hòu;pk	468
+杨太真	yáng;mv tài;ld zhēn;fb	392
+杨天石	yáng;mv tiān;hl shí;bk	47
+杨铁梁	yáng;mv tiě;jp liáng;um	459
+杨铁心	yáng;mv tiě;jp xīn;xd	100
+杨廷宝	yáng;mv tíng;pd bǎo;bd	110
+杨廷和	yáng;mv tíng;pd hé;ek	248
+杨廷艺	yáng;mv tíng;pd yì;cv	405
+杨万里	yáng;mv wàn;hp lǐ;lt	349
+杨威利	yáng;mv wēi;hd lì;eo	163
+杨卫泽	yáng;mv wèi;vh zé;uy	702
+杨维桢	yáng;mv wéi;ir zhēn;ms	97
+杨文广	yáng;mv wén;wc guǎng;xp	515
+杨显惠	yáng;mv xiǎn;lh huì;hx	374
+杨贤江	yáng;mv xián;sb jiāng;uh	16
+杨宪益	yáng;mv xiàn;bv yì;dh	107
+杨仙逸	yáng;mv xiān;rg yì;gz	96
+杨献珍	yáng;mv xiàn;fl zhēn;wr	428
+杨小凯	yáng;mv xiǎo;xd kǎi;gj	402
+杨孝文	yáng;mv xiào;tz wén;wc	369
+杨晓阳	yáng;mv xiǎo;lh yáng;el	608
+杨行密	yáng;mv xíng;rh mì;bg	94
+杨秀峰	yáng;mv xiù;ep fēng;gw	495
+杨秀清	yáng;mv xiù;ep qīng;uq	104
+杨秀珠	yáng;mv xiù;ep zhū;wp	630
+杨虚彦	yáng;mv xū;sh yàn;wp	734
+杨学增	yáng;mv xué;dz zēng;td	428
+杨延辉	yáng;mv yán;pd huī;sd	69
+杨燕绥	yáng;mv yàn;cq suí;ip	5
+杨延昭	yáng;mv yán;pd zhāo;lo	1024
+杨炎正	yáng;mv yán;qq zhèng;hh	50
+杨一民	yáng;mv yī;hq mín;vv	19
+杨一清	yáng;mv yì;hq qīng;uq	13
+杨益言	yáng;mv yì;dh yán;ak	378
+杨宜勇	yáng;mv yí;bh yǒng;vl	364
+杨英风	yáng;mv yīng;cd fēng;pc	562
+杨应龙	yáng;mv yìng;xh lóng;hd	50
+杨永泰	yáng;mv yǒng;dd tài;hu	16
+杨永信	yáng;mv yǒng;dd xìn;ra	678
+杨玉环	yáng;mv yù;wd huán;wh	1975
+杨于陵	yáng;mv yú;hs líng;et	324
+杨虞卿	yáng;mv yú;sl qīng;px	324
+杨宇霆	yáng;mv yǔ;bs tíng;yd	873
+杨元丁	yáng;mv yuán;hv dīng;hs	320
+杨元庆	yáng;mv yuán;hv qìng;xl	144
+杨岳桥	yáng;mv yuè;pg qiáo;mp	6
+杨增新	yáng;mv zēng;td xīn;wp	590
+杨之华	yáng;mv zhī;dd huá;rf	88
+杨植麟	yáng;mv zhí;mf lín;xj	64
+杨致远	yáng;mv zhì;hw yuǎn;hz	384
+杨卓舒	yáng;mv zhuó;sf shū;rv	35
+杨子荣	yáng;mv zǐ;zh róng;cm	69
+杨宗保	yáng;mv zōng;bx bǎo;rk	198
+杨左使	yáng;mv zuǒ;hh shǐ;rh	176
+姚本辉	yáo;np běn;mh huī;sd	432
+姚从吾	yáo;np cóng;rr wú;hk	378
+姚大力	yáo;np dà;ld lì;lp	48
+姚登山	yáo;np dēng;vh shān;gs	346
+姚奠中	yáo;np diàn;dl zhōng;ks	351
+姚淦铭	yáo;np gàn;uj míng;jp	220
+姚广孝	yáo;np guǎng;xp xiào;tz	154
+姚际恒	yáo;np jì;eh héng;xh	47
+姚建年	yáo;np jiàn;vd nián;ps	306
+姚建萍	yáo;np jiàn;vd píng;cu	328
+姚劲波	yáo;np jìn;vl bō;uv	69
+姚金男	yáo;np jīn;jh nán;tl	392
+姚景源	yáo;np jǐng;lx yuán;uh	433
+姚居德	yáo;np jū;sk dé;rf	302
+姚立明	yáo;np lì;wh míng;ly	454
+姚良松	yáo;np liáng;dd sōng;mb	328
+姚令言	yáo;np lìng;rd yán;ak	346
+姚履素	yáo;np lǚ;sw sù;qi	76
+姚名达	yáo;np míng;pk dá;lz	22
+姚明高	yáo;np míng;ly gāo;wk	387
+姚木兰	yáo;np mù;md lán;dh	396
+姚南仲	yáo;np nán;ff zhòng;rk	261
+姚平仲	yáo;np píng;hf zhòng;rk	6
+姚启圣	yáo;np qǐ;dk shèng;yt	35
+姚期智	yáo;np qī;cy zhì;pl	276
+姚仁喜	yáo;np rén;rh xǐ;tk	432
+姚若龙	yáo;np ruò;ck lóng;hd	204
+姚述尧	yáo;np shù;mz yáo;hv	4
+姚硕德	yáo;np shuò;bh dé;rf	312
+姚思廉	yáo;np sī;tx lián;xd	38
+姚思荣	yáo;np sī;tx róng;cm	374
+姚松炎	yáo;np sōng;mb yán;qq	531
+姚檀栋	yáo;np tán;mw dòng;mh	9
+姚桐斌	yáo;np tóng;ms bīn;wh	38
+姚文田	yáo;np wén;wc tián;ts	279
+姚文燮	yáo;np wén;wc xiè;ay	225
+姚文元	yáo;np wén;wc yuán;hv	28
+姚希孟	yáo;np xī;cj mèng;zh	243
+姚小蝶	yáo;np xiǎo;xd dié;oc	306
+姚璇秋	yáo;np xuán;ww qiū;eq	202
+姚雪垠	yáo;np xuě;yx yín;tx	100
+姚亚平	yáo;np yà;hh píng;hf	320
+姚彦章	yáo;np yàn;wp zhāng;wf	328
+姚冶诚	yáo;np yě;di chéng;ah	6
+姚依林	yáo;np yī;rw lín;mm	3
+姚一苇	yáo;np yī;hq wěi;cs	378
+姚弋仲	yáo;np yì;hd zhòng;rk	19
+姚永朴	yáo;np yǒng;dd pǔ;ms	266
+姚余栋	yáo;np yú;rm dòng;mh	3
+姚玉兰	yáo;np yù;wd lán;dh	495
+姚虞琴	yáo;np yú;sl qín;wv	261
+姚振华	yáo;np zhèn;fh huá;rf	1008
+姚仲明	yáo;np zhòng;rk míng;ly	270
+姚中英	yáo;np zhōng;ks yīng;cd	194
+姚壮宪	yáo;np zhuàng;dt xiàn;bv	220
+姚子青	yáo;np zǐ;zh qīng;qy	378
+姚宗勋	yáo;np zōng;bx xūn;kl	243
+姚祖辉	yáo;np zǔ;ds huī;sd	279
+叶柏寿	yè;kf bǎi;mp shòu;hc	464
+叶丙成	yè;kf bǐng;hd chéng;hd	315
+叶伯巨	yè;kf bó;rp jù;hv	243
+叶布舒	yè;kf bù;hj shū;rv	224
+叶昌炽	yè;kf chāng;ll chì;qk	22
+叶澄衷	yè;kf chéng;uv zhōng;wd	137
+叶驰敏	yè;kf chí;vv mǐn;pw	464
+叶崇仁	yè;kf chóng;gx rén;rh	202
+叶楚伧	yè;kf chǔ;mr cāng;rr	522
+叶传古	yè;kf chuán;rh gǔ;fk	45
+叶大椿	yè;kf dà;ld chūn;mh	45
+叶大廉	yè;kf dà;ld lián;xd	45
+叶大年	yè;kf dà;ld nián;ps	207
+叶大鹰	yè;kf dà;ld yīng;xn	65
+叶德辉	yè;kf dé;rf huī;sd	263
+叶德征	yè;kf dé;rf zhēng;rh	45
+叶冬松	yè;kf dōng;wd sōng;mb	3
+叶笃义	yè;kf dǔ;gh yì;dc	410
+叶笃正	yè;kf dǔ;gh zhèng;hh	16
+叶二娘	yè;kf èr;hh niáng;nd	113
+叶尔钦	yè;kf ěr;gx qīn;jg	446
+叶尔辛	yè;kf ěr;gx xīn;wf	374
+叶法善	yè;kf fǎ;ut shàn;dk	338
+叶方舟	yè;kf fāng;wp zhōu;vd	3
+叶根友	yè;kf gēn;mx yǒu;hy	91
+叶公超	yè;kf gōng;bi chāo;tk	28
+叶恭绰	yè;kf gōng;cx chuò;is	526
+叶恭弘	yè;kf gōng;cx hóng;gi	13
+叶孤城	yè;kf gū;zp chéng;th	223
+叶光富	yè;kf guāng;sv fù;bt	132
+叶广芩	yè;kf guǎng;xp qín;cv	31
+叶国富	yè;kf guó;sd fù;bt	25
+叶国华	yè;kf guó;sd huá;rf	6
+叶国谦	yè;kf guó;sd qiān;ad	490
+叶海燕	yè;kf hǎi;up yàn;cq	364
+叶鸿辉	yè;kf hóng;un huī;sd	477
+叶红专	yè;kf hóng;ih zhuān;hd	315
+叶惠贤	yè;kf huì;hx xián;sb	338
+叶继欢	yè;kf jì;ij huān;yg	31
+叶加濑	yè;kf jiā;lk lài;uh	392
+叶佳修	yè;kf jiā;rt xiū;rs	3
+叶嘉莹	yè;kf jiā;tk yíng;cd	421
+叶剑英	yè;kf jiàn;ro yīng;cd	267
+叶建源	yè;kf jiàn;vd yuán;uh	468
+叶江川	yè;kf jiāng;uh chuān;ps	6
+叶锦添	yè;kf jǐn;jp tiān;uh	267
+叶菊兰	yè;kf jú;cj lán;dh	477
+叶橘泉	yè;kf jú;mv quán;pu	266
+叶君健	yè;kf jūn;vk jiàn;rv	436
+叶俊荣	yè;kf jùn;ri róng;cm	472
+叶匡政	yè;kf kuāng;hv zhèng;hw	428
+叶蓝秋	yè;kf lán;ch qiū;eq	44
+叶澜依	yè;kf lán;um yī;rw	346
+叶立德	yè;kf lì;wh dé;rf	464
+叶利钦	yè;kf lì;eo qīn;jg	562
+叶流云	yè;kf liú;uw yún;hi	238
+叶隆礼	yè;kf lóng;ew lǐ;dv	230
+叶茂林	yè;kf mào;cd lín;mm	378
+叶茂青	yè;kf mào;cd qīng;qy	342
+叶茂中	yè;kf mào;cd zhōng;ks	85
+叶梦得	yè;kf mèng;md de;rl	53
+叶梦鼎	yè;kf mèng;md dǐng;lv	243
+叶梦熊	yè;kf mèng;md xióng;iq	270
+叶名琛	yè;kf míng;pk chēn;wd	13
+叶明子	yè;kf míng;ly zǐ;zh	288
+叶嬷嬷	yè;kf mó;nx mo;nx	518
+叶南笙	yè;kf nán;ff shēng;gq	648
+叶念琛	yè;kf niàn;rx chēn;wd	500
+叶佩高	yè;kf pèi;rp gāo;wk	238
+叶培贵	yè;kf péi;tw guì;kb	194
+叶培建	yè;kf péi;tw jiàn;vd	97
+叶姵延	yè;kf pèi; yán;pd	382
+叶佩英	yè;kf pèi;rp yīng;cd	266
+叶飘零	yè;kf piāo;sp líng;yd	675
+叶品秀	yè;kf pǐn;kk xiù;ep	243
+叶企孙	yè;kf qǐ;rh sūn;zx	75
+叶浅予	yè;kf qiǎn;uh yǔ;vs	53
+叶乔波	yè;kf qiáo;ps bō;uv	38
+叶清臣	yè;kf qīng;uq chén;hv	238
+叶轻眉	yè;kf qīng;cv méi;vl	685
+叶荣添	yè;kf róng;cm tiān;uh	110
+叶荣钟	yè;kf róng;cm zhōng;jk	364
+叶荣祖	yè;kf róng;cm zǔ;ds	369
+叶赛宁	yè;kf sài;bb níng;bs	63
+叶绍德	yè;kf shào;io dé;rf	378
+叶少兰	yè;kf shǎo;xp lán;dh	369
+叶绍翁	yè;kf shào;io wēng;bh	16
+叶绍袁	yè;kf shào;io yuán;td	302
+叶盛兰	yè;kf shèng;hh lán;dh	85
+叶圣陶	yè;kf shèng;yt táo;eb	452
+叶盛章	yè;kf shèng;hh zhāng;wf	346
+叶石涛	yè;kf shí;bk tāo;uh	518
+叶树姗	yè;kf shù;my shān;np	364
+叶忒罗	yè;kf tè;hd luó;sd	274
+叶天士	yè;kf tiān;hl shì;th	308
+叶天行	yè;kf tiān;hl xíng;rh	356
+叶廷芳	yè;kf tíng;pd fāng;cp	356
+叶廷珪	yè;kf tíng;pd guī;wt	428
+叶廷眷	yè;kf tíng;pd juàn;dl	194
+叶伟民	yè;kf wěi;rh mín;vv	35
+叶渭渠	yè;kf wèi;ut qú;um	468
+叶伟信	yè;kf wěi;rh xìn;ra	66
+叶文洁	yè;kf wén;wc jié;ut	243
+叶无道	yè;kf wú;hv dào;dz	243
+叶宪祖	yè;kf xiàn;bv zǔ;ds	194
+叶向东	yè;kf xiàng;pk dōng;hd	270
+叶向高	yè;kf xiàng;pk gāo;wk	63
+叶湘伦	yè;kf xiāng;um lún;rr	402
+叶香岩	yè;kf xiāng;el yán;gb	144
+叶向阳	yè;kf xiàng;pk yáng;el	270
+叶小钗	yè;kf xiǎo;xd chāi;jy	459
+叶小纲	yè;kf xiǎo;xd gāng;is	25
+叶小鸾	yè;kf xiǎo;xd luán;wn	310
+叶小文	yè;kf xiǎo;xd wén;wc	16
+叶兴庆	yè;kf xīng;db qìng;xl	302
+叶秀峰	yè;kf xiù;ep fēng;gw	450
+叶选宁	yè;kf xuǎn;pz níng;bs	392
+叶选平	yè;kf xuǎn;pz píng;hf	16
+叶宜津	yè;kf yí;bh jīn;uv	410
+叶义问	yè;kf yì;dc wèn;mk	270
+叶迎春	yè;kf yíng;pz chūn;hl	266
+叶永烈	yè;kf yǒng;dd liè;hq	154
+叶永青	yè;kf yǒng;dd qīng;qy	44
+叶永志	yè;kf yǒng;dd zhì;tx	31
+叶毓兰	yè;kf yù;pw lán;dh	369
+叶毓山	yè;kf yù;pw shān;gs	212
+叶兆言	yè;kf zhào;pd yán;ak	44
+叶钊颖	yè;kf zhāo;jo yǐng;pe	495
+叶哲泰	yè;kf zhé;fk tài;hu	91
+叶真理	yè;kf zhēn;fb lǐ;wl	450
+叶贞琴	yè;kf zhēn;sb qín;wv	230
+叶志诜	yè;kf zhì;tx shēn;ap	153
+叶子龙	yè;kf zi;zh lóng;hd	392
+叶宗留	yè;kf zōng;bx liú;pt	3
+叶祖珪	yè;kf zǔ;ds guī;wt	342
+叶祖洽	yè;kf zǔ;ds qià;ur	238
+尤迪安	yóu;hd dí;sz ān;bn	35
+尤二姐	yóu;hd èr;hh jiě;ns	88
+尤老娘	yóu;hd lǎo;tv niáng;nd	3
+尤良英	yóu;hd liáng;dd yīng;cd	256
+尤伦斯	yóu;hd lún;rr sī;cp	666
+尤弥尔	yóu;hd mí;gg ěr;gx	1287
+尤努斯	yóu;hd nǔ;nl sī;cp	94
+尤三姐	yóu;hd sān;hh jiě;ns	47
+尤先科	yóu;hd xiān;pv kē;ed	28
+尤小刚	yóu;hd xiǎo;xd gāng;so	9
+尤雨溪	yóu;hd yǔ;yd xī;up	50
+郁保四	yù;he bǎo;rk sì;sv	50
+俞陛云	yú;ro bì;eh yún;hi	333
+俞伯牙	yú;ro bó;rp yá;hp	85
+余沧海	yú;rm cāng;ur hǎi;up	226
+俞辰捷	yú;ro chén;hd jié;fh	9
+俞成华	yú;ro chéng;hd huá;rf	346
+余程万	yú;rm chéng;ek wàn;hp	9
+余春娇	yú;rm chūn;hl jiāo;np	355
+余纯顺	yú;rm chún;ih shùn;ph	28
+余慈度	yú;rm cí;dx dù;xy	279
+俞翠薇	yú;ro cuì;vf wēi;cw	45
+余翠怡	yú;rm cuì;vf yí;xi	320
+郁达夫	yù;he dá;lz fū;hl	622
+俞大维	yú;ro dà;ld wéi;ir	38
+俞大猷	yú;ro dà;ld yóu;dl	314
+俞岱曦	yú;ro dài;rg xī;ld	342
+余端礼	yú;rm duān;wg lǐ;dv	234
+俞飞鹏	yú;ro fēi;vd péng;yn	418
+俞光岩	yú;ro guāng;sv yán;gb	194
+俞国宝	yú;ro guó;sd bǎo;bd	144
+俞国华	yú;ro guó;sd huá;rf	544
+俞国良	yú;ro guó;sd liáng;dd	320
+俞国桢	yú;ro guó;sd zhēn;ms	288
+余汉谋	yú;rm hàn;uy móu;ac	38
+余贺新	yú;rm hè;lb xīn;wp	392
+俞鸿钧	yú;ro hóng;un jūn;jb	148
+俞鸿图	yú;ro hóng;un tú;sd	374
+余化龙	yú;rm huà;rp lóng;hd	8
+余欢水	yú;rm huān;yg shuǐ;ud	19
+余继登	yú;rm jì;ij dēng;vh	3
+俞济时	yú;ro jì;uw shí;lc	130
+俞家骥	yú;ro jiā;bd jì;vs	189
+俞建华	yú;ro jiàn;vd huá;rf	209
+俞剑华	yú;ro jiàn;ro huá;rf	91
+郁建兴	yù;he jiàn;vd xīng;db	214
+俞菊笙	yú;ro jú;cj shēng;gq	220
+俞觉敏	yú;ro jué;dv mǐn;pw	41
+俞克成	yú;ro kè;fv chéng;hd	38
+俞可平	yú;ro kě;hs píng;hf	16
+俞孔坚	yú;ro kǒng;zv jiān;st	562
+俞丽拿	yú;ro lì;hd ná;rf	16
+余丽桥	yú;rm lì;hd qiáo;mp	26
+俞李妍	yú;ro lǐ;mz yán;nh	3
+俞立中	yú;ro lì;wh zhōng;ks	274
+俞亮鑫	yú;ro liàng;wj xīn;jj	248
+郁林王	yù;he lín;mm wáng;wh	369
+俞凌雄	yú;ro líng;dt xióng;hr	13
+俞梦孙	yú;ro mèng;md sūn;zx	3
+俞敏洪	yú;ro mǐn;pw hóng;uc	1548
+俞明震	yú;ro míng;ly zhèn;yd	378
+郁慕明	yù;he mù;cx míng;ly	608
+俞南石	yú;ro nán;ff shí;bk	38
+俞佩彤	yú;ro pèi;rp tóng;pp	410
+俞平伯	yú;ro píng;hf bó;rp	100
+俞蒲石	yú;ro pú;cu shí;bk	45
+俞庆棠	yú;ro qìng;xl táng;sm	205
+余洒度	yú;rm sǎ;us dù;xy	3
+余绍宋	yú;rm shào;io sòng;bm	315
+俞叔平	yú;ro shū;sy píng;hf	238
+余叔岩	yú;rm shū;sy yán;gb	129
+俞颂华	yú;ro sòng;bh huá;rf	292
+俞天任	yú;ro tiān;hl rèn;rp	346
+余天锡	yú;rm tiān;hl xī;jl	302
+余天云	yú;rm tiān;hl yún;hi	270
+俞通海	yú;ro tōng;vz hǎi;up	351
+俞万春	yú;ro wàn;hp chūn;hl	6
+俞伟超	yú;ro wěi;rh chāo;tk	3
+俞文豹	yú;ro wén;wc bào;pb	17
+宇文弼	yǔ;bs wén;wc bì;gh	252
+宇文阐	yǔ;bs wén;wc chǎn;ms	351
+宇文导	yǔ;bs wén;wc dǎo;vc	328
+宇文鼎	yǔ;bs wén;wc dǐng;lv	180
+宇文肱	yǔ;bs wén;wc gōng;yh	279
+宇文颢	yǔ;bs wén;wc hào;lh	224
+宇文护	yǔ;bs wén;wc hù;fd	173
+宇文怀	yǔ;bs wén;wc huái;xh	180
+宇文家	yǔ;bs wén;wc jiā;bd	504
+宇文俭	yǔ;bs wén;wc jiǎn;rr	288
+宇文节	yǔ;bs wén;wc jié;cs	274
+宇文觉	yǔ;bs wén;wc jué;dv	31
+宇文恺	yǔ;bs wén;wc kǎi;xg	31
+宇文亮	yǔ;bs wén;wc liàng;wj	338
+宇文烈	yǔ;bs wén;wc liè;hq	45
+宇文洛	yǔ;bs wén;wc luò;uw	261
+宇文念	yǔ;bs wén;wc niàn;rx	320
+宇文虬	yǔ;bs wén;wc qiú;ov	248
+宇文融	yǔ;bs wén;wc róng;ho	22
+宇文盛	yǔ;bs wén;wc shèng;hh	270
+宇文述	yǔ;bs wén;wc shù;mz	505
+宇文泰	yǔ;bs wén;wc tài;hu	251
+宇文拓	yǔ;bs wén;wc tuò;fb	38
+宇文宪	yǔ;bs wén;wc xiàn;bv	47
+宇文忻	yǔ;bs wén;wc xīn;xp	342
+宇文歆	yǔ;bs wén;wc xīn;wg	243
+宇文衍	yǔ;bs wén;wc yǎn;ru	338
+宇文逸	yǔ;bs wén;wc yì;gz	806
+宇文颖	yǔ;bs wén;wc yǐng;pe	266
+宇文邕	yǔ;bs wén;wc yōng;vv	88
+宇文毓	yǔ;bs wén;wc yù;pw	9
+宇文玥	yǔ;bs wén;wc yuè;wy	518
+宇文赟	yǔ;bs wén;wc yūn;wb	490
+宇文招	yǔ;bs wén;wc zhāo;fo	396
+宇文直	yǔ;bs wén;wc zhí;fh	392
+宇文胄	yǔ;bs wén;wc zhòu;sy	20
+郁贤皓	yù;he xián;sb hào;pp	297
+余象斗	yú;rm xiàng;gd dòu;df	382
+俞晓夫	yú;ro xiǎo;lh fū;hl	171
+俞修容	yú;ro xiū;rs róng;bk	202
+俞秀松	yú;ro xiù;ep sōng;mb	9
+俞逊发	yú;ro xùn;zz fā;vd	351
+余延寿	yú;rm yán;pd shòu;hc	38
+俞扬和	yú;ro yáng;fv hé;ek	84
+余莺儿	yú;rm yīng;cn ér;pv	57
+俞应麓	yú;ro yīng;xh lù;mv	213
+余英男	yú;rm yīng;cd nán;tl	428
+俞永福	yú;ro yǒng;dd fú;dh	42
+郁永河	yù;he yǒng;dd hé;uh	418
+俞煜峰	yú;ro yù;ql fēng;gw	261
+余鱼同	yú;rm yú;gh tóng;sk	19
+俞元泰	yú;ro yuán;hv tài;hu	28
+俞云阶	yú;ro yún;hi jiē;er	284
+余则成	yú;rm zé;bo chéng;hd	666
+余占鳌	yú;rm zhàn;sk áo;qh	526
+俞兆晟	yú;ro zhào;pd chéng;ld	207
+俞兆林	yú;ro zhào;pd lín;mm	13
+俞振飞	yú;ro zhèn;fh fēi;vd	35
+余正麒	yú;rm zhèng;hh qí;xc	306
+俞正声	yú;ro zhèng;hh shēng;tp	3
+俞正燮	yú;ro zhèng;hh xiè;ay	6
+俞致贞	yú;ro zhì;hw zhēn;sb	288
+俞中保	yú;ro zhōng;ks bǎo;rk	310
+余周周	yú;rm zhōu;pk zhōu;pk	22
+余子俊	yú;rm zǐ;zh jùn;ri	310
+俞紫芝	yú;ro zǐ;si zhī;cd	117
+俞宗怡	yú;ro zōng;bx yí;xi	297
+俞作柏	yú;ro zuò;rp bǎi;mp	405
+俞佐廷	yú;ro zuǒ;rh tíng;pd	266
+俞作豫	yú;ro zuò;rp yù;vg	315
+袁巴元	yuán;td bā;vv yuán;hv	91
+袁保恒	yuán;td bǎo;rk héng;xh	387
+袁宝华	yuán;td bǎo;bd huá;rf	410
+袁宝璟	yuán;td bǎo;bd jǐng;wl	428
+袁本初	yuán;td běn;mh chū;do	251
+袁承志	yuán;td chéng;vd zhì;tx	336
+袁崇焕	yuán;td chóng;gx huàn;qg	524
+袁纯清	yuán;td chún;ih qīng;uq	436
+袁迪宝	yuán;td dí;sz bǎo;bd	292
+袁公路	yuán;td gōng;bi lù;zw	296
+袁弓夷	yuán;td gōng;gv yí;hd	312
+袁贵妃	yuán;td guì;kb fēi;nv	536
+袁贵仁	yuán;td guì;kb rén;rh	3
+袁国平	yuán;td guó;sd píng;hf	436
+袁国勇	yuán;td guó;sd yǒng;vl	28
+袁翰青	yuán;td hàn;fr qīng;qy	266
+袁寒云	yuán;td hán;bd yún;hi	279
+袁和平	yuán;td hé;ek píng;hf	524
+袁红冰	yuán;td hóng;ih bīng;du	279
+袁宏道	yuán;td hóng;bi dào;dz	82
+袁继咸	yuán;td jì;ij xián;hd	378
+袁嘉谷	yuán;td jiā;tk gǔ;bk	19
+袁家骝	yuán;td jiā;bd liú;vp	9
+袁甲三	yuán;td jiǎ;ls sān;hh	418
+袁金铠	yuán;td jīn;jh kǎi;jg	6
+袁锦麟	yuán;td jǐn;jp lín;xj	279
+袁克定	yuán;td kè;fv dìng;br	13
+袁可嘉	yuán;td kě;hs jiā;tk	369
+袁可立	yuán;td kě;hs lì;wh	324
+袁克文	yuán;td kè;fv wén;wc	198
+袁阔成	yuán;td kuò;mk chéng;hd	25
+袁岚峰	yuán;td lán;gc fēng;gw	38
+袁励准	yuán;td lì;hl zhǔn;dr	202
+袁了凡	yuán;td liǎo;vs fán;jd	500
+袁隆平	yuán;td lóng;ew píng;hf	3002
+袁履谦	yuán;td lǚ;sw qiān;ad	248
+袁弥昌	yuán;td mí;gg chāng;ll	356
+袁弥明	yuán;td mí;gg míng;ly	472
+袁牧之	yuán;td mù;pw zhī;dd	16
+袁彭年	yuán;td péng;tp nián;ps	266
+袁去华	yuán;td qù;ti huá;rf	110
+袁仁国	yuán;td rén;rh guó;sd	13
+袁山松	yuán;td shān;gs sōng;mb	333
+袁世凯	yuán;td shì;cv kǎi;gj	2107
+袁守诚	yuán;td shǒu;bc chéng;ah	13
+袁守谦	yuán;td shǒu;bc qiān;ad	338
+袁曙宏	yuán;td shǔ;ls hóng;bi	3
+袁恕己	yuán;td shù;nx jǐ;vv	122
+袁树勋	yuán;td shù;my xūn;kl	324
+袁水拍	yuán;td shuǐ;ud pāi;fp	3
+袁腾飞	yuán;td téng;yd fēi;vd	248
+袁天罡	yuán;td tiān;hl gāng;sh	63
+袁天纲	yuán;td tiān;hl gāng;is	57
+袁庭栋	yuán;td tíng;xd dòng;mh	6
+袁桐利	yuán;td tóng;ms lì;eo	360
+袁伟民	yuán;td wěi;rh mín;vv	126
+袁惟仁	yuán;td wéi;xr rén;rh	60
+袁文才	yuán;td wén;wc cái;hp	25
+袁熙坤	yuán;td xī;hq kūn;tl	369
+袁希涛	yuán;td xī;cj tāo;uh	3
+袁项城	yuán;td xiàng;hh chéng;th	346
+袁湘琴	yuán;td xiāng;um qín;wv	50
+袁祥仁	yuán;td xiáng;dd rén;rh	319
+袁象先	yuán;td xiàng;gd xiān;pv	387
+袁晓岑	yuán;td xiǎo;lh cén;gv	225
+袁小田	yuán;td xiǎo;xd tián;ts	6
+袁晓园	yuán;td xiǎo;lh yuán;sv	247
+袁行霈	yuán;td xíng;rh pèi;yj	513
+袁亚非	yuán;td yà;hh fēi;ss	369
+袁应泰	yuán;td yīng;xh tài;hu	13
+袁永熙	yuán;td yǒng;dd xī;hq	454
+袁誉柏	yuán;td yù;da bǎi;mp	288
+袁裕来	yuán;td yù;db lái;hj	486
+袁聿修	yuán;td yù;vs xiū;rs	266
+袁运甫	yuán;td yùn;hz fǔ;hd	266
+袁运生	yuán;td yùn;hz shēng;pq	369
+袁占亭	yuán;td zhàn;sk tíng;ws	544
+袁哲生	yuán;td zhé;fk shēng;pq	6
+袁正己	yuán;td zhèng;hh jǐ;vv	50
+袁中道	yuán;td zhōng;ks dào;dz	13
+袁仲雪	yuán;td zhòng;rk xuě;yx	364
+袁仲一	yuán;td zhòng;rk yī;hq	342
+袁紫衣	yuán;td zǐ;si yī;wd	69
+袁宗道	yuán;td zōng;bx dào;dz	3
+袁宗第	yuán;td zōng;bx dì;gp	16
+袁祖铭	yuán;td zǔ;ds míng;jp	468
+员半千	yùn;kb bàn;ds qiān;pf	306
+臧克家	zāng;hd kè;fv jiā;bd	60
+臧懋循	zāng;hd mào;mx xún;rp	266
+臧启芳	zāng;hd qǐ;dk fāng;cp	320
+臧式毅	zāng;hd shì;hd yì;wj	396
+臧文公	zāng;hd wén;wc gōng;bi	230
+臧文仲	zāng;hd wén;wc zhòng;rk	333
+臧武仲	zāng;hd wǔ;hd zhòng;rk	338
+臧献甫	zāng;hd xiàn;fl fǔ;hd	76
+曾阿牛	zēng;dl ā;eh niú;ps	35
+曾宝荪	zēng;dl bǎo;bd sūn;cx	274
+曾成杰	zēng;dl chéng;hd jié;mq	554
+曾德钧	zēng;dl dé;rf jūn;jb	3
+曾凡博	zēng;dl fán;jd bó;fh	85
+曾梵志	zēng;dl fàn;md zhì;tx	47
+曾凤飞	zēng;dl fèng;py fēi;vd	454
+曾国藩	zēng;dl guó;sd fān;cu	3269
+曾国荃	zēng;dl guó;sd quán;cw	132
+曾国祥	zēng;dl guó;sd xiáng;dd	151
+曾浩辉	zēng;dl hào;up huī;sd	230
+曾侯乙	zēng;dl hóu;rv yǐ;vq	198
+曾纪芬	zēng;dl jì;iv fēn;co	324
+曾纪泽	zēng;dl jì;iv zé;uy	141
+曾剑秋	zēng;dl jiàn;ro qiū;eq	284
+曾锦春	zēng;dl jǐn;jp chūn;hl	315
+曾来德	zēng;dl lái;hj dé;rf	248
+曾培炎	zēng;dl péi;tw yán;qq	19
+曾庆红	zēng;dl qìng;xl hóng;ih	576
+曾仕强	zēng;dl shì;rt qiáng;gk	110
+曾剃头	zēng;dl tì;do tóu;dl	78
+曾伟权	zēng;dl wěi;rh quán;my	3
+曾文正	zēng;dl wén;wc zhèng;hh	639
+曾希圣	zēng;dl xī;cj shèng;yt	472
+曾宪义	zēng;dl xiàn;bv yì;dc	324
+曾宪梓	zēng;dl xiàn;bv zǐ;mw	526
+曾小贤	zēng;dl xiǎo;xd xián;sb	537
+曾馨莹	zēng;dl xīn;tl yíng;cd	436
+曾虚白	zēng;dl xū;sh bái;pl	432
+曾雪麟	zēng;dl xuě;yx lín;xj	428
+曾学忠	zēng;dl xué;dz zhōng;kx	544
+曾雅妮	zēng;dl yǎ;hr nī;ns	432
+曾荫权	zēng;dl yīn;cy quán;my	896
+曾寅孙	zēng;dl yín;bb sūn;zx	45
+曾约农	zēng;dl yuē;ib nóng;dd	346
+曾志朗	zēng;dl zhì;tx lǎng;dy	387
+曾子固	zēng;dl zǐ;zh gù;sk	266
+曾子航	zēng;dl zǐ;zh háng;vw	356
+张爱玲	zhāng;gp ài;py líng;wr	2810
+张安乐	zhāng;gp ān;bn lè;px	594
+张保仔	zhāng;gp bǎo;rk zǎi;rz	612
+张伯驹	zhāng;gp bó;rp jū;vb	160
+张伯苓	zhāng;gp bó;rp líng;cd	72
+张伯伦	zhāng;gp bó;rp lún;rr	1674
+张呈栋	zhāng;gp chéng;kw dòng;mh	57
+张成泽	zhāng;gp chéng;hd zé;uy	644
+张春桥	zhāng;gp chūn;hl qiáo;mp	41
+张春贤	zhāng;gp chūn;hl xián;sb	670
+张翠山	zhāng;gp cuì;vf shān;gs	936
+张大春	zhāng;gp dà;ld chūn;hl	639
+张达明	zhāng;gp dá;lz míng;ly	13
+张大千	zhāng;gp dà;ld qiān;pf	468
+张德芬	zhāng;gp dé;rf fēn;co	78
+张德江	zhāng;gp dé;rf jiāng;uh	810
+张东健	zhāng;gp dōng;hd jiàn;rv	82
+张栋梁	zhāng;gp dòng;mh liáng;um	38
+张东升	zhāng;gp dōng;hd shēng;pc	961
+张发奎	zhāng;gp fā;vd kuí;lt	66
+张高丽	zhāng;gp gāo;wk lí;hd	3
+张根硕	zhāng;gp gēn;mx shuò;bh	35
+张桂梅	zhāng;gp guì;mt méi;mp	292
+张国焘	zhāng;gp guó;sd dào;hq	945
+张果老	zhāng;gp guǒ;lm lǎo;tv	25
+张国伟	zhāng;gp guó;sd wěi;rh	462
+张海迪	zhāng;gp hǎi;up dí;sz	50
+张汉卿	zhāng;gp hàn;uy qīng;px	38
+张恨水	zhāng;gp hèn;xx shuǐ;ud	336
+张弘范	zhāng;gp hóng;gi fàn;cu	499
+张宏民	zhāng;gp hóng;bi mín;vv	6
+张宏伟	zhāng;gp hóng;bi wěi;rh	724
+张化桥	zhāng;gp huà;rp qiáo;mp	65
+张怀民	zhāng;gp huái;xh mín;vv	110
+张皇后	zhāng;gp huáng;pw hòu;pk	517
+张嘉佳	zhāng;gp jiā;tk jiā;rt	383
+张佳玮	zhāng;gp jiā;rt wěi;wh	449
+张柬之	zhāng;gp jiǎn;hd zhī;dd	603
+张建宗	zhāng;gp jiàn;vd zōng;bx	576
+张近东	zhāng;gp jìn;pz dōng;hd	774
+张静江	zhāng;gp jìng;qg jiāng;uh	69
+张九龄	zhāng;gp jiǔ;pv líng;sr	392
+张居正	zhāng;gp jū;sk zhèng;hh	2697
+张君劢	zhāng;gp jūn;vk mài;hl	44
+张军社	zhāng;gp jūn;dc shè;dt	594
+张儁乂	zhāng;gp jùn; yì;cd	45
+张郎郎	zhāng;gp láng;de láng;de	364
+张丽华	zhāng;gp lì;hd huá;rf	57
+张立群	zhāng;gp lì;wh qún;vd	22
+张灵甫	zhāng;gp líng;xq fǔ;hd	88
+张曼玉	zhāng;gp màn;ly yù;wd	1510
+张明楷	zhāng;gp míng;ly kǎi;mh	528
+张起淮	zhāng;gp qǐ;tv huái;ur	873
+张起灵	zhāng;gp qǐ;tv líng;xq	882
+张启山	zhāng;gp qǐ;dk shān;gs	922
+张其昀	zhāng;gp qí;cb yún;lb	562
+张琴秋	zhāng;gp qín;wv qiū;eq	3
+张庆伟	zhāng;gp qìng;xl wěi;rh	9
+张泉灵	zhāng;gp quán;pu líng;xq	144
+张瑞敏	zhāng;gp ruì;wg mǐn;pw	119
+张若虚	zhāng;gp ruò;ck xū;sh	433
+张三丰	zhāng;gp sān;hh fēng;hs	559
+张三疯	zhāng;gp sān;hh fēng;zc	108
+张士诚	zhāng;gp shì;th chéng;ah	631
+张世杰	zhāng;gp shì;cv jié;mq	144
+张士平	zhāng;gp shì;th píng;hf	151
+张曙光	zhāng;gp shǔ;ls guāng;sv	66
+张叔平	zhāng;gp shū;sy píng;hf	295
+张松桥	zhāng;gp sōng;mb qiáo;mp	131
+张太后	zhāng;gp tài;ld hòu;pk	477
+张桃林	zhāng;gp táo;mp lín;mm	612
+张天师	zhāng;gp tiān;hl shī;sh	126
+张铁生	zhāng;gp tiě;jp shēng;pq	16
+张廷玉	zhāng;gp tíng;pd yù;wd	160
+张外龙	zhāng;gp wài;ps lóng;hd	616
+张万年	zhāng;gp wàn;hp nián;ps	13
+张伟平	zhāng;gp wěi;rh píng;hf	267
+张维为	zhāng;gp wéi;ir wéi;dd	236
+张维迎	zhāng;gp wéi;ir yíng;pz	336
+张文宏	zhāng;gp wén;wc hóng;bi	333
+张文顺	zhāng;gp wén;wc shùn;ph	217
+张闻天	zhāng;gp wén;mh tiān;hl	44
+张悟本	zhāng;gp wù;xh běn;mh	135
+张五常	zhāng;gp wǔ;hh cháng;sj	1171
+张五哥	zhāng;gp wǔ;hh gē;hs	464
+张无忌	zhāng;gp wú;hv jì;vx	9652
+张稀哲	zhāng;gp xī;ec zhé;fk	314
+张贤亮	zhāng;gp xián;sb liàng;wj	100
+张显耀	zhāng;gp xiǎn;lh yào;sv	446
+张献忠	zhāng;gp xiàn;fl zhōng;kx	493
+张向东	zhāng;gp xiàng;pk dōng;hd	47
+张小凡	zhāng;gp xiǎo;xd fán;jd	119
+张晓风	zhāng;gp xiǎo;lh fēng;pc	467
+张小龙	zhāng;gp xiǎo;xd lóng;hd	2138
+张孝全	zhāng;gp xiào;tz quán;rw	131
+张小娴	zhāng;gp xiǎo;xd xián;nm	104
+张孝祥	zhāng;gp xiào;tz xiáng;dd	100
+张小燕	zhāng;gp xiǎo;xd yàn;cq	60
+张轩松	zhāng;gp xuān;ch sōng;mb	612
+张学良	zhāng;gp xué;dz liáng;dd	5740
+张亚东	zhāng;gp yà;hh dōng;hd	769
+张亚勤	zhāng;gp yà;hh qín;cl	60
+张燕生	zhāng;gp yàn;cq shēng;pq	3
+张养浩	zhāng;gp yǎng;ds hào;up	355
+张一白	zhāng;gp yì;hq bái;pl	116
+张翼德	zhāng;gp yì;vb dé;rf	104
+张一曼	zhāng;gp yī;hq màn;ly	72
+张益唐	zhāng;gp yì;dh táng;xk	648
+张荫麟	zhāng;gp yīn;cy lín;xj	107
+张幼仪	zhāng;gp yòu;vl yí;rd	1570
+张玉良	zhāng;gp yù;wd liáng;dd	16
+张悦然	zhāng;gp yuè;xd rán;pq	107
+张云逸	zhāng;gp yún;hi yì;gz	19
+张择端	zhāng;gp zé;fy duān;wg	107
+张兆和	zhāng;gp zhào;pd hé;ek	639
+张召忠	zhāng;gp zhào;ok zhōng;kx	132
+张真人	zhāng;gp zhēn;fb rén;rd	609
+张志东	zhāng;gp zhì;tx dōng;hd	471
+张之洞	zhāng;gp zhī;dd dòng;us	210
+张志军	zhāng;gp zhì;tx jūn;dc	135
+张志明	zhāng;gp zhì;tx míng;ly	506
+张智尧	zhāng;gp zhì;pl yáo;hv	113
+张治中	zhāng;gp zhì;ui zhōng;ks	44
+张仲景	zhāng;gp zhòng;rk jǐng;lx	977
+张忠谋	zhāng;gp zhōng;kx móu;ac	170
+张子强	zhāng;gp zǐ;zh qiáng;gk	100
+张自忠	zhāng;gp zì;pl zhōng;kx	223
+张宗昌	zhāng;gp zōng;bx chāng;ll	440
+张作霖	zhāng;gp zuò;rp lín;ym	1526
+赵秉文	zhào;tc bǐng;pd wén;wc	28
+赵辰昕	zhào;tc chén;hd xīn;lp	670
+赵充国	zhào;tc chōng;wv guó;sd	144
+赵登禹	zhào;tc dēng;vh yǔ;pd	53
+赵斗顺	zhào;tc dòu;df shùn;ph	1171
+赵尔丰	zhào;tc ěr;gx fēng;hs	41
+赵尔巽	zhào;tc ěr;gx xùn;vb	35
+赵飞燕	zhào;tc fēi;vd yàn;cq	223
+赵公明	zhào;tc gōng;bi míng;ly	41
+赵光义	zhào;tc guāng;sv yì;dc	823
+赵皇后	zhào;tc huáng;pw hòu;pk	360
+赵简子	zhào;tc jiǎn;gl zǐ;zh	88
+赵克志	zhào;tc kè;fv zhì;tx	9
+赵匡义	zhào;tc kuāng;hv yì;dc	88
+赵匡胤	zhào;tc kuāng;hv yìn;pi	1670
+赵乐际	zhào;tc lè;px jì;eh	410
+赵立坚	zhào;tc lì;wh jiān;st	160
+赵黎平	zhào;tc lí;eu píng;hf	950
+赵烈文	zhào;tc liè;hq wén;wc	75
+赵孟𫖯	zhào;tc mèng;zh fǔ;	315
+赵明诚	zhào;tc míng;ly chéng;ah	462
+赵南起	zhào;tc nán;ff qǐ;tv	6
+赵朴初	zhào;tc pǔ;ms chū;do	28
+赵启正	zhào;tc qǐ;dk zhèng;hh	544
+赵尚志	zhào;tc shàng;sk zhì;tx	38
+赵少康	zhào;tc shào;xp kāng;xu	13
+赵师秀	zhào;tc shī;sh xiù;ep	22
+赵树理	zhào;tc shù;my lǐ;wl	126
+赵太后	zhào;tc tài;ld hòu;pk	486
+赵汀阳	zhào;tc tīng;uh yáng;el	50
+赵王伦	zhào;tc wáng;wh lún;rr	436
+赵王迁	zhào;tc wáng;wh qiān;pz	75
+赵无极	zhào;tc wú;hv jí;mp	104
+赵襄子	zhào;tc xiāng;wd zǐ;zh	446
+赵亚夫	zhào;tc yà;hh fū;hl	594
+赵一曼	zhào;tc yī;hq màn;ly	60
+赵元任	zhào;tc yuán;hv rèn;rp	584
+赵芸蕾	zhào;tc yún;ci lěi;ct	69
+赵之谦	zhào;tc zhī;dd qiān;ad	151
+赵主父	zhào;tc zhǔ;wt fù;bc	382
+赵庄子	zhào;tc zhuāng;xt zǐ;zh	207
+赵子龙	zhào;tc zǐ;zh lóng;hd	449
+郑板桥	zhèng;de bǎn;mp qiáo;mp	220
+郑秉文	zhèng;de bǐng;pd wén;wc	9
+郑成功	zhèng;de chéng;hd gōng;hl	876
+郑愁予	zhèng;de chóu;ex yǔ;vs	129
+郑丹瑞	zhèng;de dān;ph ruì;wg	6
+郑多燕	zhèng;de duō;pd yàn;cq	480
+郑贵妃	zhèng;de guì;kb fēi;nv	63
+郑国公	zhèng;de guó;sd gōng;bi	16
+郑国光	zhèng;de guó;sd guāng;sv	612
+郑国江	zhèng;de guó;sd jiāng;uh	94
+郑家纯	zhèng;de jiā;bd chún;ih	9
+郑俊怀	zhèng;de jùn;ri huái;xh	752
+郑俊英	zhèng;de jùn;ri yīng;cd	22
+郑克爽	zhèng;de kè;fv shuǎng;hd	88
+郑厉公	zhèng;de lì;hp gōng;bi	31
+郑丽文	zhèng;de lì;hd wén;wc	684
+郑南榕	zhèng;de nán;ff róng;mb	652
+郑惟桐	zhèng;de wéi;xr tóng;ms	210
+郑文灿	zhèng;de wén;wc càn;qg	634
+郑武公	zhèng;de wǔ;hd gōng;bi	122
+郑晓龙	zhèng;de xiǎo;lh lóng;hd	78
+郑孝胥	zhèng;de xiào;tz xū;vy	57
+郑永年	zhèng;de yǒng;dd nián;ps	639
+郑裕彤	zhèng;de yù;db tóng;pp	38
+郑振铎	zhèng;de zhèn;fh duó;jy	173
+郑芝龙	zhèng;de zhī;cd lóng;hd	201
+郑庄公	zhèng;de zhuāng;xt gōng;bi	685
+钟保罗	zhōng;jk bǎo;rk luó;sd	464
+钟炳昌	zhōng;jk bǐng;qh chāng;ll	248
+钟秉林	zhōng;jk bǐng;pd lín;mm	3
+钟辰翁	zhōng;jk chén;hd wēng;bh	45
+钟成虎	zhōng;jk chéng;hd hǔ;sj	423
+钟赤兵	zhōng;jk chì;td bīng;pb	405
+钟道隆	zhōng;jk dào;dz lóng;ew	88
+钟登华	zhōng;jk dēng;vh huá;rf	356
+钟丁先	zhōng;jk dīng;hs xiān;pv	144
+钟夫翔	zhōng;jk fū;hl xiáng;dv	297
+钟观光	zhōng;jk guān;ys guāng;sv	351
+钟翰林	zhōng;jk hàn;fr lín;mm	400
+钟惠澜	zhōng;jk huì;hx lán;um	225
+钟继昌	zhōng;jk jì;ij chāng;ll	120
+钟建华	zhōng;jk jiàn;vd huá;rf	270
+钟建平	zhōng;jk jiàn;vd píng;hf	202
+钟锦麟	zhōng;jk jǐn;jp lín;xj	360
+钟景辉	zhōng;jk jǐng;lx huī;sd	554
+钟敬文	zhōng;jk jìng;cw wén;wc	9
+钟离春	zhōng;jk lí;wd chūn;hl	436
+钟丽芳	zhōng;jk lì;hd fāng;cp	277
+钟理和	zhōng;jk lǐ;wl hé;ek	544
+钟离昧	zhōng;jk lí;wd mèi;lh	490
+钟离牧	zhōng;jk lí;wd mù;pw	369
+钟茂森	zhōng;jk mào;cd sēn;mm	392
+钟孟宏	zhōng;jk mèng;zh hóng;bi	47
+钟孟舜	zhōng;jk mèng;zh shùn;ps	220
+钟敏言	zhōng;jk mǐn;pw yán;ak	78
+钟明亮	zhōng;jk míng;ly liàng;wj	248
+钟明善	zhōng;jk míng;ly shàn;dk	202
+钟鸣远	zhōng;jk míng;kn yuǎn;hz	3
+钟南山	zhōng;jk nán;ff shān;gs	719
+钟沛林	zhōng;jk pèi;uh lín;mm	270
+钟培生	zhōng;jk péi;tw shēng;pq	378
+钟沛璋	zhōng;jk pèi;uh zhāng;ww	207
+钟朋荣	zhōng;jk péng;yy róng;cm	346
+钟期光	zhōng;jk qī;cy guāng;sv	432
+钟启泉	zhōng;jk qǐ;dk quán;pu	16
+钟期荣	zhōng;jk qī;cy róng;cm	346
+钟齐鑫	zhōng;jk qí;ws xīn;jj	522
+钟荣吉	zhōng;jk róng;cm jí;tk	328
+钟绍京	zhōng;jk shào;io jīng;wx	50
+钟少雄	zhōng;jk shǎo;xp xióng;hr	328
+钟少珍	zhōng;jk shǎo;xp zhēn;wr	266
+钟士季	zhōng;jk shì;th jì;ez	252
+钟世杰	zhōng;jk shì;cv jié;mq	144
+钟世铭	zhōng;jk shì;cv míng;jp	207
+钟士元	zhōng;jk shì;th yuán;hv	482
+钟叔河	zhōng;jk shū;sy hé;uh	297
+钟澍佳	zhōng;jk shù;ut jiā;rt	392
+钟嗣成	zhōng;jk sì;kv chéng;hd	288
+钟塔西	zhōng;jk tǎ;tc xī;sh	44
+钟腾福	zhōng;jk téng;yd fú;dh	297
+钟天使	zhōng;jk tiān;hl shǐ;rh	338
+钟天正	zhōng;jk tiān;hl zhèng;hh	225
+钟庭耀	zhōng;jk tíng;xd yào;sv	486
+钟万仇	zhōng;jk wàn;hp chóu;rp	16
+钟伟明	zhōng;jk wěi;rh míng;ly	392
+钟伟强	zhōng;jk wěi;rh qiáng;gk	16
+钟文靖	zhōng;jk wén;wc jìng;wq	338
+钟文音	zhōng;jk wén;wc yīn;wl	346
+钟文泽	zhōng;jk wén;wc zé;uy	53
+钟无艳	zhōng;jk wú;hv yàn;hg	392
+钟无盐	zhōng;jk wú;hv yán;th	238
+钟小艾	zhōng;jk xiǎo;xd ài;cc	9
+钟小江	zhōng;jk xiǎo;xd jiāng;uh	346
+钟小平	zhōng;jk xiǎo;xd píng;hf	414
+钟晓芹	zhōng;jk xiǎo;lh qín;cs	119
+钟晓阳	zhōng;jk xiǎo;lh yáng;el	308
+钟兴民	zhōng;jk xīng;db mín;vv	612
+钟循仁	zhōng;jk xún;rp rén;rh	57
+钟训正	zhōng;jk xùn;ap zhèng;hh	356
+钟义浩	zhōng;jk yì;dc hào;up	281
+钟逸杰	zhōng;jk yì;gz jié;mq	274
+钟一鸣	zhōng;jk yì;hq míng;kn	324
+钟玉凤	zhōng;jk yù;wd fèng;py	248
+钟跃民	zhōng;jk yuè;zp mín;vv	47
+钟允章	zhōng;jk yǔn;iv zhāng;wf	288
+钟肇政	zhōng;jk zhào;ds zhèng;hw	536
+钟振强	zhōng;jk zhèn;fh qiáng;gk	220
+钟正生	zhōng;jk zhèng;hh shēng;pq	19
+钟质夫	zhōng;jk zhì;pb fū;hl	42
+钟志生	zhōng;jk zhì;tx shēng;pq	186
+钟志文	zhōng;jk zhì;tx wén;wc	189
+钟子期	zhōng;jk zǐ;zh qī;cy	198
+周邦彦	zhōu;pk bāng;he yàn;wp	358
+周伯通	zhōu;pk bó;rp tōng;vz	1064
+周焯华	zhōu;pk chāo;qs huá;rf	616
+周成王	zhōu;pk chéng;hd wáng;wh	245
+周敦颐	zhōu;pk dūn;ww yí;hh	198
+周恩来	zhōu;pk ēn;sx lái;hj	1950
+周冠宇	zhōu;pk guān;dc yǔ;bs	788
+周贵妃	zhōu;pk guì;kb fēi;nv	396
+周国平	zhōu;pk guó;sd píng;hf	571
+周海滨	zhōu;pk hǎi;up bīn;ub	170
+周鸿祎	zhōu;pk hóng;un yī;dh	1231
+周桓公	zhōu;pk huán;mh gōng;bi	274
+周桓王	zhōu;pk huán;mh wáng;wh	100
+周皇后	zhōu;pk huáng;pw hòu;pk	19
+周惠王	zhōu;pk huì;hx wáng;wh	60
+周继红	zhōu;pk jì;ij hóng;ih	110
+周敬王	zhōu;pk jìng;cw wáng;wh	38
+周凯旋	zhōu;pk kǎi;gj xuán;wp	616
+周康王	zhōu;pk kāng;xu wáng;wh	38
+周克华	zhōu;pk kè;fv huá;rf	53
+周美青	zhōu;pk měi;dl qīng;qy	616
+周梦蝶	zhōu;pk mèng;md dié;oc	634
+周明帝	zhōu;pk míng;ly dì;wj	508
+周穆王	zhōu;pk mù;ep wáng;wh	245
+周赧王	zhōu;pk nǎn;tv wáng;wh	85
+周平王	zhōu;pk píng;hf wáng;wh	342
+周汝昌	zhōu;pk rǔ;un chāng;ll	132
+周世宗	zhōu;pk shì;cv zōng;bx	192
+周守训	zhōu;pk shǒu;bc xùn;ap	342
+周受资	zhōu;pk shòu;py zī;db	57
+周树人	zhōu;pk shù;my rén;rd	264
+周思聪	zhōu;pk sī;tx cōng;hd	13
+周思王	zhōu;pk sī;tx wáng;wh	202
+周太后	zhōu;pk tài;ld hòu;pk	16
+周太王	zhōu;pk tài;ld wáng;wh	28
+周太祖	zhōu;pk tài;ld zǔ;ds	35
+周卫国	zhōu;pk wèi;vh guó;sd	774
+周文王	zhōu;pk wén;wc wáng;wh	666
+周文重	zhōu;pk wén;wc zhòng;ph	603
+周武帝	zhōu;pk wǔ;hd dì;wj	47
+周显王	zhōu;pk xiǎn;lh wáng;wh	35
+周襄王	zhōu;pk xiāng;wd wáng;wh	113
+周小川	zhōu;pk xiǎo;xd chuān;ps	179
+周小平	zhōu;pk xiǎo;xd píng;hf	69
+周孝王	zhōu;pk xiào;tz wáng;wh	31
+周信芳	zhōu;pk xìn;ra fāng;cp	116
+周旭辉	zhōu;pk xù;pl huī;sd	585
+周宣王	zhōu;pk xuān;bh wáng;wh	342
+周玄毅	zhōu;pk xuán;wi yì;wj	179
+周亚夫	zhōu;pk yà;hh fū;hl	675
+周扬青	zhōu;pk yáng;fv qīng;qy	144
+周耀辉	zhōu;pk yào;sv huī;sd	648
+周一良	zhōu;pk yī;hq liáng;dd	188
+周懿王	zhōu;pk yì;td wáng;wh	91
+周夷王	zhōu;pk yí;hd wáng;wh	82
+周永康	zhōu;pk yǒng;dd kāng;xu	909
+周有光	zhōu;pk yǒu;hy guāng;sv	176
+周幽王	zhōu;pk yōu;ss wáng;wh	578
+周玉蔻	zhōu;pk yù;wd kòu;cy	9
+周元王	zhōu;pk yuán;hv wáng;wh	16
+周昭王	zhōu;pk zhāo;lo wáng;wh	135
+周志华	zhōu;pk zhì;tx huá;rf	534
+周芷若	zhōu;pk zhǐ;ch ruò;ck	3325
+周庄王	zhōu;pk zhuāng;xt wáng;wh	19
+周总理	zhōu;pk zǒng;dx lǐ;wl	1278
+周作人	zhōu;pk zuò;rp rén;rd	634
+朱柏庐	zhū;pd bǎi;mp lú;xs	333
+朱邦复	zhū;pd bāng;he fù;pw	459
+朱碧石	zhū;pd bì;wb shí;bk	16
+朱常洛	zhū;pd cháng;sj luò;uw	198
+朱常洵	zhū;pd cháng;sj xún;ub	63
+朱宸濠	zhū;pd chén;bd háo;uw	113
+朱重八	zhū;pd chóng;ph bā;bd	616
+朱旦华	zhū;pd dàn;lh huá;rf	405
+朱丹蓬	zhū;pd dān;ph péng;cz	28
+朱德熙	zhū;pd dé;rf xī;hq	436
+朱德庸	zhū;pd dé;rf yōng;xs	35
+朱棣文	zhū;pd dì;mv wén;wc	594
+朱敦儒	zhū;pd dūn;ww rú;ry	60
+朱夫子	zhū;pd fū;hl zǐ;zh	364
+朱高炽	zhū;pd gāo;wk chì;qk	160
+朱高煦	zhū;pd gāo;wk xù;lq	91
+朱共山	zhū;pd gòng;cb shān;gs	387
+朱广沪	zhū;pd guǎng;xp hù;ud	66
+朱光潜	zhū;pd guāng;sv qián;uh	333
+朱光亚	zhū;pd guāng;sv yà;hh	75
+朱光耀	zhū;pd guāng;sv yào;sv	3
+朱亨嘉	zhū;pd hēng;ws jiā;tk	342
+朱宏任	zhū;pd hóng;bi rèn;rp	333
+朱洪武	zhū;pd hóng;uc wǔ;hd	28
+朱弘昭	zhū;pd hóng;gi zhāo;lo	382
+朱厚熜	zhū;pd hòu;hz cōng;qp	248
+朱厚照	zhū;pd hòu;hz zhào;lq	170
+朱皇后	zhū;pd huáng;pw hòu;pk	327
+朱慧珍	zhū;pd huì;hx zhēn;wr	405
+朱家骅	zhū;pd jiā;bd huá;vr	44
+朱建华	zhū;pd jiàn;vd huá;rf	107
+朱见深	zhū;pd jiàn;sv shēn;ud	173
+朱江洪	zhū;pd jiāng;uh hóng;uc	25
+朱景玄	zhū;pd jǐng;lx xuán;wi	315
+朱九真	zhū;pd jiǔ;pv zhēn;fb	97
+朱可夫	zhū;pd kě;hs fū;hl	826
+朱立伦	zhū;pd lì;wh lún;rr	16
+朱丽倩	zhū;pd lì;hd qiàn;rq	6
+朱丽叶	zhū;pd lì;hd yè;kf	619
+朱良志	zhū;pd liáng;dd zhì;tx	346
+朱亮祖	zhū;pd liàng;wj zǔ;ds	75
+朱玲玲	zhū;pd líng;wr líng;wr	63
+朱买臣	zhū;pd mǎi;vl chén;hv	72
+朱明国	zhū;pd míng;ly guó;sd	576
+朱木炎	zhū;pd mù;md yán;qq	364
+朱培德	zhū;pd péi;tw dé;rf	22
+朱祁钰	zhū;pd qí;de yù;jw	129
+朱屺瞻	zhū;pd qǐ;gv zhān;lg	6
+朱庆育	zhū;pd qìng;xl yù;wy	446
+朱庆馀	zhū;pd qìng;xl yú;sr	308
+朱庆余	zhū;pd qìng;xl yú;rm	156
+朱全忠	zhū;pd quán;rw zhōng;kx	192
+朱镕基	zhū;pd róng;jb jī;ct	261
+朱汝珍	zhū;pd rǔ;un zhēn;wr	590
+朱锐斌	zhū;pd ruì;jd bīn;wh	400
+朱森林	zhū;pd sēn;mm lín;mm	351
+朱少杰	zhū;pd shǎo;xp jié;mq	414
+朱绍良	zhū;pd shào;io liáng;dd	572
+朱少醒	zhū;pd shǎo;xp xǐng;sl	2098
+朱生豪	zhū;pd shēng;pq háo;wd	427
+朱世杰	zhū;pd shì;cv jié;mq	384
+朱世珍	zhū;pd shì;cv zhēn;wr	288
+朱术桂	zhū;pd shù;md guì;mt	3
+朱树豪	zhū;pd shù;my háo;wd	266
+朱淑真	zhū;pd shū;us zhēn;fb	72
+朱淑贞	zhū;pd shū;us zhēn;sb	65
+朱苏进	zhū;pd sū;cd jìn;hz	22
+朱天文	zhū;pd tiān;hl wén;wc	88
+朱维铮	zhū;pd wéi;ir zhēng;jg	414
+朱文公	zhū;pd wén;wc gōng;bi	392
+朱五四	zhū;pd wǔ;hh sì;sv	333
+朱希祖	zhū;pd xī;cj zǔ;ds	432
+朱小丹	zhū;pd xiǎo;xd dān;ph	3
+朱啸虎	zhū;pd xiào;kv hǔ;sj	471
+朱晓玫	zhū;pd xiǎo;lh méi;ww	331
+朱萧木	zhū;pd xiāo;cd mù;md	41
+朱宣咸	zhū;pd xuān;bh xián;hd	261
+朱学范	zhū;pd xué;dz fàn;cu	657
+朱学恒	zhū;pd xué;dz héng;xh	129
+朱学勤	zhū;pd xué;dz qín;cl	464
+朱延寿	zhū;pd yán;pd shòu;hc	423
+朱一贵	zhū;pd yī;hq guì;kb	19
+朱以海	zhū;pd yǐ;vr hǎi;up	50
+朱翊钧	zhū;pd yì;wv jūn;jb	207
+朱彝尊	zhū;pd yí;vc zūn;dc	100
+朱永新	zhū;pd yǒng;dd xīn;wp	28
+朱由检	zhū;pd yóu;sh jiǎn;mr	317
+朱由校	zhū;pd yóu;sh xiào;mw	132
+朱玉辰	zhū;pd yù;wd chén;hd	12
+朱聿键	zhū;pd yù;vs jiàn;jv	526
+朱元璋	zhū;pd yuán;hv zhāng;ww	9480
+朱云来	zhū;pd yún;hi lái;hj	6
+朱蕴山	zhū;pd yùn;ch shān;gs	410
+朱允炆	zhū;pd yǔn;iv wén;qw	892
+朱瞻基	zhū;pd zhān;lg jī;ct	433
+朱长龄	zhū;pd zhǎng;pd líng;sr	526
+朱兆祥	zhū;pd zhào;pd xiáng;dd	486
+朱之鑫	zhū;pd zhī;dd xīn;jj	486
+朱执信	zhū;pd zhí;fp xìn;ra	334
+朱子柳	zhū;pd zǐ;zh liǔ;mp	78
+朱自清	zhū;pd zì;pl qīng;uq	659
+朱子奢	zhū;pd zǐ;zh shē;ll	238
+朱子真	zhū;pd zǐ;zh zhēn;fb	274
+朱祖谋	zhū;pd zǔ;ds móu;ac	9
+庄辰超	zhuāng;xt chén;hd chāo;tk	16
+庄承篯	zhuāng;xt chéng;vd jiān;gd	194
+庄大田	zhuāng;xt dà;ld tián;ts	418
+庄逢甘	zhuāng;xt féng;wz gān;ch	333
+庄国荣	zhuāng;xt guó;sd róng;cm	387
+庄惠王	zhuāng;xt huì;hx wáng;wh	333
+庄静庵	zhuāng;xt jìng;qg ān;xv	410
+庄聚贤	zhuāng;xt jù;hd xián;sb	22
+庄烈帝	zhuāng;xt liè;hq dì;wj	297
+庄梅岩	zhuāng;xt méi;mp yán;gb	328
+庄梦蝶	zhuāng;xt mèng;md dié;oc	446
+庄墨韩	zhuāng;xt mò;st hán;fh	234
+庄亲王	zhuāng;xt qīn;wm wáng;wh	558
+庄青翟	zhuāng;xt qīng;qy dí;vq	279
+庄荣文	zhuāng;xt róng;cm wén;wc	3
+庄瑞雄	zhuāng;xt ruì;wg xióng;hr	392
+庄士敦	zhuāng;xt shì;th dūn;ww	78
+庄世平	zhuāng;xt shì;cv píng;hf	9
+庄绶甲	zhuāng;xt shòu;ip jiǎ;ls	153
+庄述祖	zhuāng;xt shù;mz zǔ;ds	202
+庄廷鑨	zhuāng;xt tíng;pd lóng;	392
+庄惟敏	zhuāng;xt wéi;xr mǐn;pw	256
+庄文强	zhuāng;xt wén;wc qiáng;gk	19
+庄希泉	zhuāng;xt xī;cj quán;pu	306
+庄襄王	zhuāng;xt xiāng;wd wáng;wh	91
+庄雅婷	zhuāng;xt yǎ;hr tíng;nw	179
+庄炎林	zhuāng;xt yán;qq lín;mm	338
+庄蕴宽	zhuāng;xt yùn;ch kuān;bv	346
+庄之蝶	zhuāng;xt zhī;dd dié;oc	3
+庄智渊	zhuāng;xt zhì;pl yuān;up	9
+庄重文	zhuāng;xt zhòng;ph wén;wc	414
+庄祖宜	zhuāng;xt zǔ;ds yí;bh	28
+齐明帝	zī;ws míng;ly dì;wj	572
+邹碧华	zōu;ge bì;wb huá;rf	19
+邹秉文	zōu;ge bǐng;pd wén;wc	3
+邹承鲁	zōu;ge chéng;vd lǔ;gl	396
+邹汉勋	zōu;ge hàn;uy xūn;kl	180
+邹恒甫	zōu;ge héng;xh fǔ;hd	129
+邹家华	zōu;ge jiā;bd huá;rf	9
+邹静之	zōu;ge jìng;qg zhī;dd	540
+邹普胜	zōu;ge pǔ;dl shèng;yp	310
+邹胜龙	zōu;ge shèng;yp lóng;hd	3
+邹守益	zōu;ge shǒu;bc yì;dh	3
+邹韬奋	zōu;ge tāo;hp fèn;lt	28
+邹文怀	zōu;ge wén;wc huái;xh	364
+邹一桂	zōu;ge yī;hq guì;mt	288
+邹逸麟	zōu;ge yì;gz lín;xj	320
+邹应龙	zōu;ge yìng;xh lóng;hd	432
+邹元标	zōu;ge yuán;hv biāo;mh	41
+邹振先	zōu;ge zhèn;fh xiān;pv	189
+邹自景	zōu;ge zì;pl jǐng;lx	310
+邹作华	zōu;ge zuò;rp huá;rf	328
+格雷厄姆	gé;mw léi;yt è;hv mǔ;nv	66
+穆阿维叶	mù;ep ā;eh wéi;ir yè;kf	508
+穆巴拉克	mù;ep bā;vv lā;fw kè;fv	107
+穆德里克	mù;ep dé;rf lǐ;lt kè;fv	41
+穆蒂尼奥	mù;ep dì;cj ní;sv ào;pl	53
+穆古鲁扎	mù;ep gǔ;fk lǔ;gl zhā;fv	13
+穆罕默德	mù;ep hǎn;df mò;sl dé;rf	728
+穆拉托里	mù;ep lā;fw tuō;fp lǐ;lt	243
+穆里尼奥	mù;ep lǐ;lt ní;sv ào;pl	12007
+穆尼亚因	mù;ep ní;sv yà;hh yīn;sl	356
+穆沙拉夫	mù;ep shā;ux lā;fw fū;hl	25
+穆托姆博	mù;ep tuō;fp mǔ;nv bó;fh	129
+穆西亚拉	mù;ep xī;sh yà;hh lā;fw	31
+聂赤赞普	niè;hy chì;td zàn;pb pǔ;dl	328
+聂斯脱里	niè;hy sī;cp tuō;yd lǐ;lt	549
+齐藤千穗	qí;ws téng;cu qiān;pf suì;eh	220
+桥本圣子	qiáo;mp běn;mh shèng;yt zǐ;zh	288
+桥本英郎	qiáo;mp běn;mh yīng;cd láng;de	202
+桥本左内	qiáo;mp běn;mh zuǒ;hh nèi;sd	243
+施特劳斯	shī;wp tè;pt láo;cl sī;cp	1438
+星野道夫	xīng;lq yě;lv dào;dz fū;hl	369
+亚米契斯	yà;hh mǐ;jm qì;hl sī;cp	54
+宇文昌龄	yǔ;bs wén;wc chāng;ll líng;sr	220
+宇文成都	yǔ;bs wén;wc chéng;hd dū;te	69
+宇文成龙	yǔ;bs wén;wc chéng;hd lóng;hd	76
+宇文娥英	yǔ;bs wén;wc é;np yīng;cd	220
+宇文公谅	yǔ;bs wén;wc gōng;bi liàng;aw	117
+宇文护引	yǔ;bs wén;wc hù;fd yǐn;gs	153
+宇文化及	yǔ;bs wén;wc huà;rp jí;pd	100
+宇文所安	yǔ;bs wén;wc suǒ;pp ān;bn	405
+宇文泰和	yǔ;bs wén;wc tài;hu hé;ek	207
+宇文泰军	yǔ;bs wén;wc tài;hu jūn;dc	76
+宇文泰之	yǔ;bs wén;wc tài;hu zhī;dd	274
+宇文显和	yǔ;bs wén;wc xiǎn;lh hé;ek	279
+宇文虚中	yǔ;bs wén;wc xū;sh zhōng;ks	16
+宇文云英	yǔ;bs wén;wc yún;hi yīng;cd	261
+宇文昭仪	yǔ;bs wén;wc zhāo;lo yí;rd	230
+宇文智及	yǔ;bs wén;wc zhì;pl jí;pd	382
+中岛健藏	zhōng;ks dǎo;pg jiàn;rv cáng;cd	180
+中岛京子	zhōng;ks dǎo;pg jīng;wx zǐ;zh	292
+中岛翔哉	zhōng;ks dǎo;pg xiáng;dv zāi;fk	338
+中岛一贵	zhōng;ks dǎo;pg yí;hq guì;kb	279
+中岛英树	zhōng;ks dǎo;pg yīng;cd shù;my	180
+中岛哲也	zhōng;ks dǎo;pg zhé;fk yě;vv	500
+梅德韦杰夫	méi;mp dé;rf wéi;hs jié;mq fū;hl	10
+斯特里克兰德	sī;cp tè;pt lǐ;lt kè;fv lán;dh dé;rf	10
+香宗我部亲泰	xiāng;el zōng;bx wǒ;pd bù;we qīn;wm tài;hu	10

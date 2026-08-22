@@ -1,0 +1,24 @@
+# Rime dictionary
+# encoding: utf-8
+
+name: wanxiang
+version: "LTS"
+sort: by_weight  #字典初始排序，可选 original 或 by_weight
+use_preset_vocabulary: false
+import_tables:
+  - dicts/chars  # 字表，包含所有带拼音的汉字
+  - dicts/base  # 基础词库，2-4字词汇
+  #- dicts/association  # 联想词库，5字以上词汇
+  - dicts/correction  # 错音错字
+  - dicts/polyphone  # 多场景多种读音的词组
+  - dicts/poetry  # 诗词
+  - dicts/place  # 地名
+  #- dicts/species  # 物种
+  #- dicts/person  # 人名
+  #- dicts/medical  # 医学
+  #- dicts/chemistry  # 化学
+  #- dicts/pharmaceutical  # 药品
+  #- dicts/celebrity  # 名人
+  #- dicts/artist  # 艺人
+  #- dicts/dialect  # 方言
+  #- dicts/typhoon  # 台风
