@@ -1,0 +1,27 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: wanxiang_english
+  version: "0.6.0"  # x-release-please-version
+  author:
+    - amzxyz
+    - Fidel Yin <fidel.yin@hotmail.com>
+
+engine:
+  processors:
+    - speller
+  segmentors:
+    - abc_segmentor
+  translators:
+    - table_translator
+  filters:
+    - uniquifier
+
+speller:
+  algebra:
+    __include: wanxiang_algebra:/english
+
+translator:
+  dictionary: wanxiang_english
+  enable_user_dict: false
