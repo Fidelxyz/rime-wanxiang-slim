@@ -1,0 +1,25 @@
+# Rime dictionary
+# encoding: utf-8
+#
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/fangyan.dict.yaml
+# Copyright (c) amzxyz, licensed under CC BY 4.0.
+---
+name: dialect
+version: "17.0.3"
+sort: by_weight
+...
+娭毑	āi;bo jiě;ke
+饱咗	bǎo;qv zuo;du
+睇戏	dì;qt xì;rp
+了难	liǎo;rl nán;ru
+撩撇	liāo;uy piē;uh
+埋数	mái;gd shù;ph
+闹热	nào;ar rè;uc
+恰酒	qià;hd jiǔ;ky
+唔该	wú;dd gāi;sk
+正嘢	zhèng;fs yě;di
+到屋企	dào;yp wū;cy qǐ;js
+恰得苦	qià;hd dé;wk kǔ;lc
+恰点酒	qià;hd diǎn;yc jiǔ;ky
+系哩度	xì;ti lī;dd dù;xr
+恰点东西	qià;hd diǎn;yc dōng;ry xi;vx
