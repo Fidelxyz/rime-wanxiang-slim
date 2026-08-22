@@ -1,0 +1,44 @@
+patch:
+  speller/algebra:
+    __patch:
+      # ** 该选项由切换方案命令写入。如不了解原理，请勿手动修改。 **
+      # 可选输入方案："全拼", "自然码", "智能ABC", "小鹤双拼", "微软双拼", "搜狗双拼", "紫光双拼", "国标双拼", "拼音加加", "乱序17", "蓝天双拼", "首道双拼", "大牛双拼", "自然龙", "汉心龙"
+      - wanxiang_algebra:/base/全拼
+
+      # 取消注释以开启模糊音。具体规则见 wanxiang_algebra.yaml。
+      #- wanxiang_algebra:/模糊音_n_l
+      #- wanxiang_algebra:/模糊音_r_y
+      #- wanxiang_algebra:/模糊音_h_f
+      #- wanxiang_algebra:/模糊音_r_l
+      #- wanxiang_algebra:/模糊音_k_g
+      #- wanxiang_algebra:/模糊音_en_eng
+      #- wanxiang_algebra:/模糊音_in_ing
+      #- wanxiang_algebra:/模糊音_c_ch
+      #- wanxiang_algebra:/模糊音_z_zh
+      #- wanxiang_algebra:/模糊音_s_sh
+
+  # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
+  #custom_phrase/user_dict: user_custom_phrase
+
+  # 导入根目录下名称为 userdict.dict.yaml 的自定义固定词典，编码需与固定词库一致。
+  #translator/packs/+:
+  #- userdict
+
+  # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
+  menu/page_size: 6
+
+  # 自动调频用户词。如果启用手动造词功能，请保持此项关闭，因为两个跨翻译器会造成词汇不能正常记录。
+  #translator/enable_user_dict: true
+
+  # 取消注释以启用手动造词功能。
+  #recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"  #自造词引导
+  #user_dict/enable_user_dict: true
+  #user_dict_appender/enable_user_dict: true
+
+  # 自动无词频造词。
+  #user_dict_appender/enable_auto_phrase: true
+
+  # [For Weasel 小狼毫] 前端图标。
+  #schema/+:
+  #  icon: "icons/zhong.ico"
+  #  ascii_icon: "icons/ying.ico"
