@@ -123,8 +123,6 @@ local function set_pinyin_schema(custom_file, schema_name)
         local n = 0
         if custom_file:find("wanxiang_reverse") then
             content, n = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
-        elseif custom_file:find("wanxiang_mixedcode") then
-            content, n = content:gsub("(%s*__patch:%s*wanxiang_algebra:/mixed/)%S+", "%1" .. schema_name)
         elseif custom_file:find("wanxiang%.custom") then
             content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
                 return prefix .. preserve_aux(suffix)
@@ -208,7 +206,6 @@ local function translator(input, seg, env)
     if target_pinyin_schema then
         local files = {
             main_custom_file,
-            "wanxiang_mixedcode.custom.yaml",
             "wanxiang_reverse.custom.yaml",
         }
 

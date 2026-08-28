@@ -13,7 +13,6 @@
                 "wanxiang.schema.yaml",
                 "wanxiang_pro.schema.yaml",
                 "wanxiang_english.schema.yaml",
-                "wanxiang_mixedcode.schema.yaml",
                 "wanxiang_reverse.schema.yaml"
             ]
         }

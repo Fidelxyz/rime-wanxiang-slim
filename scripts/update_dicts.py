@@ -51,7 +51,9 @@ DICT_NAME_MAPPING: dict[str, str] = {
     "fangyan": "dialect",
     "taifeng": "typhoon",
     "en": "english",
-    "mixed": "mixedcode",
+}
+IGNORED_DICTS = {
+    "mixed.dict.yaml",
 }
 
 SRC_AUXILIARY_CSV_PATH = Path("custom/aux_code.csv")
@@ -293,7 +295,10 @@ def validate_upstream_files(source_dir: Path) -> bool:
         if path.is_file()
     )
 
-    new_files = sorted(actual_files - expected_files)
+    ignored_files = set()
+    ignored_files.update(Path("dicts") / name for name in IGNORED_DICTS)
+
+    new_files = sorted(actual_files - expected_files - ignored_files)
     if new_files:
         print(
             "warning: unrecognized upstream files will not be processed:",

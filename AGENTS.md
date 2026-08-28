@@ -26,8 +26,6 @@ configuration files, Lua extensions, and dictionary data for the [Rime Input Met
 ├── wanxiang_pro.schema.yaml     # Main input schema definition for pro version
 ├── wanxiang_english.dict.yaml   # Dictionary for English input
 ├── wanxiang_english.schema.yaml # Sub-schema for English input
-├── wanxiang_mixcode.dict.yaml   # Dictionary for Chinese and English mixed input
-├── wanxiang_mixcode.schema.yaml # Sub-schema for Chinese and English mixed input
 ├── wanxiang_reverse.dict.yaml   # Dictionary for reverse lookup
 ├── wanxiang_reverse.schema.yaml # Sub-schema for reverse lookup
 └── wanxiang_algebra.yaml        # Spelling algebra rules

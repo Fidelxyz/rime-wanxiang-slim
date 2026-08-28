@@ -57,7 +57,6 @@ outline: deep
 | `wanxiang.schema.yaml` | `wanxiang.custom.yaml` | <Badge>仅 Base</Badge> 输入方案配置 |
 | `wanxiang_pro.schema.yaml` | `wanxiang_pro.custom.yaml` | <Badge>仅 Pro</Badge> 输入方案配置 |
 | `wanxiang_english.schema.yaml` | `wanxiang_english.custom.yaml` | 英文输入子方案 |
-| `wanxiang_mixedcode.schema.yaml` | `wanxiang_mixedcode.custom.yaml` | 中英混合词输入子方案 |
 | `squirrel.yaml` | `squirrel.custom.yaml` | <Badge>仅鼠须管</Badge> 输入法前端配置 |
 | `weasel.yaml` | `weasel.custom.yaml` | <Badge>仅小狼毫</Badge> 输入法前端配置 |
 

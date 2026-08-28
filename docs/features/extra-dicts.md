@@ -20,10 +20,6 @@ outline: deep
 
 在长度小于或等于 3 的输入编码末尾追加 `/`，可置顶对应的英文词候选。
 
-## 混合词输入
-
-万象拼音输入方案包含混合词库 `wanxiang_mixedcode`，支持包含字母、汉字、数字、特殊符号的混合词输入。
-
 ## Emoji 输入
 
 在[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)中切换「表情开」/「表情关」选项，可启用或关闭 Emoji 输入。

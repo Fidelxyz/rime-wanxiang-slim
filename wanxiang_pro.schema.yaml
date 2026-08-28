@@ -11,7 +11,6 @@ schema:
   description: |
     支持直接辅助码的 Rime 拼音/双拼输入方案
   dependencies:
-    - wanxiang_mixedcode
     - wanxiang_reverse
     - wanxiang_english
 
@@ -88,7 +87,6 @@ engine:
     - lua_translator@*wanxiang.unicode  # Unicode 输入
     - table_translator@custom_phrase
     - table_translator@wanxiang_english
-    - table_translator@wanxiang_mixedcode
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@candidate_pinner  # 候选置顶
     - script_translator@user_dict_appender  # 手动造词
@@ -197,15 +195,6 @@ wanxiang_english:
   initial_quality: 2.1
   comment_format:
     - xform/^~.+$//
-
-wanxiang_mixedcode:
-  dictionary: wanxiang_mixedcode
-  db_class: stabledb
-  enable_completion: true
-  enable_sentence: false
-  initial_quality: 2
-  comment_format:
-    - xform/.*//
 
 # 部件拆字反查
 wanxiang_reverse:

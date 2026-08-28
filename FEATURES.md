@@ -123,15 +123,6 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `dicts/english.dict.yaml`：英文词条
 - `wanxiang_algebra.yaml` (`english` 段)：英文输入转写规则
 
-#### 混合词输入
-
-字母、汉字、数字、特殊符号组合输入。
-
-- `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
-- `wanxiang_mixedcode.dict.yaml`：混合编码词典
-- `dicts/mixedcode.dict.yaml`：中英混合词条
-- `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
-
 ### 其他功能
 
 #### Unicode 输入
@@ -300,6 +291,21 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 - `lua/wanxiang/sequencer.lua`：手动排序模块，LevelDB 数据库 `lua/sequence.userdb`
 - `wanxiang.schema.yaml`：排序快捷键配置
+
+#### 混合词输入
+
+字母、汉字、数字、特殊符号组合输入。
+
+- `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
+- `wanxiang_mixedcode.dict.yaml`：混合编码词典
+- `dicts/mixedcode.dict.yaml`：中英混合词条
+- `custom/wanxiang_mixedcode.custom.yaml`：混合编码 custom 模板
+- `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`dependencies`、`translators` 与 `wanxiang_mixedcode` 配置段
+- `lua/wanxiang/set_schema.lua`：方案切换中 `wanxiang_mixedcode` 分支及 custom 文件列表
+- `scripts/update_dicts.py`：`"mixed": "mixedcode"` 映射
+- `scripts/generate_pro_dicts.py`：混合词对齐逻辑与 `mixedcode.dict.yaml` 免转换项
+- `.github/release-config.json` / `.github/prerelease-config.json`：schema 文件列表
 
 ### 快捷短语相关
 
