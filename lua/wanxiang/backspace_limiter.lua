@@ -49,6 +49,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local enabled = rime_config:get_bool("backspace_limiter/enabled")
     if enabled == nil then

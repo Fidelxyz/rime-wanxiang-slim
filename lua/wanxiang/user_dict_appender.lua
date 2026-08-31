@@ -14,6 +14,7 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local tips = rime_config:get_string("user_dict_appender/tips")
     if tips == "" then

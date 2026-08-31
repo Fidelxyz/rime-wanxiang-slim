@@ -76,9 +76,11 @@ local function parse_schema_rules(schema_id)
         return {}, {}
     end
     local schema = Schema(schema_id)
-    local config = schema.config
 
-    local algebra_list = config:get_list("speller/algebra")
+    local rime_config = schema.config
+    assert(rime_config)
+
+    local algebra_list = rime_config:get_list("speller/algebra")
     if not algebra_list or algebra_list.size == 0 then
         return {}, {}
     end
@@ -455,6 +457,7 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
     local cfg_root = rime_config:get_map("lookup_filter")
 
     ---@type string[]

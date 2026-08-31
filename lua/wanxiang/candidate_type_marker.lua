@@ -29,6 +29,7 @@ local M = {}
 ---@param env Env
 function M.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     ---@type table<string, string>
     local types = {}

@@ -102,6 +102,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
     local context = env.engine.context
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"

@@ -36,6 +36,7 @@ MARKERS_TO_AUXCODE_SCHEMAS = {
 ---@return string?
 function get_schema(env, markers_to_schemas)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local algebra_list = rime_config:get_list("speller/algebra")
     if not algebra_list then

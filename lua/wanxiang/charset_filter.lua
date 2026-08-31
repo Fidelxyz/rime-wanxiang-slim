@@ -105,6 +105,7 @@ local M = {}
 ---@param env Env
 function M.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local charset_db = rime_api.get_distribution_code_name():lower() ~= "weasel"
             and utils.get_filename_with_fallback("lua/data/charset.reverse.bin")

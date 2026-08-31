@@ -22,6 +22,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local mode = rime_config:get_string("keypad_composer/keypad_mode")
     if mode ~= "auto" and mode ~= "compose" and mode ~= "select" then

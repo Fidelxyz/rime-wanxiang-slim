@@ -96,6 +96,7 @@ local code_hint = {}
 ---@param env Env
 function code_hint.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
@@ -185,6 +186,7 @@ correction_hint.dict = nil
 ---@param env Env
 function correction_hint.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)

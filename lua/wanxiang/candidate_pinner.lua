@@ -45,6 +45,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local enabled = rime_config:get_bool("candidate_pinner/enabled")
     if enabled == nil then
@@ -152,6 +153,7 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local enabled = rime_config:get_bool("candidate_pinner/enabled")
     if enabled == nil then
