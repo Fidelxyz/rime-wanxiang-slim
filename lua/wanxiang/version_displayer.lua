@@ -5,7 +5,7 @@ local meta = require("meta")
 
 ---Pinyin schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
-MARKERS_TO_PINYIN_SCHEMAS = {
+local MARKERS_TO_PINYIN_SCHEMAS = {
     ["Ⅰ"] = "全拼",
     ["Ⅱ"] = "自然码",
     ["Ⅲ"] = "小鹤双拼",
@@ -25,7 +25,7 @@ MARKERS_TO_PINYIN_SCHEMAS = {
 
 ---Auxiliary code schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
-MARKERS_TO_AUXCODE_SCHEMAS = {
+local MARKERS_TO_AUXCODE_SCHEMAS = {
     ["Ⅽ"] = "间接辅助",
     ["Ⅾ"] = "直接辅助",
 }
@@ -34,7 +34,7 @@ MARKERS_TO_AUXCODE_SCHEMAS = {
 ---@param env Env
 ---@param markers_to_schemas table<string, string>
 ---@return string?
-function get_schema(env, markers_to_schemas)
+local function get_schema(env, markers_to_schemas)
     local rime_config = env.engine.schema.config
     assert(rime_config)
 

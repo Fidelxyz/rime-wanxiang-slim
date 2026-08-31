@@ -10,7 +10,11 @@
 ---coldest generation is dropped.
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@class SegmentedCache<V>: { hot: table<string, V>, cold: table<string, V>, hot_size: integer, capacity: integer }
+---@class SegmentedCache<V>
+---@field hot table<string, V>
+---@field cold table<string, V>
+---@field hot_size integer
+---@field capacity integer
 local SegmentedCache = {}
 SegmentedCache.__index = SegmentedCache
 
@@ -19,8 +23,10 @@ SegmentedCache.__index = SegmentedCache
 ---@param key string
 ---@param value V
 function SegmentedCache:insert(key, value)
+    if self.hot[key] == nil then
+        self.hot_size = self.hot_size + 1
+    end
     self.hot[key] = value
-    self.hot_size = self.hot_size + 1
     if self.hot_size >= self.capacity then
         self.cold = self.hot
         self.hot = {}

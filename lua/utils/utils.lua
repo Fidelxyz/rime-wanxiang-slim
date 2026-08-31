@@ -55,7 +55,7 @@ function M.is_mobile_device()
 
         -- Platform check via LuaJIT (Android/Linux).
         ---@diagnostic disable: undefined-global
-        if jit and jit.os then
+        if jit then
             if jit.os:lower():find("android") then
                 return true
             end
@@ -89,6 +89,7 @@ end
 
 ---Whether `segment` is in function/command mode.
 ---@param segment Segment
+---@return boolean
 function M.is_function_mode_active_segment(segment)
     return segment:has_tag("unicode")
 end
@@ -150,7 +151,7 @@ end
 
 ---Whitelist of ASCII symbols allowed to appear in an English phrase.
 ---@type table<integer, boolean>
-M.ENGLISH_SYMBOLS = {
+local ENGLISH_SYMBOLS = {
     [32] = true, -- space
     [33] = true, -- !
     [39] = true, -- '
@@ -179,7 +180,7 @@ function M.is_english_phrase(s)
         local b = s:byte(i)
         if (b >= 65 and b <= 90) or (b >= 97 and b <= 122) then
             has_alpha = true
-        elseif not M.ENGLISH_SYMBOLS[b] then
+        elseif not ENGLISH_SYMBOLS[b] then
             return false
         end
     end
@@ -211,17 +212,22 @@ local TONE_STRIP_MAP = {
     ["ó"] = "o",
     ["ǒ"] = "o",
     ["ò"] = "o",
-    ["ň"] = "n",
     ["ū"] = "u",
     ["ú"] = "u",
     ["ǔ"] = "u",
     ["ù"] = "u",
-    ["ǹ"] = "n",
     ["ǖ"] = "ü",
     ["ǘ"] = "ü",
     ["ǚ"] = "ü",
     ["ǜ"] = "ü",
+    ["ḿ"] = "m",
     ["ń"] = "n",
+    ["ň"] = "n",
+    ["ǹ"] = "n",
+    ["̄"] = "",
+    ["́"] = "",
+    ["̌"] = "",
+    ["̀"] = "",
 }
 
 --- Remove pinyin tone marks from a string.
@@ -292,15 +298,15 @@ end
 
 ---Open a file searching the user data dir first, then the shared data dir.
 ---@param filename string Relative path under the data dir.
----@param mode? iolib.OpenMode
----@return file? file
+---@param mode? openmode
+---@return file*? file
 ---@return string? err
 function M.load_file_with_fallback(filename, mode)
     mode = mode or "r"
 
     local _filename = M.get_filename_with_fallback(filename)
 
-    ---@type file?, string?
+    ---@type file*?, string?
     local file, err
 
     if _filename then
@@ -330,6 +336,7 @@ function M.get_user_id()
     end
 
     for line in installation_file:lines() do
+        ---@cast line string
         local key, value = line:match('^([^#:]+):%s+"?([^"]%S+[^"])"?')
         if key == "installation_id" and value then
             user_id = value

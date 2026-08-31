@@ -69,6 +69,7 @@ function P.init(env)
             return
         end
 
+        ---@type string
         local rest = state.pending_rest
         state.pending_rest = nil
 

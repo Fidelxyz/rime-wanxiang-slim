@@ -44,8 +44,8 @@ function WrappedUserDb:query_with(prefix, handler)
             handler(key, value)
         end
     end
-    da = nil
-    collectgarbage()
+    da = nil -- luacheck: no unused
+    collectgarbage() -- Workaround for https://github.com/hchunhui/librime-lua/issues/376
 end
 
 local metatable = {
@@ -87,6 +87,9 @@ function M.UserDb(db_name, db_class)
     local db = db_pool[key]
     if not db then
         db = UserDb(db_name, db_class)
+        if not db then
+            return nil
+        end
         db_pool[key] = db
     end
 

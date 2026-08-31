@@ -220,6 +220,7 @@ function F.func(translation, env)
 end
 
 ---@param env Env
+---@return boolean
 function F.tags_match(_, env)
     local config = env.candidate_pinner_filter_config
     assert(config)

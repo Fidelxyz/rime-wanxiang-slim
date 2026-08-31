@@ -204,6 +204,7 @@ function M.init(env)
     local option_update_notifier = env.engine.context.option_update_notifier:connect(function(ctx, name)
         for _, filter in ipairs(filters) do
             if filter.options ~= true then
+                ---@diagnostic disable-next-line: param-type-mismatch
                 for _, option in ipairs(filter.options) do
                     if name == option then
                         ctx:refresh_non_confirmed_composition()
@@ -255,6 +256,7 @@ function M.func(input, env)
             ---@cast rule.options string[]
 
             if not is_rule_active then
+                ---@diagnostic disable-next-line: param-type-mismatch
                 for _, option in ipairs(rule.options) do
                     if context:get_option(option) then
                         is_rule_active = true

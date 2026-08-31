@@ -498,6 +498,7 @@ function F.init(env)
             if source ~= "aux_code" and source ~= "dictionary" then
                 goto continue
             end
+            ---@cast source LookupSource
             if seen_sources[source] then
                 goto continue
             end

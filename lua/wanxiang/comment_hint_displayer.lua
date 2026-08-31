@@ -209,6 +209,7 @@ function correction_hint.init(env)
             correction_hint.dict = {}
 
             for line in file:lines() do
+                ---@cast line string
                 -- Skip comment lines.
                 if line:match("^#") then
                     goto continue
@@ -292,7 +293,7 @@ function F.func(translation, env)
     for cand in translation:iter() do
         local genuine_cand = cand:get_genuine()
         local raw_comment = genuine_cand.comment
-        local final_comment = raw_comment
+        local final_comment
 
         if reverse_lookup_hint_active then
             local comment = reverse_lookup_hint.get_comment(raw_comment)
