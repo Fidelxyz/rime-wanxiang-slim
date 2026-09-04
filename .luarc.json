@@ -7,7 +7,7 @@
         ]
     },
     "runtime": {
-        "version": "Lua 5.4"
+        "version": "Lua 5.5"
     },
     "diagnostics": {
         "groupFileStatus": {
@@ -18,10 +18,14 @@
             "luadoc": "Any",
             "redefined": "Any",
             "strict": "Any",
-            "strong": "Any",
+            "strong": "Fallback",
             "type-check": "Any",
             "unbalanced": "Any",
             "unused": "Any"
-        }
+        },
+        "disable": [
+            "unknown-diag-code",
+            "unknown-cast-variable"
+        ]
     }
 }
