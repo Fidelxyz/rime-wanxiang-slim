@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.0.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0...v1.0.0-beta.1) (2026-09-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove Chinese-English mixed dictionary
+
+### Bug Fixes
+
+* add nil check for `env.engine.schema.config` ([2bd1acc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2bd1acc72fe6ff04453bd5268f814467fd363ea0))
+* fix librime-lua contrib type annotations ([531a7a9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/531a7a92c02701d90655c6a11b6f3dcb1c1c4f28))
+
+
+### Miscellaneous Chores
+
+* v1 release ([7badbd9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7badbd90f55aff18eef1d42eff89c7c41cde2ac8))
+
+
+### Code Refactoring
+
+* remove Chinese-English mixed dictionary ([f328d83](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f328d83cd171fb45b9a41b6b95b8d33dc3b56e25))
+
 ## [0.6.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0...v0.6.0) (2026-08-22)
 
 
