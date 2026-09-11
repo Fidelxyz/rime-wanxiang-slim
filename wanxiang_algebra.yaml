@@ -2141,6 +2141,89 @@ pro:
       - xform/^zh/Ⓥ/
       - xlit/ⓆⓌⒺⓇⓉⓎⓊⓛⓄⓅⒶⓈⒹⒻⒼⒽⒿⓀⓁⓏⓍⒸⓋⒷⓃⓂ/qwertyuiopasdfghjklzxcvbnm/
 
+  乱序17:
+    __append:
+      - xform/Ⅼ//
+      - xform/ü/v/
+      - xform/^([a-z]+);/$1④;/
+      - xform/ā([^;]*);/a$1①;/
+      - xform/á([^;]*);/a$1②;/
+      - xform/ǎ([^;]*);/a$1③;/
+      - xform/à([^;]*);/a$1④;/
+      - xform/ō([^;]*);/o$1①;/
+      - xform/ó([^;]*);/o$1②;/
+      - xform/ǒ([^;]*);/o$1③;/
+      - xform/ò([^;]*);/o$1④;/
+      - xform/ē([^;]*);/e$1①;/
+      - xform/é([^;]*);/e$1②;/
+      - xform/ě([^;]*);/e$1③;/
+      - xform/è([^;]*);/e$1④;/
+      - xform/ī([^;]*);/i$1①;/
+      - xform/í([^;]*);/i$1②;/
+      - xform/ǐ([^;]*);/i$1③;/
+      - xform/ì([^;]*);/i$1④;/
+      - xform/ū([^;]*);/u$1①;/
+      - xform/ú([^;]*);/u$1②;/
+      - xform/ǔ([^;]*);/u$1③;/
+      - xform/ù([^;]*);/u$1④;/
+      - xform/ǖ([^;]*);/v$1①;/
+      - xform/ǘ([^;]*);/v$1②;/
+      - xform/ǚ([^;]*);/v$1③;/
+      - xform/ǜ([^;]*);/v$1④;/
+      - xform/ń([^;]*);/n$1②;/
+      - xform/ň([^;]*);/n$1③;/
+      - xform/ǹ([^;]*);/n$1④;/
+      - xform/ḿ([^;]*);/m$1②;/
+      - xform/m̀([^;]*);/m$1④;/
+      - xlit/①②③④/7890/
+      - xform/^ng(\d);/eng$1;/
+      - xform/^n(\d);/en$1;/
+      - xform/^m(\d);/me$1;/
+      - xform/^ch/Ⓒ/
+      - xform/^c/Ⓕ/
+      - xform/^k/Ⓙ/
+      - xform/^([aoe].*;)/Ⓠ$1/
+      - xform/^p/Ⓗ/
+      - xform/^r/Ⓝ/
+      - xform/^sh/Ⓢ/
+      - xform/^s/Ⓜ/
+      - xform/^zh/Ⓩ/
+      - xform/^z/Ⓦ/
+      - xform/uang(\d);/Ⓠ$1;/
+      - xform/iang(\d);/Ⓒ$1;/
+      - xform/iong(\d);/Ⓑ$1;/
+      - xform/ang(\d);/Ⓩ$1;/
+      - xform/eng(\d);/Ⓨ$1;/
+      - xform/ian(\d);/Ⓠ$1;/
+      - xform/iao(\d);/Ⓩ$1;/
+      - xform/ing(\d);/Ⓨ$1;/
+      - xform/ong(\d);/Ⓣ$1;/
+      - xform/uai(\d);/Ⓧ$1;/
+      - xform/uan(\d);/Ⓧ$1;/
+      - xform/ai(\d);/Ⓛ$1;/
+      - xform/an(\d);/Ⓝ$1;/
+      - xform/ao(\d);/Ⓑ$1;/
+      - xform/ei(\d);/Ⓖ$1;/
+      - xform/en(\d);/Ⓢ$1;/
+      - xform/er(\d);/Ⓣ$1;/
+      - xform/ua(\d);/Ⓗ$1;/
+      - xform/ie(\d);/Ⓜ$1;/
+      - xform/in(\d);/Ⓢ$1;/
+      - xform/iu(\d);/Ⓕ$1;/
+      - xform/ou(\d);/Ⓕ$1;/
+      - xform/ia(\d);/Ⓗ$1;/
+      - xform/[uv]e(\d);/Ⓛ$1;/
+      - xform/ui(\d);/Ⓒ$1;/
+      - xform/un(\d);/Ⓖ$1;/
+      - xform/uo(\d);/Ⓜ$1;/
+      - xform/a(\d);/Ⓗ$1;/
+      - xform/e(\d);/Ⓦ$1;/
+      - xform/i(\d);/Ⓙ$1;/
+      - xform/o(\d);/Ⓧ$1;/
+      - xform/u(\d);/Ⓓ$1;/
+      - xform/v(\d);/Ⓧ$1;/
+      - xlit/ⓆⓌⓉⓎⓈⒹⒻⒼⒽⒿⓁⓏⓍⒸⒷⓃⓂ/qwtysdfghjlzxcbnm/
+
   # Generated Pro dictionaries retain all auxiliary-code alternatives in one
   # comma-separated spelling. The rules below derive only the first two;
   # later alternatives remain stored in the dictionary but are not input forms.
