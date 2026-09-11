@@ -1,0 +1,170 @@
+schema: wanxiang_reverse
+source_dir: ../dist/rime-wanxiang-base
+
+script: |
+  function has_cand(text)
+    for i = 1, #cand do
+      if cand[i].text == text then
+        return true
+      end
+    end
+    return false
+  end
+
+deploy:
+  schema-pinyin:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/全拼
+    tests:
+      - send: mudui
+        assert: has_cand("树")
+      - send: muyoucun
+        assert: has_cand("树")
+
+  schema-zrlong:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/自然龙
+    tests:
+      - send: mudui
+        assert: has_cand("树")
+      - send: muyoucun
+        assert: has_cand("树")
+
+  schema-hxlong:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/汉心龙
+    tests:
+      - send: mudui
+        assert: has_cand("树")
+      - send: muyoucun
+        assert: has_cand("树")
+
+  schema-zrm:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/自然码
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muybcp
+        assert: has_cand("树")
+
+  schema-flypy:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/小鹤双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muyzcy
+        assert: has_cand("树")
+
+  schema-microsoft:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/微软双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muybcp
+        assert: has_cand("树")
+
+  schema-sogou:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/搜狗双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muybcp
+        assert: has_cand("树")
+
+  schema-abc:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/智能ABC
+    tests:
+      - send: mudm
+        assert: has_cand("树")
+      - send: muybcn
+        assert: has_cand("树")
+
+  schema-ziguang:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/紫光双拼
+    tests:
+      - send: mudn
+        assert: has_cand("树")
+      - send: muyzcm
+        assert: has_cand("树")
+
+  schema-pinyin-plus:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/拼音加加
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muypcz
+        assert: has_cand("树")
+
+  schema-gb:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/国标双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muypcz
+        assert: has_cand("树")
+
+  schema-shoudao:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/首道双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muyscz
+        assert: has_cand("树")
+
+  schema-luanxu17:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/乱序17
+    tests:
+      - send: mddc
+        assert: has_cand("树")
+      - send: mdyffg
+        assert: has_cand("树")
+
+  stroke-hspzn:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/全拼
+        __patch: wanxiang_algebra:/reverse/hspzn
+    tests:
+      - send: hspnznhsn
+        assert: has_cand("树")
+
+  stroke-hupvd:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/全拼
+        __patch: wanxiang_algebra:/reverse/hupvd
+    tests:
+      - send: hupdvdhud
+        assert: has_cand("树")
+
+  stroke-hslzy:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/全拼
+        __patch: wanxiang_algebra:/reverse/hslzy
+    tests:
+      - send: hslyzyhsy
+        assert: has_cand("树")

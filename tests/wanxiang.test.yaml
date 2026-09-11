@@ -130,3 +130,129 @@ deploy:
     tests:
       - send: ei
         assert: not has_cand("诶")
+
+  schema-zrm:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/自然码
+    tests:
+      - send: hk
+        assert: has_cand("好")
+
+  schema-zrlong:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/自然龙
+    tests:
+      - send: hx
+        assert: has_cand("好")
+
+  schema-hxlong:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/汉心龙
+    tests:
+      - send: MT
+        assert: has_cand("好")
+
+  schema-flypy:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/小鹤双拼
+    tests:
+      - send: hc
+        assert: has_cand("好")
+
+  schema-sogou:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/搜狗双拼
+    tests:
+      - send: hk
+        assert: has_cand("好")
+
+  schema-microsoft:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/微软双拼
+    tests:
+      - send: hk
+        assert: has_cand("好")
+
+  schema-abc:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/智能ABC
+    tests:
+      - send: hk
+        assert: has_cand("好")
+
+  schema-ziguang:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/紫光双拼
+    tests:
+      - send: hq
+        assert: has_cand("好")
+
+  schema-pinyin-plus:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/拼音加加
+    tests:
+      - send: hd
+        assert: has_cand("好")
+
+  schema-gb:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/国标双拼
+    tests:
+      - send: hc
+        assert: has_cand("好")
+
+  schema-luanxu17:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/乱序17
+    tests:
+      - send: hb
+        assert: has_cand("好")
+
+  schema-bluesky:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/蓝天双拼
+    tests:
+      - send: hc
+        assert: has_cand("好")
+
+  schema-daniu:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/大牛双拼
+    tests:
+      - send: hs
+        assert: has_cand("好")
+
+  schema-shoudao:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/base/首道双拼
+    tests:
+      - send: hd
+        assert: has_cand("好")

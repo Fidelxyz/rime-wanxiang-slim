@@ -45,7 +45,7 @@ jobs:
       - name: Run tests
         id: run-tests
         working-directory: tests
-        run: python mira_report.py ./mira wanxiang.test.yaml wanxiang_pro.test.yaml --report-dir reports
+        run: python mira_report.py ./mira wanxiang.test.yaml wanxiang_pro.test.yaml wanxiang_reverse.test.yaml --report-dir reports
 
       - uses: ctrf-io/github-test-reporter@v1
         if: ${{ !cancelled() }}
