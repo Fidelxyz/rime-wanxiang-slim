@@ -33,7 +33,7 @@ outline: deep
     ::: info 各前端用户目录路径
 
     - 小狼毫：`%APPDATA%/Rime`。也可以通过「开始菜单 — 小狼毫输入法 —  用户文件夹」打开。
-    - 鼠须管：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠鬚管 — 用户设定…」打开。
+    - 鼠须管：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠须管 — 用户设定…」打开。
     - IBus：`~/.config/ibus/rime`。
     - Fcitx：`~/.config/fcitx/rime`。
     - Fcitx 5：`~/.local/share/fcitx5/rime/`。
@@ -141,9 +141,9 @@ Windows 用户须使用 Git Bash 运行脚本，不支持 PowerShell 或 Command
 
     ```bash [万象码辅助]
     # 完整
-    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/full
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-wx-fuzhu:plum/full
     # 仅词库
-    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-shyplus-fuzhu:plum/dicts
+    bash rime-install Fidelxyz/rime-wanxiang-slim@wanxiang-wx-fuzhu:plum/dicts
     ```
 
     :::
