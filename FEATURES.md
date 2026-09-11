@@ -67,7 +67,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 关闭调频下通过逐步选字选词上屏记录整段。
 
-- `lua/wanxiang/auto_phrase.lua`：自动造词模块
+- `lua/wanxiang/auto_user_dict_appender.lua`：自动造词模块
 - `wanxiang.schema.yaml`：`user_dict_appender` 段配置
 
 #### 英文造词
@@ -184,7 +184,7 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 
 通过 `/flypy`、`/zrm` 等指令切换双拼/全拼方案。
 
-- `lua/wanxiang/set_schema.lua`：方案切换翻译器，自动修改 custom 文件
+- `lua/wanxiang/schema_switcher.lua`：方案切换翻译器，自动修改 custom 文件
 - `wanxiang_algebra.yaml`：12+ 拼音方案的转写规则
 - `custom/` 目录：custom 文件模板
 
@@ -302,7 +302,7 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 - `custom/wanxiang_mixedcode.custom.yaml`：混合编码 custom 模板
 - `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`dependencies`、`translators` 与 `wanxiang_mixedcode` 配置段
-- `lua/wanxiang/set_schema.lua`：方案切换中 `wanxiang_mixedcode` 分支及 custom 文件列表
+- `lua/wanxiang/schema_switcher.lua`：方案切换中 `wanxiang_mixedcode` 分支及 custom 文件列表
 - `scripts/update_dicts.py`：`"mixed": "mixedcode"` 映射
 - `scripts/generate_pro_dicts.py`：混合词对齐逻辑与 `mixedcode.dict.yaml` 免转换项
 - `.github/release-config.json` / `.github/prerelease-config.json`：schema 文件列表

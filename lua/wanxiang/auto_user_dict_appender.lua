@@ -7,18 +7,18 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
----@class AutoPhraseConfig
+---@class AutoUserDictAppenderConfig
 ---@field split_code_pattern string
 
----@class AutoPhraseState
+---@class AutoUserDictAppenderState
 ---@field memory Memory?
 ---
 ---@field commit_notifier Connection?
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
----@field auto_phrase_config AutoPhraseConfig?
----@field auto_phrase_state AutoPhraseState?
+---@field auto_user_dict_appender_config AutoUserDictAppenderConfig?
+---@field auto_user_dict_appender_state AutoUserDictAppenderState?
 
 local utils = require("utils.utils")
 local candidate_code_recorder = require("wanxiang.candidate_code_recorder")
@@ -47,7 +47,7 @@ end
 ---@param ctx Context
 ---@param env Env
 local function commit_handler(ctx, env)
-    local state = env.auto_phrase_state
+    local state = env.auto_user_dict_appender_state
     assert(state)
 
     if not state.memory then
@@ -63,7 +63,7 @@ local function commit_handler(ctx, env)
         return
     end
 
-    local config = env.auto_phrase_config
+    local config = env.auto_user_dict_appender_config
     assert(config)
 
     ---@type string[]
@@ -133,11 +133,11 @@ function P.init(env)
         end)
     end
 
-    env.auto_phrase_config = {
+    env.auto_user_dict_appender_config = {
         split_code_pattern = split_code_pattern,
     }
 
-    env.auto_phrase_state = {
+    env.auto_user_dict_appender_state = {
         memory = memory,
         commit_notifier = commit_notifier,
     }
@@ -145,19 +145,19 @@ end
 
 ---@param env Env
 function P.fini(env)
-    assert(env.auto_phrase_state)
-    assert(env.auto_phrase_config)
+    assert(env.auto_user_dict_appender_state)
+    assert(env.auto_user_dict_appender_config)
 
-    if env.auto_phrase_state.memory then
-        env.auto_phrase_state.memory:disconnect()
+    if env.auto_user_dict_appender_state.memory then
+        env.auto_user_dict_appender_state.memory:disconnect()
     end
 
-    if env.auto_phrase_state.commit_notifier then
-        env.auto_phrase_state.commit_notifier:disconnect()
+    if env.auto_user_dict_appender_state.commit_notifier then
+        env.auto_user_dict_appender_state.commit_notifier:disconnect()
     end
 
-    env.auto_phrase_config = nil
-    env.auto_phrase_state = nil
+    env.auto_user_dict_appender_config = nil
+    env.auto_user_dict_appender_state = nil
 end
 
 function P.func(_, _)

@@ -67,7 +67,7 @@ engine:
     - navigator
     - express_editor
     - lua_processor@*wanxiang.candidate_pinner*P  # 候选置顶
-    - lua_processor@*wanxiang.auto_phrase  # 自动造词
+    - lua_processor@*wanxiang.auto_user_dict_appender  # 自动造词
   segmentors:
     - ascii_segmentor
     - matcher
@@ -80,7 +80,7 @@ engine:
     - punct_translator
     - script_translator
     - lua_translator@*wanxiang.version_displayer  # 版本显示
-    - lua_translator@*wanxiang.set_schema  # 拼音方案切换
+    - lua_translator@*wanxiang.schema_switcher  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # Unicode 输入
     - table_translator@custom_phrase
     - table_translator@wanxiang_english
