@@ -2255,7 +2255,7 @@ pro:
   # later alternatives remain stored in the dictionary but are not input forms.
   直接辅助:
     __append:
-      - xform/Ⅾ//  # 用于Lua判断是否处于直接辅助的标记
+      - xform/ⅳ//  # 用于Lua判断是否处于直接辅助的标记
       - derive/^([a-z◯]+)(\d?);.*$/$1/  # 纯双拼
       # 词典第一组辅助码
       - derive/^([a-z◯]+)(\d?);.*$/$1$2/  # 双拼 + 声调
@@ -2300,7 +2300,7 @@ pro:
 
   间接辅助:
     __append:
-      - xform/Ⅽ//  # 用于Lua判断是否处于间接辅助的标记
+      - xform/ⅲ//  # 用于Lua判断是否处于间接辅助的标记
       # 纯双拼与声调
       - derive/^([a-z◯]+)\d?;.*$/$1/  # 纯双拼
       - derive/^([a-z◯]+)(\d?);.*$/$1$2/  # 双拼 + 声调

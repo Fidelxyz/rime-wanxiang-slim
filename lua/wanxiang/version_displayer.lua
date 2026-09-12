@@ -26,8 +26,8 @@ local MARKERS_TO_PINYIN_SCHEMAS = {
 ---Auxiliary code schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
 local MARKERS_TO_AUXCODE_SCHEMAS = {
-    ["Ⅽ"] = "间接辅助",
-    ["Ⅾ"] = "直接辅助",
+    ["ⅲ"] = "间接辅助",
+    ["ⅳ"] = "直接辅助",
 }
 
 ---Get the schema name based on the algebra markers defined in the Rime configuration.
