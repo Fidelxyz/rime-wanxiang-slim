@@ -122,6 +122,26 @@ deploy:
       - send: muypcz
         assert: has_cand("树")
 
+  schema-bluesky:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/蓝天双拼
+    tests:
+      - send: mudv
+        assert: has_cand("树")
+      - send: muyrcb
+        assert: has_cand("树")
+
+  schema-daniu:
+    patch:
+      speller/algebra:
+        __include: wanxiang_algebra:/reverse/大牛双拼
+    tests:
+      - send: mudn
+        assert: has_cand("树")
+      - send: muyrcy
+        assert: has_cand("树")
+
   schema-shoudao:
     patch:
       speller/algebra:

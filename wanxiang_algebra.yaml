@@ -2617,6 +2617,93 @@ reverse:
     - xform/in(?=^|$|')/<l>/
     - xform/['<>]//
 
+  蓝天双拼:
+    - derive/^([jqxy])u(?=^|$|')/$1v/
+    - derive/'([jqxy])u(?=^|$|')/'$1v/
+    - derive/^([aoe])([ioun])(?=^|$|')/$1$1$2/
+    - derive/'([aoe])([ioun])(?=^|$|')/'$1$1$2/
+    - xform/^([aoe])(ng)?(?=^|$|')/$1$1$2/
+    - xform/'([aoe])(ng)?(?=^|$|')/'$1$1$2/
+    - xform/^sh/<u>/
+    - xform/^ch/<i>/
+    - xform/^zh/<v>/
+    - xform/'sh/'<u>/
+    - xform/'ch/'<i>/
+    - xform/'zh/'<v>/
+    - xform/([a-z>])i?ong(?=^|$|')/$1<s>/
+    - xform/[iu]ang(?=^|$|')/<l>/
+    - xform/iao(?=^|$|')/<n>/
+    - xform/ing(?=^|$|')|uai(?=^|$|')/<f>/
+    - xform/uan(?=^|$|')/<h>/
+    - xform/ian(?=^|$|')/<m>/
+    - xform/eng(?=^|$|')/<z>/
+    - xform/ang(?=^|$|')/<g>/
+    - xform/ua(?=^|$|')/<q>/
+    - xform/iu(?=^|$|')/<t>/
+    - xform/[uv]e(?=^|$|')/<y>/
+    - xform/uo(?=^|$|')/<o>/
+    - xform/ie(?=^|$|')/<p>/
+    - xform/ia(?=^|$|')/<k>/
+    - xform/in(?=^|$|')/<x>/
+    - xform/ui(?=^|$|')/<v>/
+    - xform/un(?=^|$|')/<b>/
+    - xform/([a-z>])ei(?=^|$|')/$1<w>/
+    - xform/([a-z>])ou(?=^|$|')/$1<r>/
+    - xform/([a-z>])ao(?=^|$|')/$1<c>/
+    - xform/([a-z>])ai(?=^|$|')/$1<d>/
+    - xform/([a-z>])an(?=^|$|')/$1<j>/
+    - xform/([a-z>])en(?=^|$|')/$1<k>/
+    - xform/['<>]//
+
+  大牛双拼:
+    - derive/^([jqxy])u(?=^|$|')/$1v/
+    - derive/'([jqxy])u(?=^|$|')/'$1v/
+    - derive/^([aoe])([ioun])(?=^|$|')/$1$1$2/
+    - derive/'([aoe])([ioun])(?=^|$|')/'$1$1$2/
+    - xform/^([aoe])(ng)?(?=^|$|')/$1$1$2/
+    - xform/'([aoe])(ng)?(?=^|$|')/'$1$1$2/
+    - derive/^zh/<a>/
+    - derive/'zh/'<a>/
+    - derive/^sh/<v>/
+    - derive/'sh/'<v>/
+    - xform/^zh/<o>/
+    - xform/^ch/<i>/
+    - xform/^sh/<u>/
+    - xform/'zh/'<o>/
+    - xform/'ch/'<i>/
+    - xform/'sh/'<u>/
+    - xform/uang(?=^|$|')/<x>/
+    - xform/uai(?=^|$|')/<g>/
+    - xform/uan(?=^|$|')/<z>/
+    - xform/van(?=^|$|')/<j>/
+    - xform/ua(?=^|$|')/<q>/
+    - xform/iang(?=^|$|')/<n>/
+    - xform/i?ong(?=^|$|')/<l>/
+    - xform/ian(?=^|$|')/<c>/
+    - xform/iao(?=^|$|')/<m>/
+    - xform/ing(?=^|$|')/<g>/
+    - xform/iu(?=^|$|')/<t>/
+    - xform/ia(?=^|$|')/<k>/
+    - xform/ie(?=^|$|')/<p>/
+    - xform/in(?=^|$|')/<b>/
+    - xform/eng(?=^|$|')/<j>/
+    - xform/ang(?=^|$|')/<f>/
+    - xform/uo(?=^|$|')/<o>/
+    - xform/un(?=^|$|')/<y>/
+    - xform/[uv]e(?=^|$|')/<h>/
+    - xform/vn(?=^|$|')/<w>/
+    - xform/ui(?=^|$|')/<n>/
+    - derive/<n>(?=^|$|')/<v>/
+    - derive/<c>(?=^|$|')/<q>/
+    - xform/([a-z>])ao(?=^|$|')/$1<s>/
+    - xform/([a-z>])ai(?=^|$|')/$1<h>/
+    - xform/([a-z>])ei(?=^|$|')/$1<w>/
+    - xform/([a-z>])an(?=^|$|')/$1<d>/
+    - xform/([a-z>])en(?=^|$|')/$1<k>/
+    - xform/([a-z>])ou(?=^|$|')/$1<r>/
+    - xform/er(?=^|$|')/<u>/
+    - xform/['<>]//
+
   首道双拼:
     - derive/^([aoe])([ioun])(?=^|$|')/$1$1$2/
     - derive/'([aoe])([ioun])(?=^|$|')/'$1$1$2/
