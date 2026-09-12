@@ -131,6 +131,28 @@ deploy:
       - send: ei
         assert: not has_cand("诶")
 
+  charset-filter-whitelist:
+    patch:
+      charset_filter/filters/@0/whitelist: "诶"
+    options:
+      charset_filter: true
+    tests:
+      - send: ei
+        assert: has_cand("诶")
+
+  charset-filter-blacklist:
+    patch:
+      charset_filter/filters/@0/blacklist: "你"
+    options:
+      charset_filter: true
+    tests:
+      - send: ni
+        assert: not has_cand("你")
+      - send: nihao
+        assert: not has_cand("你好")
+      - send: hao
+        assert: has_cand("好")
+
   schema-zrm:
     patch:
       speller/algebra:
