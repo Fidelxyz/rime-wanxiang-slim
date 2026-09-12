@@ -24,4 +24,4 @@ candidate_pinner:
 
 ## 单字 / 词组优先
 
-在[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)中切换「词组先」/「单字先」选项，控制单字与词组编码重合时优先显示单字或词组。
+在[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)中切换「词组先」/「单字先」选项，控制单字与词组编码重合时优先显示单字或词组候选。

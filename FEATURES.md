@@ -188,6 +188,13 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 - `wanxiang_algebra.yaml`：12+ 拼音方案的转写规则
 - `custom/` 目录：custom 文件模板
 
+### 模糊音
+
+可按需开启 10 组双向模糊音，默认全部关闭。
+
+- `wanxiang_algebra.yaml`（`模糊音_*` 段）：声母、韵母模糊音转写规则
+- `custom/wanxiang.custom.yaml` / `custom/wanxiang_pro.custom.yaml`：模糊音配置模板
+
 ## 已移除功能
 
 ### 输入相关
