@@ -73,6 +73,12 @@ deploy:
         assert: has_cand("a") and has_cand("A")
       - send: A
         assert: has_cand("A") and has_cand("a")
+      - send: i/
+        assert: eq(cand[1].text, "I")
+      - send: an/
+        assert: eq(cand[1].text, "an")
+      - send: and/
+        assert: eq(cand[1].text, "and")
       # Emoji
       - send: haha
         assert: cand[2].text ~= "😄"
