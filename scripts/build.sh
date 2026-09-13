@@ -117,8 +117,11 @@ package_schema_pro() {
         --exclude='*' \
         "${root_dir}/custom/" "${out_dir}/custom/"
 
-    # 5) Edit default.yaml: - schema: wanxiang -> - schema: wanxiang_pro
+    # Edit default.yaml: - schema: wanxiang -> - schema: wanxiang_pro
     sed -i -E 's/^([[:space:]]*)-\s*schema:\s*wanxiang\s*$/\1- schema: wanxiang_pro/' "${out_dir}/default.yaml"
+
+    # Edit meta.lua: M.AUX_CODE = nil -> M.AUX_CODE = "${schema}"
+    sed -i "s/M\.AUX_CODE = nil/M.AUX_CODE = \"${schema}\"/g" "${out_dir}/lua/meta.lua"
 }
 
 package_schema() {
