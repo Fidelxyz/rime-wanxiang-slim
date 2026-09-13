@@ -184,6 +184,8 @@ end
 function F.func(translation, env)
     local state = env.candidate_pinner_translator_state
     assert(state)
+    local segment = env.engine.context.composition:back()
+    assert(segment)
 
     ---@type Candidate[]
     local pinned_cands = {}
@@ -193,14 +195,16 @@ function F.func(translation, env)
     local regular_cands_len = 0
 
     for cand in translation:iter() do
-        -- Pin candidates that have a matching entry in the pinner memory.
-        for entry in state.memory:useriter_lookup(cand.comment .. " ", true):iter() do
-            if entry.text == cand.text then
-                local genuine = cand:get_genuine()
-                genuine.type = "pinned"
-                pinned_cands_len = pinned_cands_len + 1
-                pinned_cands[pinned_cands_len] = genuine
-                goto continue
+        -- Pin candidates that cover the entire segment and have an exact code match.
+        if cand.start == segment.start and cand._end == segment._end then
+            for entry in state.memory:useriter_lookup(cand.comment, false):iter() do
+                if entry.text == cand.text then
+                    local genuine = cand:get_genuine()
+                    genuine.type = "pinned"
+                    pinned_cands_len = pinned_cands_len + 1
+                    pinned_cands[pinned_cands_len] = genuine
+                    goto continue
+                end
             end
         end
 

@@ -159,6 +159,22 @@ deploy:
       - send: hao
         assert: has_cand("好")
 
+  candidate-pinner:
+    tests:
+      # Pin a candidate.
+      - send: "ni{Control+p}"
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "·")
+      - send: ni
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "·")
+      # A pinned prefix must not displace the complete phrase.
+      - send: nihao
+        assert: eq(cand[1].text, "你好") and has_cand("你") and eq(cand[1].comment, "")
+      # Unpin a candidate.
+      - send: "ni{Control+l}"
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "")
+      - send: ni
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "")
+
   schema-zrm:
     patch:
       speller/algebra:
