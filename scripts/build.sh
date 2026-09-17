@@ -52,6 +52,7 @@ package_schema_base() {
         --include='README.md' \
         --include='CHANGELOG.md' \
         --include='LICENSE' \
+        --include='install.*' \
         --exclude='wanxiang_pro.schema.yaml' \
         --exclude='pnpm-lock.yaml' \
         --include="*.yaml" \
@@ -93,6 +94,7 @@ package_schema_pro() {
         --include='README.md' \
         --include='CHANGELOG.md' \
         --include='LICENSE' \
+        --include='install.*' \
         --exclude='wanxiang.schema.yaml' \
         --exclude='pnpm-lock.yaml' \
         --include="*.yaml" \

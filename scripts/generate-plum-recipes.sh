@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-scheme="$1"
-branch="$2"
+branch="$1"
 
 mkdir -p plum
 
@@ -16,12 +15,13 @@ mkdir -p plum
   echo "  Rx: plum/full"
   echo "  args:"
   echo "  description: >-"
-  echo "    万象拼音 ${scheme} 版（整个方案目录）- 分支 ${branch}"
+  echo "    万象拼音精简版 - ${branch}"
   echo "install_files: >-"
   echo "  custom/**/*"
   echo "  dicts/**/*"
   echo "  lua/**/*"
   echo "  opencc/**/*"
+  echo "  install.*"
   echo "  *.yaml"
   echo "  CHANGELOG.md"
   echo "  README.md"
@@ -38,7 +38,7 @@ mkdir -p plum
   echo "  Rx: plum/dicts"
   echo "  args:"
   echo "  description: >-"
-  echo "    万象拼音 ${scheme} 版，仅词库（dicts-only）- 分支 ${branch}"
+  echo "    万象拼音精简版（仅词库）- ${branch}"
   echo "install_files: >-"
   echo "  dicts/**/*"
   echo "  opencc/dicts/**/*"

@@ -24,19 +24,59 @@ outline: deep
 
 ## 安装输入方案
 
+### 通过交互式安装器安装 <Badge type="tip" text="推荐" />
+
+在终端中进入 [Rime **用户目录**](https://github.com/rime/home/wiki/UserData)，运行：
+
+::: code-group
+
+```sh [macOS / Linux / Windows Git Bash]
+curl -fsSL https://raw.githubusercontent.com/Fidelxyz/rime-wanxiang-slim/main/install.sh | sh
+```
+
+```powershell [Windows PowerShell]
+irm https://raw.githubusercontent.com/Fidelxyz/rime-wanxiang-slim/main/install.ps1 | iex
+```
+
+:::
+
+::: tip 各前端用户目录路径
+
+- **小狼毫**：`%APPDATA%/Rime`。也可以通过「开始菜单 — 小狼毫输入法 —  用户文件夹」打开。
+- **鼠须管**：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠须管 — 用户设定…」打开。
+- **IBus**：`~/.config/ibus/rime`。
+- **Fcitx**：`~/.config/fcitx/rime`。
+- **Fcitx 5**：`~/.local/share/fcitx5/rime/`。
+
+:::
+
+安装后，在 Rime 用户目录下再次运行该脚本即可进行更新：
+
+::: code-group
+
+```sh [macOS / Linux / Windows Git Bash]
+sh install.sh
+```
+
+```powershell [Windows PowerShell]
+.\install.ps1
+```
+
+:::
+
 ### 手动安装
 
 1. 从 [Release](https://github.com/Fidelxyz/rime-wanxiang-slim/releases) 页面下载方案文件。
 
 1. 将解压后的文件放入 [Rime **用户目录**](https://github.com/rime/home/wiki/UserData)。
 
-    ::: info 各前端用户目录路径
+    ::: tip 各前端用户目录路径
 
-    - 小狼毫：`%APPDATA%/Rime`。也可以通过「开始菜单 — 小狼毫输入法 —  用户文件夹」打开。
-    - 鼠须管：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠须管 — 用户设定…」打开。
-    - IBus：`~/.config/ibus/rime`。
-    - Fcitx：`~/.config/fcitx/rime`。
-    - Fcitx 5：`~/.local/share/fcitx5/rime/`。
+    - **小狼毫**：`%APPDATA%/Rime`。也可以通过「开始菜单 — 小狼毫输入法 —  用户文件夹」打开。
+    - **鼠须管**：`~/Library/Rime`。也可以通过「系统输入法菜单 — 鼠须管 — 用户设定…」打开。
+    - **IBus**：`~/.config/ibus/rime`。
+    - **Fcitx**：`~/.config/fcitx/rime`。
+    - **Fcitx 5**：`~/.local/share/fcitx5/rime/`。
 
     :::
 
