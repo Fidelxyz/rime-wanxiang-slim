@@ -6,7 +6,7 @@ outline: deep
 
 Rime 配置文件的优先级为 `custom.yaml` > `schema.yaml` > `default.yaml`。位于优先级较高的文件中的配置会覆盖优先级较低文件中的同名配置。
 
-编译时，Rime 会首先递归展开 `__include`、`__patch` 和 `__append` 引用指令，随后应用 `custom.yaml` 中的补丁。最终生成的配置位于 `build` 文件夹下。
+编译时，Rime 会处理 `__include`、`__patch` 和 `__append` 等配置指令，并将 `custom.yaml` 中的补丁应用到配置中。补丁值也可以包含配置指令。最终生成的配置位于 `build` 文件夹下。
 
 ## 补丁
 
@@ -71,11 +71,29 @@ patch:
 关于 `__include`、`__patch` 和 `__append` 引用指令的用法和示例，详见 [Rime 配置文件](https://github.com/rime/home/wiki/Configuration)。
 
 > [!NOTE]
-> 自定义文件 `custom.yaml` 中的补丁只能针对**展开引用指令后**的配置进行修改，不能修改引用指令本身。
+> 自定义文件 `custom.yaml` 中的补丁**不能直接修改引用指令本身**。
 >
-> 例如，以下示例中试图修改 `__include` 指令的行为是无效的，因为该指令展开后将不再包含 `__include` 指令：
+> > 例如，假设方案文件中定义了如下 `__include` 指令：
+> >
+> > ```yaml
+> > speller:
+> >   algebra:
+> >     __include: ...
+> > ```
+> >
+> > 以下写法无法修改方案文件中 `speller/algebra` 原有的 `__include` 指令：
+> >
+> > ```yaml
+> > patch:
+> >   speller/algebra/__include: ... # [!code warning]
+> > ```
 >
-> ```yaml
-> patch:
->   speller/algebra/__include: ... # [!code warning]
-> ```
+> 若要更换引用内容，应替换指令所在的**整个配置节点**，并在新节点中写入所需的指令。
+>
+> > 如，应替换整个 `speller/algebra` 节点，在节点中重新指定 `__include`：
+> >
+> > ```yaml
+> > patch:
+> >   speller/algebra:
+> >     __include: ...
+> > ```
