@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2026-09-18)
+
+
+### Features
+
+* add install scripts ([ec4e93c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ec4e93c359cd493fcc4a1073caac0a7491356c7d))
+* add 乱序17 support for pro schema ([ee15391](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ee15391f28e8727d5a519521f561cf619c00db5c))
+* support 蓝天双拼 and 大牛双拼 reverse lookup ([ba8f45b](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ba8f45b682d9a459fba7c9269fa0d2b9038d8b43))
+* **version_displayer:** show aux code schema on `/version` command ([55cd442](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/55cd442d17938dadb69da9acf6f1ca8a1ebeacac))
+
+
+### Bug Fixes
+
+* fix duplicated auxiliary mode detection character ([7c85502](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7c85502c1f163eb6033fa55ca8dac7d5faf83ee0))
+* only pin candidates matching the entire input segment ([58c3508](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/58c35086bd2d947bb738dd19fe0c34d034eb9f76))
+
 ## [1.0.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0...v1.0.0-beta.1) (2026-09-05)
 
 
