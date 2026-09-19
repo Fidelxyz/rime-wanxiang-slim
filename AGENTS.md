@@ -58,6 +58,8 @@ When modifying functional code (Lua) or configuration (YAML), always check if th
 - Update `FEATURES.md` for implementation file mappings.
 - Update `README.md` for high-level overview changes.
 
+Before updating documentation, review its existing content to decide whether the proposed addition belongs there, and match its existing level of detail.
+
 **When a feature is removed**:
 - Move its entry in `FEATURES.md` into the `## 已移除功能` section and list the deleted files/config blocks so future merges can resolve upstream conflicts and reintroductions safely.
 - Add the removed feature to the **已移除功能列表** table in `README.md` and `docs/getting-started/introduction.md` so the fork's diff from upstream is clearly documented for users.
