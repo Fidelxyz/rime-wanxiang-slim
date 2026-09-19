@@ -4,6 +4,7 @@
         ".": {
             "release-type": "simple",
             "draft": true,
+            "force-tag-creation": true,
             "bump-minor-pre-major": true,
             "extra-files": [
                 {
