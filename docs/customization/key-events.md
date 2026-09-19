@@ -105,8 +105,8 @@ Rime 的 `key_binder/bindings` 选项下的 `accept` 和 `send` 键值接受按�
 | `KP_Up` | 小键盘上箭头 |
 | `KP_Right` | 小键盘右箭头 |
 | `KP_Down` | 小键盘下箭头 |
-| `KP_Prior、KP_Page_Up` | 小键盘上翻 |
-| `KP_Next、KP_Page_Down` | 小键盘下翻 |
+| `KP_Prior` / `KP_Page_Up` | 小键盘上翻 |
+| `KP_Next` / `KP_Page_Down` | 小键盘下翻 |
 | `KP_End` | 小键盘末尾 |
 | `KP_Begin` | 小键盘起始 |
 | `KP_Insert` | 小键盘插入 |
