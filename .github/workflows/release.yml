@@ -36,6 +36,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: blob:none
 
       - uses: actions/setup-python@v6
         with:
@@ -44,7 +47,7 @@ jobs:
       - name: Build
         run: bash scripts/build.sh
 
-      - name: Commit and force push per-scheme branches
+      - name: Commit and push per-scheme branches
         run: |-
           set -euxo pipefail
 
@@ -61,7 +64,13 @@ jobs:
               continue
             fi
 
-            git worktree add --orphan "${branch}"
+            if git show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+              git worktree add -b "${branch}" "${branch}" "origin/${branch}"
+              # Replace the previous release's files while preserving its history.
+              git -C "${branch}" rm -r .
+            else
+              git worktree add --orphan "${branch}"
+            fi
 
             # Copy the built files from dist/ to the branch
             cp -a "${src_dir}/." "${branch}/"
@@ -78,8 +87,10 @@ jobs:
               git config user.name "github-actions[bot]"
               git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-              git commit -m "chore(${branch}): release for ${TAG_NAME}"
-              git push -f origin "${branch}"
+              if ! git diff --cached --quiet; then
+                git commit -m "chore(${branch}): release for ${TAG_NAME}"
+              fi
+              git push origin "${branch}"
             )
           done
 
