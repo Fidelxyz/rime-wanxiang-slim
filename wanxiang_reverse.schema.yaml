@@ -3,7 +3,7 @@
 
 schema:
   schema_id: wanxiang_reverse
-  version: "0.6.0"  # x-release-please-version
+  version: "1.0.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
@@ -20,8 +20,9 @@ engine:
 
 speller:
   algebra:
-    __include: wanxiang_algebra:/reverse/全拼
-    __patch: wanxiang_algebra:/reverse/hspzn
+    __patch:
+      - wanxiang_algebra:/reverse/全拼
+      - wanxiang_algebra:/reverse/hspzn
 
 translator:
   dictionary: wanxiang_reverse

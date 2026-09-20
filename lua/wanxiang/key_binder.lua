@@ -55,11 +55,14 @@ local M = {}
 
 ---@param env Env
 function M.init(env)
+    local rime_config = env.engine.schema.config
+    assert(rime_config)
+
     ---@type Binding[]
     local bindings = {}
     local bindings_len = 0
 
-    local cfg_bindings = env.engine.schema.config:get_list("key_binder/bindings")
+    local cfg_bindings = rime_config:get_list("key_binder/bindings")
     if cfg_bindings then
         for i = 0, cfg_bindings.size - 1 do
             local item = cfg_bindings:get_at(i)

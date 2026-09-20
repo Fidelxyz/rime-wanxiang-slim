@@ -80,13 +80,8 @@ local F = {}
 function F.init(env)
     local context = env.engine.context
 
-    ---@type Memory?
-    local memory = nil
-    ---@type Connection?
-    local commit_notifier = nil
-
-    memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
-    commit_notifier = context.commit_notifier:connect(function(ctx)
+    local memory = Memory(env.engine, env.engine.schema, "wanxiang_english")
+    local commit_notifier = context.commit_notifier:connect(function(ctx)
         commit_handler(ctx, env)
     end)
 
