@@ -125,9 +125,10 @@ local F = {}
 
 ---@param env Env
 function F.init(env)
-    local config = env.engine.schema.config
+    local rime_config = env.engine.schema.config
+    assert(rime_config)
 
-    local delimiter = config:get_string("speller/delimiter") or " '"
+    local delimiter = rime_config:get_string("speller/delimiter") or " '"
     local auto_delimiter = delimiter:sub(1, 1)
     local split_code_pattern = "[^" .. utils.escape_for_pattern(auto_delimiter) .. "]+"
     local delimiter_pattern = "[" .. utils.escape_for_pattern(delimiter) .. "]"
