@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.0.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0-beta.2...v1.0.0) (2026-09-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **algebra:** 升级到该版本时，需手动更新自定义文件 `custom.yaml` 中 `speller/algebra` 补丁至 `custom` 目录下模板文件中新的格式。
+
+### Bug Fixes
+
+* make install.sh compatible with PowerShell 5.1 ([5747e11](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5747e1135b36a6bb1e6cfdf4b72b4d8abac70fea))
+
+
+### Miscellaneous Chores
+
+* v1 release ([1546f41](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1546f4170d55a2091be702e27b459e84d3b0bb0b))
+
+
+### Code Refactoring
+
+* **algebra:** unify algebra patch configuration ([3fa26fc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/3fa26fcb236144c30f01f4305c6ba18ab2056ee4))
+
 ## [1.0.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2026-09-18)
 
 
