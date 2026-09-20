@@ -20,8 +20,9 @@ engine:
 
 speller:
   algebra:
-    __include: wanxiang_algebra:/reverse/全拼
-    __patch: wanxiang_algebra:/reverse/hspzn
+    __patch:
+      - wanxiang_algebra:/reverse/全拼
+      - wanxiang_algebra:/reverse/hspzn
 
 translator:
   dictionary: wanxiang_reverse

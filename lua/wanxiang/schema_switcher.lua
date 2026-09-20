@@ -103,22 +103,19 @@ end
 ---@return boolean ok true if a substitution was made and written
 local function set_pinyin_schema(user_dir, custom_file_name, schema_name)
     return update_custom_file(user_dir .. "/" .. custom_file_name, function(content)
-        local n = 0
-        if custom_file_name == "wanxiang.custom.yaml" or custom_file_name == "wanxiang_pro.custom.yaml" then
-            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/%a+/)(%S+)", function(parent, name)
-                -- Replace only known pinyin schema references, preserving other entries.
-                for _, pinyin_name in pairs(PINYIN_SCHEMAS) do
-                    if name == pinyin_name then
-                        return parent .. schema_name
-                    end
+        local matched = false
+        content = content:gsub("(%s*%-%s*wanxiang_algebra:/%a+/)(%S+)", function(parent, name)
+            -- Replace only known pinyin schema references, preserving other entries.
+            for _, pinyin_name in pairs(PINYIN_SCHEMAS) do
+                if name == pinyin_name then
+                    matched = true
+                    return parent .. schema_name
                 end
-                return parent .. name
-            end)
-        elseif custom_file_name == "wanxiang_reverse.custom.yaml" then
-            content, n = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
-        end
+            end
+            return parent .. name
+        end)
 
-        if n == 0 then
+        if not matched then
             return nil
         end
         return content

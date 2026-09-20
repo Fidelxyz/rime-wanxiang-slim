@@ -52,6 +52,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `wanxiang_reverse.schema.yaml`：拆分与笔画反查方案定义
 - `wanxiang_reverse.dict.yaml`：反查字典数据
 - `wanxiang.schema.yaml`：`reverse_lookup` 段与 `affix_segmentor` 配置
+- `wanxiang_algebra.yaml` (`reverse` 段)：各拼音与笔画规则
 
 ### 造词
 
@@ -184,7 +185,7 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 
 通过 `/flypy`、`/zrm` 等指令切换双拼/全拼方案。
 
-- `lua/wanxiang/schema_switcher.lua`：方案切换翻译器，自动修改 custom 文件
+- `lua/wanxiang/schema_switcher.lua`：方案切换翻译器，统一替换主方案和反查 custom 文件的 `__patch` 列表中的拼音规则引用
 - `wanxiang_algebra.yaml`：12+ 拼音方案的转写规则
 - `custom/` 目录：custom 文件模板
 

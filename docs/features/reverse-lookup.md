@@ -74,7 +74,8 @@ outline: deep
 ```yaml [wanxiang_reverse.custom.yaml]
 patch:
   speller/algebra:
-    __patch: wanxiang_algebra:/reverse/hspzn
+    __patch:
+      - wanxiang_algebra:/reverse/hspzn
 ```
 
 :::

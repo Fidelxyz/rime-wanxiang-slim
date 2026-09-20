@@ -20,7 +20,8 @@ engine:
 
 speller:
   algebra:
-    __include: wanxiang_algebra:/english
+    __patch:
+      - wanxiang_algebra:/english
 
 translator:
   dictionary: wanxiang_english
