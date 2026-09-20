@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/duoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/duoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: polyphone
-version: "17.0.3"
+version: "17.9.2"
 sort: by_weight
 ...
 自己打的	zì;oi jǐ;vj dǎ;ua de;ui	80
@@ -18,7 +18,20 @@ sort: by_weight
 真得劲	zhēn;nh dé;wk jìn;rs	322
 可得劲儿	kě;zk dé;wk jìn;rs er;pe	178
 乐山乐水	yào;by shān;vs yào;by shuǐ;ks	12
+伤着了	shāng;js zhe;gq le;rl	130
+一场	yì;fi cháng;ge	17575
+事了	shì;fb liǎo;rl	337
+会得	huì;jb dé;wk	554
+越长越	yuè;pn zhǎng;pc yuè;pn	211
+哦哦	ò;dp ò;dp	1080
+吱吱	zī;dc zī;dc	100
+度量	dù;xr liáng;od	100
+得了	de;wk liǎo;rl	203
+当天	dāng;yb tiān;fm	539
+当月	dāng;yb yuè;vy	449
 同行的	tóng;md háng;px de;ui	198
+中鱼	zhòng;dg yú;wv	100
+中鱼率	zhòng;dg yú;wv lǜ;zn	392
 露骨	lòu;ts gǔ;fg	1048
 发卡	fà;si qiǎ;yy	1036
 作料	zuó;jw liào;pj	62
@@ -26,6 +39,7 @@ sort: by_weight
 大都会	dà;md dōu;qt huì;jb	76
 包宿	bāo;nv xiǔ;wu	113
 结了	jiē;id le;rl	1235
+结出	jiē;id chū;sm	848
 经常流鼻血	jīng;iu cháng;sr liú;ko bí;ol xuè;ta	10
 抽空	chōu;ud kòng;eu	2528
 调到了	diào;sd dào;yp le;rl	95
@@ -53,6 +67,7 @@ sort: by_weight
 轻薄	qīng;yu báo;lk	9145
 强人	qiáng;bc rén;jr	855
 天雨	tiān;fm yù;tv	264
+逮着	dǎi;bu zhe;gq	31
 临了	lín;po liǎo;rl	411
 临了了	lín;po liǎo;rl le;rl	143
 空着	kòng;eu zhe;gq	2177
@@ -4529,33 +4544,9 @@ sort: by_weight
 赚谁的钱	zhuàn;oc shéi;su de;ui qián;zp	39
 装给谁看	zhuāng;at gěi;id shéi;su kàn;uq	1
 准不准谁	zhǔn;wu bù;cb zhǔn;wu shéi;su	1
-捉兔	zhuō;up tù;wt	200
-白石塔	bái;ub shí;ms tǎ;gd	33
-板凳宽	bǎn;er dèng;ho kuān;we	10
-扁担长	biǎn;mi dàn;uf cháng;pc	362
-剥桔子	bō;bp jú;ed zi;hi	462
-常练习	cháng;sr liàn;iy xí;zx	111
-盛鱼翅	chéng;na yú;wv chì;cz	10
-醋湿布	cù;yo shī;kc bù;nr	10
-打罢秋	dǎ;ua bà;yk qiū;xc	10
-打翻醋	dǎ;ua fān;tz cù;yo	10
-打了醋	dǎ;ua le;rl cù;yo	10
-灯映星	dēng;ca yìng;om xīng;ol	10
-弟弟说	dì;ht di;ht shuō;sp	871
-董两家	dǒng;ld liǎng;ml jiā;wj	10
-放下布	fàng;lh xià;fy bù;nr	10
-飞了鹰	fēi;cf le;rl yīng;xx	10
-粉凤凰	fěn;pp fèng;or huáng;on	308
-干不干	gàn;eg bú;cb gàn;eg	330
-干不干	gān;eg bù;cb gān;eg	300
-哥哥说	gē;zz ge;zz shuō;sp	416
-搁下醋	gē;us xià;fy cù;yo	10
-红凤凰	hóng;iu fèng;or huáng;on	439
-花凤凰	huā;lv fèng;or huáng;on	10
-花鸟叫	huā;lv niǎo;xn jiào;di	10
-黄凤凰	huáng;nh fèng;or huáng;on	232
-接住豆	jiē;ub zhù;jn dòu;zd	10
-九重天	jiǔ;kj chóng;ld tiān;fm	249
+略长一些	lüè;qs zhǎng;pc yì;fi xiē;sm	372
+为一名	wéi;ii yì;fi míng;ld	1956
+为一名	wèi;ii yì;fi míng;ld	1926
 两个八	liǎng;ml gè;jg bā;hb	736
 两个白	liǎng;ml gè;jg bái;ub	781
 两个百	liǎng;ml gè;jg bǎi;fu	751
@@ -4904,523 +4895,3 @@ sort: by_weight
 四个月	sì;ys gè;jg yuè;vy	4584
 四个雲	sì;ys gè;jg yún;tb	1
 四个竹	sì;ys gè;jg zhú;ru	894
-四是四	sì;ys shì;ot sì;ys	557
-四十四	sì;ys shí;ns sì;ys	527
-提锡壶	tí;ut xī;ze hú;gc	1
-听物理	tīng;dt wù;qe lǐ;nd	1
-腿说嘴	tuǐ;vu shuō;sp zuǐ;dt	1
-为一名	wéi;ii yì;fi míng;ld	1956
-为一名	wèi;ii yì;fi míng;ld	1926
-星映灯	xīng;ol yìng;om dēng;ca	1
-杨家羊	yáng;ee jiā;wj yáng;gy	1
-硬石头	yìng;mb shí;ms tou;wm	426
-游西湖	yóu;kh xī;vx hú;kv	700
-越长越	yuè;pn cháng;pc yuè;pn	353
-越长大	yuè;pn zhǎng;pc dà;md	1890
-越长越	yuè;pn zhǎng;pc yuè;pn	2111
-这是蚕	zhè;vu shì;ot cán;fc	1
-紫瓷盘	zǐ;si cí;wr pán;ia	1
-紫葡萄	zǐ;si pú;ln táo;la	55
-嘴不黑	zuǐ;dt bù;cb hēi;ph	1
-嘴说腿	zuǐ;dt shuō;sp tuǐ;vu	1
-白白的鹅	bái;ub bái;ub de;ui é;tx	169
-便不便宜	biàn;jb bú;cb biàn;jb yí;wf	1
-便宜行事	biàn;jb yí;wf xíng;px shì;fb	73
-便宜之内	biàn;jb yí;wf zhī;ri nèi;mj	1
-不剥桔子	bù;cb bō;bp jú;ed zi;hi	74
-不吃桔子	bù;cb chī;da jú;ed zi;hi	128
-不是字纸	bú;cb shì;ot zì;wh zhǐ;ib	97
-鹅要过河	é;tx yào;vb guò;ku hé;kz	187
-肥肥的鹅	féi;vm féi;vm de;ui é;tx	178
-粉红凤凰	fěn;pp hóng;iu fèng;or huáng;on	272
-河要渡鹅	hé;kz yào;vb dù;kr é;tx	1
-红粉凤凰	hóng;iu fěn;pp fèng;or huáng;on	1
-蒋家的墙	jiǎng;lk jiā;wj de;ui qiáng;gd	200
-宽宽的河	kuān;we kuān;we de;ui hé;kz	264
-略长一些	lüè;qs cháng;pc yì;fi xiē;sm	372
-略长几岁	lüè;qs zhǎng;pc jǐ;oj suì;vl	128
-啪啪砰砰	pā;du pā;du pēng;mh pēng;mh	1
-砰砰啪啪	pēng;mh pēng;mh pā;du pā;du	1
-同种冬瓜	tóng;md zhǒng;xg dōng;hw guā;yg	1
-勿理物理	wù;ne lǐ;nd wù;qe lǐ;nd	1
-惜乎锡壶	xī;ho hū;tn xī;ze hú;gc	300
-小直摇头	xiǎo;yx zhí;nf yáo;ua tóu;wm	97
-越长越好	yuè;pn cháng;pc yuè;pn hǎo;bh	529
-越长越快	yuè;pn zhǎng;pc yuè;pn kuài;hj	4
-安心唱爱歌	ān;wb xīn;hx chàng;do ài;yr gē;ze	1
-昂首吸飞蛾	áng;oz shǒu;ho xī;dc fēi;cf é;cp	1
-遨游真快活	áo;au yóu;kh zhēn;nh kuài;hj huó;ka	1
-拔腿就逃掉	bá;ui tuǐ;vu jiù;go táo;pu diào;un	1
-白鹅与灰鹅	bái;ub é;tx yǔ;ff huī;nc é;tx	1
-白石搭石塔	bái;ub shí;ms dā;ud shí;ms tǎ;gd	1
-白塔白石搭	bái;ub tǎ;gd bái;ub shí;ms dā;ud	1
-白塔白又滑	bái;ub tǎ;gd bái;ub yòu;ry huá;kf	1
-本是虎捉虎	běn;ef shì;ot hǔ;zh zhuō;up hǔ;zh	1
-不会吹喇叭	bú;cb huì;jb chuī;de lǎ;dp bā;dh	1
-不会折喇叭	bú;cb huì;jb zhé;ut lǎ;dp bā;dh	1
-不能再挨饿	bù;cb néng;kv zài;fg ái;uo è;qp	1
-不要扔了梨	bú;cb yào;vb rēng;uv le;rl lí;xe	1
-草窝暗又矮	cǎo;ln wō;ej àn;ox yòu;ry ǎi;ob	1
-唱得渴又饿	chàng;do dé;wk kě;kf yòu;ry è;qp	1
-锄头怨猪头	chú;zs tou;wm yuàn;lh zhū;mo tóu;wm	1
-锄头撞石头	chú;zs tou;wm zhuàng;ud shí;ms tou;wm	1
-窗上一支枪	chuāng;eh shàng;yf yì;fi zhī;ci qiāng;ez	1
-窗下一箩糠	chuāng;eh xià;fy yī;fi luó;rl kāng;pk	1
-窗要糠让枪	chuāng;eh yào;vb kāng;pk ràng;sf qiāng;ez	1
-吹着小喇叭	chuī;de zhe;gq xiǎo;yx lǎ;dp bā;dh	1
-搭好白石塔	dā;ud hǎo;bh bái;ub shí;ms tǎ;gd	1
-带着腊梅花	dài;lr zhe;gq là;vo méi;ek huā;lv	1
-地上满山灯	dì;ge shàng;yf mǎn;km shān;vs dēng;ca	1
-地上七块冰	dì;ge shàng;yf qī;rq kuài;gj bīng;wk	1
-地上一只猫	dì;ge shàng;yf yì;fi zhī;dh māo;mq	1
-地上有只猫	dì;ge shàng;yf yǒu;nv zhǐ;dh māo;mq	1
-地下有石头	dì;ge xià;fy yǒu;nv shí;ms tou;wm	1
-弟子三十三	dì;ht zǐ;hi sān;ts shí;ns sān;ts	1
-雕吓走了猫	diāo;mu xià;dy zǒu;pz le;rl māo;mq	1
-都说要小个	dōu;qt shuō;sp yào;vb xiǎo;yx gè;jg	1
-多多让哥哥	duō;ll duō;ll ràng;sf gē;zz ge;zz	1
-哥哥让多多	gē;zz ge;zz ràng;sf duō;ll duō;ll	1
-鼓上画老虎	gǔ;hc shàng;yf huà;fm lǎo;ql hǔ;zh	1
-还是布补虎	hái;cu shì;ot bù;nr bǔ;ty hǔ;zh	1
-还是狗怕猴	hái;cu shì;ot gǒu;mg pà;hu hóu;mo	1
-还是狗咬猴	hái;cu shì;ot gǒu;mg yǎo;db hóu;mo	1
-还是河渡鹅	hái;cu shì;ot hé;kz dù;kr é;tx	1
-还是盆碰瓶	hái;cu shì;ot pén;ha pèng;mc píng;hr	1
-还是热日头	hái;cu shì;ot rè;uc rì;or tou;wm	1
-河边两只鹅	hé;kz biān;su liǎng;ml zhǐ;dh é;tx	1
-河里真暖和	hé;kz lǐ;dl zhēn;nh nuǎn;or huo;xd	1
-黑猫白鼻子	hēi;ph māo;mq bái;ub bí;ol zi;hi	1
-互相不退让	hù;fb xiāng;eq bú;cb tuì;iu ràng;sf	1
-胡子打驼子	hú;cv zi;hi dǎ;ua tuó;nv zi;hi	1
-花粉花凤凰	huā;lv fěn;pp huā;lv fèng;or huáng;on	1
-花鸟怕灰猫	huā;lv niǎo;xn pà;hu huī;nc māo;mq	1
-黄贺搞木刻	huáng;nh hè;so gǎo;ug mù;em kè;kp	1
-假梨差不离	jiǎ;jr lí;xe chà;gu bù;cb lí;zv	1
-教练和主力	jiào;qh liàn;iy hé;xd zhǔ;in lì;sl	1
-糠赶不走枪	kāng;pk gǎn;pe bù;cb zǒu;pz qiāng;ez	1
-糠埋住了枪	kāng;pk mái;gd zhù;jn le;rl qiāng;ez	1
-糠要枪上墙	kāng;pk yào;vb qiāng;ez shàng;yf qiáng;gd	1
-吭哧吭哧走	kēng;do chī;dc kēng;do chī;dc zǒu;pz	1
-口渴要吃梨	kǒu;dk kě;kf yào;vb chī;da lí;xe	1
-来到山坡坡	lái;ah dào;yp shān;vs pō;gr pō;gr	1
-老刘夸小牛	lǎo;ql liú;vp kuā;ma xiǎo;yx niú;qn	1
-李虎满屋转	lǐ;eh hǔ;zh mǎn;km wū;cy zhuǎn;yi	1
-梨子掉下地	lí;xe zi;hi diào;un xià;fy dì;ge	1
-猫赶飞了雕	māo;mq gǎn;pe fēi;cf le;rl diāo;mu	1
-面铺门朝南	miàn;bm pù;zn mén;am cháo;nv nán;ng	1
-哦哦爱唱歌	ó;dp ó;dp ài;yr chàng;do gē;ze	1
-盆里有个瓶	pén;ha lǐ;dl yǒu;nv gè;jg píng;hr	1
-瓶口有塞头	píng;hr kǒu;dk yǒu;nv sāi;wg tóu;wm	1
-婆婆和嬷嬷	pó;kb pó;kb hé;xd mó;bk mó;bk	1
-枪落进了糠	qiāng;ez luò;ls jìn;qu le;rl kāng;pk	1
-墙上七枚钉	qiáng;gd shàng;yf qī;rq méi;eh dīng;za	1
-墙要枪上窗	qiáng;gd yào;vb qiāng;ez shàng;yf chuāng;eh	1
-撒了羊骨头	sā;uh le;rl yáng;gy gǔ;fg tou;wm	1
-山里有个寺	shān;vs lǐ;dl yǒu;nv gè;jg sì;gk	1
-山外有个市	shān;vs wài;ly yǒu;nv gè;jg shì;zr	1
-伸手拿骨头	shēn;jg shǒu;us ná;ju gǔ;fg tou;wm	1
-师傅四十四	shī;pr fù;jk sì;ys shí;ns sì;ys	1
-十四和四十	shí;ns sì;ys hé;xd sì;ys shí;ns	1
-十四是十四	shí;ns sì;ys shì;ot shí;ns sì;ys	1
-石头砸猪头	shí;ms tou;wm zá;mr zhū;mo tóu;wm	1
-树上七只莺	shù;ek shàng;yf qī;rq zhǐ;dh yīng;lx	1
-树下蹲条狗	shù;ek xià;fy dūn;pk tiáo;he gǒu;mg	1
-四十和十四	sì;ys shí;ns hé;xd shí;ns sì;ys	1
-四十是四十	sì;ys shí;ns shì;ot sì;ys shí;ns	1
-台上七盏灯	tái;kd shàng;yf qī;rq zhǎn;fa dēng;ca	1
-天上七颗星	tiān;fm shàng;yf qī;rq kē;qw xīng;ol	1
-驼子打胡子	tuó;nv zi;hi dǎ;ua hú;cv zi;hi	1
-驼子挑螺蛳	tuó;nv zi;hi tiāo;uw luó;ci sī;cr	1
-外婆乐呵呵	wài;ly pó;kb lè;by hē;dz hē;dz	1
-王克写诗歌	wáng;nw kè;cp xiě;wf shī;sk gē;ze	1
-雾里看物理	wù;ts lǐ;dl kàn;uq wù;qe lǐ;nd	1
-锡壶掉西湖	xī;ze hú;gc diào;un xī;vx hú;kv	1
-下了一天雨	xià;fy le;rl yì;fi tiān;fm yǔ;tv	1
-小鸟唱枝头	xiǎo;yx niǎo;xn chàng;do zhī;ec tóu;wm	1
-小猪扭头瞅	xiǎo;yx zhū;mo niǔ;ug tóu;wm chǒu;qc	1
-小猪怨锄头	xiǎo;yx zhū;mo yuàn;lh chú;zs tou;wm	1
-一盘生鱼翅	yì;fi pán;ia shēng;ls yú;wv chì;cz	1
-一盘熟鱼翅	yì;fi pán;ia shú;gc yú;wv chì;cz	1
-一天天下雨	yì;fi tiān;fm tiān;fm xià;fy yǔ;tv	1
-有吃又有喝	yǒu;nv chī;da yòu;ry yǒu;nv hē;df	1
-沾了一身泥	zhān;kd le;rl yì;fi shēn;zs ní;kv	1
-只得去过河	zhǐ;dh de;wk qù;gk guò;ku hé;kz	1
-只需洗掉泥	zhǐ;dh xū;tl xǐ;kp diào;un ní;kv	1
-嘴里有舌头	zuǐ;dt lǐ;dl yǒu;nv shé;as tou;wm	1
-坐下分果果	zuò;jg xià;fy fēn;hp guǒ;qe guǒ;qe	1
-绊倒了秃丫头	bàn;iu dǎo;jp le;rl tū;xo yā;hg tou;wm	1
-板凳比扁担宽	bǎn;er dèng;ho bǐ;vv biǎn;mi dàn;uf kuān;we	1
-扁担比板凳长	biǎn;mi dàn;uf bǐ;vv bǎn;er dèng;ho cháng;pc	1
-别喇叭的哑巴	bié;dp lǎ;dp bā;dh de;ui yǎ;dc bā;mb	1
-不知是鹅过河	bù;cb zhī;od shì;ot é;tx guò;ku hé;kz	1
-不知是猴咬狗	bù;cb zhī;od shì;ot hóu;mo yǎo;db gǒu;mg	1
-不知是瓶碰盆	bù;cb zhī;od shì;ot píng;hr pèng;mc pén;ha	1
-蚕常在叶里藏	cán;fc cháng;sr zài;ng yè;dn lǐ;dl cáng;lq	1
-蝉常在林里唱	chán;cn cháng;sr zài;ng lín;ee lǐ;dl chàng;do	1
-吃桔子吃桔子	chī;da jú;ed zi;hi chī;da jú;ed zi;hi	1
-到底是布补鼓	dào;yp dǐ;xi shì;ot bù;nr bǔ;ty gǔ;hc	1
-地上有只白猫	dì;ge shàng;yf yǒu;nv zhǐ;dh bái;ub māo;mq	1
-地下的硬石头	dì;ge xià;fy de;ui yìng;mb shí;ms tou;wm	1
-地下有块石头	dì;ge xià;fy yǒu;nv kuài;gj shí;ms tou;wm	1
-二班有个王克	èr;me bān;nn yǒu;nv gè;jg wáng;nw kè;cp	1
-房子里有箱子	fáng;ml zi;hi lǐ;dl yǒu;nv xiāng;rq zi;hi	1
-光动腿不动嘴	guāng;mg dòng;bs tuǐ;vu bú;cb dòng;bs zuǐ;dt	1
-光动嘴不动腿	guāng;mg dòng;bs zuǐ;dt bú;cb dòng;bs tuǐ;vu	1
-盒子里有镯子	hé;ja zi;hi lǐ;dl yǒu;nv zhuó;zc zi;hi	1
-盒子外有匣子	hé;ja zi;hi wài;ly yǒu;nv xiá;ns zi;hi	1
-黑猫的白鼻子	hēi;ph māo;mq de;ui bái;ub bí;ol zi;hi	1
-红红想要红花	hóng;iu hóng;iu xiǎng;eh yào;vb hóng;iu huā;lv	1
-华华想要黄花	huá;jn huá;jn xiǎng;eh yào;vb huáng;nh huā;lv	1
-花鸟瞧灰猫跳	huā;lv niǎo;xn qiáo;qc huī;nc māo;mq tiào;pw	1
-回家去见妈妈	huí;rd jiā;wj qù;gk jiàn;ej mā;bn ma;bn	1
-灰猫听花鸟叫	huī;nc māo;mq tīng;dt huā;lv niǎo;xn jiào;di	1
-究竟是猴怕狗	jiū;ek jìng;xp shì;ot hóu;mo pà;hu gǒu;mg	1
-拉拉会折喇叭	lā;ui lā;ui huì;jb zhé;ut lǎ;dp bā;dh	1
-妈妈用布来补	mā;bn ma;bn yòng;ty bù;nr lái;ah bǔ;ty	1
-牛牛要顶妞妞	niú;qn niú;qn yào;vb dǐng;aw niū;bg niū;bg	1
-史肖石年四十	shǐ;db xiào;yv shí;ms nián;ev sì;ys shí;ns	1
-石小四年十四	shí;ms xiǎo;yx sì;ys nián;ev shí;ns sì;ys	1
-手上的手指头	shǒu;us shàng;yf de;ui shǒu;us zhǐ;uo tou;wm	1
-四和十四和十	sì;ys hé;xd shí;ns sì;ys hé;xd shí;ns	1
-天上有个日头	tiān;fm shàng;yf yǒu;nv gè;jg rì;or tou;wm	1
-腿说嘴爱卖嘴	tuǐ;vu shuō;sp zuǐ;dt ài;yr mài;nm zuǐ;dt	1
-匣子里有盒子	xiá;ns zi;hi lǐ;dl yǒu;nv hé;ja zi;hi	1
-匣子外有箱子	xiá;ns zi;hi wài;ly yǒu;nv xiāng;rq zi;hi	1
-箱子里有匣子	xiāng;rq zi;hi lǐ;dl yǒu;nv xiá;ns zi;hi	1
-箱子外有房子	xiāng;rq zi;hi wài;ly yǒu;nv fáng;ml zi;hi	1
-丫丫会吹喇叭	yā;hg yā;hg huì;jb chuī;de lǎ;dp bā;dh	1
-一班有个黄贺	yì;fi bān;nn yǒu;nv gè;jg huáng;nh hè;so	1
-镯子外有盒子	zhuó;zc zi;hi wài;ly yǒu;nv hé;ja zi;hi	1
-嘴里的软舌头	zuǐ;dt lǐ;dl de;ui ruǎn;ye shé;as tou;wm	1
-嘴里有个舌头	zuǐ;dt lǐ;dl yǒu;nv gè;jg shé;as tou;wm	1
-嘴说腿爱跑腿	zuǐ;dt shuō;sp tuǐ;vu ài;yr pǎo;pv tuǐ;vu	1
-每只大石狮子	měi;ek zhī;dh dà;md shí;ms shī;mr zi;hi	1
-一只小石狮子	yì;fi zhī;dh xiǎo;yx shí;ms shī;mr zi;hi	1
-四只小石狮子	sì;ys zhī;dh xiǎo;yx shí;ms shī;mr zi;hi	1
-八百标兵奔北坡	bā;hb bǎi;fu biāo;ef bīng;th bēn;ml běi;av pō;gr	1
-八朵粉红大荷花	bā;hb duǒ;oe fěn;pp hóng;iu dà;md hé;lz huā;lv	1
-板凳没有扁担长	bǎn;er dèng;ho méi;kr yǒu;nv biǎn;mi dàn;uf cháng;pc	1
-搬来白石搭白塔	bān;ur lái;ah bái;ub shí;ms dā;ud bái;ub tǎ;gd	1
-北坡炮兵并排跑	běi;av pō;gr pào;cv bīng;th bìng;hl pái;ur pǎo;pv	1
-彼此匆匆跑回头	bǐ;wr cǐ;sv cōng;ni cōng;ni pǎo;pv huí;rd tóu;wm	1
-壁虎不敢咬李虎	bì;cg hǔ;zh bú;cb gǎn;ah yǎo;db lǐ;eh hǔ;zh	1
-扁担没有板凳宽	biǎn;mi dàn;uf méi;kr yǒu;nv bǎn;er dèng;ho kuān;we	1
-标兵怕碰炮兵炮	biāo;ef bīng;th pà;hu pèng;mc pào;cv bīng;th pào;cv	1
-不如不长腿和嘴	bù;cb rú;bd bù;cb cháng;pc tuǐ;vu hé;xd zuǐ;dt	1
-不是鸡卵品种乱	bú;cb shì;ot jī;rx luǎn;bl pǐn;dd zhǒng;xg luàn;aa	1
-吃完柿子玩石子	chī;da wán;wp shì;er zi;hi wán;np shí;ms zǐ;hi	1
-从北边来个哑吧	cóng;jj běi;av biān;su lái;ah gè;jg yǎ;dc ba;dm	1
-大渠水流进小渠	dà;md qú;ke shuǐ;ks liú;ko jìn;qu xiǎo;yx qú;ke	1
-到了家里吃柿子	dào;yp le;rl jiā;wj lǐ;dl chī;da shì;er zi;hi	1
-地下有块破砖头	dì;ge xià;fy yǒu;nv kuài;gj pò;mr zhuān;mi tóu;wm	1
-二人山前来比腿	èr;me rén;jr shān;vs qián;hp lái;ah bǐ;vv tuǐ;vu	1
-二人山前来比眼	èr;me rén;jr shān;vs qián;hp lái;ah bǐ;vv yǎn;qi	1
-而是鸡卵皮太软	ér;le shì;ot jī;rx luǎn;bl pí;rp tài;mi ruǎn;ye	1
-反正都是练舌头	fǎn;xr zhèng;fs dōu;qt shì;ot liàn;iy shé;as tou;wm	1
-粉红墙上画凤凰	fěn;pp hóng;iu qiáng;gd shàng;yf huà;fm fèng;or huáng;on	1
-风吹藤动铜铃动	fēng;ob chuī;de téng;lk dòng;bs tóng;zd líng;zk dòng;bs	1
-凤凰画在粉红墙	fèng;or huáng;on huà;fm zài;ng fěn;pp hóng;iu qiáng;gd	1
-风停藤停铜铃停	fēng;ob tíng;ja téng;lk tíng;ja tóng;zd líng;zk tíng;ja	1
-刚往窗上糊字纸	gāng;mp wǎng;wn chuāng;eh shàng;yf hú;pv zì;wh zhǐ;ib	1
-狗翻起来咬住猴	gǒu;mg fān;tz qǐ;pv lái;ah yǎo;db zhù;jn hóu;mo	1
-狗回头来望望猴	gǒu;mg huí;rd tóu;wm lái;ah wàng;fn wàng;fn hóu;mo	1
-挂上蓝布棉门帘	guà;ug shàng;yf lán;la bù;nr mián;er mén;am lián;er	1
-红红有两朵黄花	hóng;iu hóng;iu yǒu;nv liǎng;ml duǒ;oe huáng;nh huā;lv	1
-猴回头来望望狗	hóu;mo huí;rd tóu;wm lái;ah wàng;fn wàng;fn gǒu;mg	1
-猴跳下来撞了狗	hóu;mo tiào;pw xià;fy lái;ah zhuàng;ud le;rl gǒu;mg	1
-湖州有个胡梳子	hú;kv zhōu;oo yǒu;nv gè;jg hú;cv shū;eo zi;hi	1
-花了硬币四毛四	huā;lv le;rl yìng;mb bì;tr sì;ys máo;vm sì;ys	1
-黄贺完成了木刻	huáng;nh hè;so wán;wp chéng;na le;rl mù;em kè;kp	1
-回家吃饭路又远	huí;rd jiā;wj chī;da fàn;qr lù;ps yòu;ry yuǎn;mu	1
-灰猫跳起抓花鸟	huī;nc māo;mq tiào;pw qǐ;pv zhuā;uy huā;lv niǎo;xn	1
-回头看见鹰抓兔	huí;rd tóu;wm kàn;uq jiàn;ej yīng;xx zhuā;uy tù;wt	1
-蒋家要杨家赔墙	jiǎng;lk jiā;wj yào;vb yáng;ee jiā;wj péi;od qiáng;gd	1
-经常练说十和四	jīng;iu cháng;sr liàn;iy shuō;sp shí;ns hé;xd sì;ys	1
-拉拉只会折喇叭	lā;ui lā;ui zhǐ;dh huì;jb zhé;ut lǎ;dp bā;dh	1
-蓝教练是女教练	lán;la jiào;qh liàn;iy shì;ot nǚ;bn jiào;qh liàn;iy	1
-蓝南是男篮主力	lán;la nán;ng shì;ot nán;qs lán;ra zhǔ;in lì;sl	1
-老李拉了一车栗	lǎo;ql lǐ;eh lā;ui le;rl yì;fi chē;yc lì;ve	1
-老李拉栗去换梨	lǎo;ql lǐ;eh lā;ui lì;ve qù;gk huàn;um lí;xe	1
-老李人称李大力	lǎo;ql lǐ;eh rén;jr chēng;xy lǐ;eh dà;md lì;sl	1
-老罗拉了一车梨	lǎo;ql luó;yl lā;ui le;rl yì;fi chē;yc lí;xe	1
-老罗拉梨做梨酒	lǎo;ql luó;yl lā;ui lí;xe zuò;jh lí;xe jiǔ;ky	1
-老罗人称大力罗	lǎo;ql luó;yl rén;jr chēng;xy dà;md lì;sl luó;yl	1
-里头有堆羊骨头	lǐ;dl tou;wm yǒu;nv duī;gu yáng;gy gǔ;fg tou;wm	1
-两个乐得笑哈哈	liǎng;ml gè;jg lè;by de;wk xiào;rm hā;dd hā;dd	1
-龙洞困龙在深洞	lóng;tl dòng;kd kùn;re lóng;tl zài;ng shēn;ke dòng;kd	1
-龙去农田做农工	lóng;tl qù;gk nóng;wt tián;qt zuò;jh nóng;wt gōng;ug	1
-吕教练是男教练	lǚ;dd jiào;qh liàn;iy shì;ot nán;qs jiào;qh liàn;iy	1
-吕楠是女篮主力	lǚ;dd nán;eg shì;ot nǚ;bn lán;ra zhǔ;in lì;sl	1
-妈妈见了笑哈哈	mā;bn ma;bn jiàn;ej le;rl xiào;rm hā;dd hā;dd	1
-买了十个小柿子	mǎi;am le;rl shí;ns gè;jg xiǎo;yx shì;er zi;hi	1
-卖卵卖卵使劲喊	mài;nm luǎn;bl mài;nm luǎn;bl shǐ;jb jìn;rs hǎn;dd	1
-满山灯接满天星	mǎn;km shān;vs dēng;ca jiē;ub mǎn;km tiān;fm xīng;ol	1
-满天星亮满天庭	mǎn;km tiān;fm xīng;ol liàng;go mǎn;km tiān;fm tíng;xu	1
-面铺还是门朝南	miàn;bm pù;zn hái;cu shì;ot mén;am cháo;nv nán;ng	1
-莫把四字说成十	mò;lm bǎ;um sì;ys zì;wh shuō;sp chéng;na shí;ns	1
-嬷嬷默默拔萝卜	mó;bk mó;bk mò;pm mò;pm bá;ui luó;ll bo;yb	1
-拿着四个小篮子	ná;ju zhe;gq sì;ys gè;jg xiǎo;yx lán;ra zi;hi	1
-泥里两对鸟倒吊	ní;kv lǐ;dl liǎng;ml duì;rk niǎo;xn dào;jp diào;dr	1
-妞妞赶牛牛不走	niū;bg niū;bg gǎn;pe niú;qn niú;qn bù;cb zǒu;pz	1
-妞妞护柳牛扭头	niū;bg niū;bg hù;um liǔ;eb niú;qn niǔ;ug tóu;wm	1
-妞妞护柳要赶牛	niū;bg niū;bg hù;um liǔ;eb yào;vb gǎn;pe niú;qn	1
-妞妞捡起小石头	niū;bg niū;bg jiǎn;uf qǐ;pv xiǎo;yx shí;ms tóu;wm	1
-妞妞扭牛牛更拗	niū;bg niū;bg niǔ;ug niú;qn niú;qn gèng;fb ǎo;us	1
-妞妞扭牛牛更牛	niū;bg niū;bg niǔ;ug niú;qn niú;qn gèng;fb niú;qn	1
-牛牛扭头瞅妞妞	niú;qn niú;qn niǔ;ug tóu;wm chǒu;qc niū;bg niū;bg	1
-牛牛要吃河边柳	niú;qn niú;qn yào;vb chī;da hé;kz biān;su liǔ;eb	1
-牛牛要顶小妞妞	niú;qn niú;qn yào;vb dǐng;aw xiǎo;yx niū;bg niū;bg	1
-趴着八只活蛤蟆	pā;ph zhe;gq bā;hb zhǐ;dh huó;ka há;cd má;cm	1
-趴着一只活蛤蟆	pā;ph zhe;gq yì;fi zhī;dh huó;ka há;cd má;cm	1
-炮兵怕把标兵碰	pào;cv bīng;th pà;hu bǎ;um biāo;ef bīng;th pèng;mc	1
-婆婆默默采蘑菇	pó;kb pó;kb mò;pm mò;pm cǎi;ye mó;lm gū;lc	1
-坡上立着一只鹅	pō;gr shàng;yf lì;il zhe;gq yì;fi zhī;dh é;tx	1
-坡上卧着一只鹅	pō;gr shàng;yf wò;qy zhe;gq yì;fi zhī;dh é;tx	1
-坡下就是一条河	pō;gr xià;fy jiù;go shì;ot yì;fi tiáo;he hé;kz	1
-坡下流着一条河	pō;gr xià;fy liú;ko zhe;gq yì;fi tiáo;he hé;kz	1
-桥西走来一只猴	qiáo;ep xī;vx zǒu;pz lái;ah yì;fi zhī;dh hóu;mo	1
-青龙洞中涌出龙	qīng;av lóng;tl dòng;kd zhōng;dg yǒng;kt chū;sm lóng;tl	1
-青龙做梦出龙洞	qīng;av lóng;tl zuò;jh mèng;el chū;sm lóng;tl dòng;kd	1
-山后有个崔腿粗	shān;vs hòu;xd yǒu;nv gè;jg cuī;vu tuǐ;vu cū;pf	1
-山后有个严眼圆	shān;vs hòu;xd yǒu;nv gè;jg yán;fx yǎn;qi yuán;ro	1
-山前有个崔粗腿	shān;vs qián;hp yǒu;nv gè;jg cuī;vu cū;pf tuǐ;vu	1
-山前有个严圆眼	shān;vs qián;hp yǒu;nv gè;jg yán;fx yuán;ro yǎn;qi	1
-上街打醋又买布	shàng;yf jiē;pg dǎ;ua cù;yo yòu;ry mǎi;am bù;nr	1
-上前去追鹰和兔	shàng;yf qián;hp qù;gk zhuī;tu yīng;xx hé;xd tù;wt	1
-拾了四十小石子	shí;ud le;rl sì;ys shí;ns xiǎo;yx shí;ms zi;hi	1
-石小四和史肖石	shí;ms xiǎo;yx sì;ys hé;xd shǐ;db xiào;yv shí;ms	1
-树上结了白果果	shù;ek shàng;yf jié;id le;rl bái;ub guǒ;qe guǒ;qe	1
-谁都不来买鸡卵	shuí;su dōu;qt bù;cb lái;ah mǎi;am jī;rx luǎn;bl	1
-谁说十四是适时	shuí;su shuō;sp shí;ns sì;ys shì;ot shì;au shí;ok	1
-谁说四十是细席	shuí;su shuō;sp sì;ys shí;ns shì;ot xì;iq xí;xr	1
-四个孩子出果市	sì;ys gè;jg hái;hk zi;hi chū;sm guǒ;qe shì;zr	1
-送在口里啃骨头	sòng;hu zài;ng kǒu;dk lǐ;dl kěn;dv gǔ;fg tou;wm	1
-他的舌头没伸直	tā;je de;ui shé;as tou;wm méi;kr shēn;jg zhí;nf	1
-他的舌头没用力	tā;je de;ui shé;as tou;wm méi;kr yòng;ty lì;sl	1
-藤条头上挂铜铃	téng;lk tiáo;he tóu;wm shàng;yf guà;ug tóng;zd líng;zk	1
-踢倒老刘一瓶油	tī;pe dào;jp lǎo;ql liú;vp yì;fi píng;hr yóu;kd	1
-提个篮子卖鸡卵	tí;ut gè;jg lán;ra zi;hi mài;nm jī;rx luǎn;bl	1
-提拉塔嘛的喇嘛	tí;ut lā;ui tǎ;gd ma;dz de;ui lǎ;dp ma;dz	1
-提拉着五斤塔嘛	tí;ut lā;ui zhe;gq wǔ;wu jīn;tj tǎ;gd ma;dz	1
-王克二人搞创作	wáng;nw kè;cp èr;me rén;jr gǎo;ug chuàng;jp zuò;jw	1
-王克写好了诗歌	wáng;nw kè;cp xiě;wf hǎo;bh le;rl shī;sk gē;ze	1
-吓得牛牛扭头溜	xià;dy dé;wk niú;qn niú;qn niǔ;ug tóu;wm liū;kq	1
-吓得牛牛扭头走	xià;dy dé;wk niú;qn niú;qn niǔ;ug tóu;wm zǒu;pz	1
-先画一朵腊梅花	xiān;qp huà;fm yì;fi duǒ;oe là;vo méi;ek huā;lv	1
-小葛画了朵黄花	xiǎo;yx gé;lf huà;fm le;rl duǒ;oe huáng;nh huā;lv	1
-小郭画了朵红花	xiǎo;yx guō;gt huà;fm le;rl duǒ;oe hóng;iu huā;lv	1
-小丽用泥学捏梨	xiǎo;yx lì;fv yòng;ty ní;kv xué;kh niē;ug lí;xe	1
-小牛回家取来油	xiǎo;yx niú;qn huí;rd jiā;wj qǔ;qr lái;ah yóu;kd	1
-小渠水流进大渠	xiǎo;yx qú;ke shuǐ;ks liú;ko jìn;qu dà;md qú;ke	1
-小猪小猪扛锄头	xiǎo;yx zhū;mo xiǎo;yx zhū;mo káng;uu chú;zs tou;wm	1
-行到桥心碰了头	xíng;px dào;yp qiáo;ep xīn;hx pèng;mc le;rl tóu;wm	1
-休将十字说成四	xiū;je jiāng;ak shí;ns zì;wh shuō;sp chéng;na sì;ys	1
-压死了杨家的羊	yā;xi sǐ;gv le;rl yáng;ee jiā;wj de;ui yáng;gy	1
-丫丫只会吹喇叭	yā;hg yā;hg zhǐ;dh huì;jb chuī;de lǎ;dp bā;dh	1
-眼看着梨手捏泥	yǎn;qi kàn;uq zhe;gq lí;xe shǒu;us niē;ug ní;kv	1
-杨家养了一只羊	yáng;ee jiā;wj yǎng;gp le;rl yì;fi zhī;dh yáng;gy	1
-杨家要蒋家赔羊	yáng;ee jiā;wj yào;vb jiǎng;lk jiā;wj péi;od yáng;gy	1
-要吃清蒸美鱼翅	yào;vb chī;da qīng;kv zhēng;lc měi;gm yú;wv chì;cz	1
-腰里别着个喇叭	yāo;vb lǐ;dl bié;dp zhe;gq gè;jg lǎ;dp bā;dh	1
-一次撕下横字纸	yí;fi cì;we sī;ut xià;fy héng;en zì;wh zhǐ;ib	1
-一次撕下竖字纸	yí;fi cì;we sī;ut xià;fy shù;pi zì;wh zhǐ;ib	1
-一口鱼翅刚到嘴	yì;fi kǒu;dk yú;wv chì;cz gāng;mp dào;yp zuǐ;dt	1
-一同来到阅览室	yì;fi tóng;md lái;ah dào;yp yuè;ap lǎn;pe shì;wy	1
-一位爷爷他姓顾	yí;fi wèi;ji yé;hz ye;hz tā;je xìng;bl gù;xw	1
-有个懒汉本姓阮	yǒu;nv gè;jg lǎn;ho hàn;kr běn;ef xìng;bl ruǎn;tp	1
-有个面铺门朝南	yǒu;nv gè;jg miàn;bm pù;zn mén;am cháo;nv nán;ng	1
-又画一个小喇叭	yòu;ry huà;fm yí;fi gè;jg xiǎo;yx lǎ;dp bā;dh	1
-由于二人搞协作	yóu;dy yú;fn èr;me rén;jr gǎo;ug xié;nh zuò;jw	1
-鱼刺刺进齿缝里	yú;wv cì;ep cì;ep jìn;qu chǐ;lc fèng;iu lǐ;dl	1
-愚公捅开青龙洞	yú;qh gōng;hk tǒng;ut kāi;fl qīng;av lóng;tl dòng;kd	1
-摘了蓝布棉门帘	zhāi;uc le;rl lán;la bù;nr mián;er mén;am lián;er	1
-撞塌了蒋家的墙	zhuàng;ud tā;gz le;rl jiǎng;lk jiā;wj de;ui qiáng;gd	1
-桌上放块橡皮泥	zhuō;ye shàng;yf fàng;lh kuài;gj xiàng;ew pí;rp ní;kv	1
-自从来了新愚公	zì;oi cóng;jj lái;ah le;rl xīn;it yú;qh gōng;hk	1
-做了千年万载梦	zuò;jh le;rl qiān;lq nián;ev wàn;fp zǎi;ny mèng;el	1
-白猫的黑鼻子破了	bái;ub māo;mq de;ui hēi;ph bí;ol zi;hi pò;mr le;rl	1
-白猫山上有座白庙	bái;ub māo;mq shān;vs shàng;yf yǒu;nv zuò;xg bái;ub miào;xd	1
-白石塔白石白又滑	bái;ub shí;ms tǎ;gd bái;ub shí;ms bái;ub yòu;ry huá;kf	1
-扁担和板凳板凳宽	biǎn;mi dàn;uf hé;xd bǎn;er dèng;ho bǎn;er dèng;ho kuān;we	1
-扁担要绑在板凳上	biǎn;mi dàn;uf yào;vb bǎng;it zài;ng bǎn;er dèng;ho shàng;yf	1
-吃葡萄不吐葡萄皮	chī;da pú;ln táo;la bù;cb tǔ;dg pú;ln táo;la pí;rp	1
-从南边来了个喇嘛	cóng;jj nán;ng biān;su lái;ah le;rl gè;jg lǎ;dp ma;dz	1
-雕与猫树上有只雕	diāo;mu yǔ;ff māo;mq shù;ek shàng;yf yǒu;nv zhǐ;dh diāo;mu	1
-董家都懂得种冬瓜	dǒng;ld jiā;wj dōu;qt dǒng;hd de;wk zhǒng;xg dōng;hw guā;yg	1
-分不清是灯还是星	fēn;hp bù;cb qīng;kv shì;ot dēng;ca hái;cu shì;ot xīng;ol	1
-分果果多多和哥哥	fēn;hp guǒ;qe guǒ;qe duō;ll duō;ll hé;xd gē;zz ge;zz	1
-公园有四排石狮子	gōng;hk yuán;rp yǒu;nv sì;ys pái;ur shí;ms shī;mr zi;hi	1
-狗与猴树上卧只猴	gǒu;mg yǔ;ff hóu;mo shù;ek shàng;yf wò;qy zhǐ;dh hóu;mo	1
-还是不让小牛不油	hái;cu shì;ot bú;cb ràng;sf xiǎo;yx niú;qn bù;cb yóu;kd	1
-黑猫的白鼻子不破	hēi;ph māo;mq de;ui bái;ub bí;ol zi;hi bú;cb pò;mr	1
-灰猫追花鸟灰猫跳	huī;nc māo;mq zhuī;tu huā;lv niǎo;xn huī;nc māo;mq tiào;pw	1
-桔皮丢在垃圾箱里	jú;ed pí;rp diū;tk zài;ng lā;gi jī;gc xiāng;rq lǐ;dl	1
-拉拉教丫丫折喇叭	lā;ui lā;ui jiào;qh yā;hg yā;hg zhé;ut lǎ;dp bā;dh	1
-来到董家学种冬瓜	lái;ah dào;yp dǒng;ld jiā;wj xué;kh zhǒng;xg dōng;hw guā;yg	1
-蓝教练不是男教练	lán;la jiào;qh liàn;iy bú;cb shì;ot nán;qs jiào;qh liàn;iy	1
-老刘不要小牛还油	lǎo;ql liú;vp bú;cb yào;vb xiǎo;yx niú;qn hái;cu yóu;kd	1
-梨和犁耕地要用犁	lí;xe hé;xd lí;xq gēng;aq dì;ge yào;vb yòng;ty lí;xq	1
-李虎也捉不住壁虎	lǐ;eh hǔ;zh yě;ey zhuō;up bú;cb zhù;jn bì;cg hǔ;zh	1
-吕教练不是女教练	lǚ;dd jiào;qh liàn;iy bú;cb shì;ot nǚ;bn jiào;qh liàn;iy	1
-卖不出鸡卵难买饭	mài;nm bù;cb chū;sm jī;rx luǎn;bl nán;ru mǎi;am fàn;qr	1
-猫鼻子白猫黑鼻子	māo;mq bí;ol zi;hi bái;ub māo;mq hēi;ph bí;ol zi;hi	1
-门东董家懂种冬瓜	mén;am dōng;ry dǒng;ld jiā;wj dǒng;hd zhǒng;xg dōng;hw guā;yg	1
-鸟和猫树上一只鸟	niǎo;xn hé;xd māo;mq shù;ek shàng;yf yì;fi zhī;dh niǎo;xn	1
-盆和瓶桌上放个盆	pén;ha hé;xd píng;hr zhuō;ye shàng;yf fàng;lh gè;jg pén;ha	1
-碰破了白猫黑鼻子	pèng;mc pò;mr le;rl bái;ub māo;mq hēi;ph bí;ol zi;hi	1
-枪和糠墙上一个窗	qiāng;ez hé;xd kāng;pk qiáng;gd shàng;yf yí;fi gè;jg chuāng;eh	1
-枪也上不了窗和墙	qiāng;ez yě;ey shàng;yf bù;cb liǎo;rl chuāng;eh hé;xd qiáng;gd	1
-青葡萄没籽葡萄紫	qīng;av pú;ln táo;la méi;kr zǐ;ph pú;ln táo;la zǐ;si	1
-三娘找到三只山羊	sān;ts niáng;bi zhǎo;up dào;yp sān;ts zhǐ;dh shān;vs yáng;gy	1
-三只山羊翻过山梁	sān;ts zhǐ;dh shān;vs yáng;gy fān;tz guò;ku shān;vs liáng;ke	1
-是字纸你就撕字纸	shì;ot zì;wh zhǐ;ib nǐ;jy jiù;go sī;ut zì;wh zhǐ;ib	1
-手上有五个手指头	shǒu;us shàng;yf yǒu;nv wǔ;wu gè;jg shǒu;us zhǐ;uo tou;wm	1
-四个头天上有日头	sì;ys gè;jg tóu;wm tiān;fm shàng;yf yǒu;nv rì;or tou;wm	1
-向老刘道歉又赔油	xiàng;td lǎo;ql liú;vp dào;hu qiàn;he yòu;ry péi;od yóu;kd	1
-小花鼓一面小花鼓	xiǎo;yx huā;lv gǔ;hc yì;fi miàn;bm xiǎo;yx huā;lv gǔ;hc	1
-丫丫教拉拉吹喇叭	yā;hg yā;hg jiào;qh lā;ui lā;ui chuī;de lǎ;dp bā;dh	1
-羊蒋家砌了一垛墙	yáng;gy jiǎng;lk jiā;wj qì;mp le;rl yī;fi duǒ;ge qiáng;gd	1
-捉壁虎李虎捉壁虎	zhuō;up bì;cg hǔ;zh lǐ;eh hǔ;zh zhuō;up bì;cg hǔ;zh	1
-白家门前一棵白果树	bái;ub jiā;wj mén;am qián;hp yì;fi kē;ee bái;ub guǒ;qe shù;ek	1
-扁担绑在那个板凳上	biǎn;mi dàn;uf bǎng;it zài;ng nà;at gè;jg bǎn;er dèng;ho shàng;yf	1
-别喇叭的哑巴吹喇叭	bié;dp lǎ;dp bā;dh de;ui yǎ;dc bā;mb chuī;de lǎ;dp bā;dh	1
-剥了秕谷壳儿补鼻子	bō;bp le;rl bǐ;xv gǔ;hg ké;go er;pe bǔ;ty bí;ol zi;hi	1
-不剥秕谷壳儿补鼻子	bù;cb bō;bp bǐ;xv gǔ;hg ké;go er;pe bǔ;ty bí;ol zi;hi	1
-不吃葡萄倒吐葡萄皮	bù;cb chī;da pú;ln táo;la dào;jp tǔ;dg pú;ln táo;la pí;rp	1
-不管是天上的热日头	bù;cb guǎn;rk shì;ot tiān;fm shàng;yf de;ui rè;uc rì;or tou;wm	1
-不知是严圆眼的眼圆	bù;cb zhī;od shì;ot yán;fx yuán;ro yǎn;qi de;ui yǎn;qi yuán;ro	1
-打那百十百个白斑鸠	dǎ;ua nà;at bǎi;fu shí;ns bǎi;fu gè;jg bái;ub bān;nn jiū;kx	1
-地下是石头不是日头	dì;ge xià;fy shì;ot shí;ms tou;wm bú;cb shì;ot rì;or tou;wm	1
-董两家的冬瓜比桶大	dǒng;ld liǎng;ml jiā;wj de;ui dōng;hw guā;yg bǐ;vv tǒng;et dà;md	1
-胳膊上挎着个破笆斗	gē;vs bo;vk shàng;yf kuà;ua zhe;gq gè;jg pò;mr bā;rm dǒu;jd	1
-黑猪听罢笑得嘿嘿嘿	hēi;ph zhū;mo tīng;dt bà;yk xiào;rm dé;wk hēi;dp hēi;dp hēi;dp	1
-胡乱烧把烂草取取暖	hú;cv luàn;aa shāo;cp bǎ;um làn;ct cǎo;ln qǔ;qr qǔ;qr nuǎn;or	1
-黄贺帮助王克写诗歌	huáng;nh hè;so bāng;ar zhù;fs wáng;nw kè;cp xiě;wf shī;sk gē;ze	1
-借给六斗六升绿绿豆	jiè;jo gěi;id liù;al dòu;jd liù;al shēng;tl lǜ;ik lǜ;ik dòu;zd	1
-吭唷吭唷拔脱七枚钉	kēng;do yō;dv kēng;do yō;dv bá;ui tuō;vp qī;rq méi;eh dīng;za	1
-来教东门童家种冬瓜	lái;ah jiào;qh dōng;ry mén;am tóng;id jiā;wj zhòng;xg dōng;hw guā;yg	1
-门上挂着蓝布棉门帘	mén;am shàng;yf guà;ug zhe;gq lán;la bù;nr mián;er mén;am lián;er	1
-嬷嬷带了一个薄笸箩	mó;bk mó;bk dài;lr le;rl yí;fi gè;jg báo;lk pǒ;rd luó;rl	1
-嬷嬷卖了萝卜买馍馍	mó;bk mó;bk mài;nm le;rl luó;ll bo;yb mǎi;am mó;qm mó;qm	1
-你猜老刘让小牛还油	nǐ;jy cāi;mv lǎo;ql liú;vp ràng;sf xiǎo;yx niú;qn hái;cu yóu;kd	1
-你就隔着窗户撕字纸	nǐ;jy jiù;go gé;tn zhe;gq chuāng;eh hù;mh sī;ut zì;wh zhǐ;ib	1
-喔嘘喔嘘赶走七只莺	ō;dy xū;dc ō;dy xū;dc gǎn;pe zǒu;pz qī;rq zhǐ;dh yīng;lx	1
-乒乒乓乓踏坏七块冰	pīng;tt pīng;tt pāng;ti pāng;ti tà;po huài;gc qī;rq kuài;gj bīng;wk	1
-瓶中是塞头不是舌头	píng;hr zhōng;dg shì;ot sāi;wg tóu;wm bú;cb shì;ot shé;as tou;wm	1
-婆婆采了蘑菇换饽饽	pó;kb pó;kb cǎi;ye le;rl mó;lm gū;lc huàn;um bō;qh bō;qh	1
-婆婆拿了一个破簸箕	pó;kb pó;kb ná;ju le;rl yí;fi gè;jg pò;mr bò;rr ji;rh	1
-若要分清四十和十四	ruò;ld yào;vb fēn;hp qīng;kv sì;ys shí;ns hé;xd shí;ns sì;ys	1
-三只山羊躲在杉树旁	sān;ts zhǐ;dh shān;vs yáng;gy duǒ;ze zài;ng shān;ee shù;ek páng;il	1
-是做游戏还是玩玩具	shì;ot zuò;jh yóu;kh xì;rp hái;cu shì;ot wán;np wán;np jù;qh	1
-树上的鸟想啄猫的毛	shù;ek shàng;yf de;ui niǎo;xn xiǎng;eh zhuó;di māo;mq de;ui máo;vm	1
-送花华华有两朵红花	sòng;hu huā;lv huá;jn huá;jn yǒu;nv liǎng;ml duǒ;oe hóng;iu huā;lv	1
-疼得小池拍腿挠牙齿	téng;aw dé;wk xiǎo;yx chí;ke pāi;uu tuǐ;vu náo;up yá;ly chǐ;lc	1
-天上是日头不是石头	tiān;fm shàng;yf shì;ot rì;or tou;wm bú;cb shì;ot shí;ms tou;wm	1
-童家知道董家冬瓜大	tóng;id jiā;wj zhī;od dào;hu dǒng;ld jiā;wj dōng;hw guā;yg dà;md	1
-驼子拖住胡子的驴子	tuó;nv zi;hi tuō;ue zhù;jn hú;cv zi;hi de;ui lǘ;nm zǐ;hi	1
-王克帮助黄贺搞木刻	wáng;nw kè;cp bāng;ar zhù;fs huáng;nh hè;so gǎo;ug mù;em kè;kp	1
-乌鸦说它身比黑猪黑	wū;xu yā;lx shuō;sp tā;wv shēn;zs bǐ;vv hēi;ph zhū;mo hēi;ph	1
-小花猫小花猫爱画画	xiǎo;yx huā;lv māo;mq xiǎo;yx huā;lv māo;mq ài;yr huà;fm huà;fm	1
-小渠养小鱼不养大鱼	xiǎo;yx qú;ke yǎng;gp xiǎo;yx yú;wv bù;cb yǎng;gp dà;md yú;wv	1
-一片乌云遮掉七颗星	yí;fi piàn;ap wū;xu yún;by zhē;xu diào;un qī;rq kē;qw xīng;ol	1
-一阵风来吹来七盏灯	yí;fi zhèn;ty fēng;ob lái;ah chuī;de lái;ah qī;rq zhǎn;fa dēng;ca	1
-嘴里是舌头不是塞头	zuǐ;dt lǐ;dl shì;ot shé;as tou;wm bú;cb shì;ot sāi;wg tóu;wm	1
-白果果我走白家门前过	bái;ub guǒ;qe guǒ;qe wǒ;tp zǒu;pz bái;ub jiā;wj mén;am qián;hp guò;ku	1
-白果树上歇了只白八哥	bái;ub guǒ;qe shù;ek shàng;yf xiē;oe le;rl zhǐ;dh bái;ub bā;hb gē;zz	1
-白果树我从伯伯门前过	bái;ub guǒ;qe shù;ek wǒ;tp cóng;jj bó;ju bo;ju mén;am qián;hp guò;ku	1
-不把桔皮丢在垃圾箱里	bù;cb bǎ;um jú;ed pí;rp diū;tk zài;ng lā;gi jī;gc xiāng;rq lǐ;dl	1
-迟小池拿了一把瓷汤匙	chí;cu xiǎo;yx chí;ke ná;ju le;rl yì;fi bǎ;um cí;wr tāng;ke chí;ov	1
-倒吊鸟梁上两对倒吊鸟	dào;jp diào;dr niǎo;xn liáng;ke shàng;yf liǎng;ml duì;rk dào;jp diào;dr niǎo;xn	1
-弟弟叫丽丽出来做游戏	dì;ht di;ht jiào;di lì;fv lì;fv chū;sm lái;ah zuò;jh yóu;kh xì;rp	1
-地上的猫想咬树上的鸟	dì;ge shàng;yf de;ui māo;mq xiǎng;eh yǎo;db shù;ek shàng;yf de;ui niǎo;xn	1
-惦着泥里的两对鸟倒吊	diàn;hd zhe;gq ní;kv lǐ;dl de;ui liǎng;ml duì;rk niǎo;xn dào;jp diào;dr	1
-鹅过河哥哥弟弟坡前坐	é;tx guò;ku hé;kz gē;zz ge;zz dì;ht di;ht pō;gr qián;hp zuò;jg	1
-飞蛾啄不住岸边去找窝	fēi;cf é;cp zhuó;di bú;cb zhù;jn àn;ve biān;su qù;gk zhǎo;up wō;ej	1
-河要渡鹅不知是鹅过河	hé;kz yào;vb dù;kr é;tx bù;cb zhī;od shì;ot é;tx guò;ku hé;kz	1
-红红送给华华一朵黄花	hóng;iu hóng;iu sòng;hu gěi;id huá;jn huá;jn yì;fi duǒ;oe huáng;nh huā;lv	1
-猴过桥桥东走来一条狗	hóu;mo guò;ku qiáo;ep qiáo;ep dōng;ry zǒu;pz lái;ah yì;fi tiáo;he gǒu;mg	1
-胡梳子买把斧子做梳子	hú;cv shū;eo zi;hi mǎi;am bǎ;um fǔ;ht zi;hi zuò;jh shū;eo zi;hi	1
-胡子骑驴子胡子骑驴子	hú;cv zi;hi qí;nz lǘ;nm zǐ;hi hú;cv zi;hi qí;nz lǘ;nm zǐ;hi	1
-胡子去打挑螺蛳的驼子	hú;cv zi;hi qù;gk dǎ;ua tiāo;uw luó;ci sī;cr de;ui tuó;nv zi;hi	1
-胡子撞翻了驼子的螺蛳	hú;cv zi;hi zhuàng;ud fān;tz le;rl tuó;nv zi;hi de;ui luó;ci sī;cr	1
-华华送给红红一朵红花	huá;jn huá;jn sòng;hu gěi;id hóng;iu hóng;iu yì;fi duǒ;oe hóng;iu huā;lv	1
-可怜梁上的两对倒吊鸟	kě;zk lián;hk liáng;ke shàng;yf de;ui liǎng;ml duì;rk dào;jp diào;dr niǎo;xn	1
-可怜泥里的两对鸟倒吊	kě;zk lián;hk ní;kv lǐ;dl de;ui liǎng;ml duì;rk niǎo;xn dào;jp diào;dr	1
-蓝教练在女篮训练吕楠	lán;la jiào;qh liàn;iy zài;ng nǚ;bn lán;ra xùn;so liàn;iy lǚ;dd nán;eg	1
-丽丽和弟弟拿不定主意	lì;fv lì;fv hé;xd dì;ht di;ht ná;ju bú;cb dìng;wt zhǔ;in yì;xh	1
-吕教练在男篮训练蓝南	lǚ;dd jiào;qh liàn;iy zài;ng nán;qs lán;ra xùn;so liàn;iy lán;la nán;ng	1
-忙递给年十四的石小四	máng;hf dì;hu gěi;id nián;ev shí;ns sì;ys de;ui shí;ms xiǎo;yx sì;ys	1
-忙递给年四十的史肖石	máng;hf dì;hu gěi;id nián;ev sì;ys shí;ns de;ui shǐ;db xiào;yv shí;ms	1
-每排是十四只大石狮子	měi;ek pái;ur shì;ot shí;ns sì;ys zhǐ;dh dà;md shí;ms shī;mr zi;hi	1
-嬷嬷拔了一笸箩大萝卜	mó;bk mó;bk bá;ui le;rl yī;fi pǒ;rd luó;rl dà;md luó;ll bo;yb	1
-婆婆采了半簸箕小蘑菇	pó;kb pó;kb cǎi;ye le;rl bàn;hu bò;rr ji;rh xiǎo;yx mó;lm gū;lc	1
-青龙洞青龙洞中龙做梦	qīng;av lóng;tl dòng;kd qīng;av lóng;tl dòng;kd zhōng;dg lóng;tl zuò;jh mèng;el	1
-上果市四个孩子上果市	shàng;yf guǒ;qe shì;zr sì;ys gè;jg hái;hk zi;hi shàng;yf guǒ;qe shì;zr	1
-是灯还是星天上满天星	shì;ot dēng;ca hái;cu shì;ot xīng;ol tiān;fm shàng;yf mǎn;km tiān;fm xīng;ol	1
-梳胡子苏州有个苏胡子	shū;eo hú;cv zi;hi sū;lh zhōu;oo yǒu;nv gè;jg sū;lh hú;cv zi;hi	1
-树上的雕啄猫身上的毛	shù;ek shàng;yf de;ui diāo;mu zhuó;di māo;mq shēn;zs shàng;yf de;ui máo;vm	1
-苏胡子买把梳子梳胡子	sū;lh hú;cv zi;hi mǎi;am bǎ;um shū;eo zi;hi shū;eo hú;cv zi;hi	1
-提拉塔嘛的喇嘛敦塔嘛	tí;ut lā;ui tǎ;gd ma;dz de;ui lǎ;dp ma;dz dūn;gh tǎ;gd ma;dz	1
-天上七颗星天上七颗星	tiān;fm shàng;yf qī;rq kē;qw xīng;ol tiān;fm shàng;yf qī;rq kē;qw xīng;ol	1
-驼子来打骑驴子的胡子	tuó;nv zi;hi lái;ah dǎ;ua qí;nz lǘ;nm zǐ;hi de;ui hú;cv zi;hi	1
-小牛硬要把油还给老刘	xiǎo;yx niú;qn yìng;mb yào;vb bǎ;um yóu;kd huán;cu gěi;id lǎo;ql liú;vp	1
-学捏梨盘里放着一个梨	xué;kh niē;ug lí;xe pán;ia lǐ;dl fàng;lh zhe;gq yí;fi gè;jg lí;xe	1
-白发老公公掉了一顶白帽	bái;ub fà;si lǎo;ql gōng;hk gōng;hk diào;un le;rl yì;fi dǐng;aw bái;ub mào;rq	1
-白猫叼着白帽跑进一白庙	bái;ub māo;mq diāo;df zhe;gq bái;ub mào;rq pǎo;pv jìn;qu yī;fi bái;ub miào;xd	1
-板凳不让扁担绑在板凳上	bǎn;er dèng;ho bú;cb ràng;sf biǎn;mi dàn;uf bǎng;it zài;ng bǎn;er dèng;ho shàng;yf	1
-大渠里有了小鱼不见大鱼	dà;md qú;ke lǐ;dl yǒu;nv le;rl xiǎo;yx yú;wv bú;cb jiàn;ej dà;md yú;wv	1
-地上的猫想叼走树上的雕	dì;ge shàng;yf de;ui māo;mq xiǎng;eh diāo;df zǒu;pz shù;ek shàng;yf de;ui diāo;mu	1
-黑猪说乌鸦比黑猪还要黑	hēi;ph zhū;mo shuō;sp wū;xu yā;lx bǐ;vv hēi;ph zhū;mo hái;cu yào;vb hēi;ph	1
-你就不要胡乱地撕一地纸	nǐ;jy jiù;go bú;cb yào;vb hú;cv luàn;aa dì;ge sī;ut yí;fi dì;ge zhǐ;ib	1
-年十四的石小四爱看诗词	nián;ev shí;ns sì;ys de;ui shí;ms xiǎo;yx sì;ys ài;yr kàn;uq shī;sk cí;sd	1
-年四十的史肖石爱看报纸	nián;ev sì;ys shí;ns de;ui shǐ;db xiào;yv shí;ms ài;yr kàn;uq bào;ur zhǐ;ib	1
-秃丫头从南来了个秃丫头	tū;xo yā;hg tou;wm cóng;jj nán;ng lái;ah le;rl gè;jg tū;xo yā;hg tou;wm	1
-我就拣了百十百块白石头	wǒ;tp jiù;go jiǎn;uy le;rl bǎi;fu shí;ns bǎi;fu kuài;gj bái;ub shí;ms tóu;wm	1
-小牛赔油小牛放学去打球	xiǎo;yx niú;qn péi;od yóu;kd xiǎo;yx niú;qn fàng;lh xué;kh qù;gk dǎ;ua qiú;ni	1
-小渠里有了大鱼不见小鱼	xiǎo;yx qú;ke lǐ;dl yǒu;nv le;rl dà;md yú;wv bú;cb jiàn;ej xiǎo;yx yú;wv	1
-养鱼大渠养大鱼不养小鱼	yǎng;gp yú;wv dà;md qú;ke yǎng;gp dà;md yú;wv bù;cb yǎng;gp xiǎo;yx yú;wv	1
-也惦着梁上的两对倒吊鸟	yě;ey diàn;hd zhe;gq liáng;ke shàng;yf de;ui liǎng;ml duì;rk dào;jp diào;dr niǎo;xn	1
-再吃掉篮子里几个软鸡卵	zài;fg chī;da diào;un lán;ra zi;hi lǐ;dl jǐ;oj gè;jg ruǎn;ye jī;rx luǎn;bl	1
-种冬瓜东门童家门东董家	zhǒng;xg dōng;hw guā;yg dōng;ry mén;am tóng;id jiā;wj mén;am dōng;ry dǒng;ld jiā;wj	1
-板凳不让扁担绑在那板凳上	bǎn;er dèng;ho bú;cb ràng;sf biǎn;mi dàn;uf bǎng;it zài;ng nà;at bǎn;er dèng;ho shàng;yf	1
-还是崔腿粗比崔粗腿的腿粗	hái;cu shì;ot cuī;vu tuǐ;vu cū;pf bǐ;vv cuī;vu cū;pf tuǐ;vu de;ui tuǐ;vu cū;pf	1
-还是严眼圆比严圆眼的眼圆	hái;cu shì;ot yán;fx yǎn;qi yuán;ro bǐ;vv yán;fx yuán;ro yǎn;qi de;ui yǎn;qi yuán;ro	1
-荷花和蛤蟆一朵粉红大荷花	hé;lz huā;lv hé;xd há;cd má;cm yì;fi duǒ;oe fěn;pp hóng;iu dà;md hé;lz huā;lv	1
-六叔和六舅好六叔和好六舅	liù;al shū;yr hé;xd liù;al jiù;ps hǎo;bh liù;al shū;yr hé;xd hǎo;bh liù;al jiù;ps	1
-年十四的石小四见了好报纸	nián;ev shí;ns sì;ys de;ui shí;ms xiǎo;yx sì;ys jiàn;ej le;rl hǎo;bh bào;ur zhǐ;ib	1
-妞妞和牛牛牛牛要吃河边柳	niū;bg niū;bg hé;xd niú;qn niú;qn niú;qn niú;qn yào;vb chī;da hé;kz biān;su liǔ;eb	1
-三娘翻过山梁去找三只山羊	sān;ts niáng;bi fān;tz guò;ku shān;vs liáng;ke qù;gk zhǎo;up sān;ts zhǐ;dh shān;vs yáng;gy	1
-三十三的弟子在寺里练写字	sān;ts shí;ns sān;ts de;ui dì;ht zǐ;hi zài;ng sì;gk lǐ;dl liàn;iy xiě;wf zì;wh	1
-石狮寺前有四十四个石狮子	shí;ms shī;mr sì;gk qián;hp yǒu;nv sì;ys shí;ns sì;ys gè;jg shí;ms shī;mr zi;hi	1
-说好四和十得靠舌头和牙齿	shuō;sp hǎo;bh sì;ys hé;xd shí;ns de;wk kào;qr shé;as tou;wm hé;xd yá;ly chǐ;lc	1
-四十四的师傅到市里去办事	sì;ys shí;ns sì;ys de;ui shī;pr fù;jk dào;yp shì;zr lǐ;dl qù;gk bàn;sh shì;fb	1
-白果树上站着百十百个白斑鸠	bái;ub guǒ;qe shù;ek shàng;yf zhàn;id zhe;gq bǎi;fu shí;ns bǎi;fu gè;jg bái;ub bān;nn jiū;kx	1
-不知是崔粗腿比崔腿粗的腿粗	bù;cb zhī;od shì;ot cuī;vu cū;pf tuǐ;vu bǐ;vv cuī;vu tuǐ;vu cū;pf de;ui tuǐ;vu cū;pf	1
-横竖两次撕了四十四张湿字纸	héng;en shù;pi liǎng;ml cì;we sī;ut le;rl sì;ys shí;ns sì;ys zhāng;bp shī;kc zì;wh zhǐ;ib	1
-看见伯爹伯妈门前种着白果树	kàn;uq jiàn;ej bó;ju diē;hl bó;ju mā;bn mén;am qián;hp zhǒng;xg zhe;gq bái;ub guǒ;qe shù;ek	1
-丽丽和弟弟丽丽家来了小弟弟	lì;fv lì;fv hé;xd dì;ht di;ht lì;fv lì;fv jiā;wj lái;ah le;rl xiǎo;yx dì;ht dì;ht	1
-那个扁担偏要绑在那个板凳上	nà;at gè;jg biǎn;mi dàn;uf piān;ji yào;vb bǎng;it zài;ng nà;at gè;jg bǎn;er dèng;ho shàng;yf	1
-年四十的史肖石发现了好诗词	nián;ev sì;ys shí;ns de;ui shǐ;db xiào;yv shí;ms fā;si xiàn;ne le;rl hǎo;bh shī;sk cí;sd	1
-三十三的弟子用了四十四小时	sān;ts shí;ns sān;ts de;ui dì;ht zǐ;hi yòng;ty le;rl sì;ys shí;ns sì;ys xiǎo;yx shí;ok	1
-寺前树上结了四十四个涩柿子	sì;gk qián;hp shù;ek shàng;yf jié;id le;rl sì;ys shí;ns sì;ys gè;jg sè;ks shì;er zi;hi	1
-四十四的师傅走了三十三里地	sì;ys shí;ns sì;ys de;ui shī;pr fù;jk zǒu;pz le;rl sān;ts shí;ns sān;ts lǐ;dl dì;ge	1
-要拿塔嘛换别喇叭哑巴的喇叭	yào;vb ná;ju tǎ;gd ma;dz huàn;um bié;dp lǎ;dp bā;dh yǎ;dc bā;mb de;ui lǎ;dp bā;dh	1
-再还六叔六舅六斗六升绿绿豆	zài;fg hái;cu liù;al shū;yr liù;al jiù;ps liù;al dòu;jd liù;al shēng;tl lǜ;ik lǜ;ik dòu;zd	1
-扁担偏要板凳让扁担绑在板凳上	biǎn;mi dàn;uf piān;ji yào;vb bǎn;er dèng;ho ràng;sf biǎn;mi dàn;uf bǎng;it zài;ng bǎn;er dèng;ho shàng;yf	1
-高高山上一条藤高高山上一条藤	gāo;gg gāo;gg shān;vs shàng;yf yì;fi tiáo;he téng;lk gāo;gg gāo;gg shān;vs shàng;yf yì;fi tiáo;he téng;lk	1
-小葛把他的黄花换了小郭的红花	xiǎo;yx gé;lf bǎ;um tā;je de;ui huáng;nh huā;lv huàn;um le;rl xiǎo;yx guō;gt de;ui hóng;iu huā;lv	1
-小郭想拿他的红花换小葛的黄花	xiǎo;yx guō;gt xiǎng;eh ná;ju tā;je de;ui hóng;iu huā;lv huàn;um xiǎo;yx gé;lf de;ui huáng;nh huā;lv	1
-拿喇叭打了提拉塔嘛的喇嘛一喇叭	ná;ju lǎ;dp bā;dh dǎ;ua le;rl tí;ut lā;ui tǎ;gd ma;dz de;ui lǎ;dp ma;dz yī;fi lǎ;dp bā;dh	1
-三娘找山羊三娘在山上放三只山羊	sān;ts niáng;bi zhǎo;up shān;vs yáng;gy sān;ts niáng;bi zài;ng shān;vs shàng;yf fàng;lh sān;ts zhǐ;dh shān;vs yáng;gy	1
-史老师领四十四个学生去数石狮子	shǐ;db lǎo;ql shī;pr lǐng;jw sì;ys shí;ns sì;ys gè;jg xué;kh shēng;ls qù;gk shù;ph shí;ms shī;mr zi;hi	1
-用了四十四小时才写了三十三个字	yòng;ty le;rl sì;ys shí;ns sì;ys xiǎo;yx shí;ok cái;nt xiě;wf le;rl sān;ts shí;ns sān;ts gè;jg zì;wh	1
-走了三十三里地就办了四十四件事	zǒu;pz le;rl sān;ts shí;ns sān;ts lǐ;dl dì;ge jiù;go bàn;sh le;rl sì;ys shí;ns sì;ys jiàn;jq shì;fb	1
-不愿意拿喇叭换提拉塔嘛喇嘛的塔嘛	bú;cb yuàn;xh yì;xh ná;ju lǎ;dp bā;dh huàn;um tí;ut lā;ui tǎ;gd ma;dz lǎ;dp ma;dz de;ui tǎ;gd ma;dz	1
-四十四个涩柿子倒吃四十四个石狮子	sì;ys shí;ns sì;ys gè;jg sè;ks shì;er zi;hi dào;jp chī;da sì;ys shí;ns sì;ys gè;jg shí;ms shī;mr zi;hi	1
-四十四个石狮子不吃四十四个涩柿子	sì;ys shí;ns sì;ys gè;jg shí;ms shī;mr zi;hi bù;cb chī;da sì;ys shí;ns sì;ys gè;jg sè;ks shì;er zi;hi	1
-乌鸦说猪黑乌鸦站在黑猪脊上说黑猪黑	wū;xu yā;lx shuō;sp zhū;mo hēi;ph wū;xu yā;lx zhàn;id zài;ng hēi;ph zhū;mo jí;wv shàng;yf shuō;sp hēi;ph zhū;mo hēi;ph	1
-你说共数出多少只大石狮子和多少只小石狮子	nǐ;jy shuō;sp gòng;lh shǔ;ph chū;sm duō;ll shǎo;yt zhǐ;dh dà;md shí;ms shī;mr zi;hi hé;xd duō;ll shǎo;yt zhǐ;dh xiǎo;yx shí;ms shī;mr zi;hi	1
-提拉塔嘛的喇嘛拿塔嘛打了别喇叭的哑巴一塔嘛	tí;ut lā;ui tǎ;gd ma;dz de;ui lǎ;dp ma;dz ná;ju tǎ;gd ma;dz dǎ;ua le;rl bié;dp lǎ;dp bā;dh de;ui yǎ;dc bā;mb yī;fi tǎ;gd ma;dz	1
-也不知别喇叭的哑巴拿喇巴打坏了提拉塔嘛喇嘛的塔嘛	yě;ey bù;cb zhī;od bié;dp lǎ;dp bā;dh de;ui yǎ;dc bā;mb ná;ju lǎ;dp bā;mb dǎ;ua huài;gc le;rl tí;ut lā;ui tǎ;gd ma;dz lǎ;dp ma;dz de;ui tǎ;gd ma;dz	1
-也不知提拉塔嘛的喇嘛拿塔嘛打坏了别喇叭哑巴的喇叭	yě;ey bù;cb zhī;od tí;ut lā;ui tǎ;gd ma;dz de;ui lǎ;dp ma;dz ná;ju tǎ;gd ma;dz dǎ;ua huài;gc le;rl bié;dp lǎ;dp bā;dh yǎ;dc bā;mb de;ui lǎ;dp bā;dh	1
-打飞的	dǎ;ua fēi;cf dī;ui	1
