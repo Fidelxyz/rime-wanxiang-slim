@@ -1,6 +1,6 @@
 ${ErrorActionPreference} = 'Stop'
 
-${arch} = switch ([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture) {
+${arch} = switch ([System.Runtime.InteropServices.RuntimeInformation,mscorlib]::OSArchitecture) {
     'X64' { 'x86_64' }
     'Arm64' { 'aarch64' }
     default { throw 'Unsupported CPU architecture' }
@@ -26,7 +26,7 @@ try {
     }
     if (${response}.StatusCode -eq 200) {
         if (Test-Path -LiteralPath ${binary} -PathType Leaf) {
-            Write-Host '正在更新安装程序……'
+            Write-Host 'Updating installer...'
         }
         ${temp} = [System.IO.Path]::GetTempFileName()
         [System.IO.File]::WriteAllBytes(${temp}, ${response}.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult())
@@ -44,4 +44,3 @@ try {
 }
 
 & ${binary}
-exit ${LASTEXITCODE}
