@@ -1,13 +1,15 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/yixue.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/yixue.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: medical
-version: "17.0.3"
+version: "17.9.2"
 sort: by_weight
 ...
+疰夏	zhù;bv xià;aw	140
+疰夏病	zhù;bv xià;aw bìng;bb	50
 输卵管癌	shū;id luǎn;pd guǎn;vg ái;bs	486
 输卵管襞	shū;id luǎn;pd guǎn;vg bì;uh	45
 输卵管端	shū;id luǎn;pd guǎn;vg duān;le	117
@@ -639,6 +641,7 @@ sort: by_weight
 儿童崩解症	ér;pv tóng;ll bēng;so jiě;en zhèng;bv	10
 耳蜗神经核	ěr;aa wō;in shén;pu jīng;sg hé;lr	10
 耳下淋巴结	ěr;aa xià;ab lín;dl bā;vv jié;sk	10
+2型糖尿病	èr; xíng;kt táng;mk niào;uu bìng;bb	10
 耳牙综合征	ěr;aa yá;ap zōng;sx hé;rk zhēng;rv	10
 耳咽鼓管炎	ěr;aa yàn;kd gǔ;uy guǎn;vg yán;hh	10
 耳源性脑炎	ěr;aa yuán;dx xìng;xu nǎo;ox yán;hh	10
@@ -1201,7 +1204,7 @@ sort: by_weight
 巩膜结膜炎	gǒng;gf mó;od jié;sk mó;od yán;hh	10
 巩膜静脉窦	gǒng;gf mó;od jìng;qv mài;oy dòu;gd	10
 巩膜冷冻术	gǒng;gf mó;od lěng;dv dòng;dd shù;ld	10
-巩膜葡萄肿	gǒng;gf mó;od pú;cf táo;cf zhǒng;ov	10
+巩膜葡萄肿	gǒng;gf mó;od pú;cf tao;cf zhǒng;ov	10
 巩膜切除术	gǒng;gf mó;od qiē;qd chú;ex shù;ld	10
 巩膜肉芽肿	gǒng;gf mó;od ròu;nr yá;cy zhǒng;ov	10
 巩膜缩短术	gǒng;gf mó;od suō;so duǎn;ud shù;ld	10
@@ -1849,7 +1852,7 @@ sort: by_weight
 角膜基质炎	jiǎo;ey mó;od jī;qt zhì;pr yán;hh	10
 角膜磨镶术	jiǎo;ey mó;od mó;gk xiāng;jh shù;ld	10
 角膜皮样瘤	jiǎo;ey mó;od pí;vy yàng;ly liú;bt	10
-角膜葡萄肿	jiǎo;ey mó;od pú;cf táo;cf zhǒng;ov	10
+角膜葡萄肿	jiǎo;ey mó;od pú;cf tao;cf zhǒng;ov	10
 角膜塑形术	jiǎo;ey mó;od sù;et xíng;kp shù;ld	10
 角膜移植术	jiǎo;ey mó;od yí;hx zhí;lv shù;ld	10
 胶样甲状腺	jiāo;ox yàng;ly jiǎ;aa zhuàng;dq xiàn;ou	10
@@ -2724,8 +2727,8 @@ sort: by_weight
 剖腰探查术	pōu;ld yāo;on tàn;fl chá;ld shù;ld	10
 普林格尔病	pǔ;eo lín;ll gé;lk ěr;ex bìng;bb	10
 普卢默氏病	pǔ;eo lú;au mò;hq shì;pv bìng;bb	10
-葡萄样肉瘤	pú;cf táo;cf yàng;ly ròu;nr liú;bt	10
-葡萄状肉瘤	pú;cf táo;cf zhuàng;dq ròu;nr liú;bt	10
+葡萄样肉瘤	pú;cf tao;cf yàng;ly ròu;nr liú;bt	10
+葡萄状肉瘤	pú;cf tao;cf zhuàng;dq ròu;nr liú;bt	10
 气不摄精证	qì;pv bú;ad shè;fy jīng;mo zhèng;yv	10
 气不摄血证	qì;pv bú;ad shè;fy xuè;pm zhèng;yv	10
 气锤综合征	qì;pv chuí;ji zōng;sx hé;rk zhēng;rv	10
@@ -2891,7 +2894,7 @@ sort: by_weight
 前列腺液溢	qián;ed liè;dd xiàn;ou yè;dy yì;dm	10
 前列腺肿大	qián;ed liè;dd xiàn;ou zhǒng;ov dà;an	10
 前膜切除术	qián;ed mó;od qiē;qd chú;ex shù;ld	10
-前葡萄膜炎	qián;ed pú;cf táo;cf mó;od yán;hh	10
+前葡萄膜炎	qián;ed pú;cf tao;cf mó;od yán;hh	10
 嵌疝松懈术	qiàn;sr shàn;bs sōng;lv xiè;xn shù;ld	10
 前哨淋巴结	qián;ed shào;ko lín;dl bā;vv jié;sk	10
 前室间静脉	qián;ed shì;gt jiān;mo jìng;qv mài;oy	10
@@ -2952,7 +2955,7 @@ sort: by_weight
 全喉切除术	quán;rw hóu;kd qiē;qd chú;ex shù;ld	10
 权力的象征	quán;ly lì;vp de;bu xiàng;en zhēng;rv	10
 全脾切除术	quán;rw pí;ou qiē;qd chú;ex shù;ld	10
-全葡萄膜炎	quán;rw pú;cf táo;cf mó;od yán;hh	10
+全葡萄膜炎	quán;rw pú;cf tao;cf mó;od yán;hh	10
 全色素层炎	quán;rw sè;eb sù;ax céng;uv yán;hh	10
 全色素膜炎	quán;rw sè;eb sù;ax mó;od yán;hh	10
 全身性水肿	quán;rw shēn;pp xìng;xu shuǐ;vn zhǒng;ov	10
@@ -4544,6 +4547,7 @@ sort: by_weight
 胰腺移植术	yí;oy xiàn;ou yí;hx zhí;lv shù;ld	10
 胰腺游离术	yí;oy xiàn;ou yóu;dz lí;wd shù;ld	10
 胰腺造影术	yí;oy xiàn;ou zào;zk yǐng;op shù;ld	10
+1型糖尿病	yī; xíng;kt táng;mk niào;uu bìng;bb	10
 一型糖尿病	yì;aa xíng;kt táng;mk niào;uu bìng;bb	10
 移行细胞癌	yí;hx xíng;rd xì;st bāo;ov ái;bs	10
 异型吸虫病	yì;va xíng;kt xī;kj chóng;vd bìng;bb	10
@@ -6491,14 +6495,14 @@ sort: by_weight
 喉病害切除术	hóu;kd bìng;bb hài;gk qiē;qd chú;ex shù;ld	10
 喉部分切除术	hóu;kd bù;le fèn;bd qiē;qd chú;ex shù;ld	10
 后部眶骨膜炎	hòu;pk bù;le kuàng;mw gǔ;ao mó;od yán;hh	10
-后部葡萄膜炎	hòu;pk bù;le pú;cf táo;cf mó;od yán;hh	10
+后部葡萄膜炎	hòu;pk bù;le pú;cf tao;cf mó;od yán;hh	10
 喉次全切除术	hóu;kd cì;dr quán;rw qiē;qd chú;ex shù;ld	10
 后底段支气管	hòu;pk dǐ;gd duàn;py zhī;uy qì;pv guǎn;vg	10
 喉动态镜检查	hóu;kd dòng;el tài;tx jìng;je jiǎn;la chá;ld	10
 喉发音重建术	hóu;kd fā;vy yīn;lo chóng;pa jiàn;za shù;ld	10
 喉返神经麻痹	hóu;kd fǎn;zy shén;pu jīng;sg má;gl bì;ba	10
 喉返神经损伤	hóu;kd fǎn;zy shén;pu jīng;sg sǔn;fr shāng;rl	10
-后巩膜葡萄肿	hòu;pk gǒng;gf mó;od pú;cf táo;cf zhǒng;ov	10
+后巩膜葡萄肿	hòu;pk gǒng;gf mó;od pú;cf tao;cf zhǒng;ov	10
 后巩膜支撑术	hòu;pk gǒng;gf mó;od zhī;uy chēng;fu shù;ld	10
 喉功能重建术	hóu;kd gōng;gl néng;vb chóng;pa jiàn;za shù;ld	10
 骺骨干固定术	hóu;gk gǔ;ao gàn;au gù;wk dìng;gr shù;ld	10
@@ -6924,7 +6928,7 @@ sort: by_weight
 角膜后沉着物	jiǎo;ey mó;od hòu;pk chén;dj zhuó;em wù;nw	10
 角膜基质崩溃	jiǎo;ey mó;od jī;qt zhì;pr bēng;so kuì;dr	10
 角膜皮样囊肿	jiǎo;ey mó;od pí;vy yàng;ly náng;ah zhǒng;ov	10
-角膜葡萄膜炎	jiǎo;ey mó;od pú;cf táo;cf mó;od yán;hh	10
+角膜葡萄膜炎	jiǎo;ey mó;od pú;cf tao;cf mó;od yán;hh	10
 角膜屈光手术	jiǎo;ey mó;od qū;ui guāng;ee shǒu;pv shù;ld	10
 角膜热成形术	jiǎo;ey mó;od rè;fe chéng;vg xíng;kp shù;ld	10
 角膜先天异常	jiǎo;ey mó;od xiān;pe tiān;ad yì;va cháng;ej	10
@@ -7582,7 +7586,7 @@ sort: by_weight
 慢性眶骨膜炎	màn;xy xìng;xu kuàng;mw gǔ;ao mó;od yán;hh	10
 慢性淋巴管炎	màn;xy xìng;xu lín;dl bā;vv guǎn;vg yán;hh	10
 慢性淋巴结炎	màn;xy xìng;xu lín;dl bā;vv jié;sk yán;hh	10
-慢性葡萄膜炎	màn;xy xìng;xu pú;cf táo;cf mó;od yán;hh	10
+慢性葡萄膜炎	màn;xy xìng;xu pú;cf tao;cf mó;od yán;hh	10
 慢性气道炎症	màn;xy xìng;xu qì;pv dào;zm yán;hh zhèng;bv	10
 慢性前列腺炎	màn;xy xìng;xu qián;ed liè;dd xiàn;ou yán;hh	10
 慢性全鼻窦炎	màn;xy xìng;xu quán;rw bí;za dòu;gd yán;hh	10
@@ -7991,10 +7995,10 @@ sort: by_weight
 普森氏综合征	pǔ;eo sēn;ll shì;pv zōng;sx hé;rk zhēng;rv	10
 葡糖脑昔脂病	pú;cf táng;mk nǎo;ox xī;co zhī;oo bìng;bb	10
 葡糖神经酰胺	pú;cf táng;mk shén;pu jīng;sg xiān;ye àn;on	10
-葡萄膜大脑炎	pú;cf táo;cf mó;od dà;an nǎo;ox yán;hh	10
-葡萄胎刮宫术	pú;cf táo;cf tāi;ok guā;qd gōng;gk shù;ld	10
-葡萄胎吸宫术	pú;cf táo;cf tāi;ok xī;kj gōng;gk shù;ld	10
-葡萄状球菌病	pú;cf táo;cf zhuàng;dq qiú;wq jūn;ch bìng;bb	10
+葡萄膜大脑炎	pú;cf tao;cf mó;od dà;an nǎo;ox yán;hh	10
+葡萄胎刮宫术	pú;cf tao;cf tāi;ok guā;qd gōng;gk shù;ld	10
+葡萄胎吸宫术	pú;cf tao;cf tāi;ok xī;kj gōng;gk shù;ld	10
+葡萄状球菌病	pú;cf tao;cf zhuàng;dq qiú;wq jūn;ch bìng;bb	10
 普通视力检查	pǔ;eo tōng;zy shì;pj lì;vp jiǎn;la chá;ld	10
 脐病害切除术	qí;oq bìng;bb hài;gk qiē;qd chú;ex shù;ld	10
 起博器综合征	qǐ;tj bó;uc qì;kk zōng;sx hé;rk zhēng;rv	10
@@ -8058,7 +8062,7 @@ sort: by_weight
 钱币状银屑病	qián;jg bì;pj zhuàng;dq yín;jh xiè;uo bìng;bb	10
 前部睫状体炎	qián;ed bù;le jié;mr zhuàng;dq tǐ;rb yán;hh	10
 前部眶骨膜炎	qián;ed bù;le kuàng;mw gǔ;ao mó;od yán;hh	10
-前部葡萄膜炎	qián;ed bù;le pú;cf táo;cf mó;od yán;hh	10
+前部葡萄膜炎	qián;ed bù;le pú;cf tao;cf mó;od yán;hh	10
 前床突脑膜瘤	qián;ed chuáng;gl tū;gq nǎo;ox mó;od liú;bt	10
 前诞功能检查	qián;ed dàn;yv gōng;gl néng;vb jiǎn;la chá;ld	10
 前底段支气管	qián;ed dǐ;gd duàn;py zhī;uy qì;pv guǎn;vg	10
@@ -8067,7 +8071,7 @@ sort: by_weight
 潜伏性乳突炎	qián;do fú;rq xìng;xu rǔ;pv tū;gq yán;hh	10
 潜伏性糖尿病	qián;do fú;rq xìng;xu táng;mk niào;uu bìng;bb	10
 潜伏性雅司病	qián;do fú;rq xìng;xu yǎ;ya sī;vk bìng;bb	10
-前巩膜葡萄肿	qián;ed gǒng;gf mó;od pú;cf táo;cf zhǒng;ov	10
+前巩膜葡萄肿	qián;ed gǒng;gf mó;od pú;cf tao;cf zhǒng;ov	10
 前交通动脉瘤	qián;ed jiāo;wx tōng;zy dòng;el mài;oy liú;bt	10
 前列腺癌肉瘤	qián;ed liè;dd xiàn;ou ái;bs ròu;nr liú;bt	10
 前列腺滴虫病	qián;ed liè;dd xiàn;ou dī;dk chóng;vd bìng;bb	10
@@ -8142,7 +8146,7 @@ sort: by_weight
 颧弓位投照术	quán;cr gōng;vv wèi;rl tóu;fy zhào;oe shù;ld	10
 全股骨截除术	quán;rw gǔ;oy gǔ;ao jié;ag chú;ex shù;ld	10
 颧颊沟成形术	quán;cr jiá;jr gōu;dv chéng;vg xíng;kp shù;ld	10
-全角膜葡萄肿	quán;rw jiǎo;ey mó;od pú;cf táo;cf zhǒng;ov	10
+全角膜葡萄肿	quán;rw jiǎo;ey mó;od pú;cf tao;cf zhǒng;ov	10
 全结肠切除术	quán;rw jié;sk cháng;op qiē;qd chú;ex shù;ld	10
 全口牙拔除术	quán;rw kǒu;aa yá;ap bá;fy chú;ex shù;ld	10
 全尿道切除术	quán;rw niào;uu dào;zm qiē;qd chú;ex shù;ld	10
@@ -9752,7 +9756,7 @@ sort: by_weight
 中耳恶性肿瘤	zhōng;aa ěr;aa è;yx xìng;xu zhǒng;ov liú;bt	10
 中耳良性肿瘤	zhōng;aa ěr;aa liáng;dh xìng;xu zhǒng;ov liú;bt	10
 中华肝吸虫病	zhōng;aa huá;ru gān;og xī;kj chóng;vd bìng;bb	10
-中间葡萄膜炎	zhōng;aa jiān;mo pú;cf táo;cf mó;od yán;hh	10
+中间葡萄膜炎	zhōng;aa jiān;mo pú;cf tao;cf mó;od yán;hh	10
 中间腰淋巴结	zhōng;aa jiān;mo yāo;on lín;dl bā;vv jié;sk	10
 中结肠淋巴结	zhōng;aa jié;sk cháng;op lín;dl bā;vv jié;sk	10
 重金属沉着病	zhòng;pa jīn;ra shǔ;uy chén;dj zhuó;em bìng;bb	10
@@ -10224,7 +10228,7 @@ sort: by_weight
 布德二氏综合征	bù;aj dé;rx èr;aa shì;pv zōng;sx hé;rk zhēng;rv	10
 不动杆菌性肺炎	bú;ad dòng;el gǎn;lg jūn;ch xìng;xu fèi;oa yán;hh	10
 部分断耳再植术	bù;le fen;bd duàn;vj ěr;aa zài;ar zhí;lv shù;ld	10
-部分角膜葡萄肿	bù;le fen;bd jiǎo;ey mó;od pú;cf táo;cf zhǒng;ov	10
+部分角膜葡萄肿	bù;le fen;bd jiǎo;ey mó;od pú;cf tao;cf zhǒng;ov	10
 部分卵巢切除术	bù;le fen;bd luǎn;pd cháo;vg qiē;qd chú;ex shù;ld	10
 部分失神经支配	bù;le fen;bd shī;pf shén;pu jīng;sg zhī;uy pèi;yj	10
 部分臀位牵引术	bù;le fen;bd tún;uo wèi;rl qiān;dn yǐn;ga shù;ld	10
@@ -10931,7 +10935,7 @@ sort: by_weight
 风湿性神经根炎	fēng;jx shī;dy xìng;xu shén;pu jīng;sg gēn;lh yán;hh	10
 风湿性心脏肥大	fēng;jx shī;dy xìng;xu xīn;dd zàng;ot féi;ob dà;an	10
 冯维勒布兰氏病	féng;dm wéi;sa lè;cl bù;aj lán;es shì;pv bìng;bb	10
-缝线术后肉芽肿	fèng;sf xiàn;sg shù;ld hòu;pk ròu;nr yá;cy zhǒng;ov	10
+缝线术后肉芽肿	féng;sf xiàn;sg shù;ld hòu;pk ròu;nr yá;cy zhǒng;ov	10
 风邪热毒犯耳证	fēng;jx xié;ye rè;fe dú;am fàn;qv ěr;aa zhèng;yv	10
 福阿二氏综合征	fú;pt ā;ek èr;aa shì;pv zōng;sx hé;rk zhēng;rv	10
 弗埃二氏综合征	fú;va āi;td èr;aa shì;pv zōng;sx hé;rk zhēng;rv	10
@@ -10951,7 +10955,7 @@ sort: by_weight
 副鼻窦良性肿瘤	fù;ad bí;za dòu;gd liáng;dh xìng;xu zhǒng;ov liú;bt	10
 副鼻窦透照检查	fù;ad bí;za dòu;gd tòu;zn zhào;oe jiǎn;la chá;ld	10
 腹壁二期缝合术	fù;ow bì;ut èr;aa qī;qo féng;sf hé;rk shù;ld	10
-腹壁缝线拆除术	fù;ow bì;ut fèng;sf xiàn;sg chāi;fi chú;ex shù;ld	10
+腹壁缝线拆除术	fù;ow bì;ut féng;sf xiàn;sg chāi;fi chú;ex shù;ld	10
 腹壁感染性窦道	fù;ow bì;ut gǎn;kx rǎn;dl xìng;xu dòu;gd dào;zm	10
 腹壁结核搔括术	fù;ow bì;ut jié;sk hé;lr sāo;fi kuò;fk shù;ld	10
 腹壁裂开缝合术	fù;ow bì;ut liè;dh kāi;aa féng;sf hé;rk shù;ld	10
@@ -10985,7 +10989,7 @@ sort: by_weight
 复发性多软骨炎	fù;pw fā;vy xìng;xu duō;xx ruǎn;ir gǔ;ao yán;hh	10
 复发性甲状腺癌	fù;pw fā;vy xìng;xu jiǎ;aa zhuàng;dq xiàn;ou ái;bs	10
 复发性脑血管病	fù;pw fā;vy xìng;xu nǎo;ox xuè;pm guǎn;vg bìng;bb	10
-复发性葡萄膜炎	fù;pw fā;vy xìng;xu pú;cf táo;cf mó;od yán;hh	10
+复发性葡萄膜炎	fù;pw fā;vy xìng;xu pú;cf tao;cf mó;od yán;hh	10
 福福代斯二氏病	fú;pt fú;pt dài;rg sī;qj èr;aa shì;pv bìng;bb	10
 弗盖顿二氏手术	fú;va gài;em dùn;tr èr;aa shì;pv shǒu;pv shù;ld	10
 附睾病损切除术	fù;ec gāo;pu bìng;bb sǔn;fr qiē;qd chú;ex shù;ld	10
@@ -12589,7 +12593,7 @@ sort: by_weight
 慢性疲劳综合征	màn;xy xìng;xu pí;by láo;cl zōng;sx hé;rk zhēng;rv	10
 慢性皮质下脑病	màn;xy xìng;xu pí;vy zhì;pr xià;ab nǎo;ox bìng;bb	10
 慢性浅表性胃炎	màn;xy xìng;xu qiǎn;dg biǎo;ah xìng;xu wèi;to yán;hh	10
-慢性前葡萄膜炎	màn;xy xìng;xu qián;ed pú;cf táo;cf mó;od yán;hh	10
+慢性前葡萄膜炎	màn;xy xìng;xu qián;ed pú;cf tao;cf mó;od yán;hh	10
 慢性迁延性肝炎	màn;xy xìng;xu qiān;zq yán;zv xìng;xu gān;og yán;hh	10
 慢性全身性充血	màn;xy xìng;xu quán;rw shēn;pp xìng;xu chōng;we xuè;pm	10
 慢性肾功能不全	màn;xy xìng;xu shèn;ao gōng;gl néng;vb bù;ad quán;rw	10
@@ -12983,7 +12987,7 @@ sort: by_weight
 膀胱平滑肌肉瘤	páng;of guāng;oe píng;au huá;do jī;oj ròu;nr liú;bt	10
 膀胱破裂缝合术	páng;of guāng;oe pò;uy liè;dh féng;sf hé;rk shù;ld	10
 膀胱破裂修补术	páng;of guāng;oe pò;uy liè;dh xiū;rp bǔ;pb shù;ld	10
-膀胱葡萄状肉瘤	páng;of guāng;oe pú;cf táo;cf zhuàng;dq ròu;nr liú;bt	10
+膀胱葡萄状肉瘤	páng;of guāng;oe pú;cf tao;cf zhuàng;dq ròu;nr liú;bt	10
 膀胱憩室切除术	páng;of guāng;oe qì;qx shì;gt qiē;qd chú;ex shù;ld	10
 膀胱切开电烧术	páng;of guāng;oe qiē;qd kāi;aa diàn;av shāo;he shù;ld	10
 膀胱切开电灼术	páng;of guāng;oe qiē;qd kāi;aa diàn;av zhuó;hu shù;ld	10
@@ -13111,17 +13115,17 @@ sort: by_weight
 剖腹腹腔引流术	pōu;ld fù;ow fù;ow qiāng;og yǐn;ga liú;dv shù;ld	10
 普德拉克综合征	pǔ;eo dé;rx lā;fl kè;ue zōng;sx hé;rk zhēng;rv	10
 普杰二氏综合征	pǔ;eo jié;le èr;aa shì;pv zōng;sx hé;rk zhēng;rv	10
-葡萄膜恶性肿瘤	pú;cf táo;cf mó;od è;yx xìng;xu zhǒng;ov liú;bt	10
-葡萄膜良性肿瘤	pú;cf táo;cf mó;od liáng;dh xìng;xu zhǒng;ov liú;bt	10
-葡萄球菌肠毒素	pú;cf táo;cf qiú;wq jūn;ch cháng;op dú;am sù;ax	10
-葡萄球菌菌血病	pú;cf táo;cf qiú;wq jūn;ch jūn;ch xuè;pm bìng;bb	10
-葡萄球菌类毒素	pú;cf táo;cf qiú;wq jūn;ch lèi;md dú;am sù;ax	10
-葡萄球菌携带者	pú;cf táo;cf qiú;wq jūn;ch xié;fn dài;aj zhě;uo	10
-葡萄球菌性肺炎	pú;cf táo;cf qiú;wq jūn;ch xìng;xu fèi;oa yán;hh	10
-葡萄糖耐量试验	pú;cf táo;cf táng;mk nài;ec liàng;dl shì;yg yàn;ma	10
-葡萄糖脑苷脂病	pú;cf táo;cf táng;mk nǎo;ox gān;cg zhī;oo bìng;bb	10
-葡萄糖抑制试验	pú;cf táo;cf táng;mk yì;fe zhì;pd shì;yg yàn;ma	10
-葡萄糖鱼肝油乳	pú;cf táo;cf táng;mk yú;ea gān;og yóu;dy rǔ;pv	10
+葡萄膜恶性肿瘤	pú;cf tao;cf mó;od è;yx xìng;xu zhǒng;ov liú;bt	10
+葡萄膜良性肿瘤	pú;cf tao;cf mó;od liáng;dh xìng;xu zhǒng;ov liú;bt	10
+葡萄球菌肠毒素	pú;cf tao;cf qiú;wq jūn;ch cháng;op dú;am sù;ax	10
+葡萄球菌菌血病	pú;cf tao;cf qiú;wq jūn;ch jūn;ch xuè;pm bìng;bb	10
+葡萄球菌类毒素	pú;cf tao;cf qiú;wq jūn;ch lèi;md dú;am sù;ax	10
+葡萄球菌携带者	pú;cf tao;cf qiú;wq jūn;ch xié;fn dài;aj zhě;uo	10
+葡萄球菌性肺炎	pú;cf tao;cf qiú;wq jūn;ch xìng;xu fèi;oa yán;hh	10
+葡萄糖耐量试验	pú;cf tao;cf táng;mk nài;ec liàng;dl shì;yg yàn;ma	10
+葡萄糖脑苷脂病	pú;cf tao;cf táng;mk nǎo;ox gān;cg zhī;oo bìng;bb	10
+葡萄糖抑制试验	pú;cf tao;cf táng;mk yì;fe zhì;pd shì;yg yàn;ma	10
+葡萄糖鱼肝油乳	pú;cf tao;cf táng;mk yú;ea gān;og yóu;dy rǔ;pv	10
 起搏器涂覆电极	qǐ;tj bó;fc qì;kk tú;dx fù;xw diàn;av jí;lj	10
 起搏器植入感染	qǐ;tj bó;fc qì;kk zhí;lv rù;pn gǎn;kx rǎn;dl	10
 起博器装置校正	qǐ;tj bó;uc qì;kk zhuāng;dh zhì;sv jiào;lx zhèng;av	10
