@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/cuoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/cuoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: correction
-version: "17.0.3"
+version: "17.9.2"
 sort: by_weight
 ...
 株木琅玛	zhū;mv mù;ad láng;wl mǎ;wm	205	有声
@@ -21,7 +21,50 @@ sort: by_weight
 食话食说	shí;rl,pd huà;yu shí;rl,pd shuō;yd	259	节目
 零零总总	ling;yl ling;yl zong;xk,bx zong;xk,bx	6	林林总总
 弃如敝履	qì;cw,wc rú;nk bì;wb lǚ;uf	486	弃如敝屣(xǐ)
+毛坯房	máo;pg pēi;tp fáng;hf	440	毛坯(pī)房
+不着痕迹	bù;ad,ax zháo;yo hén;bg jì;zy	100	不着(zhuó)痕迹
+精诚所至	jīn;mq chéng;yi suǒ;hj,jh zhì;tv,vt	100	(jīng)非金
+粳米	gēng;mg mǐ;dd	100	粳(jīng)米
+籼米	shān;mu mǐ;dd	100	籼(xiān)米
+靓妆	liàng;jq,qj zhuāng;np	100	靓(jìng)妆
+腈纶	qíng;oq lún;sl	100	腈(jīng)纶
+骠勇	biāo;mp yǒng;ly	100	骠(piào)勇
+剽悍	biāo;dp hàn;xh	100	剽(piāo)悍
+哨卡	shào;kx kǎ;bx,ub	100	哨卡(qiǎ)
+句读	jù;kg dú;ym	100	句读(dòu)
+藤蔓	téng;ct màn;cm	100	藤蔓(wàn)
+炽热	zhì;hv rè;hv	100	炽(chì)热
+秘鲁	mì;hb lǔ;yo	100	秘(bì)鲁
+贲临	bēn;bh lín;ao,do	100	贲(bì)临
+屏息	píng;ub xī;xz,zx	100	屏(bǐng)息
+猜度	cāi;qq dù;gy	100	猜度(duó)
+肄业	sì;by,yu yè;aa	100	肄(yì)业
+踟蹰	zhī;zv chú;zc,zi	100	踟(chí)蹰
+恫吓	tóng;xt hè;kx	100	恫(dòng)吓
+分袂	fēn;bd,db jué;yd,yg	100	分袂(mèi)
+蛤蜊	há;ih lí;il	100	蛤(gé)蜊
+回溯	huí;kk shuò;do,du,dy	100	回溯(sù)
+校对	xiào;mj duì;cy,yc	100	校(jiào)对
+龟裂	guī;dd liè;yl	100	龟(jūn)裂
+龋齿	yǔ;iy chǐ;vk	100	龋(qǔ)齿
+吮吸	yǔn;ky xī;kj	100	吮(shǔn)吸
+拓印	tuò;fu yìn;ey,pe	100	拓(tà)印
+豆豉	dòu;aa,aq shì;dv	100	豆豉(chǐ)
+叱咤	chì;kb chà;kv	100	叱咤(zhà)
+喟叹	wèi;kw tàn;ky	100	喟(kuì)叹
+牛虻	niú;pa máng;iw	100	牛虻(méng)
+蓦然	mù;mm,cm rán;hq	100	蓦(mò)然
+殷红	yīn;pu,uu hóng;sg	100	殷(yān)红
+箴言	jiān;vx yán;da,dk,wk	100	箴(zhēn)言
+咋舌	zǎ;kv shé;kq,qk	100	咋(zé)舌
+混淆	hùn;dk yáo;dy	100	混淆(xiáo)
+莘莘学子	xīn;cx xīn;cx xué;zb,dz zǐ;aa,vh	100	莘(shēn)莘学子
+呱呱坠地	guā;kg guā;kg zhuì;td dì;ty	100	呱(gū)呱坠地
+博闻强识	bó;uc,uf wén;em,me qiáng;gs shí;yv	100	博闻强识(zhì)
+一曝十寒	yī;aa bào;ob shí;aa hán;bd	100	一曝(pù)十寒
+流水淙淙	liú;di shuǐ;ad,uv zōng;dz zōng;dz	100	流水淙(cóng)淙
 卡扣	kǎ;bx,ub kòu;fk	3690	qiǎ kòu
+咔嚓	kā;kk cā;ki	1482	咔嚓(chā)
 味噌	wèi;kw zēng;kc	1043	cēng
 味噌汤	wèi;kw zēng;kc tāng;dy	1008	味噌(cēng)汤
 太差劲	tài;dd chà;yg jìng;lg	89	jìn
@@ -47,7 +90,7 @@ sort: by_weight
 猇亭区	hu;qh ting;wd,db qu;ki	88	猇(xiāo)亭区
 屎溺	shǐ;um nì;dr	546	shǐ niào
 东庠	dong;ad,qx yang;gy	226	dōng xiáng
-莒县	lü;cl xian;sq,qs	237	jǔ xiàn
+莒县	lǚ;cl xian;sq,qs	237	jǔ xiàn
 浚县	jun;dj,dw xian;sq,qs	448	xùn xiàn
 郯城	ye;ey cheng;ti	297	tán chéng
 丽水	lì;ad shuǐ;ad,uv	580	lí shuǐ
@@ -114,7 +157,7 @@ sort: by_weight
 草薙京	cao;cz zhi;cv jing;wx	254	cǎo tì jīng
 大宛马	dà;ad wǎn;be,by mǎ;aa,vh	10	dà yuān mǎ
 独乐乐	dú;qi lè;pd,px lè;pd,px	10	dú yuè lè
-众乐乐	zhoòng;rc lè;pd,px lè;pd,px	20	zhòng yuè lè
+众乐乐	zhòng;rc lè;pd,px lè;pd,px	20	zhòng yuè lè
 海参崴	hǎi;dm shēn;sp wēi;uw	385	hǎi shēn wǎi
 贾平凹	jià;bx,xb píng;aa,gb wā;aa	250	jiǎ píng āo
 卡脖子	kǎ;bx,ub bó;ob,oz zi;aa,vh	310	qiǎ bó zi
@@ -153,7 +196,7 @@ sort: by_weight
 歇斯底里	jiē;qh sī;jq,qj dǐ;gd lǐ;aa,tt	88	xiē sī dǐ lǐ
 力能扛鼎	lì;gp néng;sb káng;fg dǐng;oa,od	3	lì néng gāng dǐng
 模棱两可	mó;mm líng;ml,mw liǎng;ad kě;dk	85	mó léng liǎng kě
-心宽体胖	xīn;dd kuān;bj,jb tǐ;rb pàng;ob	4	xīn kūan tǐ pán
+心宽体胖	xīn;dd kuān;bj,jb tǐ;rb pàng;ob	4	心宽体胖(pán)
 虚与委蛇	xu;hy yu;aa wei;hn she;it	9	xū yǔ wēi yí
 血脉偾张	xuè;pa,pm mài;oy fèn;rb zhāng;gi	265	血脉贲(bēn)张 | 血脉偾(fèn)张
 血脉喷张	xuè;pa,pm mài;oy pēn;kb zhāng;gi	750	血脉贲(bēn)张 | 血脉偾(fèn)张

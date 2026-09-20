@@ -4,12 +4,13 @@ recipe:
   Rx: plum/full
   args:
   description: >-
-    万象拼音 zrm-fuzhu 版（整个方案目录）- 分支 wanxiang-zrm-fuzhu
+    万象拼音精简版 - wanxiang-zrm-fuzhu
 install_files: >-
   custom/**/*
   dicts/**/*
   lua/**/*
   opencc/**/*
+  install.*
   *.yaml
   CHANGELOG.md
   README.md

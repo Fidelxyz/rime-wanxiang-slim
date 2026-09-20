@@ -4,14 +4,15 @@
 schema:
   schema_id: wanxiang_pro
   name: 万象拼音精简版〔进阶版 Pro〕
-  version: "0.6.0"  # x-release-please-version
+  version: "1.0.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
   description: |
-    支持直接辅助码的 Rime 拼音/双拼输入方案
+    万象拼音输入方案精简版
+    源码：https://github.com/Fidelxyz/rime-wanxiang-slim
+    文档：https://fidel.js.org/rime-wanxiang-slim/
   dependencies:
-    - wanxiang_mixedcode
     - wanxiang_reverse
     - wanxiang_english
 
@@ -60,18 +61,18 @@ engine:
     - ascii_composer
     - recognizer
     - key_binder
-    - lua_processor@*wanxiang.key_binder
-    - lua_processor@*wanxiang.tone_corrector  # 声调修正
+    - lua_processor@*wanxiang.key_binder  # 按键绑定扩展
+    - lua_processor@*wanxiang.tone_corrector  # 声调修正（speller 前）
     - speller
-    - lua_processor@*wanxiang.character_selector  # 以词定字，punctuator 前
+    - lua_processor@*wanxiang.character_selector  # 以词定字（punctuator 前）
     - punctuator
-    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截，selector、partial_committer 前
-    - lua_processor@*wanxiang.partial_committer  # 候选词部分上屏
+    - lua_processor@*wanxiang.keypad_composer  # 小键盘数字键拦截（selector、partial_committer 前）
+    - lua_processor@*wanxiang.partial_committer  # 候选词部分上屏（selector 前）
     - selector
     - navigator
     - express_editor
     - lua_processor@*wanxiang.candidate_pinner*P  # 候选置顶
-    - lua_processor@*wanxiang.auto_phrase  # 自动造词
+    - lua_processor@*wanxiang.auto_user_dict_appender  # 自动造词
   segmentors:
     - ascii_segmentor
     - matcher
@@ -84,11 +85,10 @@ engine:
     - punct_translator
     - script_translator
     - lua_translator@*wanxiang.version_displayer  # 版本显示
-    - lua_translator@*wanxiang.set_schema  # 拼音方案切换
+    - lua_translator@*wanxiang.schema_switcher  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # Unicode 输入
     - table_translator@custom_phrase
     - table_translator@wanxiang_english
-    - table_translator@wanxiang_mixedcode
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@candidate_pinner  # 候选置顶
     - script_translator@user_dict_appender  # 手动造词
@@ -102,11 +102,11 @@ engine:
     - lua_filter@*wanxiang.user_dict_appender  # 手动造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
-    - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开，comment_hint_displayer 前
+    - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开（comment_hint_displayer 前）
     - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
-    - lua_filter@*wanxiang.comment_hint_displayer
+    - lua_filter@*wanxiang.comment_hint_displayer  # 注释提示显示
     - lua_filter@*wanxiang.phrase_escaper  # 转义字符处理
-    - lua_filter@*wanxiang.candidate_type_marker  # 候选类型标记
+    - lua_filter@*wanxiang.candidate_type_marker  # 候选类型标记（comment_hint_displayer 后）
     - simplifier@decomposition_hint
     - simplifier@s2t
     - simplifier@s2hk
@@ -198,22 +198,17 @@ wanxiang_english:
   comment_format:
     - xform/^~.+$//
 
-wanxiang_mixedcode:
-  dictionary: wanxiang_mixedcode
-  db_class: stabledb
-  enable_completion: true
-  enable_sentence: false
-  initial_quality: 2
-  comment_format:
-    - xform/.*//
-
-# 部件拆字反查
+# 反查
 wanxiang_reverse:
   tag: wanxiang_reverse
   dictionary: wanxiang_reverse
   enable_completion: true
-  prefix: "`"  # 反查前缀（反查时前缀会消失），与 recognizer/patterns/wanxiang_reverse 匹配
-  tips: "〔反查：拆分|笔画〕"
+
+  # 反查引导符。
+  prefix: "`"
+
+  # 反查提示。
+  tips: "〔反查：拆分｜笔画〕"
 
 user_dict:
   dictionary: wanxiang
@@ -410,7 +405,7 @@ key_binder:
     - {when: composing, accept: Alt+Right, send: Shift+Right}
     - {when: composing, accept: Control+w, send: Control+BackSpace}
 
-    # 分号键选择次选。使用微软双拼或搜狗双拼时，双拼方案占用了分号键，不可启用。
+    # 分号键选择次选。使用微软双拼或搜狗双拼时，此项会与双拼方案的分号键冲突。
     #- { when: has_menu, accept: semicolon, send: 2 }
 
     # Ctrl + C 拆分提示。
@@ -432,7 +427,7 @@ key_binder:
     # 编码中输入 `` 进入造词模式。
     - {match: "^.*`$", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
 
-    # 双击斜杠键上屏 '/'。
+    # 双击斜杠键上屏 /。
     - {match: "^/$", accept: "/", send_sequence: '{space}',}
 
 editor:
