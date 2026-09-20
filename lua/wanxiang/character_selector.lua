@@ -64,6 +64,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local select_first_key = rime_config:get_string("character_selector/select_first_key")
     if select_first_key == "" then
