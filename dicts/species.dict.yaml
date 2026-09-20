@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/wuzhong.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/wuzhong.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: species
-version: "17.0.3"
+version: "17.9.2"
 sort: by_weight
 ...
 阿魏	ā wèi	50
@@ -2287,7 +2287,7 @@ sort: by_weight
 鸣螽	míng zhōng	83
 沫蝉	mò chán	142
 漠蟾	mò chán	54
-膜翅	mó chì	176
+膜翅	mó chì	76
 漠虎	mò hǔ	380
 膜蕨	mó jué	132
 茉莉	mò lì	86
@@ -2509,7 +2509,7 @@ sort: by_weight
 匍蠊	pú lián	51
 朴树	pǔ shù	70
 蒲桃	pú táo	137
-葡萄	pú táo	132
+葡萄	pú tao	132
 蒲苇	pú wěi	74
 脐草	qí cǎo	86
 奇蝽	qí chūn	55
@@ -2621,7 +2621,6 @@ sort: by_weight
 清头	qīng tóu	136
 青藓	qīng xiǎn	104
 青葙	qīng xiāng	100
-靑蟹	qīng xiè	95
 青蟹	qīng xiè	68
 青鳕	qīng xuě	65
 鲭亚	qīng yà	55
@@ -2942,7 +2941,7 @@ sort: by_weight
 石栎	shí lì	92
 石莲	shí lián	102
 石羚	shí líng	88
-石榴	shí liú	57
+石榴	shí liu	57
 匙龙	shi lóng	96
 石鲈	shí lú	434
 莳萝	shí luó	79
@@ -3050,6 +3049,7 @@ sort: by_weight
 水蚌	shuǐ bàng	92
 水鳖	shuǐ biē	123
 睡菜	shuì cài	89
+水虿	shuǐ chài	7
 水蝽	shuǐ chūn	96
 水葱	shuǐ cōng	60
 水龟	shuǐ guī	55
@@ -3721,7 +3721,7 @@ sort: by_weight
 鲟形	xún xíng	102
 迅蛛	xùn zhū	77
 栒子	xún zǐ	134
-崖柏	yá bǎi	100
+崖柏	yá bǎi	95
 牙鲾	yá bī	61
 蚜虫	yá chóng	92
 涯蝽	yá chūn	69
@@ -4528,7 +4528,7 @@ sort: by_weight
 暗皮伞	àn pí sǎn	7
 安庆蜥	ān qìng xī	8
 岸生菌	àn shēng jūn	7
-安石榴	ān shí liú	1
+安石榴	ān shí liu	1
 安氏兽	ān shì shòu	6
 安氏螳	ān shì táng	7
 暗双孢	àn shuāng bāo	7
@@ -7182,9 +7182,9 @@ sort: by_weight
 盾天蛾	dùn tiān é	5
 钝头蛇	dùn tóu shé	144
 钝头𬶏	dùn tóu wéi	1
+钝头𫚐	dùn tóu yāng	5
 钝头鳐	dùn tóu yáo	7
 钝头鱼	dùn tóu yú	69
-钝头𫚐	dùn tóu 𫚐	5
 盾吻鲽	dùn wěn dié	5
 钝吻魮	dùn wěn pí	6
 钝吻鲨	dùn wěn shā	6
@@ -7410,7 +7410,7 @@ sort: by_weight
 帆鳍鱼	fān qí yú	62
 帆枪鱿	fān qiāng yóu	4
 泛鲭鲨	fàn qīng shā	8
-番石榴	fān shí liú	19
+番石榴	fān shí liu	19
 范氏藓	fàn shì xiǎn	8
 翻石鹬	fān shí yù	6
 帆水母	fān shuǐ mǔ	6
@@ -8444,13 +8444,13 @@ sort: by_weight
 海南䱗	hǎi nán cān	8
 海南椴	hǎi nán duàn	5
 海南𬶭	hǎi nán jì	7
-海南𫛚	hǎi nán 𫛚	5
+海南𫛚	hǎi nán jiān	5
 海鲶鱼	hǎi nián yú	92
 骇弄蝶	hài nòng dié	6
 海诺龙	hǎi nuò lóng	7
 海盘车	hǎi pán chē	6
 海盘虫	hǎi pán chóng	5
-海葡萄	hǎi pú táo	18
+海葡萄	hǎi pú tao	18
 亥普衣	hài pǔ yī	6
 海茜树	hǎi qiàn shù	1
 海茄苳	hǎi qié dōng	8
@@ -12525,6 +12525,7 @@ sort: by_weight
 棉状菌	mián zhuàng jūn	7
 鹋鹩莺	miáo liáo yīng	7
 妙弄蝶	miào nòng dié	4
+缪氏藻	miào shì zǎo	8
 灭虱草	miè shī cǎo	8
 闽春蜓	mǐn chūn tíng	5
 皿盖蛛	mǐn gài zhū	8
@@ -12593,7 +12594,6 @@ sort: by_weight
 磨脂鲤	mó zhī lǐ	6
 魩仔鱼	mò zǐ yú	81
 膜座霉	mó zuò méi	5
-缪氏藻	móu shì zǎo	8
 眸夜蛾	móu yè é	7
 木白蚁	mù bái yǐ	1
 木瓣树	mù bàn shù	12
@@ -13458,13 +13458,13 @@ sort: by_weight
 蹼麝鼩	pǔ shè qú	8
 普氏蟹	pǔ shì xiè	8
 普氏藻	pǔ shì zǎo	6
-葡萄孢	pú táo bāo	12
-葡萄贝	pú táo bèi	7
-葡萄虫	pú táo chóng	6
-葡萄螺	pú táo luó	7
-葡萄瓮	pú táo wèng	7
-葡萄鱼	pú táo yú	113
-葡萄藻	pú táo zǎo	4
+葡萄孢	pú tao bāo	12
+葡萄贝	pú tao bèi	7
+葡萄虫	pú tao chóng	6
+葡萄螺	pú tao luó	7
+葡萄瓮	pú tao wèng	7
+葡萄鱼	pú tao yú	113
+葡萄藻	pú tao zǎo	4
 普提鱼	pǔ tí yú	137
 朴腿螳	pǔ tuǐ táng	5
 匍网藓	pú wǎng xiǎn	4
@@ -14431,7 +14431,7 @@ sort: by_weight
 山茉莉	shān mò lì	17
 山牛蒡	shān niú bàng	11
 山女鱼	shān nǚ yú	69
-山葡萄	shān pú táo	6
+山葡萄	shān pú tao	6
 山漆茎	shān qī jīng	1
 山牵牛	shān qiān niú	22
 山茄子	shān qié zi	11
@@ -14442,7 +14442,7 @@ sort: by_weight
 扇珊瑚	shàn shān hú	7
 鄯善龙	shàn shàn lóng	8
 山檨子	shān shē zǐ	18
-山石榴	shān shí liú	10
+山石榴	shān shí liu	10
 山松鼠	shān sōng shǔ	4
 扇穗茅	shàn suì máo	16
 山苔草	shān tái cǎo	56
@@ -14548,7 +14548,7 @@ sort: by_weight
 蛇目菊	shé mù jú	12
 蛇皮果	shé pí guǒ	19
 蛇婆子	shé pó zi	13
-蛇葡萄	shé pú táo	28
+蛇葡萄	shé pú tao	28
 舌蕊花	shé ruǐ huā	7
 舌沙蚕	shé shā cán	5
 蛇舌兰	shé shé lán	13
@@ -14736,7 +14736,7 @@ sort: by_weight
 十裂葵	shí liè kuí	11
 始猎龙	shǐ liè lóng	7
 石苓舅	shí líng jiù	5
-石榴螺	shí liú luó	7
+石榴螺	shí liu luó	7
 石龙刍	shí lóng chú	16
 石龙尾	shí lóng wěi	21
 始龙鱼	shǐ lóng yú	50
@@ -17319,7 +17319,7 @@ sort: by_weight
 绣球兰	xiù qiú lán	8
 绣球茜	xiù qiú qiàn	13
 绣雀鲷	xiù què diāo	7
-修仁𫚐	xiū rén 𫚐	7
+修仁𫚐	xiū rén yāng	7
 秀山鱼	xiù shān yú	4
 秀体溞	xiù tǐ sāo	8
 修尾蚜	xiū wěi yá	8
@@ -17859,7 +17859,7 @@ sort: by_weight
 异翅香	yì chì xiāng	7
 异翅䗛	yì chì xiū	4
 异翅亚	yì chì yà	28
-异齿𫚢	yì chǐ 𫚢	6
+异齿𫚢	yì chǐ yǎn	6
 异唇鲿	yì chún cháng	5
 异唇兰	yì chún lán	10
 异唇鳗	yì chún mán	6
@@ -19470,6 +19470,7 @@ sort: by_weight
 紫斑蝶	zǐ bān dié	6
 紫瓣花	zǐ bàn huā	7
 紫孢霉	zǐ bāo méi	6
+紫背菜	zǐ bèi cài	360
 紫背苔	zǐ bèi tái	9
 紫辫鱼	zǐ biàn yú	93
 紫柄蕨	zǐ bǐng jué	22
@@ -19621,8 +19622,8 @@ sort: by_weight
 阿拉摩龙	ā lā mó lóng	1
 阿拉善龙	ā lā shàn lóng	1
 阿里彩蝇	ā lǐ cǎi yíng	1
-阿马加龙	ā mǎ gā lóng	1
 阿玛加鳄	ā mǎ jiā è	1
+阿马加龙	ā mǎ jiā lóng	1
 阿玛斯龙	ā mǎ sī lóng	1
 阿门角石	ā mēn jiǎo shí	1
 阿密海鲶	ā mì hǎi nián	1
@@ -20337,7 +20338,7 @@ sort: by_weight
 变叶海棠	biàn yè hǎi táng	24
 变叶胡椒	biàn yè hú jiāo	10
 变叶芦竹	biàn yè lú zhú	7
-变叶葡萄	biàn yè pú táo	12
+变叶葡萄	biàn yè pú tao	12
 变叶树参	biàn yè shù cān	5
 变叶寨线	biàn yè zhài xiàn	13
 扁掌龙亚	biǎn zhǎng lóng yà	1
@@ -21563,7 +21564,7 @@ sort: by_weight
 顶孔贝超	dǐng kǒng bèi chāo	1
 顶孔沙钱	dǐng kǒng shā qián	1
 丁柳珊瑚	dīng liǔ shān hú	1
-顶葡萄虫	dǐng pú táo chóng	1
+顶葡萄虫	dǐng pú tao chóng	1
 顶器脂鲤	dǐng qì zhī lǐ	1
 顶切叶蚁	dǐng qiè yè yǐ	1
 顶小卷蛾	dǐng xiǎo juàn é	1
@@ -21981,7 +21982,7 @@ sort: by_weight
 发毛针藻	fā máo zhēn zǎo	1
 发鳍草鳚	fā qí cǎo wèi	6
 法索拉鳄	fǎ suǒ lā è	1
-发小卷蛾	fà xiǎo juǎn é	1
+发小卷蛾	fā xiǎo juǎn é	1
 反称笔石	fǎn chēng bǐ shí	1
 翻唇苣苔	fān chún jù tái	1
 梵净山鱼	fàn jìng shān yú	1
@@ -23273,7 +23274,7 @@ sort: by_weight
 华小藤壶	huá xiǎo téng hú	1
 花须鼬鳚	huā xū yòu wèi	1
 桦叶荚蒾	huà yè jiá mí	20
-桦叶葡萄	huà yè pú táo	9
+桦叶葡萄	huà yè pú tao	9
 滑银汉鱼	huá yín hàn yú	1
 华萤叩甲	huá yíng kòu jiǎ	1
 哗仔说鱼	huā zǎi shuō yú	5
@@ -24064,6 +24065,7 @@ sort: by_weight
 颈毛线虫	jǐng máo xiàn chóng	1
 颈囊果蝠	jǐng náng guǒ fú	1
 茎树须鱼	jīng shù xū yú	7
+靓唐纳雀	jìng táng nà què	1
 晶鰕虎鱼	jīng xiā hǔ yú	1
 晶星革菌	jīng xīng gé jūn	1
 鲸鹦嘴鱼	jīng yīng zuǐ yú	1
@@ -24630,7 +24632,7 @@ sort: by_weight
 梨囊鞭菌	lí náng biān jūn	1
 丽拟叩甲	lì nǐ kòu jiǎ	1
 离片海胆	lí piàn hǎi dǎn	1
-丽葡萄螺	lì pú táo luó	1
+丽葡萄螺	lì pú tao luó	1
 离鳍深鳚	lí qí shēn wèi	1
 离鳍石鲈	lí qí shí lú	1
 里奇熊虫	lǐ qí xióng chóng	1
@@ -24733,7 +24735,6 @@ sort: by_weight
 两栖龙虱	liǎng qī lóng shī	1
 两色伞鸟	liǎng sè sǎn niǎo	1
 两色夜蛾	liǎng sè yè é	1
-靓唐纳雀	liàng táng nà què	1
 两条金鱼	liǎng tiáo jīn yú	7
 亮叶报春	liàng yè bào chūn	7
 亮叶冬青	liàng yè dōng qīng	31
@@ -25093,7 +25094,7 @@ sort: by_weight
 绿囊苔草	lǜ náng tái cǎo	11
 绿萍尺蛾	lǜ píng chǐ é	1
 绿朴丽鱼	lǜ pǔ lì yú	7
-绿葡萄藻	lǜ pú táo zǎo	1
+绿葡萄藻	lǜ pú tao zǎo	1
 吕宋花鮨	lǚ sòng huā yì	1
 吕宋鼩鼠	lǚ sòng qú shǔ	1
 吕宋纹鼠	lǚ sòng wén shǔ	1
@@ -25485,6 +25486,7 @@ sort: by_weight
 绵毛烟草	mián máo yān cǎo	1
 沔县苔草	miǎn xiàn tái cǎo	5
 绵枣儿亚	mián zǎo ér yà	1
+缪氏飞虱	miào shì fēi shī	1
 岷江景天	mín jiāng jǐng tiān	1
 敏雀霸鹟	mǐn què bà wēng	1
 敏尾笛鲷	mǐn wěi dí diāo	1
@@ -25531,7 +25533,6 @@ sort: by_weight
 膜叶荨麻	mó yè qián má	5
 膜叶星蕨	mó yè xīng jué	21
 膜叶紫麻	mó yè zǐ má	5
-缪氏飞虱	móu shì fēi shī	1
 木鼻白蚁	mù bí bái yǐ	1
 姆比尔龙	mǔ bǐ ěr lóng	1
 姆比雷龙	mǔ bǐ léi lóng	1
@@ -26133,9 +26134,9 @@ sort: by_weight
 普鲁斯鳄	pǔ lǔ sī è	1
 蒲烧鳗鱼	pú shāo mán yú	8
 普氏秧鸡	pǔ shì yāng jī	1
-葡萄穗霉	pú táo suì méi	1
-葡萄天蛾	pú táo tiān é	1
-葡萄叶甲	pú táo yè jiǎ	1
+葡萄穗霉	pú tao suì méi	1
+葡萄天蛾	pú tao tiān é	1
+葡萄叶甲	pú tao yè jiǎ	1
 普通章鱼	pǔ tōng zhāng yú	5
 普陀灰蝶	pǔ tuó huī dié	1
 蹼鰕虎鱼	pǔ xiā hǔ yú	1
@@ -28111,7 +28112,7 @@ sort: by_weight
 狭叶南星	xiá yè nán xīng	11
 狭叶女贞	xiá yè nǚ zhēn	7
 狭叶坡垒	xiá yè pō lěi	10
-狭叶葡萄	xiá yè pú táo	12
+狭叶葡萄	xiá yè pú tao	12
 狭叶蒲桃	xiá yè pú táo	10
 狭叶荨麻	xiá yè qián má	12
 狭叶青蒿	xiá yè qīng hāo	4
@@ -29683,6 +29684,7 @@ sort: by_weight
 掌叶鱼藤	zhǎng yè yú téng	7
 樟叶越桔	zhāng yè yuè jú	14
 掌叶紫堇	zhǎng yè zǐ jǐn	9
+掌状叉蕨	zhǎng zhuàng chā jué	50
 爪冬夜蛾	zhǎo dōng yè é	1
 爪甲囊菌	zhǎo jiǎ náng jūn	1
 爪哇搏鱼	zhǎo wā bó yú	32
@@ -30090,6 +30092,16 @@ sort: by_weight
 濯锦以鱼	zhuó jǐn yǐ yú	32
 着色杆菌	zhuó sè gǎn jūn	1
 啄羊鹦鹉	zhuó yáng yīng wǔ	1
+紫背杜鹃	zǐ bèi dù juān	153
+紫背浮萍	zǐ bèi fú píng	306
+紫背金盘	zǐ bèi jīn pán	130
+紫背椋鸟	zǐ bèi liáng niǎo	117
+紫背鼠李	zǐ bèi shǔ lǐ	76
+紫背天葵	zǐ bèi tiān kuí	486
+紫背苇鳽	zǐ bèi wěi jiān	45
+紫背细辛	zǐ bèi xì xīn	76
+紫背沼兰	zǐ bèi zhǎo lán	76
+紫背竹芋	zǐ bèi zhú yù	162
 紫背竹芋	zǐ bèi zhú yù	1
 紫翅野螟	zǐ chì yě míng	1
 紫顶蜂鸟	zǐ dǐng fēng niǎo	1
@@ -30276,8 +30288,8 @@ sort: by_weight
 阿林石龙子	ā lín shí lóng zǐ	1
 阿留西亚螳	ā liú xī yà táng	1
 阿鲁达巨龙	ā lǔ dá jù lóng	1
-阿马加巨龙	ā mǎ gā jù lóng	1
 阿马格巨龙	ā mǎ gé jù lóng	1
+阿马加巨龙	ā mǎ jiā jù lóng	1
 阿玛裸眼蜥	ā mǎ luǒ yǎn xī	1
 阿马帕兵鲶	ā mǎ pà bīng nián	1
 阿曼达兵鲶	ā màn dá bīng nián	1
@@ -33222,7 +33234,7 @@ sort: by_weight
 串叶松香草	chuàn yè sōng xiāng cǎo	1
 川州孔子鸟	chuān zhōu kǒng zǐ niǎo	1
 串珠老鹳草	chuàn zhū lǎo guàn cǎo	1
-串珠葡萄螺	chuàn zhū pú táo luó	1
+串珠葡萄螺	chuàn zhū pú tao luó	1
 窗格卷管螺	chuāng gé juǎn guǎn luó	1
 窗格苔藓虫	chuāng gé tái xiǎn chóng	1
 垂唇喉盘鱼	chuí chún hóu pán yú	1
@@ -33431,7 +33443,7 @@ sort: by_weight
 翠茎冷水花	cuì jīng lěng shuǐ huā	1
 翠蓝眼蛱蝶	cuì lán yǎn jiá dié	1
 翠绿针毛蕨	cuì lǜ zhēn máo jué	1
-脆葡萄核虫	cuì pú táo hé chóng	1
+脆葡萄核虫	cuì pú tao hé chóng	1
 脆弱凤仙花	cuì ruò fèng xiān huā	1
 脆弱异特龙	cuì ruò yì tè lóng	1
 脆性介壳虫	cuì xìng jiè ké chóng	1
@@ -34707,7 +34719,7 @@ sort: by_weight
 短尾叶鼻蝠	duǎn wěi yè bí fú	1
 短尾叶口蝠	duǎn wěi yè kǒu fú	1
 短尾叶石栎	duǎn wěi yè shí lì	1
-短尾异齿𫚢	duǎn wěi yì chǐ 𫚢
+短尾异齿𫚢	duǎn wěi yì chǐ yǎn
 短尾紫灰蝶	duǎn wěi zǐ huī dié	1
 短吻蝙蝠鱼	duǎn wěn biān fú yú	1
 短吻长尾鳕	duǎn wěn cháng wěi xuě	1
@@ -35629,7 +35641,7 @@ sort: by_weight
 缝纹副棘鳅	fèng wén fù jí qiū	1
 蜂窝格鳞虫	fēng wō gé lín chóng	1
 蜂窝苔藓虫	fēng wō tái xiǎn chóng	1
-缝线斑捻螺	fèng xiàn bān niǎn luó	1
+缝线斑捻螺	féng xiàn bān niǎn luó	1
 凤仙透骨草	fèng xiān tòu gǔ cǎo	1
 蜂箱小甲虫	fēng xiāng xiǎo jiǎ chóng	1
 锋牙袋蟾鱼	fēng yá dài chán yú	1
@@ -36532,7 +36544,7 @@ sort: by_weight
 海绵圣星虫	hǎi mián shèng xīng chóng	1
 海绵双腕虫	hǎi mián shuāng wàn chóng	1
 海南捕鸟蛛	hǎi nán bǔ niǎo zhū	1
-海南虎斑𫛚	hǎi nán hǔ bān 𫛚	1
+海南虎斑𫛚	hǎi nán hǔ bān jiān	1
 海南黄黝鱼	hǎi nán huáng yǒu yú	1
 海南马口鱼	hǎi nán mǎ kǒu yú	1
 海南墨头鱼	hǎi nán mò tóu yú	1
@@ -37675,7 +37687,7 @@ sort: by_weight
 华北薄鳞蕨	huá běi báo lín jué	1
 华北蓝盆花	huá běi lán pén huā	1
 华北鳞毛蕨	huá běi lín máo jué	1
-花背石榴螺	huā bèi shí liú luó	1
+花背石榴螺	huā bèi shí liu luó	1
 华北铁角蕨	huá běi tiě jiǎo jué	1
 花边中丽鱼	huā biān zhōng lì yú	1
 华彩背叶虫	huá cǎi bèi yè chóng	1
@@ -39979,7 +39991,7 @@ sort: by_weight
 梨形鞭毛虫	lí xíng biān máo chóng	1
 梨形碘泡虫	lí xíng diǎn pào chóng	1
 梨形环口螺	lí xíng huán kǒu luó	1
-梨形葡萄螺	lí xíng pú táo luó	1
+梨形葡萄螺	lí xíng pú tao luó	1
 梨形嵌线螺	lí xíng qiàn xiàn luó	1
 梨形乳玉螺	lí xíng rǔ yù luó	1
 梨形珊瑚螺	lí xíng shān hú luó	1
@@ -40630,7 +40642,7 @@ sort: by_weight
 绿侧蝴蝶鱼	lǜ cè hú dié yú	1
 绿茶四叶草	lǜ chá sì yè cǎo	1
 履巉岩本草	lǚ chán yán běn cǎo	1
-绿长葡萄螺	lǜ cháng pú táo luó	1
+绿长葡萄螺	lǜ cháng pú tao luó	1
 绿翅斑腹雀	lǜ chì bān fù què	1
 绿春蛇根草	lǜ chūn shé gēn cǎo	1
 绿唇鹦嘴鱼	lǜ chún yīng zuǐ yú	1
@@ -40695,7 +40707,7 @@ sort: by_weight
 绿叶粉背蕨	lǜ yè fěn bèi jué	1
 绿叶海蛞蝓	lǜ yè hǎi kuò yú	1
 绿叶海天牛	lǜ yè hǎi tiān niú	1
-葎叶蛇葡萄	lǜ yè shé pú táo	1
+葎叶蛇葡萄	lǜ yè shé pú tao	1
 绿叶蛇纹岩	lǜ yè shé wén yán	1
 绿叶兔斯基	lǜ yè tù sī jī	1
 绿叶兮紫茎	lǜ yè xī zǐ jīng	1
@@ -40793,7 +40805,7 @@ sort: by_weight
 迈克猪笼草	mài kè zhū lóng cǎo	1
 迈立开南鳅	mài lì kāi nán qiū	1
 迈立开条鳅	mài lì kāi tiáo qiū	1
-麦粒石榴螺	mài lì shí liú luó	1
+麦粒石榴螺	mài lì shí liu luó	1
 迈摩尔甲龙	mài mó ěr jiǎ lóng	1
 麦纳小公鱼	mài nà xiǎo gōng yú	1
 迈纳新胀蟹	mài nà xīn zhàng xiè	1
@@ -41275,6 +41287,7 @@ sort: by_weight
 棉拟妒夜蛾	mián nǐ dù yè é	1
 面纱薄泡螺	miàn shā báo pào luó	1
 妙阿尔刻鸟	miào ā ěr kè niǎo	1
+缪氏暗光鱼	miào shì àn guāng yú	1
 妙翼猪笼草	miào yì zhū lóng cǎo	1
 妙音鰕虎鱼	miào yīn xiā hǔ yú	1
 闽北冷水花	mǐn běi lěng shuǐ huā	1
@@ -41352,7 +41365,6 @@ sort: by_weight
 膜叶鳞盖蕨	mó yè lín gài jué	1
 膜叶驴蹄草	mó yè lǘ tí cǎo	1
 膜叶铁角蕨	mó yè tiě jiǎo jué	1
-缪氏暗光鱼	móu shì àn guāng yú	1
 木螯寄居蟹	mù áo jì jū xiè	1
 木本补血草	mù běn bǔ xuè cǎo	1
 牧地狼尾草	mù dì láng wěi cǎo	1
@@ -42149,10 +42161,10 @@ sort: by_weight
 朴氏双盖蕨	pǔ shì shuāng gài jué	1
 普氏准鼬鲶	pǔ shì zhǔn yòu nián	1
 普梭指盘蛙	pǔ suō zhǐ pán wā	1
-葡萄孢盘菌	pú táo bāo pán jūn	1
-葡萄碘泡虫	pú táo diǎn pào chóng	1
-葡萄风信子	pú táo fēng xìn zi	1
-葡萄胸椋鸟	pú táo xiōng liáng niǎo	1
+葡萄孢盘菌	pú tao bāo pán jūn	1
+葡萄碘泡虫	pú tao diǎn pào chóng	1
+葡萄风信子	pú tao fēng xìn zi	1
+葡萄胸椋鸟	pú tao xiōng liáng niǎo	1
 普通八爪鱼	pǔ tōng bā zhuǎ yú	1
 普通凤尾蕨	pǔ tōng fèng wěi jué	1
 普通凤丫蕨	pǔ tōng fèng yā jué	1
@@ -43325,7 +43337,7 @@ sort: by_weight
 深海槭海星	shēn hǎi qì hǎi xīng	1
 深海青眼鱼	shēn hǎi qīng yǎn yú	1
 深海石斑鱼	shēn hǎi shí bān yú	1
-深海石榴螺	shēn hǎi shí liú luó	1
+深海石榴螺	shēn hǎi shí liu luó	1
 深海似蜥鱼	shēn hǎi sì xī yú	1
 深海天竺鲷	shēn hǎi tiān zhú diāo	1
 深海透孔螺	shēn hǎi tòu kǒng luó	1
@@ -44812,7 +44824,7 @@ sort: by_weight
 椭圆孔盘虫	tuǒ yuán kǒng pán chóng	1
 椭圆萝卜螺	tuǒ yuán luó bo luó	1
 椭圆裸顶鲷	tuǒ yuán luǒ dǐng diāo	1
-椭圆葡萄螺	tuǒ yuán pú táo luó	1
+椭圆葡萄螺	tuǒ yuán pú tao luó	1
 椭圆腔蝠鱼	tuǒ yuán qiāng fú yú	1
 椭圆四极虫	tuǒ yuán sì jí chóng	1
 椭圆无杆虫	tuǒ yuán wú gān chóng	1
@@ -48236,7 +48248,6 @@ sort: by_weight
 中华球孢虫	zhōng huá qiú bāo chóng	1
 中华缺翅虫	zhōng huá quē chì chóng	1
 中华绒螯蟹	zhōng huá róng áo xiè	1
-中华绒鳌蟹	zhōng huá róng áo xiè	1
 中华绒球蟹	zhōng huá róng qiú xiè	1
 中华珊瑚蛇	zhōng huá shān hú shé	1
 中华蛇根草	zhōng huá shé gēn cǎo	1
@@ -49104,7 +49115,7 @@ sort: by_weight
 白舌副狮子鱼	bái shé fù shī zi yú	1
 白氏绿鹦嘴鱼	bái shì lǜ yīng zuǐ yú	1
 白氏新内溪蟹	bái shì xīn nèi xī xiè	1
-白丝长葡萄螺	bái sī cháng pú táo luó	1
+白丝长葡萄螺	bái sī cháng pú tao luó	1
 白条钝鰕虎鱼	bái tiáo dùn xiā hǔ yú	1
 白臀尖嘴蜂鸟	bái tún jiān zuǐ fēng niǎo	1
 白臀紫耳蜂鸟	bái tún zǐ ěr fēng niǎo	1
@@ -49606,7 +49617,7 @@ sort: by_weight
 长角大锹形虫	cháng jiǎo dà qiāo xíng chóng	1
 长脚萤金花虫	cháng jiǎo yíng jīn huā chóng	1
 长茎婆罗门参	cháng jīng pó luó mén shēn	1
-长茎葡萄蕨藻	cháng jīng pú táo jué zǎo	1
+长茎葡萄蕨藻	cháng jīng pú tao jué zǎo	1
 长茎锥棘吸虫	cháng jīng zhuī jí xī chóng	1
 长卵苞翠雀花	cháng luǎn bāo cuì què huā	1
 长卵形两极虫	cháng luǎn xíng liǎng jí chóng	1
@@ -51737,7 +51748,7 @@ sort: by_weight
 肯尼亚康吉鳗	kěn ní yà kāng jí mán	1
 肯氏饰纹脂鲤	kěn shì shì wén zhī lǐ	1
 肯氏无鳍蛇鳗	kěn shì wú qí shé mán	1
-空杯丽葡萄螺	kōng bēi lì pú táo luó	1
+空杯丽葡萄螺	kōng bēi lì pú tao luó	1
 空堪达猪笼草	kōng kān dá zhū lóng cǎo	1
 孔雀连鳍唇鱼	kǒng què lián qí chún yú	1
 孔头新亮丽鲷	kǒng tóu xīn liàng lì diāo	1
@@ -52997,7 +53008,7 @@ sort: by_weight
 闪光连鳍唇鱼	shǎn guāng lián qí chún yú	1
 闪光直线脂鲤	shǎn guāng zhí xiàn zhī lǐ	1
 珊瑚海拟盔鱼	shān hú hǎi nǐ kuī yú	1
-山口长葡萄螺	shān kǒu cháng pú táo luó	1
+山口长葡萄螺	shān kǒu cháng pú tao luó	1
 山榄炼介壳虫	shān lǎn liàn jiè ké chóng	1
 闪亮奇巨口鱼	shǎn liàng qí jù kǒu yú	1
 扇鳍臼齿丽鲷	shàn qí jiù chǐ lì diāo	1
@@ -53970,7 +53981,7 @@ sort: by_weight
 小肠嗜眼吸虫	xiǎo cháng shì yǎn xī chóng	1
 小齿大眼脂鲤	xiǎo chǐ dà yǎn zhī lǐ	1
 小齿龙占丽鱼	xiǎo chǐ lóng zhàn lì yú	1
-小齿葡萄核虫	xiǎo chǐ pú táo hé chóng	1
+小齿葡萄核虫	xiǎo chǐ pú tao hé chóng	1
 小齿日本银鱼	xiǎo chǐ rì běn yín yú	1
 小窗格苔藓虫	xiǎo chuāng gé tái xiǎn chóng	1
 小窗龟金花虫	xiǎo chuāng guī jīn huā chóng	1
@@ -55030,7 +55041,7 @@ sort: by_weight
 二回疏叶蹄盖蕨	èr huí shū yè tí gài jué	1
 二型叶假蹄盖蕨	èr xíng yè jiǎ tí gài jué	1
 法兰西斯小脂鲤	fǎ lán xī sī xiǎo zhī lǐ	1
-番石榴粉介壳虫	fān shí liú fěn jiè ké chóng	1
+番石榴粉介壳虫	fān shí liu fěn jiè ké chóng	1
 纺锤形杯殖吸虫	fǎng chuí xíng bēi zhí xī chóng	1
 方盖圆扇介壳虫	fāng gài yuán shàn jiè ké chóng	1
 肥粗玉米卷管螺	féi cū yù mǐ juǎn guǎn luó	1

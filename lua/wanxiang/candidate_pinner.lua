@@ -45,6 +45,7 @@ local P = {}
 ---@param env Env
 function P.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local enabled = rime_config:get_bool("candidate_pinner/enabled")
     if enabled == nil then
@@ -152,6 +153,7 @@ local F = {}
 ---@param env Env
 function F.init(env)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local enabled = rime_config:get_bool("candidate_pinner/enabled")
     if enabled == nil then
@@ -182,6 +184,8 @@ end
 function F.func(translation, env)
     local state = env.candidate_pinner_translator_state
     assert(state)
+    local segment = env.engine.context.composition:back()
+    assert(segment)
 
     ---@type Candidate[]
     local pinned_cands = {}
@@ -191,14 +195,16 @@ function F.func(translation, env)
     local regular_cands_len = 0
 
     for cand in translation:iter() do
-        -- Pin candidates that have a matching entry in the pinner memory.
-        for entry in state.memory:useriter_lookup(cand.comment .. " ", true):iter() do
-            if entry.text == cand.text then
-                local genuine = cand:get_genuine()
-                genuine.type = "pinned"
-                pinned_cands_len = pinned_cands_len + 1
-                pinned_cands[pinned_cands_len] = genuine
-                goto continue
+        -- Pin candidates that cover the entire segment and have an exact code match.
+        if cand.start == segment.start and cand._end == segment._end then
+            for entry in state.memory:useriter_lookup(cand.comment, false):iter() do
+                if entry.text == cand.text then
+                    local genuine = cand:get_genuine()
+                    genuine.type = "pinned"
+                    pinned_cands_len = pinned_cands_len + 1
+                    pinned_cands[pinned_cands_len] = genuine
+                    goto continue
+                end
             end
         end
 
@@ -218,6 +224,7 @@ function F.func(translation, env)
 end
 
 ---@param env Env
+---@return boolean
 function F.tags_match(_, env)
     local config = env.candidate_pinner_filter_config
     assert(config)

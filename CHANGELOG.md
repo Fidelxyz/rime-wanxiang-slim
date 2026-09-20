@@ -1,5 +1,79 @@
 # Changelog
 
+## [1.0.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0...v1.0.0) (2026-09-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **algebra:** 升级到该版本时，需手动更新自定义文件 `custom.yaml` 中 `speller/algebra` 补丁至 `custom` 目录下模板文件中新的格式。
+* remove Chinese-English mixed dictionary
+
+### Features
+
+* add install scripts ([ec4e93c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ec4e93c359cd493fcc4a1073caac0a7491356c7d))
+* add 乱序17 support for pro schema ([ee15391](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ee15391f28e8727d5a519521f561cf619c00db5c))
+* support 蓝天双拼 and 大牛双拼 reverse lookup ([ba8f45b](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ba8f45b682d9a459fba7c9269fa0d2b9038d8b43))
+* **version_displayer:** show aux code schema on `/version` command ([55cd442](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/55cd442d17938dadb69da9acf6f1ca8a1ebeacac))
+
+
+### Bug Fixes
+
+* add nil check for `env.engine.schema.config` ([2bd1acc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2bd1acc72fe6ff04453bd5268f814467fd363ea0))
+* fix duplicated auxiliary mode detection character ([7c85502](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7c85502c1f163eb6033fa55ca8dac7d5faf83ee0))
+* fix librime-lua contrib type annotations ([531a7a9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/531a7a92c02701d90655c6a11b6f3dcb1c1c4f28))
+* make install.sh compatible with PowerShell 5.1 ([5747e11](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5747e1135b36a6bb1e6cfdf4b72b4d8abac70fea))
+* only pin candidates matching the entire input segment ([58c3508](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/58c35086bd2d947bb738dd19fe0c34d034eb9f76))
+
+
+### Miscellaneous Chores
+
+* v1 release ([1546f41](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1546f4170d55a2091be702e27b459e84d3b0bb0b))
+* v1 release ([7badbd9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7badbd90f55aff18eef1d42eff89c7c41cde2ac8))
+
+
+### Code Refactoring
+
+* **algebra:** unify algebra patch configuration ([3fa26fc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/3fa26fcb236144c30f01f4305c6ba18ab2056ee4))
+* remove Chinese-English mixed dictionary ([f328d83](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f328d83cd171fb45b9a41b6b95b8d33dc3b56e25))
+
+## [1.0.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2026-09-18)
+
+
+### Features
+
+* add install scripts ([ec4e93c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ec4e93c359cd493fcc4a1073caac0a7491356c7d))
+* add 乱序17 support for pro schema ([ee15391](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ee15391f28e8727d5a519521f561cf619c00db5c))
+* support 蓝天双拼 and 大牛双拼 reverse lookup ([ba8f45b](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ba8f45b682d9a459fba7c9269fa0d2b9038d8b43))
+* **version_displayer:** show aux code schema on `/version` command ([55cd442](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/55cd442d17938dadb69da9acf6f1ca8a1ebeacac))
+
+
+### Bug Fixes
+
+* fix duplicated auxiliary mode detection character ([7c85502](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7c85502c1f163eb6033fa55ca8dac7d5faf83ee0))
+* only pin candidates matching the entire input segment ([58c3508](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/58c35086bd2d947bb738dd19fe0c34d034eb9f76))
+
+## [1.0.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0...v1.0.0-beta.1) (2026-09-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove Chinese-English mixed dictionary
+
+### Bug Fixes
+
+* add nil check for `env.engine.schema.config` ([2bd1acc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/2bd1acc72fe6ff04453bd5268f814467fd363ea0))
+* fix librime-lua contrib type annotations ([531a7a9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/531a7a92c02701d90655c6a11b6f3dcb1c1c4f28))
+
+
+### Miscellaneous Chores
+
+* v1 release ([7badbd9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/7badbd90f55aff18eef1d42eff89c7c41cde2ac8))
+
+
+### Code Refactoring
+
+* remove Chinese-English mixed dictionary ([f328d83](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f328d83cd171fb45b9a41b6b95b8d33dc3b56e25))
+
 ## [0.6.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.5.0...v0.6.0) (2026-08-22)
 
 
