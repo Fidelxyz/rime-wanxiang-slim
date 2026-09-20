@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.0.3/dicts/wuzhong.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/wuzhong.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: species
-version: "17.0.3"
+version: "17.9.2"
 sort: by_weight
 ...
 阿魏	ā;ek wèi;hg	50
@@ -2287,7 +2287,7 @@ sort: by_weight
 鸣螽	míng;kn zhōng;di	83
 沫蝉	mò;dm chán;id	142
 漠蟾	mò;dd chán;ik	54
-膜翅	mó;od chì;ux	176
+膜翅	mó;od chì;ux	76
 漠虎	mò;dd hǔ;hj	380
 膜蕨	mó;od jué;cq	132
 茉莉	mò;cm lì;cd	86
@@ -2509,7 +2509,7 @@ sort: by_weight
 匍蠊	pú;bf lián;ij	51
 朴树	pǔ;mb shù;mc	70
 蒲桃	pú;cf táo;mv	137
-葡萄	pú;cf táo;cf	132
+葡萄	pú;cf tao;cf	132
 蒲苇	pú;cf wěi;cw	74
 脐草	qí;oq cǎo;cu	86
 奇蝽	qí;dk chūn;io	55
@@ -2621,7 +2621,6 @@ sort: by_weight
 清头	qīng;do tóu;dd	136
 青藓	qīng;fo xiǎn;cy	104
 青葙	qīng;fo xiāng;co	100
-靑蟹	qīng;fa xiè;di	95
 青蟹	qīng;fo xiè;di	68
 青鳕	qīng;fo xuě;yx	65
 鲭亚	qīng;yq yà;ay	55
@@ -2942,7 +2941,7 @@ sort: by_weight
 石栎	shí;ak lì;ml	92
 石莲	shí;ak lián;ci	102
 石羚	shí;ak líng;ys	88
-石榴	shí;ak liú;mt	57
+石榴	shí;ak liu;mt	57
 匙龙	shi;ob lóng;ad	96
 石鲈	shí;ak lú;yl	434
 莳萝	shí;cc luó;cx	79
@@ -3050,6 +3049,7 @@ sort: by_weight
 水蚌	shuǐ;ln bàng;if	92
 水鳖	shuǐ;ln biē;yw	123
 睡菜	shuì;oi cài;cc	89
+水虿	shuǐ;ln chài;wi	7
 水蝽	shuǐ;ln chūn;io	96
 水葱	shuǐ;ln cōng;cx	60
 水龟	shuǐ;ln guī;dd	55
@@ -3721,7 +3721,7 @@ sort: by_weight
 鲟形	xún;yx xíng;kp	102
 迅蛛	xùn;zu zhū;iv	77
 栒子	xún;mo zǐ;aa	134
-崖柏	yá;uy bǎi;mb	100
+崖柏	yá;uy bǎi;mb	95
 牙鲾	yá;ap bī;yt	61
 蚜虫	yá;iy chóng;vd	92
 涯蝽	yá;dt chūn;io	69
@@ -4528,7 +4528,7 @@ sort: by_weight
 暗皮伞	àn;oo pí;vy sǎn;ru	7
 安庆蜥	ān;bn qìng;gd xī;ij	8
 岸生菌	àn;ug shēng;pf jūn;ch	7
-安石榴	ān;bn shí;ak liú;mt	1
+安石榴	ān;bn shí;ak liu;mt	1
 安氏兽	ān;bn shì;pv shòu;bk	6
 安氏螳	ān;bn shì;pv táng;it	7
 暗双孢	àn;oo shuāng;yy bāo;zb	7
@@ -7182,9 +7182,9 @@ sort: by_weight
 盾天蛾	dùn;po tiān;ad é;iw	5
 钝头蛇	dùn;jt tóu;dd shé;ib	144
 钝头𬶏	dùn;jt tóu;dd wéi;yw	1
+钝头𫚐	dùn;jt tóu;dd yāng;	5
 钝头鳐	dùn;jt tóu;dd yáo;yf	7
 钝头鱼	dùn;jt tóu;dd yú;da	69
-钝头𫚐	dùn;jt tóu;dd 𫚐;	5
 盾吻鲽	dùn;po wěn;kw dié;ym	5
 钝吻魮	dùn;jt wěn;kw pí;yb	6
 钝吻鲨	dùn;jt wěn;kw shā;dy	6
@@ -7410,7 +7410,7 @@ sort: by_weight
 帆鳍鱼	fān;jf qí;yo yú;da	62
 帆枪鱿	fān;jf qiāng;mv yóu;yy	4
 泛鲭鲨	fàn;df qīng;yq shā;dy	8
-番石榴	fān;pt shí;ak liú;mt	19
+番石榴	fān;pt shí;ak liu;mt	19
 范氏藓	fàn;cv shì;pv xiǎn;cy	8
 翻石鹬	fān;yf shí;ak yù;ny	6
 帆水母	fān;jf shuǐ;ln mǔ;vd	6
@@ -8444,13 +8444,13 @@ sort: by_weight
 海南䱗	hǎi;dm nán;ug cān;yc	8
 海南椴	hǎi;dm nán;ug duàn;md	5
 海南𬶭	hǎi;dm nán;ug jì;yj	7
-海南𫛚	hǎi;dm nán;ug 𫛚;	5
+海南𫛚	hǎi;dm nán;ug jiān;	5
 海鲶鱼	hǎi;dm nián;yn yú;da	92
 骇弄蝶	hài;mr nòng;wc dié;im	6
 海诺龙	hǎi;dm nuò;yk lóng;ad	7
 海盘车	hǎi;dm pán;vm chē;aa	6
 海盘虫	hǎi;dm pán;vm chóng;vd	5
-海葡萄	hǎi;dm pú;cf táo;cf	18
+海葡萄	hǎi;dm pú;cf tao;cf	18
 亥普衣	hài;wr pǔ;bo yī;wy	6
 海茜树	hǎi;dm qiàn;cx shù;mc	1
 海茄苳	hǎi;dm qié;ck dōng;cd	8
@@ -12525,6 +12525,7 @@ sort: by_weight
 棉状菌	mián;mj zhuàng;dq jūn;ch	7
 鹋鹩莺	miáo;cn liáo;dn yīng;cn	7
 妙弄蝶	miào;nu nòng;wc dié;im	4
+缪氏藻	miào;sp shì;pv zǎo;cm	8
 灭虱草	miè;ah shī;vi cǎo;cu	8
 闽春蜓	mǐn;mi chūn;fo tíng;it	5
 皿盖蛛	mǐn;aa gài;ym zhū;iv	8
@@ -12593,7 +12594,6 @@ sort: by_weight
 磨脂鲤	mó;gu zhī;oo lǐ;yl	6
 魩仔鱼	mò;yw zǐ;rz yú;da	81
 膜座霉	mó;od zuò;gt méi;ym	5
-缪氏藻	móu;sp shì;pv zǎo;cm	8
 眸夜蛾	móu;on yè;wn é;iw	7
 木白蚁	mù;un bái;po yǐ;iy	1
 木瓣树	mù;un bàn;lu shù;mc	12
@@ -13458,13 +13458,13 @@ sort: by_weight
 蹼麝鼩	pǔ;zf shè;gc qú;jk	8
 普氏蟹	pǔ;bo shì;pv xiè;di	8
 普氏藻	pǔ;bo shì;pv zǎo;cm	6
-葡萄孢	pú;cf táo;cf bāo;zb	12
-葡萄贝	pú;cf táo;cf bèi;kr	7
-葡萄虫	pú;cf táo;cf chóng;vd	6
-葡萄螺	pú;cf táo;cf luó;ix	7
-葡萄瓮	pú;cf táo;cf wèng;bw	7
-葡萄鱼	pú;cf táo;cf yú;da	113
-葡萄藻	pú;cf táo;cf zǎo;cm	4
+葡萄孢	pú;cf tao;cf bāo;zb	12
+葡萄贝	pú;cf tao;cf bèi;kr	7
+葡萄虫	pú;cf tao;cf chóng;vd	6
+葡萄螺	pú;cf tao;cf luó;ix	7
+葡萄瓮	pú;cf tao;cf wèng;bw	7
+葡萄鱼	pú;cf tao;cf yú;da	113
+葡萄藻	pú;cf tao;cf zǎo;cm	4
 普提鱼	pǔ;bo tí;fr yú;da	137
 朴腿螳	pǔ;mb tuǐ;ot táng;it	5
 匍网藓	pú;bf wǎng;kx xiǎn;cy	4
@@ -14431,7 +14431,7 @@ sort: by_weight
 山茉莉	shān;aa mò;cm lì;cd	17
 山牛蒡	shān;aa niú;pa bàng;cf	11
 山女鱼	shān;aa nǚ;va yú;da	69
-山葡萄	shān;aa pú;cf táo;cf	6
+山葡萄	shān;aa pú;cf tao;cf	6
 山漆茎	shān;aa qī;du jīng;cg	1
 山牵牛	shān;aa qiān;dn niú;pa	22
 山茄子	shān;aa qié;ck zi;aa	11
@@ -14442,7 +14442,7 @@ sort: by_weight
 扇珊瑚	shàn;hx shān;wc hú;wo	7
 鄯善龙	shàn;ye shàn;yk lóng;ad	8
 山檨子	shān;aa shē;mx zǐ;aa	18
-山石榴	shān;aa shí;ak liú;mt	10
+山石榴	shān;aa shí;ak liu;mt	10
 山松鼠	shān;aa sōng;mg shǔ;jv	4
 扇穗茅	shàn;hx suì;hx máo;cm	16
 山苔草	shān;aa tái;ck cǎo;cu	56
@@ -14548,7 +14548,7 @@ sort: by_weight
 蛇目菊	shé;ib mù;mu jú;cm	12
 蛇皮果	shé;ib pí;vy guǒ;tm	19
 蛇婆子	shé;ib pó;dn zi;aa	13
-蛇葡萄	shé;ib pú;cf táo;cf	28
+蛇葡萄	shé;ib pú;cf tao;cf	28
 舌蕊花	shé;qk ruǐ;cx huā;cb	7
 舌沙蚕	shé;qk shā;du cán;ti	5
 蛇舌兰	shé;ib shé;qk lán;bs	13
@@ -14736,7 +14736,7 @@ sort: by_weight
 十裂葵	shí;aa liè;dy kuí;ct	11
 始猎龙	shǐ;nk liè;qo lóng;ad	7
 石苓舅	shí;ak líng;cs jiù;jl	5
-石榴螺	shí;ak liú;mt luó;ix	7
+石榴螺	shí;ak liu;mt luó;ix	7
 石龙刍	shí;ak lóng;ad chú;de	16
 石龙尾	shí;ak lóng;ad wěi;um	21
 始龙鱼	shǐ;nk lóng;ad yú;da	50
@@ -17319,7 +17319,7 @@ sort: by_weight
 绣球兰	xiù;sn qiú;wq lán;bs	8
 绣球茜	xiù;sn qiú;wq qiàn;cx	13
 绣雀鲷	xiù;sn què;xv diāo;yv	7
-修仁𫚐	xiū;rp rén;re 𫚐;	7
+修仁𫚐	xiū;rp rén;re yāng;	7
 秀山鱼	xiù;hn shān;aa yú;da	4
 秀体溞	xiù;hn tǐ;rb sāo;di	8
 修尾蚜	xiū;rp wěi;um yá;iy	8
@@ -17859,7 +17859,7 @@ sort: by_weight
 异翅香	yì;sc chì;ux xiāng;ho	7
 异翅䗛	yì;sc chì;ux xiū;io	4
 异翅亚	yì;sc chì;ux yà;ay	28
-异齿𫚢	yì;sc chǐ;vk 𫚢;	6
+异齿𫚢	yì;sc chǐ;vk yǎn;	6
 异唇鲿	yì;sc chún;ik cháng;yi	5
 异唇兰	yì;sc chún;ik lán;bs	10
 异唇鳗	yì;sc chún;ik mán;ym	6
@@ -19470,6 +19470,7 @@ sort: by_weight
 紫斑蝶	zǐ;vx bān;ww dié;im	6
 紫瓣花	zǐ;vx bàn;lu huā;cb	7
 紫孢霉	zǐ;vx bāo;zb méi;ym	6
+紫背菜	zǐ;vx bèi;bo cài;cc	360
 紫背苔	zǐ;vx bèi;bo tái;ck	9
 紫辫鱼	zǐ;vx biàn;lu yú;da	93
 紫柄蕨	zǐ;vx bǐng;mb jué;cq	22
@@ -19621,8 +19622,8 @@ sort: by_weight
 阿拉摩龙	ā;ek lā;fl mó;gu lóng;ad	1
 阿拉善龙	ā;ek lā;fl shàn;yk lóng;ad	1
 阿里彩蝇	ā;ek lǐ;la cǎi;pp yíng;id	1
-阿马加龙	ā;ek mǎ;va gā;lk lóng;ad	1
 阿玛加鳄	ā;ek mǎ;wm jiā;lk è;yk	1
+阿马加龙	ā;ek mǎ;va jiā;lk lóng;ad	1
 阿玛斯龙	ā;ek mǎ;wm sī;qj lóng;ad	1
 阿门角石	ā;ek mēn;dv jiǎo;dy shí;ak	1
 阿密海鲶	ā;ek mì;bu hǎi;dm nián;yn	1
@@ -20337,7 +20338,7 @@ sort: by_weight
 变叶海棠	biàn;wy yè;ku hǎi;dm táng;xm	24
 变叶胡椒	biàn;wy yè;ku hú;uo jiāo;my	10
 变叶芦竹	biàn;wy yè;ku lú;ch zhú;gg	7
-变叶葡萄	biàn;wy yè;ku pú;cf táo;cf	12
+变叶葡萄	biàn;wy yè;ku pú;cf tao;cf	12
 变叶树参	biàn;wy yè;ku shù;mc cān;sp	5
 变叶寨线	biàn;wy yè;ku zhài;bm xiàn;sj	13
 扁掌龙亚	biǎn;hc zhǎng;xu lóng;ad yà;ay	1
@@ -21563,7 +21564,7 @@ sort: by_weight
 顶孔贝超	dǐng;dr kǒng;zv bèi;kr chāo;tk	1
 顶孔沙钱	dǐng;dr kǒng;zv shā;du qián;jj	1
 丁柳珊瑚	dīng;al liǔ;me shān;wc hú;wo	1
-顶葡萄虫	dǐng;dr pú;cf táo;cf chóng;vd	1
+顶葡萄虫	dǐng;dr pú;cf tao;cf chóng;vd	1
 顶器脂鲤	dǐng;dr qì;kk zhī;oo lǐ;yl	1
 顶切叶蚁	dǐng;dr qiè;qd yè;ku yǐ;iy	1
 顶小卷蛾	dǐng;dr xiǎo;ad juàn;jv é;iw	1
@@ -21981,7 +21982,7 @@ sort: by_weight
 发毛针藻	fā;vy máo;pv zhēn;ju zǎo;cm	1
 发鳍草鳚	fā;vy qí;yo cǎo;cu wèi;yw	6
 法索拉鳄	fǎ;dq suǒ;ux lā;fl è;yk	1
-发小卷蛾	fà;vy xiǎo;ad juǎn;jv é;iw	1
+发小卷蛾	fā;vy xiǎo;ad juǎn;jv é;iw	1
 反称笔石	fǎn;py chēng;hx bǐ;vm shí;ak	1
 翻唇苣苔	fān;yf chún;ik jù;cj tái;ck	1
 梵净山鱼	fàn;mf jìng;dv shān;aa yú;da	1
@@ -23273,7 +23274,7 @@ sort: by_weight
 华小藤壶	huá;ru xiǎo;ad téng;cu hú;uy	1
 花须鼬鳚	huā;cb xū;pr yòu;jy wèi;yw	1
 桦叶荚蒾	huà;mu yè;ku jiá;cj mí;cm	20
-桦叶葡萄	huà;mu yè;ku pú;cf táo;cf	9
+桦叶葡萄	huà;mu yè;ku pú;cf tao;cf	9
 滑银汉鱼	huá;dg yín;jg hàn;dy yú;da	1
 华萤叩甲	huá;ru yíng;ci kòu;ke jiǎ;aa	1
 哗仔说鱼	huā;ku zǎi;rz shuō;ye yú;da	5
@@ -24064,6 +24065,7 @@ sort: by_weight
 颈毛线虫	jǐng;vr máo;pv xiàn;sj chóng;vd	1
 颈囊果蝠	jǐng;vr náng;ay guǒ;tm fú;it	1
 茎树须鱼	jīng;cg shù;mc xū;pr yú;da	7
+靓唐纳雀	jìng;qj táng;gk nà;sn què;xv	1
 晶鰕虎鱼	jīng;oo xiā;yj hǔ;hj yú;da	1
 晶星革菌	jīng;oo xīng;ou gé;ca jūn;ch	1
 鲸鹦嘴鱼	jīng;yj yīng;bn zuǐ;ky yú;da	1
@@ -24630,7 +24632,7 @@ sort: by_weight
 梨囊鞭菌	lí;hm náng;ay biān;gg jūn;ch	1
 丽拟叩甲	lì;ad nǐ;fr kòu;ke jiǎ;aa	1
 离片海胆	lí;wd piàn;pv hǎi;dm dǎn;od	1
-丽葡萄螺	lì;ad pú;cf táo;cf luó;ix	1
+丽葡萄螺	lì;ad pú;cf tao;cf luó;ix	1
 离鳍深鳚	lí;wd qí;yo shēn;dm wèi;yw	1
 离鳍石鲈	lí;wd qí;yo shí;ak lú;yl	1
 里奇熊虫	lǐ;la qí;dk xióng;sh chóng;vd	1
@@ -24733,7 +24735,6 @@ sort: by_weight
 两栖龙虱	liǎng;ad qī;mx lóng;ad shī;vi	1
 两色伞鸟	liǎng;ad sè;db sǎn;ru niǎo;pa	1
 两色夜蛾	liǎng;ad sè;db yè;wn é;iw	1
-靓唐纳雀	liàng;qj táng;gk nà;sn què;xv	1
 两条金鱼	liǎng;ad tiáo;wm jīn;ra yú;da	7
 亮叶报春	liàng;wj yè;ku bào;fy chūn;fo	7
 亮叶冬青	liàng;wj yè;ku dōng;wd qīng;fo	31
@@ -25093,7 +25094,7 @@ sort: by_weight
 绿囊苔草	lǜ;su náng;ay tái;ck cǎo;cu	11
 绿萍尺蛾	lǜ;su píng;cp chǐ;un é;iw	1
 绿朴丽鱼	lǜ;su pǔ;mb lì;ad yú;da	7
-绿葡萄藻	lǜ;su pú;cf táo;cf zǎo;cm	1
+绿葡萄藻	lǜ;su pú;cf tao;cf zǎo;cm	1
 吕宋花鮨	lǚ;kk sòng;bm huā;cb yì;yv	1
 吕宋鼩鼠	lǚ;kk sòng;bm qú;jk shǔ;jv	1
 吕宋纹鼠	lǚ;kk sòng;bm wén;sw shǔ;jv	1
@@ -25485,6 +25486,7 @@ sort: by_weight
 绵毛烟草	mián;sj máo;pv yān;hd cǎo;cu	1
 沔县苔草	miǎn;dg xiàn;qs tái;ck cǎo;cu	5
 绵枣儿亚	mián;sj zǎo;ad ér;pv yà;ay	1
+缪氏飞虱	miào;sp shì;pv fēi;vd shī;vi	1
 岷江景天	mín;um jiāng;dg jǐng;ox tiān;ad	1
 敏雀霸鹟	mǐn;pw què;xv bà;yo wēng;bn	1
 敏尾笛鲷	mǐn;pw wěi;um dí;vy diāo;yv	1
@@ -25531,7 +25533,6 @@ sort: by_weight
 膜叶荨麻	mó;od yè;ku qián;cc má;gl	5
 膜叶星蕨	mó;od yè;ku xīng;ou jué;cq	21
 膜叶紫麻	mó;od yè;ku zǐ;vx má;gl	5
-缪氏飞虱	móu;sp shì;pv fēi;vd shī;vi	1
 木鼻白蚁	mù;un bí;zq bái;po yǐ;iy	1
 姆比尔龙	mǔ;nm bǐ;bb ěr;dx lóng;ad	1
 姆比雷龙	mǔ;nm bǐ;bb léi;yt lóng;ad	1
@@ -26133,9 +26134,9 @@ sort: by_weight
 普鲁斯鳄	pǔ;bo lǔ;yo sī;qj è;yk	1
 蒲烧鳗鱼	pú;cf shāo;hw mán;ym yú;da	8
 普氏秧鸡	pǔ;bo shì;pv yāng;hy jī;yn	1
-葡萄穗霉	pú;cf táo;cf suì;hx méi;ym	1
-葡萄天蛾	pú;cf táo;cf tiān;ad é;iw	1
-葡萄叶甲	pú;cf táo;cf yè;ku jiǎ;aa	1
+葡萄穗霉	pú;cf tao;cf suì;hx méi;ym	1
+葡萄天蛾	pú;cf tao;cf tiān;ad é;iw	1
+葡萄叶甲	pú;cf tao;cf yè;ku jiǎ;aa	1
 普通章鱼	pǔ;bo tōng;zy zhāng;lu yú;da	5
 普陀灰蝶	pǔ;bo tuó;eb huī;uh dié;im	1
 蹼鰕虎鱼	pǔ;zf xiā;yj hǔ;hj yú;da	1
@@ -28111,7 +28112,7 @@ sort: by_weight
 狭叶南星	xiá;qj yè;ku nán;ug xīng;ou	11
 狭叶女贞	xiá;qj yè;ku nǚ;va zhēn;bb	7
 狭叶坡垒	xiá;qj yè;ku pō;tp lěi;st	10
-狭叶葡萄	xiá;qj yè;ku pú;cf táo;cf	12
+狭叶葡萄	xiá;qj yè;ku pú;cf tao;cf	12
 狭叶蒲桃	xiá;qj yè;ku pú;cf táo;mv	10
 狭叶荨麻	xiá;qj yè;ku qián;cc má;gl	12
 狭叶青蒿	xiá;qj yè;ku qīng;fo hāo;ck	4
@@ -29683,6 +29684,7 @@ sort: by_weight
 掌叶鱼藤	zhǎng;xu yè;ku yú;da téng;cu	7
 樟叶越桔	zhāng;mu yè;ku yuè;zy jú;mk	14
 掌叶紫堇	zhǎng;xu yè;ku zǐ;vx jǐn;ca	9
+掌状叉蕨	zhǎng;xu zhuàng;dq chā;yd jué;cq	50
 爪冬夜蛾	zhǎo;pn dōng;wd yè;wn é;iw	1
 爪甲囊菌	zhǎo;pn jiǎ;aa náng;ay jūn;ch	1
 爪哇搏鱼	zhǎo;pn wā;kt bó;fc yú;da	32
@@ -30090,6 +30092,16 @@ sort: by_weight
 濯锦以鱼	zhuó;dv jǐn;jj yǐ;vr yú;da	32
 着色杆菌	zhuó;yo sè;db gǎn;mg jūn;ch	1
 啄羊鹦鹉	zhuó;kn yáng;da yīng;bn wǔ;nw	1
+紫背杜鹃	zǐ;vx bèi;bo dù;mt juān;kn	153
+紫背浮萍	zǐ;vx bèi;bo fú;dz píng;cp	306
+紫背金盘	zǐ;vx bèi;bo jīn;ra pán;vm	130
+紫背椋鸟	zǐ;vx bèi;bo liáng;mx niǎo;pa	117
+紫背鼠李	zǐ;vx bèi;bo shǔ;jv lǐ;mz	76
+紫背天葵	zǐ;vx bèi;bo tiān;ad kuí;ct	486
+紫背苇鳽	zǐ;vx bèi;bo wěi;cw jiān;kn	45
+紫背细辛	zǐ;vx bèi;bo xì;st xīn;lu	76
+紫背沼兰	zǐ;vx bèi;bo zhǎo;dk lán;bs	76
+紫背竹芋	zǐ;vx bèi;bo zhú;gg yù;cy	162
 紫背竹芋	zǐ;vx bèi;bo zhú;gg yù;cy	1
 紫翅野螟	zǐ;vx chì;ux yě;ly míng;ib	1
 紫顶蜂鸟	zǐ;vx dǐng;dr fēng;if niǎo;pa	1
@@ -30276,8 +30288,8 @@ sort: by_weight
 阿林石龙子	ā;ek lín;mm shí;ak lóng;ad zǐ;aa	1
 阿留西亚螳	ā;ek liú;pt xī;aa yà;ay táng;it	1
 阿鲁达巨龙	ā;ek lǔ;yo dá;zd jù;ka lóng;ad	1
-阿马加巨龙	ā;ek mǎ;va gā;lk jù;ka lóng;ad	1
 阿马格巨龙	ā;ek mǎ;va gé;mk jù;ka lóng;ad	1
+阿马加巨龙	ā;ek mǎ;va jiā;lk jù;ka lóng;ad	1
 阿玛裸眼蜥	ā;ek mǎ;wm luǒ;pg yǎn;og xī;ij	1
 阿马帕兵鲶	ā;ek mǎ;va pà;jb bīng;qb nián;yn	1
 阿曼达兵鲶	ā;ek màn;oy dá;zd bīng;qb nián;yn	1
@@ -33222,7 +33234,7 @@ sort: by_weight
 串叶松香草	chuàn;aa yè;ku sōng;mg xiāng;ho cǎo;cu	1
 川州孔子鸟	chuān;pa zhōu;da kǒng;zv zǐ;aa niǎo;pa	1
 串珠老鹳草	chuàn;aa zhū;wv lǎo;lb guàn;cn cǎo;cu	1
-串珠葡萄螺	chuàn;aa zhū;wv pú;cf táo;cf luó;ix	1
+串珠葡萄螺	chuàn;aa zhū;wv pú;cf tao;cf luó;ix	1
 窗格卷管螺	chuāng;bw gé;mk juǎn;jv guǎn;vg luó;ix	1
 窗格苔藓虫	chuāng;bw gé;mk tái;ck xiǎn;cy chóng;vd	1
 垂唇喉盘鱼	chuí;pa chún;ik hóu;ku pán;vm yú;da	1
@@ -33431,7 +33443,7 @@ sort: by_weight
 翠茎冷水花	cuì;xu jīng;cg lěng;ds shuǐ;ln huā;cb	1
 翠蓝眼蛱蝶	cuì;xu lán;cm yǎn;og jiá;ij dié;im	1
 翠绿针毛蕨	cuì;xu lǜ;su zhēn;ju máo;pv jué;cq	1
-脆葡萄核虫	cuì;ov pú;cf táo;cf hé;mr chóng;vd	1
+脆葡萄核虫	cuì;ov pú;cf tao;cf hé;mr chóng;vd	1
 脆弱凤仙花	cuì;ov ruò;gd fèng;jy xiān;ru huā;cb	1
 脆弱异特龙	cuì;ov ruò;gd yì;sc tè;nc lóng;ad	1
 脆性介壳虫	cuì;ov xìng;xu jiè;ra ké;uj chóng;vd	1
@@ -34707,7 +34719,7 @@ sort: by_weight
 短尾叶鼻蝠	duǎn;ud wěi;um yè;ku bí;zq fú;it	1
 短尾叶口蝠	duǎn;ud wěi;um yè;ku kǒu;aa fú;it	1
 短尾叶石栎	duǎn;ud wěi;um yè;ku shí;ak lì;ml	1
-短尾异齿𫚢	duǎn;ud wěi;um yì;sc chǐ;vk 𫚢;
+短尾异齿𫚢	duǎn;ud wěi;um yì;sc chǐ;vk yǎn;
 短尾紫灰蝶	duǎn;ud wěi;um zǐ;vx huī;uh dié;im	1
 短吻蝙蝠鱼	duǎn;ud wěn;kw biān;ic fú;it yú;da	1
 短吻长尾鳕	duǎn;ud wěn;kw cháng;pn wěi;um xuě;yx	1
@@ -35629,7 +35641,7 @@ sort: by_weight
 缝纹副棘鳅	fèng;sf wén;sw fù;ad jí;an qiū;yq	1
 蜂窝格鳞虫	fēng;if wō;bn gé;mk lín;yl chóng;vd	1
 蜂窝苔藓虫	fēng;if wō;bn tái;ck xiǎn;cy chóng;vd	1
-缝线斑捻螺	fèng;sf xiàn;sj bān;ww niǎn;fx luó;ix	1
+缝线斑捻螺	féng;sf xiàn;sj bān;ww niǎn;fx luó;ix	1
 凤仙透骨草	fèng;jy xiān;ru tòu;zn gǔ;go cǎo;cu	1
 蜂箱小甲虫	fēng;if xiāng;vo xiǎo;ad jiǎ;aa chóng;vd	1
 锋牙袋蟾鱼	fēng;jf yá;ap dài;ry chán;ik yú;da	1
@@ -36532,7 +36544,7 @@ sort: by_weight
 海绵圣星虫	hǎi;dm mián;sj shèng;yt xīng;ou chóng;vd	1
 海绵双腕虫	hǎi;dm mián;sj shuāng;yy wàn;ov chóng;vd	1
 海南捕鸟蛛	hǎi;dm nán;ug bǔ;ff niǎo;pa zhū;iv	1
-海南虎斑𫛚	hǎi;dm nán;ug hǔ;hj bān;ww 𫛚;	1
+海南虎斑𫛚	hǎi;dm nán;ug hǔ;hj bān;ww jiān;	1
 海南黄黝鱼	hǎi;dm nán;ug huáng;cb yǒu;hl yú;da	1
 海南马口鱼	hǎi;dm nán;ug mǎ;va kǒu;aa yú;da	1
 海南墨头鱼	hǎi;dm nán;ug mò;ht tóu;dd yú;da	1
@@ -37675,7 +37687,7 @@ sort: by_weight
 华北薄鳞蕨	huá;ru běi;lb báo;cc lín;yl jué;cq	1
 华北蓝盆花	huá;ru běi;lb lán;cm pén;bm huā;cb	1
 华北鳞毛蕨	huá;ru běi;lb lín;yl máo;pv jué;cq	1
-花背石榴螺	huā;cb bèi;bo shí;ak liú;mt luó;ix	1
+花背石榴螺	huā;cb bèi;bo shí;ak liu;mt luó;ix	1
 华北铁角蕨	huá;ru běi;lb tiě;ju jiǎo;dy jué;cq	1
 花边中丽鱼	huā;cb biān;zl zhōng;aa lì;ad yú;da	1
 华彩背叶虫	huá;ru cǎi;pp bèi;bo yè;ku chóng;vd	1
@@ -39979,7 +39991,7 @@ sort: by_weight
 梨形鞭毛虫	lí;hm xíng;kp biān;gg máo;pv chóng;vd	1
 梨形碘泡虫	lí;hm xíng;kp diǎn;ub pào;db chóng;vd	1
 梨形环口螺	lí;hm xíng;kp huán;wb kǒu;aa luó;ix	1
-梨形葡萄螺	lí;hm xíng;kp pú;cf táo;cf luó;ix	1
+梨形葡萄螺	lí;hm xíng;kp pú;cf tao;cf luó;ix	1
 梨形嵌线螺	lí;hm xíng;kp qiàn;uq xiàn;sj luó;ix	1
 梨形乳玉螺	lí;hm xíng;kp rǔ;pv yù;wd luó;ix	1
 梨形珊瑚螺	lí;hm xíng;kp shān;wc hú;wo luó;ix	1
@@ -40630,7 +40642,7 @@ sort: by_weight
 绿侧蝴蝶鱼	lǜ;su cè;rd hú;io dié;im yú;da	1
 绿茶四叶草	lǜ;su chá;cm sì;ke yè;ku cǎo;cu	1
 履巉岩本草	lǚ;uw chán;ut yán;uu běn;aa cǎo;cu	1
-绿长葡萄螺	lǜ;su cháng;pn pú;cf táo;cf luó;ix	1
+绿长葡萄螺	lǜ;su cháng;pn pú;cf tao;cf luó;ix	1
 绿翅斑腹雀	lǜ;su chì;ux bān;ww fù;ow què;xv	1
 绿春蛇根草	lǜ;su chūn;fo shé;ib gēn;mg cǎo;cu	1
 绿唇鹦嘴鱼	lǜ;su chún;ik yīng;bn zuǐ;ky yú;da	1
@@ -40695,7 +40707,7 @@ sort: by_weight
 绿叶粉背蕨	lǜ;su yè;ku fěn;md bèi;bo jué;cq	1
 绿叶海蛞蝓	lǜ;su yè;ku hǎi;dm kuò;ik yú;id	1
 绿叶海天牛	lǜ;su yè;ku hǎi;dm tiān;ad niú;pa	1
-葎叶蛇葡萄	lǜ;cl yè;ku shé;ib pú;cf táo;cf	1
+葎叶蛇葡萄	lǜ;cl yè;ku shé;ib pú;cf tao;cf	1
 绿叶蛇纹岩	lǜ;su yè;ku shé;ib wén;sw yán;uu	1
 绿叶兔斯基	lǜ;su yè;ku tù;dd sī;qj jī;qt	1
 绿叶兮紫茎	lǜ;su yè;ku xī;bk zǐ;vx jīng;cg	1
@@ -40793,7 +40805,7 @@ sort: by_weight
 迈克猪笼草	mài;zw kè;ue zhū;qo lóng;vl cǎo;cu	1
 迈立开南鳅	mài;zw lì;wa kāi;ac nán;ug qiū;yq	1
 迈立开条鳅	mài;zw lì;wa kāi;ac tiáo;wm qiū;yq	1
-麦粒石榴螺	mài;fw lì;ml shí;ak liú;mt luó;ix	1
+麦粒石榴螺	mài;fw lì;ml shí;ak liu;mt luó;ix	1
 迈摩尔甲龙	mài;zw mó;gu ěr;dx jiǎ;aa lóng;ad	1
 麦纳小公鱼	mài;fw nà;sn xiǎo;ad gōng;bs yú;da	1
 迈纳新胀蟹	mài;zw nà;sn xīn;lj zhàng;oi xiè;di	1
@@ -41275,6 +41287,7 @@ sort: by_weight
 棉拟妒夜蛾	mián;mj nǐ;fr dù;nh yè;wn é;iw	1
 面纱薄泡螺	miàn;aa shā;su báo;cc pào;db luó;ix	1
 妙阿尔刻鸟	miào;nu ā;ek ěr;dx kè;wd niǎo;pa	1
+缪氏暗光鱼	miào;sp shì;pv àn;oo guāng;xw yú;da	1
 妙翼猪笼草	miào;nu yì;xb zhū;qo lóng;vl cǎo;cu	1
 妙音鰕虎鱼	miào;nu yīn;lo xiā;yj hǔ;hj yú;da	1
 闽北冷水花	mǐn;mi běi;lb lěng;ds shuǐ;ln huā;cb	1
@@ -41352,7 +41365,6 @@ sort: by_weight
 膜叶鳞盖蕨	mó;od yè;ku lín;yl gài;ym jué;cq	1
 膜叶驴蹄草	mó;od yè;ku lǘ;mh tí;zj cǎo;cu	1
 膜叶铁角蕨	mó;od yè;ku tiě;ju jiǎo;dy jué;cq	1
-缪氏暗光鱼	móu;sp shì;pv àn;oo guāng;xw yú;da	1
 木螯寄居蟹	mù;un áo;fi jì;bk jū;ug xiè;di	1
 木本补血草	mù;un běn;aa bǔ;pb xuè;pm cǎo;cu	1
 牧地狼尾草	mù;nw dì;ty láng;ql wěi;um cǎo;cu	1
@@ -42149,10 +42161,10 @@ sort: by_weight
 朴氏双盖蕨	pǔ;mb shì;pv shuāng;yy gài;ym jué;cq	1
 普氏准鼬鲶	pǔ;bo shì;pv zhǔn;dv yòu;jy nián;yn	1
 普梭指盘蛙	pǔ;bo suō;mw zhǐ;fo pán;vm wā;it	1
-葡萄孢盘菌	pú;cf táo;cf bāo;zb pán;vm jūn;ch	1
-葡萄碘泡虫	pú;cf táo;cf diǎn;ub pào;db chóng;vd	1
-葡萄风信子	pú;cf táo;cf fēng;jx xìn;rk zi;aa	1
-葡萄胸椋鸟	pú;cf táo;cf xiōng;ox liáng;mx niǎo;pa	1
+葡萄孢盘菌	pú;cf tao;cf bāo;zb pán;vm jūn;ch	1
+葡萄碘泡虫	pú;cf tao;cf diǎn;ub pào;db chóng;vd	1
+葡萄风信子	pú;cf tao;cf fēng;jx xìn;rk zi;aa	1
+葡萄胸椋鸟	pú;cf tao;cf xiōng;ox liáng;mx niǎo;pa	1
 普通八爪鱼	pǔ;bo tōng;zy bā;pn zhuǎ;pn yú;da	1
 普通凤尾蕨	pǔ;bo tōng;zy fèng;jy wěi;um jué;cq	1
 普通凤丫蕨	pǔ;bo tōng;zy fèng;jy yā;bl jué;cq	1
@@ -43325,7 +43337,7 @@ sort: by_weight
 深海槭海星	shēn;dm hǎi;dm qì;mx hǎi;dm xīng;ou	1
 深海青眼鱼	shēn;dm hǎi;dm qīng;fo yǎn;og yú;da	1
 深海石斑鱼	shēn;dm hǎi;dm shí;ak bān;ww yú;da	1
-深海石榴螺	shēn;dm hǎi;dm shí;ak liú;mt luó;ix	1
+深海石榴螺	shēn;dm hǎi;dm shí;ak liu;mt luó;ix	1
 深海似蜥鱼	shēn;dm hǎi;dm sì;rr xī;ij yú;da	1
 深海天竺鲷	shēn;dm hǎi;dm tiān;ad zhú;ve diāo;yv	1
 深海透孔螺	shēn;dm hǎi;dm tòu;zn kǒng;zv luó;ix	1
@@ -44812,7 +44824,7 @@ sort: by_weight
 椭圆孔盘虫	tuǒ;mo yuán;ky kǒng;zv pán;vm chóng;vd	1
 椭圆萝卜螺	tuǒ;mo yuán;ky luó;cx bo;ad luó;ix	1
 椭圆裸顶鲷	tuǒ;mo yuán;ky luǒ;pg dǐng;dr diāo;yv	1
-椭圆葡萄螺	tuǒ;mo yuán;ky pú;cf táo;cf luó;ix	1
+椭圆葡萄螺	tuǒ;mo yuán;ky pú;cf tao;cf luó;ix	1
 椭圆腔蝠鱼	tuǒ;mo yuán;ky qiāng;og fú;it yú;da	1
 椭圆四极虫	tuǒ;mo yuán;ky sì;ke jí;mj chóng;vd	1
 椭圆无杆虫	tuǒ;mo yuán;ky wú;ay gān;mg chóng;vd	1
@@ -48236,7 +48248,6 @@ sort: by_weight
 中华球孢虫	zhōng;aa huá;ru qiú;wq bāo;zb chóng;vd	1
 中华缺翅虫	zhōng;aa huá;ru quē;fg chì;ux chóng;vd	1
 中华绒螯蟹	zhōng;aa huá;ru róng;su áo;fi xiè;di	1
-中华绒鳌蟹	zhōng;aa huá;ru róng;su áo;yw xiè;di	1
 中华绒球蟹	zhōng;aa huá;ru róng;su qiú;wq xiè;di	1
 中华珊瑚蛇	zhōng;aa huá;ru shān;wc hú;wo shé;ib	1
 中华蛇根草	zhōng;aa huá;ru shé;ib gēn;mg cǎo;cu	1
@@ -49104,7 +49115,7 @@ sort: by_weight
 白舌副狮子鱼	bái;po shé;qk fù;ad shī;qj zi;aa yú;da	1
 白氏绿鹦嘴鱼	bái;po shì;pv lǜ;su yīng;bn zuǐ;ky yú;da	1
 白氏新内溪蟹	bái;po shì;pv xīn;lj nèi;ad xī;dd xiè;di	1
-白丝长葡萄螺	bái;po sī;aa cháng;pn pú;cf táo;cf luó;ix	1
+白丝长葡萄螺	bái;po sī;aa cháng;pn pú;cf tao;cf luó;ix	1
 白条钝鰕虎鱼	bái;po tiáo;wm dùn;jt xiā;yj hǔ;hj yú;da	1
 白臀尖嘴蜂鸟	bái;po tún;uo jiān;xd zuǐ;ky fēng;if niǎo;pa	1
 白臀紫耳蜂鸟	bái;po tún;uo zǐ;vx ěr;aa fēng;if niǎo;pa	1
@@ -49606,7 +49617,7 @@ sort: by_weight
 长角大锹形虫	cháng;pn jiǎo;dy dà;hr qiāo;jh xíng;kp chóng;vd	1
 长脚萤金花虫	cháng;pn jiǎo;oe yíng;ci jīn;ra huā;cb chóng;vd	1
 长茎婆罗门参	cháng;pn jīng;cg pó;dn luó;sx mén;dv shēn;sp	1
-长茎葡萄蕨藻	cháng;pn jīng;cg pú;cf táo;cf jué;cq zǎo;cm	1
+长茎葡萄蕨藻	cháng;pn jīng;cg pú;cf tao;cf jué;cq zǎo;cm	1
 长茎锥棘吸虫	cháng;pn jīng;cg zhuī;jv jí;an xī;kj chóng;vd	1
 长卵苞翠雀花	cháng;pn luǎn;pd bāo;cb cuì;xu què;xv huā;cb	1
 长卵形两极虫	cháng;pn luǎn;pd xíng;kp liǎng;ad jí;mj chóng;vd	1
@@ -51737,7 +51748,7 @@ sort: by_weight
 肯尼亚康吉鳗	kěn;vo ní;ub yà;ay kāng;gl jí;uk mán;ym	1
 肯氏饰纹脂鲤	kěn;vo shì;pv shì;uj wén;sw zhī;oo lǐ;yl	1
 肯氏无鳍蛇鳗	kěn;vo shì;pv wú;ay qí;yo shé;ib mán;ym	1
-空杯丽葡萄螺	kōng;bg bēi;mb lì;ad pú;cf táo;cf luó;ix	1
+空杯丽葡萄螺	kōng;bg bēi;mb lì;ad pú;cf tao;cf luó;ix	1
 空堪达猪笼草	kōng;bg kān;tu dá;zd zhū;qo lóng;vl cǎo;cu	1
 孔雀连鳍唇鱼	kǒng;zv què;xv lián;zi qí;yo chún;ik yú;da	1
 孔头新亮丽鲷	kǒng;zv tóu;dd xīn;lj liàng;wj lì;ad diāo;yv	1
@@ -52997,7 +53008,7 @@ sort: by_weight
 闪光连鳍唇鱼	shǎn;mr guāng;xw lián;zi qí;yo chún;ik yú;da	1
 闪光直线脂鲤	shǎn;mr guāng;xw zhí;uq xiàn;sj zhī;oo lǐ;yl	1
 珊瑚海拟盔鱼	shān;wc hú;wo hǎi;dm nǐ;fr kuī;um yú;da	1
-山口长葡萄螺	shān;aa kǒu;aa cháng;pn pú;cf táo;cf luó;ix	1
+山口长葡萄螺	shān;aa kǒu;aa cháng;pn pú;cf tao;cf luó;ix	1
 山榄炼介壳虫	shān;aa lǎn;ml liàn;hd jiè;ra ké;uj chóng;vd	1
 闪亮奇巨口鱼	shǎn;mr liàng;wj qí;dk jù;ka kǒu;aa yú;da	1
 扇鳍臼齿丽鲷	shàn;hx qí;yo jiù;pa chǐ;vk lì;ad diāo;yv	1
@@ -53970,7 +53981,7 @@ sort: by_weight
 小肠嗜眼吸虫	xiǎo;ad cháng;op shì;ko yǎn;og xī;kj chóng;vd	1
 小齿大眼脂鲤	xiǎo;ad chǐ;vk dà;hr yǎn;og zhī;oo lǐ;yl	1
 小齿龙占丽鱼	xiǎo;ad chǐ;vk lóng;ad zhàn;bk lì;ad yú;da	1
-小齿葡萄核虫	xiǎo;ad chǐ;vk pú;cf táo;cf hé;mr chóng;vd	1
+小齿葡萄核虫	xiǎo;ad chǐ;vk pú;cf tao;cf hé;mr chóng;vd	1
 小齿日本银鱼	xiǎo;ad chǐ;vk rì;ka běn;aa yín;jg yú;da	1
 小窗格苔藓虫	xiǎo;ad chuāng;bw gé;mk tái;ck xiǎn;cy chóng;vd	1
 小窗龟金花虫	xiǎo;ad chuāng;bw guī;dd jīn;ra huā;cb chóng;vd	1
@@ -55030,7 +55041,7 @@ sort: by_weight
 二回疏叶蹄盖蕨	èr;aa huí;kk shū;vi yè;ku tí;zj gài;ym jué;cq	1
 二型叶假蹄盖蕨	èr;aa xíng;kt yè;ku jiǎ;ry tí;zj gài;ym jué;cq	1
 法兰西斯小脂鲤	fǎ;dq lán;bs xī;aa sī;qj xiǎo;ad zhī;oo lǐ;yl	1
-番石榴粉介壳虫	fān;pt shí;ak liú;mt fěn;md jiè;ra ké;uj chóng;vd	1
+番石榴粉介壳虫	fān;pt shí;ak liu;mt fěn;md jiè;ra ké;uj chóng;vd	1
 纺锤形杯殖吸虫	fǎng;sf chuí;ji xíng;kp bēi;mb zhí;dq xī;kj chóng;vd	1
 方盖圆扇介壳虫	fāng;dw gài;ym yuán;ky shàn;hx jiè;ra ké;uj chóng;vd	1
 肥粗玉米卷管螺	féi;ob cū;mq yù;wd mǐ;dd juǎn;jv guǎn;vg luó;ix	1

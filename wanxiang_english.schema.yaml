@@ -3,7 +3,7 @@
 
 schema:
   schema_id: wanxiang_english
-  version: "0.6.0"  # x-release-please-version
+  version: "1.0.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
@@ -20,7 +20,8 @@ engine:
 
 speller:
   algebra:
-    __include: wanxiang_algebra:/english
+    __patch:
+      - wanxiang_algebra:/english
 
 translator:
   dictionary: wanxiang_english

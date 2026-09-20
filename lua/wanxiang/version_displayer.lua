@@ -5,7 +5,7 @@ local meta = require("meta")
 
 ---Pinyin schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
-MARKERS_TO_PINYIN_SCHEMAS = {
+local MARKERS_TO_PINYIN_SCHEMAS = {
     ["Ⅰ"] = "全拼",
     ["Ⅱ"] = "自然码",
     ["Ⅲ"] = "小鹤双拼",
@@ -25,17 +25,31 @@ MARKERS_TO_PINYIN_SCHEMAS = {
 
 ---Auxiliary code schema markers to schema names mapping. The markers are defined in the algebra of each schema.
 ---@type table<string, string>
-MARKERS_TO_AUXCODE_SCHEMAS = {
-    ["Ⅽ"] = "间接辅助",
-    ["Ⅾ"] = "直接辅助",
+local MARKERS_TO_AUX_MODES = {
+    ["ⅲ"] = "间接辅助",
+    ["ⅳ"] = "直接辅助",
+}
+
+---@type table<string, string>
+local AUX_CODE_SCHEMAS = {
+    zrm = "自然码",
+    flypy = "小鹤形码",
+    moqi = "墨奇码",
+    hanxin = "汉心码",
+    wubi = "五笔前二",
+    tiger = "虎码首末",
+    shouyou = "首右码",
+    shyplus = "首右+",
+    wx = "万象码",
 }
 
 ---Get the schema name based on the algebra markers defined in the Rime configuration.
 ---@param env Env
 ---@param markers_to_schemas table<string, string>
 ---@return string?
-function get_schema(env, markers_to_schemas)
+local function get_schema(env, markers_to_schemas)
     local rime_config = env.engine.schema.config
+    assert(rime_config)
 
     local algebra_list = rime_config:get_list("speller/algebra")
     if not algebra_list then
@@ -70,8 +84,14 @@ local function translator(input, segment, env)
             ("librime 版本：%s"):format(rime_api.get_rime_version()),
             ("Lua 版本：%s"):format(_VERSION),
             ("拼音方案：%s"):format(get_schema(env, MARKERS_TO_PINYIN_SCHEMAS) or ""),
-            ("辅助码方案：%s"):format(get_schema(env, MARKERS_TO_AUXCODE_SCHEMAS) or ""),
         }
+
+        if env.engine.schema.schema_id == "wanxiang_pro" then
+            if meta.AUX_CODE then
+                messages[#messages + 1] = ("辅助码方案：%s"):format(AUX_CODE_SCHEMAS[meta.AUX_CODE] or "")
+            end
+            messages[#messages + 1] = ("辅助码引导模式：%s"):format(get_schema(env, MARKERS_TO_AUX_MODES) or "")
+        end
 
         yield(Candidate("message", segment.start, segment._end, table.concat(messages, "\n"), ""))
     end
