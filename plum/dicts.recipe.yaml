@@ -4,7 +4,7 @@ recipe:
   Rx: plum/dicts
   args:
   description: >-
-    万象拼音 shyplus-fuzhu 版，仅词库（dicts-only）- 分支 wanxiang-shyplus-fuzhu
+    万象拼音精简版（仅词库）- wanxiang-shyplus-fuzhu
 install_files: >-
   dicts/**/*
   opencc/dicts/**/*
