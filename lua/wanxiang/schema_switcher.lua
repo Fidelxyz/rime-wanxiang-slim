@@ -50,22 +50,17 @@ local function copy_file(src, dest)
 end
 
 ---Ensures a custom file exists in the user data directory, copying its template
----from the shared (or user) `custom/` directory when missing.
----@param filename string
+---from the user `custom` directory when missing.
 ---@param user_dir string
----@param shared_dir string
+---@param custom_file_name string
 ---@return boolean ok true if the destination file exists after this call
-local function ensure_custom_file(filename, user_dir, shared_dir)
-    local dest = user_dir .. "/" .. filename
+local function ensure_custom_file(user_dir, custom_file_name)
+    local dest = user_dir .. "/" .. custom_file_name
     if utils.file_exists(dest) then
         return true
     end
 
-    local src = shared_dir .. "/custom/" .. filename
-    if not utils.file_exists(src) then
-        src = user_dir .. "/custom/" .. filename
-    end
-
+    local src = user_dir .. "/custom/" .. custom_file_name
     if not utils.file_exists(src) then
         log.warning("Template custom file not found: " .. src)
         return false
@@ -102,35 +97,25 @@ local function update_custom_file(custom_file, transform)
 end
 
 ---Rewrites the pinyin algebra reference in a custom file to the given schema.
----@param custom_file string
+---@param user_dir string
+---@param custom_file_name string
 ---@param schema_name string
 ---@return boolean ok true if a substitution was made and written
-local function set_pinyin_schema(custom_file, schema_name)
-    ---Returns `name` unchanged when it is an auxiliary schema name; otherwise
-    ---returns the target pinyin schema name.
-    ---@param name string
-    ---@return string
-    local function preserve_aux(name)
-        for _, aux_name in pairs(AUX_SCHEMAS) do
-            if name == aux_name then
-                return name
-            end
-        end
-        return schema_name
-    end
-
-    return update_custom_file(custom_file, function(content)
+local function set_pinyin_schema(user_dir, custom_file_name, schema_name)
+    return update_custom_file(user_dir .. "/" .. custom_file_name, function(content)
         local n = 0
-        if custom_file:find("wanxiang_reverse") then
+        if custom_file_name == "wanxiang.custom.yaml" or custom_file_name == "wanxiang_pro.custom.yaml" then
+            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/%a+/)(%S+)", function(parent, name)
+                -- Replace only known pinyin schema references, preserving other entries.
+                for _, pinyin_name in pairs(PINYIN_SCHEMAS) do
+                    if name == pinyin_name then
+                        return parent .. schema_name
+                    end
+                end
+                return parent .. name
+            end)
+        elseif custom_file_name == "wanxiang_reverse.custom.yaml" then
             content, n = content:gsub("(%s*__include:%s*wanxiang_algebra:/reverse/)%S+", "%1" .. schema_name)
-        elseif custom_file:find("wanxiang%.custom") then
-            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/base/)(%S+)", function(prefix, suffix)
-                return prefix .. preserve_aux(suffix)
-            end)
-        elseif custom_file:find("wanxiang_pro%.custom") then
-            content, n = content:gsub("(%s*%-%s*wanxiang_algebra:/pro/)(%S+)", function(prefix, suffix)
-                return prefix .. preserve_aux(suffix)
-            end)
         end
 
         if n == 0 then
@@ -175,7 +160,6 @@ local function translator(input, seg, env)
     end
 
     local user_dir = rime_api.get_user_data_dir()
-    local shared_dir = rime_api.get_shared_data_dir()
 
     -- Check existing main custom file
     local main_custom_file = env.engine.schema.schema_id .. ".custom.yaml"
@@ -183,7 +167,7 @@ local function translator(input, seg, env)
     local main_custom_file_exists = utils.file_exists(main_custom_file_path)
 
     if target_aux_schema then
-        if not ensure_custom_file(main_custom_file, user_dir, shared_dir) then
+        if not ensure_custom_file(user_dir, main_custom_file) then
             yield(Candidate("message", seg.start, seg._end, "〔警告〕未找到模板配置文件。", ""))
             return
         end
@@ -204,7 +188,7 @@ local function translator(input, seg, env)
     end
 
     if target_pinyin_schema then
-        local files = {
+        local custom_files = {
             main_custom_file,
             "wanxiang_reverse.custom.yaml",
         }
@@ -215,13 +199,13 @@ local function translator(input, seg, env)
         ---@type string[]
         local unmatched = {}
         local unmatched_len = 0
-        for _, filename in ipairs(files) do
-            if not ensure_custom_file(filename, user_dir, shared_dir) then
+        for _, custom_file_name in ipairs(custom_files) do
+            if not ensure_custom_file(user_dir, custom_file_name) then
                 missing_len = missing_len + 1
-                missing[missing_len] = filename
-            elseif not set_pinyin_schema(user_dir .. "/" .. filename, target_pinyin_schema) then
+                missing[missing_len] = custom_file_name
+            elseif not set_pinyin_schema(user_dir, custom_file_name, target_pinyin_schema) then
                 unmatched_len = unmatched_len + 1
-                unmatched[unmatched_len] = filename
+                unmatched[unmatched_len] = custom_file_name
             end
         end
 
