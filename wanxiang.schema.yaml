@@ -80,6 +80,7 @@ engine:
     - fallback_segmentor
   translators:
     - punct_translator
+    - lua_translator@*wanxiang.candidate_pinner*T  # 候选置顶，须位于主翻译器之前
     - script_translator
     - lua_translator@*wanxiang.version_displayer  # 版本显示
     - lua_translator@*wanxiang.schema_switcher  # 拼音方案切换
@@ -87,7 +88,6 @@ engine:
     - table_translator@custom_phrase
     - table_translator@wanxiang_english
     - reverse_lookup_translator@wanxiang_reverse
-    - table_translator@candidate_pinner  # 候选置顶
     - script_translator@user_dict_appender  # 手动造词
     - script_translator@user_dict  # 使用自造词
   filters:
@@ -98,7 +98,6 @@ engine:
     - lua_filter@*wanxiang.english_user_dict_appender  # 英文造词
     - lua_filter@*wanxiang.user_dict_appender  # 手动造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
-    - lua_filter@*wanxiang.candidate_pinner*F  # 候选置顶
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开（comment_hint_displayer 前）
     - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
     - lua_filter@*wanxiang.comment_hint_displayer  # 注释提示显示
@@ -237,9 +236,12 @@ user_dict_appender:
 
 # 候选置顶
 candidate_pinner:
-  dictionary: ""
+  dictionary: wanxiang
   user_dict: pinned
   initial_quality: -1
+  enable_completion: false
+  spelling_hints: 99
+  always_show_comments: true
 
   ### 候选置顶相关配置 ###
 

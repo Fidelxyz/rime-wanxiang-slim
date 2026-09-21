@@ -168,10 +168,10 @@ Ctrl + 数字键上屏首选前 N 字，并保留后续编码。
 
 ### 候选置顶
 
-Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用户数据库 `wanxiang_pinned.userdb`，下次输入相同编码时被置顶的候选会排在最前。
+Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用户数据库 `pinned.userdb`，下次输入相同编码时被置顶的候选会排在最前。
 
-- `lua/wanxiang/candidate_pinner.lua`：置顶处理器与过滤器
-- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_pinner` 段配置，processors 中 `candidate_pinner*P`
+- `lua/wanxiang/candidate_pinner.lua`：置顶处理器与翻译器
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`candidate_pinner` 段配置，processors 中 `candidate_pinner*P`、主翻译器之前的 `candidate_pinner*T`
 
 ### 万能键斜杠 `/`
 
