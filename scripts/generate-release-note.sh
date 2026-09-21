@@ -59,20 +59,23 @@ echo "### 基础版（Base）"
 echo
 echo "支持**全拼**和**双拼**方案，不支持辅助码。"
 echo
-echo "- 下载地址：[rime-wanxiang-base.zip](${download_url}/rime-wanxiang-base.zip)"
+echo "[**下载基础版**](${download_url}/rime-wanxiang-base.zip)"
 echo
 echo "### 进阶版（Pro）"
 echo
 echo "支持**双拼**方案与**辅助码**方案自由组合。"
 echo
-echo "每一个 zip 压缩包对应一种**辅助码**方案的配置，请根据您使用的**辅助码**方案下载对应压缩包。每种辅助码方案配置均支持切换**任意双拼方案**。"
+echo "每一个 zip 压缩包对应一种**辅助码**方案的配置，请根据您使用的辅助码方案下载对应压缩包。每种辅助码方案配置均支持切换**任意双拼方案**。"
 echo
 
+links=()
 for entry in "${packages[@]}"; do
     type="${entry%%:*}"
     name="${entry##*:}"
-    echo "- ${name}辅助码：[rime-wanxiang-${type}-fuzhu.zip](${download_url}/rime-wanxiang-${type}-fuzhu.zip)"
+    links+=("[**${name}辅助版**](${download_url}/rime-wanxiang-${type}-fuzhu.zip)")
 done
+printf '下载方案：'
+(IFS='｜'; echo "${links[*]}")
 
 echo
 echo "## 可选数据下载"
@@ -81,4 +84,4 @@ echo "### 语法模型"
 echo
 echo "语法模型需单独下载，并放入输入法用户目录根目录（方案文件旁）即可启用。"
 echo
-echo "- 下载地址：[wanxiang-lts-zh-hans.gram](https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram)"
+echo "[**下载语法模型**](https://github.com/amzxyz/RIME-LMDG/releases/download/LTS/wanxiang-lts-zh-hans.gram)"
