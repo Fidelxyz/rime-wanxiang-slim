@@ -49,23 +49,29 @@ Documentation for Rime's Lua API can be found in the librime-lua documentation:
 
 ## Documentation
 
-- **README.md**: The primary project documentation, containing a high-level overview and quick start guide.
-- **FEATURES.md**: A detailed mapping of project features to their implementation files.
-- **docs/**: VitePress documentation site containing detailed installation instructions, configuration guides, and feature documentation.
+### Overview
 
-When modifying functional code (Lua) or configuration (YAML), always check if the changes impact the features described in the documentation. Update the relevant documentation files accordingly to keep them in sync with the codebase:
-- Update `docs/` for user-facing feature changes, configuration options, or usage instructions.
-- Update `FEATURES.md` for implementation file mappings.
-- Update `README.md` for high-level overview changes.
+#### User Documentation
 
-Before updating documentation, review its existing content to decide whether the proposed addition belongs there, and match its existing level of detail.
+- [README.md](README.md): The primary project documentation, containing a high-level overview.
+- [docs/](docs/): VitePress documentation site containing detailed installation instructions, configuration guides, and feature documentation.
+
+User documentation describes only what users need to know to understand and use it. It is not a place to store development memories, implementation details, or change logs.
+
+#### Developer Documentation
+
+- [FEATURES.md](FEATURES.md): A detailed mapping of project features to their implementation files, also recording removed features.
+
+### Checklist for Updates
+
+When modifying functional code or configuration, review the relevant documentation to determine whether existing descriptions remain accurate. **Update documentation only when the change makes an existing description inaccurate; otherwise, do not modify documentation.** Ensure any updates belong in the relevant document and match its existing level of detail.
 
 **When a feature is removed**:
-- Move its entry in `FEATURES.md` into the `## 已移除功能` section and list the deleted files/config blocks so future merges can resolve upstream conflicts and reintroductions safely.
-- Add the removed feature to the **已移除功能列表** table in `README.md` and `docs/getting-started/introduction.md` so the fork's diff from upstream is clearly documented for users.
+- Move its entry in [FEATURES.md](FEATURES.md) into the `## 已移除功能` section and list the deleted files/config blocks so future merges can resolve upstream conflicts and reintroductions safely.
+- Add the removed feature to the `已移除功能列表` table in [README.md](README.md) and [introduction.md](docs/getting-started/introduction.md) so the fork's diff from upstream is clearly documented for users.
 
 **When merging upstream changes**:
-- Before merging, read the `## 已移除功能` section in `FEATURES.md`. If any upstream change touches a removed feature listed there, **do not introduce it**.
+- Before merging, read the `## 已移除功能` section in [FEATURES.md](FEATURES.md). If any upstream change touches a removed feature listed there, **do not introduce it**.
 - When merging documentation and comments, paraphrase upstream wording for clarity and readability before finalizing the merge result.
 
 ## Testing
