@@ -166,7 +166,7 @@ function F.func(input, env)
 
         -- Skip if candidate is pure English
         if genuine_cand.text:match("^[%a%p%s]+$") then
-            yield(genuine_cand)
+            yield(cand)
             goto continue
         end
 
@@ -180,7 +180,7 @@ function F.func(input, env)
             genuine_cand.preedit = preedit
         end
 
-        yield(genuine_cand)
+        yield(cand)
         ::continue::
     end
 end

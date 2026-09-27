@@ -328,7 +328,7 @@ function F.func(translation, env)
 
         ::yield::
         genuine_cand.comment = final_comment
-        yield(genuine_cand)
+        yield(cand)
     end
 end
 
