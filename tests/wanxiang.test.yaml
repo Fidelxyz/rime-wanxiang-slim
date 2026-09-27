@@ -161,19 +161,25 @@ deploy:
 
   candidate-pinner:
     tests:
-      # Pin a candidate.
-      - send: "ni{Control+p}"
-        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "·")
-      - send: ni
-        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "·")
+      # Pin a candidate that is not initially first.
+      - send: zheshi
+        assert: cand[1].text ~= "这时" and has_cand("这时")
+      - send: zhe0shi8
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "")
+      - send: "zhe0shi8{Control+p}"
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "·")
+      - send: zheshi
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "·")
       # A pinned prefix must not displace the complete phrase.
-      - send: nihao
-        assert: eq(cand[1].text, "你好") and has_cand("你") and eq(cand[1].comment, "")
-      # Unpin a candidate.
-      - send: "ni{Control+l}"
-        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "")
-      - send: ni
-        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "")
+      - send: zheshihou
+        assert: eq(cand[1].text, "这时候") and eq(cand[1].comment, "") and has_cand("这时")
+      # Unpin the candidate.
+      - send: "zheshi{Control+l}"
+        assert: cand[1].text ~= "这时" and has_cand("这时")
+      - send: zheshi
+        assert: cand[1].text ~= "这时" and has_cand("这时")
+      - send: zhe0shi8
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "")
 
   schema-zrm:
     patch:
