@@ -78,6 +78,8 @@ When modifying functional code or configuration, review the relevant documentati
 
 Testing is handled automatically by [Mira](https://github.com/rimeinn/mira) on GitHub Actions. There is no need to run tests locally or verify test results after making edits.
 
+Keep Mira deployments with identical patches (including those without a patch) adjacent in test files to reuse cached build artifacts and improve test performance.
+
 ## Version Control
 
 Follow conventional commits: `build:`, `chore:`, `ci:`, `docs:`, `style:`, `refactor:`, `perf:`, `test:`.

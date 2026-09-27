@@ -89,38 +89,6 @@ deploy:
       - send: U4f60
         assert: "eq(cand[1].text, '你') and eq(cand[1].comment, 'U4F60') and eq(cand[2].text, '\U0004F600') and eq(cand[2].comment, 'U4F60~0')"
 
-  direct-auxiliary-code:
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/自然码
-          - wanxiang_algebra:/pro/直接辅助
-    tests:
-      - send: nir
-        assert: eq(cand[1].text, "你")
-      - send: nire
-        assert: has_cand("你")
-      - send: nire/
-        assert: eq(cand[1].text, "你")
-      - send: niRe
-        assert: has_cand("你")
-      - send: nirE
-        assert: has_cand("你")
-      - send: niRE
-        assert: has_cand("你")
-
-  indirect-auxiliary-code:
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/自然码
-          - wanxiang_algebra:/pro/间接辅助
-    tests:
-      - send: ni/r
-        assert: eq(cand[1].text, "你")
-      - send: ni/re
-        assert: eq(cand[1].text, "你")
-
   tone-pinyin-code:
     options:
       raw_code: false
@@ -184,28 +152,6 @@ deploy:
       - send: ei
         assert: not has_cand("诶")
 
-  charset-filter-whitelist:
-    patch:
-      charset_filter/filters/@0/whitelist: "诶"
-    options:
-      charset_filter: true
-    tests:
-      - send: ei
-        assert: has_cand("诶")
-
-  charset-filter-blacklist:
-    patch:
-      charset_filter/filters/@0/blacklist: "你"
-    options:
-      charset_filter: true
-    tests:
-      - send: ni
-        assert: not has_cand("你")
-      - send: nihao
-        assert: not has_cand("你好")
-      - send: hao
-        assert: has_cand("好")
-
   candidate-pinner:
     tests:
       # Pin a candidate that is not initially first.
@@ -239,6 +185,60 @@ deploy:
         assert: eq(commit, "notaword")
       - send: notaword
         assert: eq(cand[1].text, "notaword")
+
+  direct-auxiliary-code:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/自然码
+          - wanxiang_algebra:/pro/直接辅助
+    tests:
+      - send: nir
+        assert: eq(cand[1].text, "你")
+      - send: nire
+        assert: has_cand("你")
+      - send: nire/
+        assert: eq(cand[1].text, "你")
+      - send: niRe
+        assert: has_cand("你")
+      - send: nirE
+        assert: has_cand("你")
+      - send: niRE
+        assert: has_cand("你")
+
+  indirect-auxiliary-code:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/自然码
+          - wanxiang_algebra:/pro/间接辅助
+    tests:
+      - send: ni/r
+        assert: eq(cand[1].text, "你")
+      - send: ni/re
+        assert: eq(cand[1].text, "你")
+
+  charset-filter-whitelist:
+    patch:
+      charset_filter/filters/@0/whitelist: "诶"
+    options:
+      charset_filter: true
+    tests:
+      - send: ei
+        assert: has_cand("诶")
+
+  charset-filter-blacklist:
+    patch:
+      charset_filter/filters/@0/blacklist: "你"
+    options:
+      charset_filter: true
+    tests:
+      - send: ni
+        assert: not has_cand("你")
+      - send: nihao
+        assert: not has_cand("你好")
+      - send: hao
+        assert: has_cand("好")
 
   schema-zrm:
     patch:
