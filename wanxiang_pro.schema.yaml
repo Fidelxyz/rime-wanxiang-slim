@@ -219,7 +219,7 @@ user_dict:
   core_word_length: 4
   max_word_length: 7
   max_homophones: 8
-  spelling_hints: 50
+  spelling_hints: 99
   always_show_comments: true
 
 user_dict_appender:
@@ -227,7 +227,7 @@ user_dict_appender:
   dictionary: wanxiang
   user_dict: user_dict
   initial_quality: -1
-  spelling_hints: 50
+  spelling_hints: 99
   always_show_comments: true
 
   # 手动造词引导符。
