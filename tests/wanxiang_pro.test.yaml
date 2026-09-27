@@ -205,6 +205,26 @@ deploy:
         assert: has_cand("你")
       - send: niRE
         assert: has_cand("你")
+      - send: ni9r
+        assert: has_cand("你")
+      - send: nir9
+        assert: has_cand("你")
+      - send: ni9re
+        assert: has_cand("你")
+      - send: nir9e
+        assert: has_cand("你")
+      - send: nire9
+        assert: has_cand("你")
+      - send: ni9R
+        assert: has_cand("你")
+      - send: niR9
+        assert: has_cand("你")
+      - send: ni9RE
+        assert: has_cand("你")
+      - send: niR9E
+        assert: has_cand("你")
+      - send: niRE9
+        assert: has_cand("你")
 
   indirect-auxiliary-code:
     patch:

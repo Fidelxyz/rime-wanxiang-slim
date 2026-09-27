@@ -197,6 +197,16 @@ deploy:
       - send: hupdvdhud
         assert: has_cand("树")
 
+  stroke-hspvd:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/reverse/全拼
+          - wanxiang_algebra:/reverse/hspvd
+    tests:
+      - send: hspdvdhsd
+        assert: has_cand("树")
+
   stroke-hslzy:
     patch:
       speller/algebra:
