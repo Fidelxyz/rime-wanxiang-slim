@@ -159,6 +159,49 @@ deploy:
       - send: zhe0shi8
         assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "")
 
+  candidate-type-marker:
+    patch:
+      translator/enable_user_dict: true
+      candidate_type_marker/types/phrase: "[phrase]"
+      candidate_type_marker/types/user_phrase: "[user_phrase]"
+      candidate_type_marker/types/table: "[table]"
+      candidate_type_marker/types/sentence: "[sentence]"
+      candidate_type_marker/types/completion: "[completion]"
+      candidate_type_marker/types/pinned: "[pinned]"
+      candidate_type_marker/types/unicode: "[unicode]"
+      candidate_type_marker/types/message: "[message]"
+    tests:
+      # Phrase
+      - send: ni'hao
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[phrase]")
+      # User phrase
+      - send: "ni'hao{space}ni'hao"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+      # Table
+      - send: hello
+        assert: eq(cand[1].text, "hello") and eq(cand[1].comment, "[table]")
+      - send: Hello
+        assert: eq(cand[1].text, "Hello") and eq(cand[1].comment, "[table]")
+      # Sentence
+      - send: ni'hao'shi'jie
+        assert: eq(cand[1].text, "你好世界") and eq(cand[1].comment, "[sentence]")
+      # Completion
+      - send: si'hai'wei'jia
+        assert: eq(cand[2].text, "四海为家此路穷") and eq(cand[2].comment, "[completion]")
+      # Pinned
+      - send: "zhe0'shi8{Control+p}"
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "[pinned]")
+      - send: zhe'shi
+        assert: eq(cand[1].text, "这时") and eq(cand[1].comment, "[pinned]")
+      - send: "zhe'shi{Control+l}"
+        assert: cand[1].comment ~= "[pinned]"
+      # Unicode
+      - send: U4f60
+        assert: eq(cand[1].text, "你") and eq(cand[1].comment, "U4F60[unicode]") and eq(cand[2].comment, "U4F60~0[unicode]")
+      # Message
+      - send: /version
+        assert: eq(cand[1].comment, "[message]")
+
   charset-filter-whitelist:
     patch:
       charset_filter/filters/@0/whitelist: "诶"

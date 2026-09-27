@@ -304,6 +304,7 @@ candidate_type_marker:
     sentence: "∞"  # 造句候选，启用 enable_sentence 时生成。
     completion: ""  # 补全候选，启用 enable_completion 时生成。
     pinned: "·"  # 置顶候选，由 candidate_pinner 生成。
+    unicode: ""  # Unicode 输入候选，由 unicode 生成。
     message: "ℹ"  # Lua 脚本产生的信息输出。
 
 # 以词定字
