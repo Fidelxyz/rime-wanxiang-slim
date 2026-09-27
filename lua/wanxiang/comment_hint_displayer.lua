@@ -203,8 +203,8 @@ function correction_hint.init(env)
 
     -- Parse the correction hint dictionary from text since comment column is not supported by Rime yet.
     -- See https://github.com/rime/librime/issues/538.
-    if not correction_hint.dict then
-        local file = utils.load_file_with_fallback(correction_hint.DICT_PATH)
+    if enabled and not correction_hint.dict then
+        local file, err = utils.load_file_with_fallback(correction_hint.DICT_PATH)
         if file then
             correction_hint.dict = {}
 
@@ -237,6 +237,9 @@ function correction_hint.init(env)
             end
 
             file:close()
+        else
+            log.warning(("comment_hint_displayer: failed to load correction dictionary '%s': %s")
+                :format(correction_hint.DICT_PATH, err or "file not found or unreadable"))
         end
     end
 end

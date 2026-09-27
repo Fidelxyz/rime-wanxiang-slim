@@ -134,13 +134,35 @@ function P.func(key, env)
 
     if pin then
         -- Positive commits add or strengthen the entry.
-        state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), 1, "")
-        log.info(("candidate_pinner: Pinned candidate '%s' with code '%s'"):format(genuine.text, code))
+        local entry = utils.make_dict_entry(genuine.text, code)
+        local commits = 1
+        local prefix = ""
+        if not state.memory:update_userdict(entry, commits, prefix) then
+            log.error(
+                (
+                    "candidate_pinner: update_userdict failed: "
+                    .. "namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"
+                ):format("candidate_pinner", entry.text, entry.custom_code, commits, prefix)
+            )
+            return utils.RIME_PROCESS_RESULTS.kAccepted
+        end
+        log.info(("candidate_pinner: pinned candidate '%s' with code '%s'"):format(genuine.text, code))
     else
         if state.memory:user_lookup(code, false) then
             -- Negative commits soft-delete the entry.
-            state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), -1, "")
-            log.info(("candidate_pinner: Unpinned candidate '%s' with code '%s'"):format(genuine.text, code))
+            local entry = utils.make_dict_entry(genuine.text, code)
+            local commits = -1
+            local prefix = ""
+            if not state.memory:update_userdict(entry, commits, prefix) then
+                log.error(
+                    (
+                        "candidate_pinner: update_userdict failed: "
+                        .. "namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"
+                    ):format("candidate_pinner", entry.text, entry.custom_code, commits, prefix)
+                )
+                return utils.RIME_PROCESS_RESULTS.kAccepted
+            end
+            log.info(("candidate_pinner: unpinned candidate '%s' with code '%s'"):format(genuine.text, code))
         end
     end
 
