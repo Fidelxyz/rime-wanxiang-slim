@@ -2,6 +2,8 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
+local file_utils = require("utils.file")
+
 local M = {}
 
 ---@alias PROCESS_RESULT ProcessResult
@@ -14,19 +16,6 @@ M.RIME_PROCESS_RESULTS = {
 -- Cached for the lifetime of the process; the result never changes.
 ---@type boolean?
 local is_mobile_device = nil
-
----Whether `path` is an absolute path (starts with `/`, `\`, or a Windows drive letter).
----@param path string
----@return boolean
-local function is_absolute_path(path)
-    if path:sub(1, 1) == "/" or path:sub(1, 1) == "\\" then
-        return true
-    end
-    if path:match("^[a-zA-Z]:[\\/]") then
-        return true
-    end
-    return false
-end
 
 ---Whether the current process is running on a mobile device.
 ---@return boolean
@@ -254,68 +243,6 @@ function M.now()
     return os.time()
 end
 
----Whether `filename` exists and is readable.
----@param filename string
----@return boolean
-function M.file_exists(filename)
-    local f = io.open(filename, "r")
-    if f then
-        f:close()
-        return true
-    else
-        return false
-    end
-end
-
----Resolve `filename` against the user data dir first, then the shared data dir.
----Returns the first path that exists, or nil if neither does.
----@param filename string
----@return string?
-function M.get_filename_with_fallback(filename)
-    local _path = filename:gsub("^[\\/]+", "")
-    local user_dir = rime_api.get_user_data_dir()
-
-    if not is_absolute_path(user_dir) then
-        return filename
-    end
-
-    local user_path = user_dir .. "/" .. _path
-    if M.file_exists(user_path) then
-        return user_path
-    end
-
-    local shared_dir = rime_api.get_shared_data_dir()
-
-    if not is_absolute_path(shared_dir) then
-        return filename
-    end
-    local shared_path = shared_dir .. "/" .. _path
-    if M.file_exists(shared_path) then
-        return shared_path
-    end
-    return nil
-end
-
----Open a file searching the user data dir first, then the shared data dir.
----@param filename string Relative path under the data dir.
----@param mode? openmode
----@return file*? file
----@return string? err
-function M.load_file_with_fallback(filename, mode)
-    mode = mode or "r"
-
-    local _filename = M.get_filename_with_fallback(filename)
-
-    ---@type file*?, string?
-    local file, err
-
-    if _filename then
-        file, err = io.open(_filename, mode)
-    end
-
-    return file, err
-end
-
 ---Workaround for `rime_api.get_user_id()` returning "unknown" on Weasel and Hamster.
 ---See:
 ---1. https://github.com/rime/weasel/pull/1649
@@ -330,12 +257,12 @@ function M.get_user_id()
 
     local user_data_dir = rime_api.get_user_data_dir()
     local installation_path = user_data_dir .. "/installation.yaml"
-    local installation_file, _ = io.open(installation_path, "r")
-    if not installation_file then
+    local content = file_utils.read_file(installation_path)
+    if not content then
         return user_id
     end
 
-    for line in installation_file:lines() do
+    for line in content:gmatch("[^\r\n]+") do
         ---@cast line string
         local key, value = line:match('^([^#:]+):%s+"?([^"]%S+[^"])"?')
         if key == "installation_id" and value then
@@ -344,7 +271,6 @@ function M.get_user_id()
         end
     end
 
-    installation_file:close()
     return user_id
 end
 

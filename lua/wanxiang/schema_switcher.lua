@@ -3,7 +3,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local utils = require("utils.utils")
+local file = require("utils.file")
 
 local PINYIN_SCHEMAS = {
     ["/pinyin"] = "全拼",
@@ -28,60 +28,6 @@ local AUX_SCHEMAS = {
     ["/jjf"] = "间接辅助",
 }
 
----Read an entire file, returning the failed operation and path on error.
----@param path string
----@return string? content
----@return string? err
-local function read_file(path)
-    local file, err = io.open(path, "rb")
-    if not file then
-        return nil, ("failed to open %q for reading: %s"):format(path, err)
-    end
-    local content, read_err = file:read("*a")
-    local closed, close_err = file:close()
-    if not content then
-        return nil, ("failed to read %q: %s"):format(path, read_err)
-    end
-    if not closed then
-        return nil, ("failed to close %q: %s"):format(path, close_err)
-    end
-    return content
-end
-
----Write an entire file, checking buffered writes flushed on close.
----@param path string
----@param content string
----@return boolean ok
----@return string? err
-local function write_file(path, content)
-    local file, err = io.open(path, "wb")
-    if not file then
-        return false, ("failed to open %q for writing: %s"):format(path, err)
-    end
-    local written, write_err = file:write(content)
-    local closed, close_err = file:close()
-    if not written then
-        return false, ("failed to write %q: %s"):format(path, write_err)
-    end
-    if not closed then
-        return false, ("failed to close %q: %s"):format(path, close_err)
-    end
-    return true
-end
-
----Copy a file, returning the source or destination error on failure.
----@param src string
----@param dest string
----@return boolean ok
----@return string? err
-local function copy_file(src, dest)
-    local content, err = read_file(src)
-    if not content then
-        return false, err
-    end
-    return write_file(dest, content)
-end
-
 ---Ensures a custom file exists in the user data directory, copying its template
 ---from the user `custom` directory when missing.
 ---@param user_dir string
@@ -89,17 +35,17 @@ end
 ---@return boolean ok true if the destination file exists after this call
 local function ensure_custom_file(user_dir, custom_file_name)
     local dest = user_dir .. "/" .. custom_file_name
-    if utils.file_exists(dest) then
+    if file.file_exists(dest) then
         return true
     end
 
     local src = user_dir .. "/custom/" .. custom_file_name
-    if not utils.file_exists(src) then
+    if not file.file_exists(src) then
         log.warning(("schema_switcher: template custom file not found or unreadable: %s"):format(src))
         return false
     end
 
-    local copied, err = copy_file(src, dest)
+    local copied, err = file.copy_file(src, dest)
     if not copied then
         log.error(("schema_switcher: %s"):format(err))
     end
@@ -112,7 +58,7 @@ end
 ---@param transform fun(content: string): string?
 ---@return boolean ok true if the file was successfully updated
 local function update_custom_file(custom_file, transform)
-    local content, read_err = read_file(custom_file)
+    local content, read_err = file.read_file(custom_file)
     if not content then
         log.error(("schema_switcher: %s"):format(read_err))
         return false
@@ -124,7 +70,7 @@ local function update_custom_file(custom_file, transform)
         return false
     end
 
-    local written, write_err = write_file(custom_file, new_content)
+    local written, write_err = file.write_file(custom_file, new_content)
     if not written then
         log.error(("schema_switcher: %s"):format(write_err))
     end

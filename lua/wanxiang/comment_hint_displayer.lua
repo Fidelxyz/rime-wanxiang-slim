@@ -16,6 +16,7 @@
 ---@field correction_hint_config CorrectionHintConfig?
 
 local utils = require("utils.utils")
+local file_utils = require("utils.file")
 
 ---Reverse-lookup hint module, showing pinyin and aux-code for candidates from reverse lookup segments.
 local reverse_lookup_hint = {}
@@ -204,7 +205,7 @@ function correction_hint.init(env)
     -- Parse the correction hint dictionary from text since comment column is not supported by Rime yet.
     -- See https://github.com/rime/librime/issues/538.
     if enabled and not correction_hint.dict then
-        local file, err = utils.load_file_with_fallback(correction_hint.DICT_PATH)
+        local file, err = file_utils.open_data_file(correction_hint.DICT_PATH)
         if file then
             correction_hint.dict = {}
 
