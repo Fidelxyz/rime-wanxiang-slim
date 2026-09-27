@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.1-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0...v1.0.1-beta.1) (2026-09-27)
+
+
+### Bug Fixes
+
+* improve Lua error logging and failure reporting ([5c417d9](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/5c417d993ce2fb37c20533f79a6b3fa793132c06))
+
+
+### Performance Improvements
+
+* replace candidate pinning filter with script translator ([14ba937](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/14ba937793861f6565088642e89ee7149e2c70d5))
+
 ## [1.0.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v0.6.0...v1.0.0) (2026-09-20)
 
 
