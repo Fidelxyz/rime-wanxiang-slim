@@ -8,7 +8,7 @@
 
 #### 直接辅助码（仅 PRO）
 
-双拼后直接追加辅助码，4 码末尾追加 `/` 强制单字优先。
+拼音编码后直接追加辅助码，末尾追加 `/` 强制单字优先。
 
 - `custom/wanxiang_pro.schema.yaml`：PRO 方案中的辅助码编码配置
 - `custom/wanxiang.dict.yaml`：携带辅助码的 PRO 词库
