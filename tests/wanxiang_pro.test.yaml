@@ -237,6 +237,40 @@ deploy:
         assert: eq(cand[1].text, "你")
       - send: ni/re
         assert: eq(cand[1].text, "你")
+      - send: "niRE ni9RE niR9E niRE9 "
+        assert: eq(commit, "你你你你")
+      - send: "wo/pd wo/pp wo9/pp woPP wo9PP woP9P woPP9 wo/p wo9/p woP wo9P woP9 "
+        assert: eq(commit, "我我我我我我我我我我我我")
+
+  indirect-auxiliary-code-pinyin:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/全拼
+          - wanxiang_algebra:/pro/间接辅助
+    tests:
+      - send: "bing/bk bing0/bk bingBK bing0BK bingB0K bingBK0 "
+        assert: eq(commit, "并并并并并并")
+
+  indirect-auxiliary-code-gb:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/国标双拼
+          - wanxiang_algebra:/pro/间接辅助
+    tests:
+      - send: "l/aa l8/aa lAA l8AA lA8A lAA8 "
+        assert: eq(commit, "而而而而而而")
+
+  indirect-auxiliary-code-sogou:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/搜狗双拼
+          - wanxiang_algebra:/pro/间接辅助
+    tests:
+      - send: "b;/bk b;0/bk b;BK b;0BK b;B0K b;BK0 "
+        assert: eq(commit, "并并并并并并")
 
   charset-filter-whitelist:
     patch:
@@ -260,6 +294,20 @@ deploy:
       - send: hao
         assert: has_cand("好")
 
+  schema-pinyin:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/全拼
+          - wanxiang_algebra:/pro/直接辅助
+    tests:
+      - send: "ta po de zai mei hao dou dan fen rang deng er shi xia ye yao jiu nian xin jiang bing yong chu zhua wo kuai dui suan lun guang weng cong yu yue yuan qun "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zaiTA meiDU haoNZ douEV danRD fenBD rangYU dengVS erAA shiOP xiaAB yeGG yaoXN jiuYJ nianRA xinJQ jiangPC bingBK yongKF chuCK zhuaFV woPD kuaiXD duiCY suanVC lunYL guangEA wengYG congRR yuAA yueOY yuanIX qunYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zai0 mei8 hao9 dou7 dan0 fen7 rang0 deng9 er8 shi0 xia0 ye9 yao0 jiu0 nian8 xin7 jiang7 bing0 yong0 chu7 zhua7 wo9 kuai0 dui0 suan0 lun0 guang7 weng7 cong8 yu9 yue0 yuan8 qun8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+
   schema-zrm:
     patch:
       speller/algebra:
@@ -267,10 +315,12 @@ deploy:
           - wanxiang_algebra:/pro/自然码
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hk
-        assert: has_cand("好")
-      - send: hkn
-        assert: has_cand("好")
+      - send: "ta po de zl mz hk db dj ff rh dg er ui xw ye yk jq nm xn jd by ys iu vw wo ky dv sr lp gd wg cs yu yt yr qp "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zlTA mzDU hkNZ dbEV djRD ffBD rhYU dgVS erAA uiOP xwAB yeGG ykXN jqYJ nmRA xnJQ jdPC byBK ysKF iuCK vwFV woPD kyXD dvCY srVC lpYL gdEA wgYG csRR yuAA ytOY yrIX qpYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zl0 mz8 hk9 db7 dj0 ff7 rh0 dg9 er8 ui0 xw0 ye9 yk0 jq0 nm8 xn7 jd7 by0 ys0 iu7 vw7 wo9 ky0 dv0 sr0 lp0 gd7 wg7 cs8 yu9 yt0 yr8 qp8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-zrlong:
     patch:
@@ -279,10 +329,10 @@ deploy:
           - wanxiang_algebra:/pro/自然龙
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hx
-        assert: has_cand("好")
-      - send: hxn
-        assert: has_cand("好")
+      - send: "tl pg dr zo mr hx dx dj fe rd dy ek ut xx yl yv jo nv xh jy bw yy ia vs wi kf df sc lr gw wc cj ys yd yo qf "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出转我快对算了光翁从与月原去")
+      - send: "tlRY pgUP drBU zoTA mrDU hxNZ dxEV djRD feBD rdYU dyVS ekAA utOP xxAB ylGG yvXN joYJ nvRA xhJQ jyPC bwBK yyKF iaCK vsFV wiPD kfXD dfCY scVC lrYL gwEA wcYG cjRR ysAA ydOY yoIX qfYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-hxlong:
     patch:
@@ -291,10 +341,10 @@ deploy:
           - wanxiang_algebra:/pro/汉心龙
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: mt
-        assert: has_cand("好")
-      - send: mtn
-        assert: has_cand("好")
+      - send: "oe wf hk nb ph mt hx hs vq fu hm bj tl cy jr jw ee yb cv em ia jz sj kz gj uo he zc dx la gh xa js jo ji ah "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出重我快对算论该为从与月原去")
+      - send: "oeRY wfUP hkBU nbTA phDU mtNZ hxEV hsRD vqBD fuYU hmVS bjAA tlOP cyAB jrGG jwXN eeYJ ybRA cvJQ emPC iaBK jzKF sjCK kzFV gjPD uoXD heCY zcVC dxYL laEA ghYG xaRR jsAA joOY jiIX ahYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-flypy:
     patch:
@@ -303,10 +353,12 @@ deploy:
           - wanxiang_algebra:/pro/小鹤双拼
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hc
-        assert: has_cand("好")
-      - send: hcn
-        assert: has_cand("好")
+      - send: "ta po de zd mw hc dz dj ff rh dg er ui xx ye yc jq nm xb jl bk ys iu vx wo kk dv sr ly gl wg cs yu yt yr qy "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zdTA mwDU hcNZ dzEV djRD ffBD rhYU dgVS erAA uiOP xxAB yeGG ycXN jqYJ nmRA xbJQ jlPC bkBK ysKF iuCK vxFV woPD kkXD dvCY srVC lyYL glEA wgYG csRR yuAA ytOY yrIX qyYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zd0 mw8 hc9 dz7 dj0 ff7 rh0 dg9 er8 ui0 xx0 ye9 yc0 jq0 nm8 xb7 jl7 bk0 ys0 iu7 vx7 wo9 kk0 dv0 sr0 ly0 gl7 wg7 cs8 yu9 yt0 yr8 qy8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-sogou:
     patch:
@@ -315,10 +367,12 @@ deploy:
           - wanxiang_algebra:/pro/搜狗双拼
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hk
-        assert: has_cand("好")
-      - send: hkn
-        assert: has_cand("好")
+      - send: "ta po de zl mz hk db dj ff rh dg or ui xw ye yk jq nm xn jd b; ys iu vw wo ky dv sr lp gd wg cs yu yt yr qp "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zlTA mzDU hkNZ dbEV djRD ffBD rhYU dgVS orAA uiOP xwAB yeGG ykXN jqYJ nmRA xnJQ jdPC b;BK ysKF iuCK vwFV woPD kyXD dvCY srVC lpYL gdEA wgYG csRR yuAA ytOY yrIX qpYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zl0 mz8 hk9 db7 dj0 ff7 rh0 dg9 or8 ui0 xw0 ye9 yk0 jq0 nm8 xn7 jd7 b;0 ys0 iu7 vw7 wo9 ky0 dv0 sr0 lp0 gd7 wg7 cs8 yu9 yt0 yr8 qp8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-microsoft:
     patch:
@@ -327,10 +381,12 @@ deploy:
           - wanxiang_algebra:/pro/微软双拼
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hk
-        assert: has_cand("好")
-      - send: hkn
-        assert: has_cand("好")
+      - send: "ta po de zl mz hk db dj ff rh dg or ui xw ye yk jq nm xn jd b; ys iu vw wo ky dv sr lp gd wg cs yu yt yr qp "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zlTA mzDU hkNZ dbEV djRD ffBD rhYU dgVS orAA uiOP xwAB yeGG ykXN jqYJ nmRA xnJQ jdPC b;BK ysKF iuCK vwFV woPD kyXD dvCY srVC lpYL gdEA wgYG csRR yuAA ytOY yrIX qpYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zl0 mz8 hk9 db7 dj0 ff7 rh0 dg9 or8 ui0 xw0 ye9 yk0 jq0 nm8 xn7 jd7 b;0 ys0 iu7 vw7 wo9 ky0 dv0 sr0 lp0 gd7 wg7 cs8 yu9 yt0 yr8 qp8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-abc:
     patch:
@@ -339,10 +395,12 @@ deploy:
           - wanxiang_algebra:/pro/智能ABC
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hk
-        assert: has_cand("好")
-      - send: hkn
-        assert: has_cand("好")
+      - send: "ta po de zl mq hk db dj ff rh dg or vi xd ye yk jr nw xc jt by ys eu ad wo kc dm sp ln gt wg cs yu ym yp qn "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zlTA mqDU hkNZ dbEV djRD ffBD rhYU dgVS orAA viOP xdAB yeGG ykXN jrYJ nwRA xcJQ jtPC byBK ysKF euCK adFV woPD kcXD dmCY spVC lnYL gtEA wgYG csRR yuAA ymOY ypIX qnYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zl0 mq8 hk9 db7 dj0 ff7 rh0 dg9 or8 vi0 xd0 ye9 yk0 jr0 nw8 xc7 jt7 by0 ys0 eu7 ad7 wo9 kc0 dm0 sp0 ln0 gt7 wg7 cs8 yu9 ym0 yp8 qn8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-ziguang:
     patch:
@@ -351,10 +409,12 @@ deploy:
           - wanxiang_algebra:/pro/紫光双拼
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hq
-        assert: has_cand("好")
-      - send: hqn
-        assert: has_cand("好")
+      - send: "ta po de zp mk hq dz dr fw rs dt oj ii xx ye yq jj nf xy jg b; yh au ux wo ky dn sl lm gg wt ch yu yn yl qm "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zpTA mkDU hqNZ dzEV drRD fwBD rsYU dtVS ojAA iiOP xxAB yeGG yqXN jjYJ nfRA xyJQ jgPC b;BK yhKF auCK uxFV woPD kyXD dnCY slVC lmYL ggEA wtYG chRR yuAA ynOY ylIX qmYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zp0 mk8 hq9 dz7 dr0 fw7 rs0 dt9 oj8 ii0 xx0 ye9 yq0 jj0 nf8 xy7 jg7 b;0 yh0 au7 ux7 wo9 ky0 dn0 sl0 lm0 gg7 wt7 ch8 yu9 yn0 yl8 qm8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-pinyin-plus:
     patch:
@@ -363,10 +423,12 @@ deploy:
           - wanxiang_algebra:/pro/拼音加加
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hd
-        assert: has_cand("好")
-      - send: hdn
-        assert: has_cand("好")
+      - send: "ta po de zs mw hd dp df fr rg dt eq ii xb ye yd jn nj xl jh bq yy uu vb wo kx dv sc lz gh wt cy yu yx yc qz "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zsTA mwDU hdNZ dpEV dfRD frBD rgYU dtVS eqAA iiOP xbAB yeGG ydXN jnYJ njRA xlJQ jhPC bqBK yyKF uuCK vbFV woPD kxXD dvCY scVC lzYL ghEA wtYG cyRR yuAA yxOY ycIX qzYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zs0 mw8 hd9 dp7 df0 fr7 rg0 dt9 eq8 ii0 xb0 ye9 yd0 jn0 nj8 xl7 jh7 bq0 yy0 uu7 vb7 wo9 kx0 dv0 sc0 lz0 gh7 wt7 cy8 yu9 yx0 yc8 qz8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-gb:
     patch:
@@ -375,46 +437,12 @@ deploy:
           - wanxiang_algebra:/pro/国标双拼
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hc
-        assert: has_cand("好")
-      - send: hcn
-        assert: has_cand("好")
-
-  schema-bluesky:
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/蓝天双拼
-          - wanxiang_algebra:/pro/直接辅助
-    tests:
-      - send: hc
-        assert: has_cand("好")
-      - send: hcn
-        assert: has_cand("好")
-
-  schema-daniu:
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/大牛双拼
-          - wanxiang_algebra:/pro/直接辅助
-    tests:
-      - send: hs
-        assert: has_cand("好")
-      - send: hsn
-        assert: has_cand("好")
-
-  schema-shoudao:
-    patch:
-      speller/algebra:
-        __patch:
-          - wanxiang_algebra:/pro/首道双拼
-          - wanxiang_algebra:/pro/直接辅助
-    tests:
-      - send: hd
-        assert: has_cand("好")
-      - send: hdn
-        assert: has_cand("好")
+      - send: "ta po de zk mb hc dp df fr rg dh l ui xq ye yc jy nd xl jn bj ys iu vq wo ky dv sw lz gn wh cs yu yx yw qz "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zkTA mbDU hcNZ dpEV dfRD frBD rgYU dhVS lAA uiOP xqAB yeGG ycXN jyYJ ndRA xlJQ jnPC bjBK ysKF iuCK vqFV woPD kyXD dvCY swVC lzYL gnEA whYG csRR yuAA yxOY ywIX qzYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zk0 mb8 hc9 dp7 df0 fr7 rg0 dh9 l8 ui0 xq0 ye9 yc0 jy0 nd8 xl7 jn7 bj0 ys0 iu7 vq7 wo9 ky0 dv0 sw0 lz0 gn7 wh7 cs8 yu9 yx0 yw8 qz8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
 
   schema-luanxu17:
     patch:
@@ -423,5 +451,51 @@ deploy:
           - wanxiang_algebra:/pro/乱序17
           - wanxiang_algebra:/pro/直接辅助
     tests:
-      - send: hbn
-        assert: has_cand("好")
+      - send: "th hx dw wl mg hb df dn fs nz dy qt sj xh yw yb jf nq xs jc by yt cd zh wx jx dc mx lg gq wy ft yd yl yx qg "
+        assert: eq(commit, "他换的在没好都但分让等而是下也要就年新将并用出抓我快对算类光增从与月原群")
+      - send: "thRY hxUP dwBU wlTA mgDU hbNZ dfEV dnRD fsBD nzYU dyVS qtAA sjOP xhAB ywGG ybXN jfYJ nqRA xsJQ jcPC byBK ytKF cdCK zhFV wxPD jxXD dcCY mxVC lgYL gqEA wyYG ftRR ydAA ylOY yxIX qgYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "th7 hx0 dw0 wl0 mg8 hb9 df7 dn0 fs7 nz0 dy9 qt8 sj0 xh0 yw9 yb0 jf0 nq8 xs7 jc7 by0 yt0 cd7 zh7 wx9 jx0 dc0 mx0 lg0 gq7 wy7 ft8 yd9 yl0 yx8 qg8 "
+        assert: eq(commit, "他换的在没好都但分让等而是下也要就年新将并用出抓我快对算类光增从与月原群")
+
+  schema-bluesky:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/蓝天双拼
+          - wanxiang_algebra:/pro/直接辅助
+    tests:
+      - send: "ta po de zd mw hc dr dj fk rg dz er ui xk ye yc jt nm xx jl bf ys iu vq wo kf dv sh lb gl wz cs yu yy yh qb "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zdTA mwDU hcNZ drEV djRD fkBD rgYU dzVS erAA uiOP xkAB yeGG ycXN jtYJ nmRA xxJQ jlPC bfBK ysKF iuCK vqFV woPD kfXD dvCY shVC lbYL glEA wzYG csRR yuAA yyOY yhIX qbYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zd0 mw8 hc9 dr7 dj0 fk7 rg0 dz9 er8 ui0 xk0 ye9 yc0 jt0 nm8 xx7 jl7 bf0 ys0 iu7 vq7 wo9 kf0 dv0 sh0 lb0 gl7 wz7 cs8 yu9 yy0 yh8 qb8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+
+  schema-daniu:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/大牛双拼
+          - wanxiang_algebra:/pro/直接辅助
+    tests:
+      - send: "ta po de zh mw hs dr dd fk rf dj eu ui xk ye ys jt nc xb jn bg yl iu oq wo kg dn sz ly gx wj cl yu yh yz qy "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zhTA mwDU hsNZ drEV ddRD fkBD rfYU djVS euAA uiOP xkAB yeGG ysXN jtYJ ncRA xbJQ jnPC bgBK ylKF iuCK oqFV woPD kgXD dnCY szVC lyYL gxEA wjYG clRR yuAA yhOY yzIX qyYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zh0 mw8 hs9 dr7 dd0 fk7 rf0 dj9 eu8 ui0 xk0 ye9 ys0 jt0 nc8 xb7 jn7 bg0 yl0 iu7 oq7 wo9 kg0 dn0 sz0 ly0 gx7 wj7 cl8 yu9 yh0 yz8 qy8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+
+  schema-shoudao:
+    patch:
+      speller/algebra:
+        __patch:
+          - wanxiang_algebra:/pro/首道双拼
+          - wanxiang_algebra:/pro/直接辅助
+    tests:
+      - send: "ta po de zl mm hd ds dj fk ry df er ei xk ye yd jq nn xc jx bg yh iu vw wo kg dv st lz gx wf ch yu yl yt qz "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "taRY poUP deBU zlTA mmDU hdNZ dsEV djRD fkBD ryYU dfVS erAA eiOP xkAB yeGG ydXN jqYJ nnRA xcJQ jxPC bgBK yhKF iuCK vwFV woPD kgXD dvCY stVC lzYL gxEA wfYG chRR yuAA ylOY ytIX qzYJ "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
+      - send: "ta7 po0 de0 zl0 mm8 hd9 ds7 dj0 fk7 ry0 df9 er8 ei0 xk0 ye9 yd0 jq0 nn8 xc7 jx7 bg0 yh0 iu7 vw7 wo9 kg0 dv0 st0 lz0 gx7 wf7 ch8 yu9 yl0 yt8 qz8 "
+        assert: eq(commit, "他破的在没好都但分让等而是下也要就年新将并用出抓我快对算论光翁从与月原群")
