@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/yaopin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/yaopin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: pharmaceutical
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 阿咖片	ā kā piàn	10
@@ -65,6 +65,7 @@ sort: by_weight
 强肾片	qiáng shèn piàn	10
 清肝片	qīng gān piàn	10
 青果片	qīng guǒ piàn	10
+清化饮	qīng huà yǐn	84
 清火片	qīng huǒ piàn	10
 清降片	qīng jiàng piàn	10
 清解片	qīng jiě piàn	10
@@ -118,7 +119,10 @@ sort: by_weight
 阿帕他胺	ā pà tā àn	10
 阿帕替尼	ā pà tì ní	10
 阿思尼布	ā sī ní bù	10
-阿昔替尼	ā xī tì ní	10
+阿昔洛韦	ā xī luò wéi	60
+阿西美辛	ā xī měi xīn	4
+阿昔莫司	ā xī mò sī	84
+阿昔替尼	ā xī tì ní	212
 艾伏尼布	ài fú ní bù	10
 埃克替尼	āi kè tì ní	10
 埃普奈明	āi pǔ nài míng	10
@@ -259,6 +263,7 @@ sort: by_weight
 脑心清片	nǎo xīn qīng piàn	10
 脑血康片	nǎo xuè kāng piàn	10
 脑血栓片	nǎo xuè shuān piàn	10
+尼可刹米	ní kě shā mǐ	22
 尼拉帕利	ní lā pà lì	10
 尼洛替尼	ní luò tì ní	10
 尿路通片	niào lù tōng piàn	10
@@ -345,6 +350,7 @@ sort: by_weight
 西达本胺	xī dá běn àn	10
 仙灵脾片	xiān líng pí piàn	10
 消癌平片	xiāo ái píng piàn	10
+小接骨丹	xiǎo jiē gǔ dān	76
 消咳喘片	xiāo ké chuǎn piàn	10
 消渴灵片	xiāo kě líng piàn	10
 消渴平片	xiāo kě píng piàn	10
@@ -423,6 +429,7 @@ sort: by_weight
 阿司匹林片	ā sī pǐ lín piàn	10
 阿司匹林散	ā sī pǐ lín sàn	10
 阿替洛尔片	ā tì luò ěr piàn	10
+阿维A胶囊	ā wéi a jiāo náng	11
 阿魏八味丸	ā wèi bā wèi wán	10
 阿魏化痞膏	ā wèi huà pǐ gāo	10
 阿魏酸钠片	ā wèi suān nà piàn	10
@@ -1207,7 +1214,7 @@ sort: by_weight
 复方贝母片	fù fāng bèi mǔ piàn	10
 复方贝母散	fù fāng bèi mǔ sàn	10
 复方薄荷酊	fù fāng bò he dīng	10
-复方薄荷脑	fù fāng bò hé nǎo	10
+复方薄荷脑	fù fāng bò he nǎo	10
 复方补骨脂	fù fāng bǔ gǔ zhī	10
 复方草玉梅	fù fāng cǎo yù méi	10
 复方茶丹片	fù fāng chá dān piàn	10
@@ -5710,7 +5717,7 @@ sort: by_weight
 复方黄芩洗剂	fù fāng huáng qín xǐ jì	10
 复方黄松湿巾	fù fāng huáng sōng shī jīn	10
 复方灰黄霉素	fù fāng huī huáng méi sù	10
-复方鸡内金片	fù fāng jī nà jīn piàn	10
+复方鸡内金片	fù fāng jī nèi jīn piàn	10
 复方己酸睾酮	fù fāng jǐ suān gāo tóng	10
 复方积雪草片	fù fāng jī xuě cǎo piàn	10
 复方鸡血藤膏	fù fāng jī xuè téng gāo	10
@@ -7682,7 +7689,9 @@ sort: by_weight
 双料喉风含片	shuāng liào hóu fēng hán piàn	10
 双氯非那胺片	shuāng lǜ fēi nà àn piàn	10
 双氯芬酸钾片	shuāng lǜ fēn suān jiǎ piàn	10
+双氯芬酸钾栓	shuāng lǜ fēn suān jiǎ shuān	10
 双氯芬酸钠片	shuāng lǜ fēn suān nà piàn	10
+双氯芬酸钠栓	shuāng lǜ fēn suān nà shuān	10
 双嘧啶混悬液	shuāng mì dìng hùn xuán yè	10
 双扑伪麻胶囊	shuāng pū wěi má jiāo náng	10
 双扑伪麻颗粒	shuāng pū wěi má kē lì	10
@@ -8070,7 +8079,7 @@ sort: by_weight
 小儿和胃消食	xiǎo ér hé wèi xiāo shí	10
 小儿化毒胶囊	xiǎo ér huà dú jiāo náng	10
 小儿化滞健脾	xiǎo ér huà zhì jiàn pí	10
-小儿鸡内金散	xiǎo ér jī nà jīn sàn	10
+小儿鸡内金散	xiǎo ér jī nèi jīn sàn	10
 小儿健脾化积	xiǎo ér jiàn pí huà jī	10
 小儿健脾止泻	xiǎo ér jiàn pí zhǐ xiè	10
 小儿健胃糖浆	xiǎo ér jiàn wèi táng jiāng	10
@@ -9273,7 +9282,7 @@ sort: by_weight
 复方鳖甲软肝片	fù fāng biē jiǎ ruǎn gān piàn	10
 复方丙谷胺胶囊	fù fāng bǐng gǔ àn jiāo náng	10
 复方薄荷滴鼻液	fù fāng bò he dī bí yè	10
-复方薄荷脑软膏	fù fāng bò hé nǎo ruǎn gāo	10
+复方薄荷脑软膏	fù fāng bò he nǎo ruǎn gāo	10
 复方薄荷油滴鼻	fù fāng bò he yóu dī bí	10
 复方菠萝蛋白酶	fù fāng bō luó dàn bái méi	10
 复方补骨脂颗粒	fù fāng bǔ gǔ zhī kē lì	10
@@ -9877,7 +9886,7 @@ sort: by_weight
 结合雌激素乳膏	jié hé cí jī sù rǔ gāo	10
 结合雌激素软膏	jié hé cí jī sù ruǎn gāo	10
 解肌宁嗽口服液	jiě jī níng sòu kǒu fú yè	10
-芥子气磷混合剂	jiè zǐ qì lín hùn hé jì	10
+芥子气磷混合剂	jiè zi qì lín hùn hé jì	10
 金邦前列通胶囊	jīn bāng qián liè tōng jiāo náng	10
 金贝痰咳清颗粒	jīn bèi tán ké qīng kē lì	10
 金参润喉口服液	jīn cān rùn hóu kǒu fú yè	10
@@ -10820,7 +10829,7 @@ sort: by_weight
 小儿风热清合剂	xiǎo ér fēng rè qīng hé jì	10
 小儿风热清颗粒	xiǎo ér fēng rè qīng kē lì	10
 小儿复方贝诺酯	xiǎo ér fù fāng bèi nuò zhǐ	10
-小儿复方鸡内金	xiǎo ér fù fāng jī nà jīn	10
+小儿复方鸡内金	xiǎo ér fù fāng jī nèi jīn	10
 小儿复方四维亚	xiǎo ér fù fāng sì wéi yà	10
 小儿敷脐止泻散	xiǎo ér fū qí zhǐ xiè sàn	10
 小儿腹泻宁糖浆	xiǎo ér fù xiè níng táng jiāng	10

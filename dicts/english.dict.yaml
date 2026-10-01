@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/en.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/en.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: english
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 'tis	'tis	37
@@ -4310,6 +4310,7 @@ astound	astound	11
 astounded	astounded	119
 astounding	astounding	109
 astounds	astounds	1
+Astra	Astra	34
 astraddle	astraddle	33
 astraea	astraea	32
 astragalus	astragalus	31
@@ -12494,6 +12495,7 @@ clowns	clowns	118
 cloy	cloy	2
 cloying	cloying	49
 cls	cls	10
+CLTC	CLTC	10
 club	club	12530
 clubbed	clubbed	35
 clubbing	clubbing	31
@@ -33970,7 +33972,7 @@ ionize	ionize	1
 ionosphere	ionosphere	14
 ionospheric	ionospheric	5
 ions	ions	415
-iOS	IOS	6
+iOS	IOS	1006
 iota	iota	49
 Iowa	Iowa	61
 IP	IP	112
@@ -71952,7 +71954,6 @@ Docker Engine	DockerEngine	5
 Dockerfile	Dockerfile	5
 Drone CI	DroneCI	5
 DynamoDB	DynamoDB	5
-Echo	Echo	5
 Elastic Stack	ElasticStack	5
 Elasticsearch	Elasticsearch	5
 Electron	Electron	5
@@ -72030,7 +72031,7 @@ Linode	Linode	5
 Lisp	Lisp	5
 LlamaIndex	LlamaIndex	5
 LLVM	LLVM	5
-Lua	Lua	5
+lua	lua	56
 Total Commander	TotalCommander	1
 Make	Make	5
 Markdown	Markdown	5
@@ -72212,7 +72213,6 @@ asymmetric encryption	asymmetricencryption	4
 attention mechanism	attentionmechanism	4
 authoritative DNS	authoritativeDNS	4
 autonomous system	autonomoussystem	4
-awk	awk	4
 background process	backgroundprocess	4
 Bash script	Bashscript	4
 batch processing	batchprocessing	4
