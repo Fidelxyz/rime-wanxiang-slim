@@ -14,9 +14,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
-      - abbrev/^ng(\d)/ng/
-      - erase/^ng(\d)/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - abbrev/^([zcs]h).+$/$1/  #zh ch sh作为整体
@@ -103,7 +101,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -287,7 +285,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -335,7 +333,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -383,7 +381,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -432,7 +430,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - xform/^zh/Ⓐ/
@@ -476,7 +474,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -521,7 +519,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -568,7 +566,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -661,7 +659,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -709,7 +707,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)$/en$1/
       - xform/^m(\d)$/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -770,7 +768,7 @@ base:
       - xform/m̀([a-z]*)$/m$1④/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
       - derive/^([jqxy])u(\d)$/$1v$2/
@@ -824,7 +822,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)/eng$1/
+      - xform/^ng(\d)/eng$1/
       - xform/^n(\d)/en$1/
       - xform/^m(\d)/me$1/
 
@@ -840,7 +838,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);$/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1023,7 +1021,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890//
-      - derive/^ng(\d);$/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1069,7 +1067,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);$/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1116,7 +1114,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1162,7 +1160,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1205,7 +1203,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1248,7 +1246,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1293,7 +1291,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1338,7 +1336,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);$/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1383,7 +1381,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d);$/eng$1;/
+      - xform/^ng(\d);/eng$1;/
       - xform/^n(\d);/en$1;/
       - xform/^m(\d);/me$1;/
       - derive/^([jqxy])u(\d);/$1v$2;/
@@ -1442,7 +1440,7 @@ pro:
       - xform/m̀([^;]*);/m$1④;/
       - xlit/āáǎàēéěèīíǐìōóǒòūúǔùüǖǘǚǜńňǹḿ/aaaaeeeeiiiioooouuuuvvvvvnnnm/
       - xlit/①②③④/7890/
-      - derive/^ng(\d)(;.*)$/eng$1$2/
+      - xform/^ng(\d)(;.*)$/eng$1$2/
       - xform/^a(\d)(;.*)$/aa$1$2/
       - xform/^e(\d)(;.*)$/ⓊⒺ$1$2/
       - xform/^o(\d)(;.*)$/oo$1$2/
