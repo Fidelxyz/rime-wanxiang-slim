@@ -8,31 +8,31 @@ import json
 
 
 def convert(input_path: str, output_path: str) -> None:
-    with open(input_path, encoding="utf-8") as f:
-        data: dict[str, list[str]] = json.load(f)
+    with open(input_path, encoding="utf-8") as input_file:
+        entries: dict[str, list[str]] = json.load(input_file)
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        for key, values in sorted(data.items()):
+    with open(output_path, "w", encoding="utf-8") as output_file:
+        for key, values in sorted(entries.items()):
             if not values:
                 continue
-            line = f"{key}\t{key} {' '.join(values)}"
-            f.write(line + "\n")
+            output_file.write(f"{key}\t{key} {' '.join(values)}\n")
 
-    print(f"Written {len(data)} entries to {output_path}")
+    print(f"Written {len(entries)} entries to {output_path}")
 
 
-if __name__ == "__main__":
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Convert emoji JSON dict to OpenCC text format."
     )
-    parser.add_argument(
-        "input",
-        help="Input emoji JSON file",
-    )
-    parser.add_argument(
-        "output",
-        help="Output OpenCC txt file",
-    )
-    args = parser.parse_args()
+    parser.add_argument("input", help="Input emoji JSON file")
+    parser.add_argument("output", help="Output OpenCC txt file")
+    return parser.parse_args()
 
+
+def main() -> None:
+    args = parse_args()
     convert(args.input, args.output)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -94,6 +94,17 @@ class AuxiliaryCandidate:
     code_text: str
 
 
+@dataclass(frozen=True)
+class NormalizedAuxiliaryRow:
+    """One character and its normalized cells ordered by auxiliary schema."""
+
+    char: str
+    cells: list[list[AuxiliaryCandidate]]
+
+
+NormalizedAuxiliaryData = list[NormalizedAuxiliaryRow]
+
+
 def normalize_auxiliary_candidate(candidate: str) -> AuxiliaryCandidate | None:
     """Normalize one upstream candidate into separate decomposition and code parts.
 
@@ -147,14 +158,12 @@ def normalize_auxiliary_cell(cell: str) -> list[AuxiliaryCandidate]:
 
 def extract_auxiliary_codes(candidates: list[AuxiliaryCandidate]) -> str:
     """Return comma-separated auxiliary codes from normalized candidates."""
-    auxiliary_codes: list[str] = []
-    for candidate in candidates:
-        auxiliary_codes.extend(
-            code
-            for code in AUXILIARY_CODE_SEPARATOR_PATTERN.split(candidate.code_text)
-            if code
-        )
-    return ",".join(auxiliary_codes)
+    return ",".join(
+        code
+        for candidate in candidates
+        for code in AUXILIARY_CODE_SEPARATOR_PATTERN.split(candidate.code_text)
+        if code
+    )
 
 
 def format_decomposition_cell(candidates: list[AuxiliaryCandidate]) -> str:
@@ -172,26 +181,16 @@ def format_decomposition_cell(candidates: list[AuxiliaryCandidate]) -> str:
 
 def normalize_dedicated_decomposition_text(text: str) -> str:
     """Convert a dedicated decomposition source to the normalized OpenCC format."""
-    return "".join(
-        (
-            line.rstrip("\n").replace(" ", ":")
-            if " " in line.rstrip("\n")
-            else GLUED_DECOMPOSITION_CODE_PATTERN.sub(r"\1:\2", line.rstrip("\n"))
-        )
-        + line[len(line.rstrip("\n")) :]
-        for line in text.splitlines(keepends=True)
-    )
-
-
-@dataclass(frozen=True)
-class NormalizedAuxiliaryRow:
-    """One character and its normalized cells ordered by auxiliary schema."""
-
-    char: str
-    cells: list[list[AuxiliaryCandidate]]
-
-
-NormalizedAuxiliaryData = list[NormalizedAuxiliaryRow]
+    output_lines = []
+    for line in text.splitlines(keepends=True):
+        content = line.rstrip("\n")
+        ending = line[len(content) :]
+        if " " in content:
+            content = content.replace(" ", ":")
+        else:
+            content = GLUED_DECOMPOSITION_CODE_PATTERN.sub(r"\1:\2", content)
+        output_lines.append(content + ending)
+    return "".join(output_lines)
 
 
 def parse_auxiliary_code_csv(input_path: Path) -> NormalizedAuxiliaryData:
@@ -275,19 +274,17 @@ def write_auxiliary_decomposition_tables(
 
 def validate_upstream_files(source_dir: Path) -> bool:
     """Report upstream file changes and return whether all required files exist."""
-    expected_files = set()
-    expected_files.update(
+    expected_files = {
         Path("dicts") / f"{pinyin}.dict.yaml" for pinyin in DICT_NAME_MAPPING
-    )
+    }
     expected_files.add(SRC_AUXILIARY_CSV_PATH)
     expected_files.update(SRC_DEDICATED_DECOMPOSITION.values())
 
-    actual_files = set()
-    actual_files.update(
+    actual_files = {
         path.relative_to(source_dir)
         for path in (source_dir / "dicts").glob("*.dict.yaml")
         if path.is_file()
-    )
+    }
     actual_files.update(
         path.relative_to(source_dir)
         for pattern in ("*.csv", "*_chaifen.txt")
@@ -295,8 +292,7 @@ def validate_upstream_files(source_dir: Path) -> bool:
         if path.is_file()
     )
 
-    ignored_files = set()
-    ignored_files.update(Path("dicts") / name for name in IGNORED_DICTS)
+    ignored_files = {Path("dicts") / name for name in IGNORED_DICTS}
 
     new_files = sorted(actual_files - expected_files - ignored_files)
     if new_files:
@@ -348,7 +344,7 @@ def normalize_dict_text(
             f"dictionary has no '---' document marker: dicts/{pinyin}.dict.yaml"
         )
 
-    out: list[str] = [build_dict_header(pinyin, tag), "---\n"]
+    output_lines = [build_dict_header(pinyin, tag), "---\n"]
 
     saw_name = False
     in_directives = True
@@ -356,21 +352,21 @@ def normalize_dict_text(
         if in_directives:
             if line.rstrip("\n") == "...":
                 in_directives = False
-                out.append(line)
+                output_lines.append(line)
                 continue
             if line.startswith("name:"):
-                out.append(f"name: {english}\n")
+                output_lines.append(f"name: {english}\n")
                 saw_name = True
                 continue
             if line.startswith("version:"):
-                out.append(f'version: "{version}"\n')
+                output_lines.append(f'version: "{version}"\n')
                 continue
-        out.append(line)
+        output_lines.append(line)
 
     if not saw_name:
         raise Error(f"dictionary has no 'name:' directive: dicts/{pinyin}.dict.yaml")
 
-    return "".join(out)
+    return "".join(output_lines)
 
 
 def normalize_dictionaries(
@@ -428,7 +424,7 @@ def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
         print(f"    {output_path.relative_to(repo_root).as_posix()}")
 
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--source",
@@ -448,15 +444,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=Path(__file__).resolve().parent.parent,
         help="Repository root to write into (default: this script's parent directory).",
     )
-    return parser.parse_args(argv)
+    return parser.parse_args()
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
+def main() -> int:
+    args = parse_args()
 
-    source_dir: Path = args.source
-    repo_root: Path = args.repo_root.resolve()
-    tag: str = args.tag
+    source_dir = args.source
+    repo_root = args.repo_root.resolve()
+    tag = args.tag
     version = tag.removeprefix("v")
 
     if not source_dir.is_dir():

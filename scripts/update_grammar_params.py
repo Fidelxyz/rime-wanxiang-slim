@@ -33,8 +33,11 @@ GRAMMAR_PARAM_KEYS: tuple[str, ...] = (
     "rear_penalty",
 )
 
-GRAMMAR_KEY_PATTERN = re.compile(r"^grammar:")
 PARAM_LINE_PATTERN = re.compile(r"^(\s+)([a-zA-Z_]+)\s*:\s*(.*)")
+
+
+class GrammarUpdateError(Exception):
+    """Raised for any expected, user-facing failure."""
 
 
 def extract_grammar_range(text: str) -> tuple[int, int]:
@@ -44,7 +47,7 @@ def extract_grammar_range(text: str) -> tuple[int, int]:
     """
     lines = text.splitlines()
     start = next(
-        (i for i, line in enumerate(lines) if GRAMMAR_KEY_PATTERN.match(line)), None
+        (i for i, line in enumerate(lines) if line.startswith("grammar:")), None
     )
     if start is None:
         raise ValueError("no grammar block found in schema")
@@ -53,7 +56,7 @@ def extract_grammar_range(text: str) -> tuple[int, int]:
     for i in range(start + 1, len(lines)):
         if lines[i].startswith((" ", "\t")):
             end = i
-        elif lines[i].strip() == "" or lines[i].startswith("#"):
+        elif not lines[i].strip() or lines[i].startswith("#"):
             continue
         else:
             break
@@ -84,17 +87,13 @@ def update_param_values(
         match = PARAM_LINE_PATTERN.match(lines[i])
         if not match:
             continue
-        key, old_val = match.group(2), match.group(3).strip()
-        new_val = upstream_params.get(key)
-        if new_val is not None and old_val != new_val:
-            lines[i] = f"{match.group(1)}{key}: {new_val}"
+        key, old_value = match.group(2), match.group(3).strip()
+        new_value = upstream_params.get(key)
+        if new_value is not None and old_value != new_value:
+            lines[i] = f"{match.group(1)}{key}: {new_value}"
             changed = True
 
     return "\n".join(lines), changed
-
-
-class GrammarUpdateError(Exception):
-    """Raised for any expected, user-facing failure."""
 
 
 def sync_grammar_params(source_dir: Path, repo_root: Path) -> None:
@@ -112,20 +111,21 @@ def sync_grammar_params(source_dir: Path, repo_root: Path) -> None:
         local_text = local_file.read_text(encoding="utf-8")
         new_text, changed = update_param_values(local_text, upstream_params)
 
-        if changed:
-            old_params = extract_params(local_text)
-            local_file.write_text(new_text, encoding="utf-8")
-            print(f"    {local_path}: updated")
-            for key in GRAMMAR_PARAM_KEYS:
-                old_val = old_params.get(key, "N/A")
-                new_val = upstream_params.get(key, "N/A")
-                if old_val != new_val:
-                    print(f"      {key}: {old_val} -> {new_val}")
-        else:
+        if not changed:
             print(f"    {local_path}: unchanged")
+            continue
+
+        old_params = extract_params(local_text)
+        local_file.write_text(new_text, encoding="utf-8")
+        print(f"    {local_path}: updated")
+        for key in GRAMMAR_PARAM_KEYS:
+            old_value = old_params.get(key, "N/A")
+            new_value = upstream_params.get(key, "N/A")
+            if old_value != new_value:
+                print(f"      {key}: {old_value} -> {new_value}")
 
 
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--source",
@@ -139,14 +139,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=Path(__file__).resolve().parent.parent,
         help="Repository root to write into (default: this script's parent directory).",
     )
-    return parser.parse_args(argv)
+    return parser.parse_args()
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
+def main() -> int:
+    args = parse_args()
 
-    source_dir: Path = args.source
-    repo_root: Path = args.repo_root.resolve()
+    source_dir = args.source
+    repo_root = args.repo_root.resolve()
 
     if not source_dir.is_dir():
         print(f"error: source directory does not exist: {source_dir}", file=sys.stderr)
@@ -154,11 +154,11 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         sync_grammar_params(source_dir, repo_root)
-        print("==> Done")
     except GrammarUpdateError as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
 
+    print("==> Done")
     return 0
 
 

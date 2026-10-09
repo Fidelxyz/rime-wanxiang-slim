@@ -8,19 +8,19 @@ from pathlib import Path
 
 def collect_syllables(path: Path, syllables: set[str]) -> None:
     """Read this project's text/code dictionaries and their imported tables."""
-    with path.open(encoding="utf-8-sig") as source:
-        header = []
-        for line in source:
+    with path.open(encoding="utf-8-sig") as input_file:
+        header_lines = []
+        for line in input_file:
             if line.strip() == "...":
                 break
-            header.append(line)
-        for line in source:
+            header_lines.append(line)
+        for line in input_file:
             if not line.strip() or line.startswith("#"):
                 continue
             syllables.update(line.split("\t")[1].split())
 
     imports = re.search(
-        r"^import_tables:\n((?:[ \t]+.*\n|\n)*)", "".join(header), re.MULTILINE
+        r"^import_tables:\n((?:[ \t]+.*\n|\n)*)", "".join(header_lines), re.MULTILINE
     )
     if imports:
         for name in re.findall(r"^\s+-\s+([^\s#]+)", imports[1], re.MULTILINE):
@@ -48,22 +48,26 @@ def generate(directory: Path, dictionary: str, version: str) -> None:
     print(f"{directory}: {len(syllables)} syllables")
 
 
-def main() -> None:
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path, help="packaged schema directory")
     parser.add_argument("--dictionary", default="wanxiang", help="main dictionary name")
     parser.add_argument("--tag", help="upstream release tag")
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
 
     if args.tag is not None:
         version = args.tag.removeprefix("v")
     else:
         with (args.directory / "wanxiang_syllables.dict.yaml").open(
             encoding="utf-8-sig"
-        ) as source:
+        ) as input_file:
             version = next(
                 line.partition(":")[2].strip().strip('"')
-                for line in source
+                for line in input_file
                 if line.startswith("version:")
             )
 
