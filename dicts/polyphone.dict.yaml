@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/duoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/duoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: polyphone
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 自己打的	zì;po jǐ;vv dǎ;fd de;bu	80
@@ -16,9 +16,24 @@ sort: by_weight
 还给他们	hái;zb gěi;sk tā;ry men;rm	142
 很得劲	hěn;xg dé;rc jìn;vl	121
 真得劲	zhēn;ub dé;rc jìn;vl	322
+释迦牟尼	shì;bf jiā;zk mù;sn ní;ub	1184
 可得劲儿	kě;dk dé;rc jìn;vl er;pv	178
 乐山乐水	yào;pd shān;aa yào;pd shuǐ;ln	12
+于思于思	yú;aa sāi;tx yú;aa sāi;tx	144
 伤着了	shāng;rl zhe;yo le;vu	130
+不落下	bú;ha là;ck xià;ab	100
+横行	héng;mb háng;rd	554
+倒数	dǎo;rd shù;mw	1010
+省得	xǐng;uo de;rc	100
+不省得	bù;ha xǐng;uo de;rc	100
+长住	zhǎng;pn zhù;rv	330
+满血	mǎn;dl xiě;pm	386
+血肠	xiě;pm cháng;op	226
+给付	jǐ;sk fù;rc	277
+水磨	shuǐ;ln mó;gu	100
+长平	zhǎng;pn píng;au	300
+重听	zhòng;pa tīng;kj	211
+于思	yú;aa sāi;tx	131
 一场	yì;aa cháng;tp	17575
 事了	shì;aa liǎo;vu	337
 会得	huì;ry dé;rc	554
@@ -136,6 +151,7 @@ sort: by_weight
 出血线	chū;aa xuè;pm xiàn;sj	261
 出血	chū;aa xuè;pm	6149
 逻辑	luó;zx jí;ie	4689
+露点	lù;yk diǎn;hv	443
 此行	cí;vb háng;rd	1292
 上头	shàng;aa tou;dd	101
 长虫	zhǎng;pn chóng;vd	377
@@ -523,6 +539,7 @@ sort: by_weight
 赶场	gǎn;tg cháng;tp	126
 调配	diào;yk pèi;yj	690
 更为	gèng;an wèi;dd	1313
+可调	kě;dk diào;yk	268
 更为	gēng;an wéi;dd	143
 行长	háng;rd zhǎng;pn	470
 见长	jiàn;ke cháng;pn	851
@@ -541,7 +558,7 @@ sort: by_weight
 年长	nián;pa cháng;pn	1450
 年长	nián;pa zhǎng;pn	2520
 便宜	pián;rg yi;bq	3423
-大都	dà;hr dū;le		350
+大都	dà;hr dū;le	350
 数次	shù;mw cì;dq	6083
 数次	shuò;mw cì;dq	5006
 随行	suí;eo háng;rd	550
@@ -4756,7 +4773,6 @@ sort: by_weight
 三个老	sān;ae gè;ra lǎo;lb	835
 三个了	sān;ae gè;ra le;vu	786
 三个雷	sān;ae gè;ra léi;yt	0
-三个力	sān;ae gè;ra lì;vp	1
 三个立	sān;ae gè;ra lì;wa	0
 三个林	sān;ae gè;ra lín;mm	1
 三个龍	sān;ae gè;ra lóng;lv	1
@@ -4819,7 +4835,6 @@ sort: by_weight
 三个㔾	sān;ae gè;ra xiān;vv	1
 三个県	sān;ae gè;ra xiàn;ox	1
 三个香	sān;ae gè;ra xiāng;ho	380
-三个小	sān;ae gè;ra xiǎo;ad	1465
 三个心	sān;ae gè;ra xīn;dv	799
 三个興	sān;ae gè;ra xìng;jb	1
 三个言	sān;ae gè;ra yán;wk	457
@@ -4834,7 +4849,6 @@ sort: by_weight
 三个玉	sān;ae gè;ra yù;wd	1
 三个原	sān;ae gè;ra yuán;ix	606
 三个厡	sān;ae gè;ra yuán;iu	576
-三个月	sān;ae gè;ra yuè;yt	24223
 三个雲	sān;ae gè;ra yún;yy	1
 三个爪	sān;ae gè;ra zhǎo;pn	1
 三个止	sān;ae gè;ra zhǐ;la	664
@@ -4877,7 +4891,6 @@ sort: by_weight
 四个且	sì;ke gè;ra qiě;aa	1
 四个囚	sì;ke gè;ra qiú;kr	610
 四个泉	sì;ke gè;ra quán;bu	1082
-四个人	sì;ke gè;ra rén;pn	7000
 四个日	sì;ke gè;ra rì;ka	1
 四个石	sì;ke gè;ra shí;ak	520
 四个水	sì;ke gè;ra shuǐ;ln	1

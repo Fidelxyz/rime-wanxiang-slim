@@ -3,7 +3,7 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
-local utils = require("utils.utils")
+local file = require("utils.file")
 
 local PINYIN_SCHEMAS = {
     ["/pinyin"] = "全拼",
@@ -28,27 +28,6 @@ local AUX_SCHEMAS = {
     ["/jjf"] = "间接辅助",
 }
 
----Copies a file from `src` to `dest`, returning whether the copy succeeded.
----@param src string
----@param dest string
----@return boolean
-local function copy_file(src, dest)
-    local fi = io.open(src, "rb")
-    if not fi then
-        return false
-    end
-    local content = fi:read("*a")
-    fi:close()
-
-    local fo = io.open(dest, "wb")
-    if not fo then
-        return false
-    end
-    fo:write(content)
-    fo:close()
-    return true
-end
-
 ---Ensures a custom file exists in the user data directory, copying its template
 ---from the user `custom` directory when missing.
 ---@param user_dir string
@@ -56,17 +35,21 @@ end
 ---@return boolean ok true if the destination file exists after this call
 local function ensure_custom_file(user_dir, custom_file_name)
     local dest = user_dir .. "/" .. custom_file_name
-    if utils.file_exists(dest) then
+    if file.file_exists(dest) then
         return true
     end
 
     local src = user_dir .. "/custom/" .. custom_file_name
-    if not utils.file_exists(src) then
-        log.warning("Template custom file not found: " .. src)
+    if not file.file_exists(src) then
+        log.warning(("schema_switcher: template custom file not found or unreadable: %s"):format(src))
         return false
     end
 
-    return copy_file(src, dest)
+    local copied, err = file.copy_file(src, dest)
+    if not copied then
+        log.error(("schema_switcher: %s"):format(err))
+    end
+    return copied
 end
 
 ---Reads `custom_file`, applies `transform` to its content, and writes the result
@@ -75,25 +58,23 @@ end
 ---@param transform fun(content: string): string?
 ---@return boolean ok true if the file was successfully updated
 local function update_custom_file(custom_file, transform)
-    local f = io.open(custom_file, "r")
-    if not f then
+    local content, read_err = file.read_file(custom_file)
+    if not content then
+        log.error(("schema_switcher: %s"):format(read_err))
         return false
     end
-    local content = f:read("*a")
-    f:close()
 
     local new_content = transform(content)
     if not new_content then
+        log.warning(("schema_switcher: no matching algebra entry in %s"):format(custom_file))
         return false
     end
 
-    f = io.open(custom_file, "w")
-    if not f then
-        return false
+    local written, write_err = file.write_file(custom_file, new_content)
+    if not written then
+        log.error(("schema_switcher: %s"):format(write_err))
     end
-    f:write(new_content)
-    f:close()
-    return true
+    return written
 end
 
 ---Rewrites the pinyin algebra reference in a custom file to the given schema.
@@ -161,26 +142,24 @@ local function translator(input, seg, env)
     -- Check existing main custom file
     local main_custom_file = env.engine.schema.schema_id .. ".custom.yaml"
     local main_custom_file_path = user_dir .. "/" .. main_custom_file
-    local main_custom_file_exists = utils.file_exists(main_custom_file_path)
 
     if target_aux_schema then
         if not ensure_custom_file(user_dir, main_custom_file) then
-            yield(Candidate("message", seg.start, seg._end, "〔警告〕未找到模板配置文件。", ""))
+            local message = "〔警告〕无法准备配置文件，请检查模板及文件读写权限。"
+            yield(Candidate("message", seg.start, seg._end, message, ""))
             return
         end
 
         local success = set_aux_schema(main_custom_file_path, target_aux_schema)
 
         ---@type string
-        local msg
+        local message
         if success then
-            msg = main_custom_file_exists
-                    and ("已切换至〔" .. target_aux_schema .. "〕方案，请重新部署。")
-                or ("已创建新配置并切换至〔" .. target_aux_schema .. "〕方案，请重新部署。")
+            message = ("已切换至〔%s〕方案，请重新部署。"):format(target_aux_schema)
         else
-            msg = "〔警告〕未找到可切换的条目。"
+            message = "〔警告〕未能切换，请检查配置条目及文件读写权限。"
         end
-        yield(Candidate("message", seg.start, seg._end, msg, ""))
+        yield(Candidate("message", seg.start, seg._end, message, ""))
         return
     end
 
@@ -191,52 +170,25 @@ local function translator(input, seg, env)
         }
 
         ---@type string[]
-        local missing = {}
-        local missing_len = 0
-        ---@type string[]
-        local unmatched = {}
-        local unmatched_len = 0
+        local failed = {}
         for _, custom_file_name in ipairs(custom_files) do
-            if not ensure_custom_file(user_dir, custom_file_name) then
-                missing_len = missing_len + 1
-                missing[missing_len] = custom_file_name
-            elseif not set_pinyin_schema(user_dir, custom_file_name, target_pinyin_schema) then
-                unmatched_len = unmatched_len + 1
-                unmatched[unmatched_len] = custom_file_name
+            local success = ensure_custom_file(user_dir, custom_file_name)
+                and set_pinyin_schema(user_dir, custom_file_name, target_pinyin_schema)
+            if not success then
+                failed[#failed + 1] = custom_file_name
             end
         end
 
         ---@type string[]
         local messages = {}
-        local messages_len = 0
-        if #missing > 0 then
-            messages_len = messages_len + 1
-            messages[messages_len] = "〔警告〕未找到以下模板配置文件：\n" .. table.concat(missing, "\n")
+        if #failed > 0 then
+            messages[#messages + 1] = "〔警告〕以下文件未能切换，请检查模板、配置条目及文件读写权限：\n"
+                .. table.concat(failed, "\n")
         end
-        if #unmatched > 0 then
-            messages_len = messages_len + 1
-            messages[messages_len] = "〔警告〕在以下配置文件中未找到可切换的条目：\n"
-                .. table.concat(unmatched, "\n")
-        end
+        messages[#messages + 1] = ("已切换至〔%s〕方案，请重新部署。"):format(target_pinyin_schema)
 
-        if main_custom_file_exists then
-            messages_len = messages_len + 1
-            messages[messages_len] = (
-                "检测到已有配置，已切换至〔"
-                .. target_pinyin_schema
-                .. "〕方案，请手动重新部署。"
-            )
-        else
-            messages_len = messages_len + 1
-            messages[messages_len] = (
-                "已创建新配置并切换至〔"
-                .. target_pinyin_schema
-                .. "〕方案，请手动重新部署。"
-            )
-        end
-
-        local msg = table.concat(messages, "\n")
-        yield(Candidate("message", seg.start, seg._end, msg, ""))
+        local message = table.concat(messages, "\n")
+        yield(Candidate("message", seg.start, seg._end, message, ""))
     end
 end
 
