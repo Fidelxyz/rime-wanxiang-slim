@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/wuzhong.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/wuzhong.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: species
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 阿魏	ā;bs wèi;tv	50
@@ -3900,6 +3900,7 @@ sort: by_weight
 翼朴	yì;nl pǔ;sh	59
 异蜻	yì;na qīng;jg	93
 异蛸	yì;na shāo;ji	70
+蚁狮	yǐ;jy shī;qt	8
 翼手	yì;nl shǒu;rt	168
 异鼠	yì;na shǔ;vn	88
 异螋	yì;na sōu;jv	93
@@ -4182,7 +4183,6 @@ sort: by_weight
 箦藻	zé;tg zǎo;ai	58
 泽蛭	zé;ic zhì;jg	97
 贼鸥	zéi;ma ōu;aq	89
-柞木	zhà;st mù;ss	60
 栅藻	zhà;sm zǎo;ai	93
 栅蛛	zhà;sm zhū;jr	59
 窄螳	zhǎi;pw táng;ji	72
@@ -4430,6 +4430,7 @@ sort: by_weight
 嘴雀	zuǐ;kh què;iw	90
 醉猿	zuì;sg yuán;qt	63
 柞蚕	zuò;st cán;gd	76
+柞木	zuò;st mù;ss	60
 左鲆	zuǒ;da píng;qg	95
 阿波鳅	ā;bs bō;ih qiū;qg	5
 阿波鱼	ā;bs bō;ih yú;qg	6
@@ -6334,6 +6335,7 @@ sort: by_weight
 大藨草	dà;dd biāo;ay cǎo;aj	8
 大步甲	dà;dd bù;hi jiǎ;lh	8
 大蚕蛾	dà;dd cán;gd é;jt	6
+大仓鼠	dà;dd cāng;wb shǔ;vn	8
 大草莺	dà;dd cǎo;aj yīng;ap	4
 达尺蛾	dá;dp chǐ;ny é;jt	7
 大翅蓟	dà;dd chì;fc jì;aq	4
@@ -15497,7 +15499,6 @@ sort: by_weight
 太安鱼	tài;dy ān;pv yú;qg	154
 鲐鲅鱼	tái;qg bà;qg yú;qg	66
 台巴鱼	tái;ck bā;cn yú;qg	60
-大仓鼠	tài;dd cāng;wb shǔ;vn	8
 台地黄	tái;ck dì;fb huáng;am	1
 台龟甲	tái;ck guī;qj jiǎ;lh	4
 苔海绵	tái;ac hǎi;it mián;xr	7
@@ -20794,13 +20795,13 @@ sort: by_weight
 长叶野桐	cháng;ta yè;kf yě;jf tóng;sm	7
 长叶远志	cháng;ta yè;kf yuǎn;fq zhì;fn	9
 长叶云杉	cháng;ta yè;kf yún;fc shān;se	11
-长叶柞木	cháng;ta yè;kf zhà;st mù;ss	12
 长叶竹柏	cháng;ta yè;kf zhú;tt bǎi;sr	14
 长叶苎麻	cháng;ta yè;kf zhù;ap má;ys	11
 长叶紫茎	cháng;ta yè;kf zǐ;hx jīng;ac	7
 长叶紫菊	cháng;ta yè;kf zǐ;hx jú;aq	10
 长叶紫菀	cháng;ta yè;kf zǐ;hx wǎn;ap	10
 长叶紫珠	cháng;ta yè;kf zǐ;hx zhū;gr	14
+长叶柞木	cháng;ta yè;kf zuò;st mù;ss	12
 长银斧鱼	cháng;ta yín;qv fǔ;wq yú;qg	6
 畅游仙鱼	chàng;jh yóu;iy xiān;wm yú;qg	7
 长羽盗龙	cháng;ta yǔ;nn dào;uq lóng;dx	1
@@ -27701,8 +27702,8 @@ sort: by_weight
 尾叶鱼藤	wěi;nt yè;kf yú;qg téng;ae	14
 尾叶远志	wěi;nt yè;kf yuǎn;fq zhì;fn	10
 尾叶越桔	wěi;nt yè;kf yuè;fh jú;sf	7
-尾叶柞木	wěi;nt yè;kf zhà;st mù;ss	5
 尾叶紫薇	wěi;nt yè;kf zǐ;hx wēi;at	9
+尾叶柞木	wěi;nt yè;kf zuò;st mù;ss	5
 伪翼尺蛾	wěi;wy yì;nl chǐ;ny é;jt	1
 伪翼手参	wěi;wy yì;nl shǒu;rt cān;cd	1
 伪鱼腥藻	wěi;wy yú;qg xīng;ej zǎo;ai	1
@@ -30102,7 +30103,6 @@ sort: by_weight
 紫背细辛	zǐ;hx bèi;ux xì;xl xīn;uy	76
 紫背沼兰	zǐ;hx bèi;ux zhǎo;iv lán;uf	76
 紫背竹芋	zǐ;hx bèi;ux zhú;tt yù;ag	162
-紫背竹芋	zǐ;hx bèi;ux zhú;tt yù;ag	1
 紫翅野螟	zǐ;hx chì;fc yě;jf míng;jp	1
 紫顶蜂鸟	zǐ;hx dǐng;sd fēng;jt niǎo;qy	1
 紫额锦鱼	zǐ;hx é;pt jǐn;qr yú;qg	8
@@ -30331,7 +30331,7 @@ sort: by_weight
 阿氏剑尾鱼	ā;bs shì;qa jiàn;wg wěi;nt yú;qg	1
 阿氏锯鳞鱼	ā;bs shì;qa jù;qn lín;qg yú;qg	1
 阿氏丽脂鲤	ā;bs shì;qa lì;gm zhī;ex lǐ;qg	1
-阿氏六须鲶	ā;bs shì;qa liù;uy xū;ed nián;qg	1
+阿氏六须鲶	ā;bs shì;qa liù;uy xū;ed nián;qg	7
 阿氏龙占鱼	ā;bs shì;qa lóng;dx zhàn;hk yú;qg	1
 阿氏盲胡鲶	ā;bs shì;qa máng;yn hú;de nián;qg	1
 阿氏毛鼻鲶	ā;bs shì;qa máo;tf bí;th nián;qg	1
@@ -54399,8 +54399,8 @@ sort: by_weight
 优美瓜状肢虫	yōu;wd měi;ug guā;rc zhuàng;ud zhī;ef chóng;jh	1
 有名扁线油鲶	yǒu;de míng;qk biǎn;yn xiàn;xg yóu;im nián;qg	1
 尤纳氏下口鲶	yóu;dn nà;xm shì;qa xià;gh kǒu;kk nián;qg	1
-犹疑棘隙吸虫	yóu;qt nǐ;xt jí;gm xì;bi xī;ke chóng;jh	1
 尤斯克毛鼻鲶	yóu;dn sī;ad kè;dq máo;tf bí;th nián;qg	1
+犹疑棘隙吸虫	yóu;qt yí;xt jí;gm xì;bi xī;ke chóng;jh	1
 又原氏拟雀鲷	yòu;cc yuán;dr shì;qa nǐ;rn què;iw diāo;qg	1
 游在深海的鱼	yóu;iy zài;dh shēn;ip hǎi;it de;rq yú;qg	1
 游走丸川冰鱼	yóu;iy zǒu;fh wán;vy chuān;kt bīng;ui yú;qg	1

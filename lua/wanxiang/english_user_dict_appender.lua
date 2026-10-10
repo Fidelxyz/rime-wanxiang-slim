@@ -65,12 +65,38 @@ local function commit_handler(ctx, env)
     end
 
     -- Add the original-cased code to the user dictionary.
-    memory:update_userdict(utils.make_dict_entry(commit_text, code), 1, "")
+    local entry = utils.make_dict_entry(commit_text, code)
+    local commits = 1
+    local prefix = ""
+    if not memory:update_userdict(entry, commits, prefix) then
+        log.error(
+            ("english_user_dict_appender: update_userdict failed: namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"):format(
+                "wanxiang_english",
+                entry.text,
+                entry.custom_code,
+                commits,
+                prefix
+            )
+        )
+    end
 
     -- Add the lowercased code to the user dictionary if it's different from the original.
     local lower_code = code:lower()
     if lower_code ~= code then
-        memory:update_userdict(utils.make_dict_entry(commit_text, lower_code), 1, "")
+        entry = utils.make_dict_entry(commit_text, lower_code)
+        commits = 1
+        prefix = ""
+        if not memory:update_userdict(entry, commits, prefix) then
+            log.error(
+                ("english_user_dict_appender: update_userdict failed: namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"):format(
+                    "wanxiang_english",
+                    entry.text,
+                    entry.custom_code,
+                    commits,
+                    prefix
+                )
+            )
+        end
     end
 end
 

@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/yiren.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/yiren.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: artist
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 阿宝	ā;bs bǎo;pg	650
@@ -288,7 +288,6 @@ sort: by_weight
 电棍	diàn;jn gùn;sj	534
 典韦	diǎn;ma wéi;fn	1325
 刁彪	diāo;ng biāo;ha	18
-貂蝉	diāo;ee chán;ju	7775
 刁寒	diāo;ng hán;pf	1
 刁扬	diāo;ng yáng;rn	2
 叮当	dīng;ks dāng;iv	757
@@ -1344,7 +1343,7 @@ sort: by_weight
 沈星	shěn;ip xīng;jt	77
 沈幸	shěn;ip xìng;fu	2
 神雪	shén;py xuě;fv	10
-沈月	shěn;ip yuè;ee	3914
+沈月	shěn;ip yuè;ee	321
 胜仔	shèng;et zǎi;wb	6
 是安	shì;jg ān;pv	855
 史策	shǐ;kq cè;tg	114
@@ -3279,6 +3278,7 @@ sort: by_weight
 窦文涛	dòu;pw wén;yy tāo;id	261
 窦晓璇	dòu;pw xiǎo;ja xuán;gy	18
 窦智孔	dòu;pw zhì;td kǒng;bn	16
+渡边大	dù;iy biān;lp dà;dd	472
 渡边谦	dù;iy biān;lp qiān;yu	72
 杜德伟	dù;sf dé;tf wěi;wf	97
 杜光祎	dù;sf guāng;iq yī;py	12
@@ -4192,9 +4192,11 @@ sort: by_weight
 花钰杰	huā;aw yù;qg jié;so	12
 桓淼淼	huán;sg miǎo;ii miǎo;ii	33
 黄阿丽	huáng;am ā;bs lì;gm	9
+黄瑷瑶	huáng;am ài;ge yáo;ge	238
 黄安仪	huáng;am ān;pv yí;wy	37
 黄百鸣	huáng;am bǎi;dj míng;kq	135
 黄宝吉	huáng;am bǎo;pg jí;fk	12
+黄宝罗	huáng;am bǎo;pg luó;lq	297
 黄宝欣	huáng;am bǎo;pg xīn;rq	396
 黄碧仁	huáng;am bì;gr rén;wf	490
 黄炳耀	huáng;am bǐng;og yào;iq	382
@@ -4208,8 +4210,15 @@ sort: by_weight
 黄楚茵	huáng;am chǔ;ss yīn;al	12
 黄川田	huáng;am chuān;kt tián;ll	369
 黄翠如	huáng;am cuì;ny rú;vk	9
+黄达亮	huáng;am dá;dp liàng;yp	279
+黄大炜	huáng;am dà;dd wěi;of	468
+黄丹仪	huáng;am dān;my yí;wy	328
+黄迪扬	huáng;am dí;mp yáng;rn	310
+黄东柱	huáng;am dōng;ai zhù;sy	180
 黄豆豆	huáng;am dòu;gk dòu;gk	35
+黄多多	huáng;am duō;qq duō;qq	621
 黄恩茹	huáng;am ēn;ld rú;av	3
+黄凤琼	huáng;am fèng;mc qióng;gy	328
 黄甫桀	huáng;am fǔ;ge jié;qa	12
 黄格选	huáng;am gé;st xuǎn;tf	9
 黄冠斌	huáng;am guān;pf bīn;yg	360
@@ -5097,7 +5106,7 @@ sort: by_weight
 金子涵	jīn;qq zi;bb hán;ib	292
 金紫薇	jīn;qq zǐ;hx wēi;at	302
 金子璇	jīn;qq zi;bb xuán;gy	1
-井柏然	jǐng;fj bǎi;sr rán;qd	1134
+井柏然	jǐng;fj bó;sr rán;qd	1134
 井川遥	jǐng;fj chuān;kt yáo;er	9
 景黛音	jǐng;jy dài;wa yīn;uj	3
 井迪儿	jǐng;fj dí;mp ér;qt	12
@@ -5655,7 +5664,7 @@ sort: by_weight
 黎灼灼	lí;tq zhuó;oq zhuó;oq	15
 栗子儿	lì;ss zi;bb ér;qt	15
 李子峰	lǐ;sb zi;bb fēng;mt	154
-李子柒	lǐ;sb zi;bb qī;ia	907
+李子柒	lǐ;sb zǐ;bb qī;ia	907
 李子璇	lǐ;sb zi;bb xuán;gy	216
 李子轩	lǐ;sb zi;bb xuān;lf	215
 李宗翰	lǐ;sb zōng;pf hàn;fj	9
@@ -7800,6 +7809,8 @@ sort: by_weight
 汤镇业	tāng;in zhèn;qf yè;og	22
 汤镇宗	tāng;in zhèn;qf zōng;pf	9
 唐正东	táng;yv zhèng;gh dōng;ai	50
+唐治平	táng;yv zhì;ic píng;gu	297
+唐志中	táng;yv zhì;fn zhōng;kh	334
 唐子皓	táng;yv zǐ;bb hào;rt	1
 唐紫睿	táng;yv zǐ;hx ruì;hp	35
 汤子星	tāng;in zǐ;bb xīng;jt	126
@@ -9431,6 +9442,7 @@ sort: by_weight
 俞世润	yú;wg shì;an rùn;iu	320
 虞书欣	yú;ha shū;nn xīn;rq	236
 余思琼	yú;wt sī;ln qióng;gy	12
+于思洋	yú;gf sī;ln yáng;iu	207
 俞思远	yú;wg sī;ln yuǎn;fq	19
 于天奇	yú;gf tiān;gd qí;ds	4
 与田樱	yǔ;gn tián;ll yīng;sm	10
@@ -10524,7 +10536,6 @@ sort: by_weight
 阿彼察邦	ā;bs bǐ;th chá;pw bāng;dt	328
 阿弗莱克	ā;bs fú;xj lái;ag kè;dq	170
 阿帕尔江	ā;bs pà;mh ěr;qi jiāng;ia	1
-阿森鲍鱼	ā;bs sēn;ss bào;qg yú;qg	256
 阿依吐拉	ā;bs yī;wy tǔ;kf lā;ru	284
 爱朵女孩	ài;ep duǒ;ms nǚ;vv hái;by	207
 艾福杰尼	ài;aq fú;py jié;so ní;nx	57
@@ -10955,9 +10966,14 @@ sort: by_weight
 福田雄一	fú;py tián;ll xióng;dc yī;gg	16
 福原绫香	fú;py yuán;dr líng;xf xiāng;tj	3
 福圆美里	fú;py yuán;lk měi;ug lǐ;jf	504
+冈村明美	gāng;mq cūn;sf míng;je měi;ug	441
+冈村孝子	gāng;mq cūn;sf xiào;ft zǐ;bb	6
 冈井萌华	gāng;mq jǐng;fj méng;aj huá;wx	10
 刚力彩芽	gāng;mq lì;lt cǎi;es yá;aa	446
 冈崎律子	gāng;mq qí;md lǜ;tv zǐ;bb	428
+冈崎美女	gāng;mq qí;md měi;ug nǚ;vv	194
+冈崎纱绘	gāng;mq qí;md shā;xi huì;xw	266
+冈崎友纪	gāng;mq qí;md yǒu;dc jì;xn	153
 高坂笃志	gāo;ym bǎn;fr dǔ;tc zhì;fn	261
 高坂桐乃	gāo;ym bǎn;fr tóng;sm nǎi;et	28
 高城元气	gāo;ym chéng;fd yuán;fq qì;rn	346
@@ -11093,8 +11109,6 @@ sort: by_weight
 浩角翔起	hào;it jiǎo;qe xiáng;ud qǐ;fh	323
 豪斯医生	háo;yp sī;ad yī;at shēng;tg	778
 河北彩花	hé;is běi;ux cǎi;es huā;aw	382
-河北朝阳	hé;is běi;ux cháo;fj yáng;bj	10
-河北春菜	hé;is běi;ux chūn;dw cài;ae	10
 河村梨惠	hé;is cūn;sf lí;tj huì;gj	50
 河村隆之	hé;is cūn;sf lóng;bt zhī;pp	346
 河合久美	hé;is hé;wg jiǔ;qy měi;ug	99
@@ -11215,7 +11229,6 @@ sort: by_weight
 笕美和子	jiǎn;tm měi;ug hé;tk zǐ;bb	306
 菅田将晖	jiān;ap tián;ll jiāng;uq huī;jp	639
 菅野松雪	jiān;ap yě;jf sōng;sw xuě;fv	50
-菅野松雪	jiān;ap yě;jf sōng;sw xuě;fv	10
 菅野洋子	jiān;ap yě;jf yáng;iu zǐ;bb	236
 菅原文太	jiān;ap yuán;dr wén;yy tài;dy	333
 菅原祥子	jiān;ap yuán;dr xiáng;py zi;bb	238
@@ -11303,6 +11316,7 @@ sort: by_weight
 久住小春	jiǔ;qy zhù;wy xiǎo;ih chūn;dw	441
 菊池风磨	jú;aq chí;ib fēng;mq mó;ys	387
 菊池丽香	jú;aq chí;ib lì;gm xiāng;tj	50
+菊池幸利	jú;aq chí;ib xìng;fu lì;tj	225
 菊池志穗	jú;aq chí;ib zhì;fn suì;tg	297
 菊地晶子	jú;aq dì;fb jīng;jj zǐ;bb	117
 菊地凛子	jú;aq dì;fb lǐn;uy zǐ;bb	13
@@ -11912,6 +11926,7 @@ sort: by_weight
 水原千鹤	shuǐ;ii yuán;dr qiān;tf hè;pw	266
 水原希子	shuǐ;ii yuán;dr xī;qd zǐ;bb	53
 水泽乃乃	shuǐ;ii zé;ic nǎi;et nǎi;et	10
+水泽史绘	shuǐ;ii zé;ic shǐ;kq huì;xw	346
 水泽早纪	shuǐ;ii zé;ic zǎo;jh jì;xn	4
 斯丹曼簇	sī;ad dān;my màn;jl cù;ty	1
 寺岛惇太	sì;ff dǎo;qy dūn;ny tài;dy	369
@@ -11964,6 +11979,7 @@ sort: by_weight
 松田翔太	sōng;sw tián;ll xiáng;ud tài;dy	13
 松田秀知	sōng;sw tián;ll xiù;te zhī;td	212
 松田洋治	sōng;sw tián;ll yáng;iu zhì;ic	297
+松田佑贵	sōng;sw tián;ll yòu;wd guì;kh	270
 松尾贵史	sōng;sw wěi;nt guì;kh shǐ;kq	261
 松尾佳子	sōng;sw wěi;nt jiā;wf zǐ;bb	279
 松尾静香	sōng;sw wěi;nt jìng;ge xiāng;tj	243
@@ -11976,7 +11992,7 @@ sort: by_weight
 速水直道	sù;gk shuǐ;ii zhí;fh dào;ut	342
 速水重道	sù;gk shuǐ;ii zhòng;tg dào;ut	6
 穗高结花	suì;tg gāo;ym jié;xf huā;aw	10
-穗高有纪	suì;tg gāo;ym yǒu;de jì;xn	10
+穗高有纪	suì;tg gāo;ym yǒu;de jì;xn	45
 穗花爱里	suì;tg huā;aw ài;ep lǐ;jf	10
 索朗美淇	suǒ;fp lǎng;yv měi;ug qí;ia	1
 索朗旺姆	suǒ;fp lǎng;yv wàng;jg mǔ;vx	3
@@ -12373,6 +12389,10 @@ sort: by_weight
 永冢纱季	yǒng;yn zhǒng;pe shā;xi jì;tb	220
 永作博美	yǒng;yn zuò;wt bó;fg měi;ug	3
 由爱可奈	yóu;mh ài;ep kě;sk nài;df	10
+友坂理惠	yǒu;dc bǎn;fr lǐ;gj huì;gj	405
+友阪理惠	yǒu;dc bǎn;br lǐ;gj huì;gj	251
+有坂美香	yǒu;de bǎn;fr měi;ug xiāng;tj	220
+有坂深雪	yǒu;de bǎn;fr shēn;ip xuě;fv	252
 尤菲米娅	yóu;dn fēi;ad mǐ;oy yà;vg	351
 有冈美羽	yǒu;de gāng;mq měi;ug yǔ;nn	10
 有贺由爱	yǒu;de hè;lk yóu;mh ài;ep	10
@@ -12388,15 +12408,21 @@ sort: by_weight
 羽咲美晴	yǔ;nn xiào;ku měi;ug qíng;jg	10
 于轩鸿灏	yú;gf xuān;lf hóng;ia hào;ij	1
 袁百梓卉	yuán;fk bǎi;dj zǐ;su huì;fa	12
+原惠理子	yuán;dr huì;gj lǐ;gj zi;bb	180
+远藤胜代	yuǎn;fq téng;ae shèng;et dài;wa	76
 园田美樱	yuán;lf tián;ll měi;ug yīng;sm	10
 袁杨纯子	yuán;fk yáng;sn chún;xg zǐ;bb	1
 乐火男孩	yuè;qi huǒ;oo nán;ll hái;by	238
 月见伊织	yuè;ee jiàn;mq yī;wv zhī;xk	10
 月乃露娜	yuè;ee nǎi;et lù;fk nà;vv	10
 云丹久美	yún;fc dān;my jiǔ;qy měi;ug	5
+泽城美雪	zé;ic chéng;fd měi;ug xuě;fv	652
+泽井美空	zé;ic jǐng;fj měi;ug kōng;pw	171
+泽井美优	zé;ic jǐng;fj měi;ug yōu;wd	274
 泽仁央金	zé;ic rén;wf yāng;md jīn;qq	2
 泽仁拥吉	zé;ic rén;wf yōng;re jí;fk	1
 泽旺多吉	zé;ic wàng;jg duō;qq jí;fk	10
+增谷康纪	zēng;fu gǔ;ww kāng;yv jì;xn	374
 曾美慧孜	zēng;ul měi;ug huì;dh zī;bt	3
 查干希热	zhā;sj gàn;fg xī;qd rè;rv	4
 查克贝里	zhā;sj kè;dq bèi;mh lǐ;jf	28
@@ -12411,7 +12437,11 @@ sort: by_weight
 赵燕国彰	zhào;fh yàn;au guó;lg zhāng;uj	11
 真白爱梨	zhēn;fh bái;rr ài;ep lí;tj	10
 真白希实	zhēn;fh bái;rr xī;qd shí;pu	10
+真田广之	zhēn;fh tián;ll guǎng;yy zhī;pp	53
+真田佑马	zhēn;fh tián;ll yòu;wd mǎ;cn	212
+真田朱音	zhēn;fh tián;ll zhū;ri yīn;uj	50
 郑合惠子	zhèng;ud hé;wg huì;gj zǐ;bb	14
+志村知幸	zhì;fn cūn;sf zhī;td xìng;fu	369
 知花梅莎	zhī;td huā;aw méi;st shā;ai	10
 织田真子	zhī;xk tián;ll zhēn;fh zǐ;bb	10
 仲村美羽	zhòng;wk cūn;sf měi;ug yǔ;nn	10
@@ -12428,12 +12458,21 @@ sort: by_weight
 中岛裕翔	zhōng;kh dǎo;qy yù;pu xiáng;ud	500
 中岛早贵	zhōng;kh dǎo;qy zǎo;jh guì;kh	342
 中岛知子	zhōng;kh dǎo;qy zhī;td zǐ;bb	202
+中山美穗	zhōng;kh shān;mm měi;ug suì;tg	179
 中山文香	zhōng;kh shān;mm wén;yy xiāng;tj	10
+中尾友纪	zhōng;kh wěi;nt yǒu;dc jì;xn	144
+肘井美佳	zhǒu;ef jǐng;fj měi;ug jiā;wf	274
 周裕靖豪	zhōu;mf yù;pu jìng;ug háo;yp	1
 朱刚日尧	zhū;ri gāng;mq rì;jj yáo;at	18
 诸葛紫岐	zhū;yf gě;aj zǐ;hx qí;mf	113
+竹内结子	zhú;tt nèi;mw jié;xf zǐ;bb	31
+竹内良贵	zhú;tt nèi;mw liáng;yv guì;kh	76
+竹内良太	zhú;tt nèi;mw liáng;yv tài;dy	432
+竹内凉真	zhú;tt nèi;mw liáng;uy zhēn;fh	3
+竹内美宥	zhú;tt nèi;mw měi;ug yòu;pd	436
 竹内乃爱	zhú;tt nèi;mw nǎi;et ài;ep	10
-竹内有纪	zhú;tt nèi;mw yǒu;de jì;xn	10
+竹内由惠	zhú;tt nèi;mw yóu;mh huì;gj	234
+竹内有纪	zhú;tt nèi;mw yǒu;de jì;xn	130
 朱颜曼滋	zhū;ri yán;ut màn;jl zī;iu	4
 椎名由奈	zhuī;sw míng;qk yóu;mh nài;df	10
 佐野由真	zuǒ;wd yě;jf yóu;mh zhēn;fh	10
