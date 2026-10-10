@@ -2,9 +2,9 @@
 ---
 ---Dependencies:
 ---  translators:
----    - table_translator@candidate_pinner
+---    - lua_translator@*wanxiang.candidate_pinner*T (before the main translator)
 ---  filters:
----    - lua_filter@*utils.candidate_code_recorder*F
+---    - lua_filter@*wanxiang.candidate_code_recorder*F
 ---
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -16,17 +16,17 @@
 ---@class CandidatePinnerProcessorState
 ---@field memory Memory
 
----@class CandidatePinnerFilterConfig
+---@class CandidatePinnerTranslatorConfig
 ---@field enabled boolean
 
 ---@class CandidatePinnerTranslatorState
----@field memory Memory
+---@field translator ScriptTranslator?
 
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field candidate_pinner_processor_config CandidatePinnerProcessorConfig?
 ---@field candidate_pinner_processor_state CandidatePinnerProcessorState?
----@field candidate_pinner_filter_config CandidatePinnerFilterConfig?
+---@field candidate_pinner_translator_config CandidatePinnerTranslatorConfig?
 ---@field candidate_pinner_translator_state CandidatePinnerTranslatorState?
 
 local utils = require("utils.utils")
@@ -119,7 +119,7 @@ function P.func(key, env)
     end
 
     -- Pinning enforces the dictionary-only policy. Unpinning falls through so resurfaced entries (emitted as `pinned`
-    -- by the candidate_pinner filter) can still be removed.
+    -- by the candidate_pinner translator) can still be removed.
     if pin and not PINNABLE_TYPES[genuine.type] then
         return utils.RIME_PROCESS_RESULTS.kNoop
     end
@@ -134,13 +134,35 @@ function P.func(key, env)
 
     if pin then
         -- Positive commits add or strengthen the entry.
-        state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), 1, "")
-        log.info(("Pinned candidate '%s' with code '%s'"):format(genuine.text, code))
+        local entry = utils.make_dict_entry(genuine.text, code)
+        local commits = 1
+        local prefix = ""
+        if not state.memory:update_userdict(entry, commits, prefix) then
+            log.error(
+                (
+                    "candidate_pinner: update_userdict failed: "
+                    .. "namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"
+                ):format("candidate_pinner", entry.text, entry.custom_code, commits, prefix)
+            )
+            return utils.RIME_PROCESS_RESULTS.kAccepted
+        end
+        log.info(("candidate_pinner: pinned candidate '%s' with code '%s'"):format(genuine.text, code))
     else
         if state.memory:user_lookup(code, false) then
             -- Negative commits soft-delete the entry.
-            state.memory:update_userdict(utils.make_dict_entry(genuine.text, code), -1, "")
-            log.info(("Unpinned candidate '%s' with code '%s'"):format(genuine.text, code))
+            local entry = utils.make_dict_entry(genuine.text, code)
+            local commits = -1
+            local prefix = ""
+            if not state.memory:update_userdict(entry, commits, prefix) then
+                log.error(
+                    (
+                        "candidate_pinner: update_userdict failed: "
+                        .. "namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"
+                    ):format("candidate_pinner", entry.text, entry.custom_code, commits, prefix)
+                )
+                return utils.RIME_PROCESS_RESULTS.kAccepted
+            end
+            log.info(("candidate_pinner: unpinned candidate '%s' with code '%s'"):format(genuine.text, code))
         end
     end
 
@@ -148,10 +170,10 @@ function P.func(key, env)
     return utils.RIME_PROCESS_RESULTS.kAccepted
 end
 
-local F = {}
+local T = {}
 
 ---@param env Env
-function F.init(env)
+function T.init(env)
     local rime_config = env.engine.schema.config
     assert(rime_config)
 
@@ -160,76 +182,71 @@ function F.init(env)
         enabled = false
     end
 
-    local memory = Memory(env.engine, env.engine.schema, "candidate_pinner")
-
-    env.candidate_pinner_filter_config = {
+    env.candidate_pinner_translator_config = {
         enabled = enabled,
     }
 
+    local translator =
+        Component.ScriptTranslator(env.engine, env.engine.schema, "candidate_pinner", "script_translator")
+    if translator then
+        -- Only the processor writes pinned entries; committing candidates must not add entries automatically.
+        translator:set_memorize_callback(
+            ---@return boolean
+            function(_, _)
+                return true
+            end
+        )
+    else
+        log.error("candidate_pinner: failed to create script translator")
+    end
+
     env.candidate_pinner_translator_state = {
-        memory = memory,
+        translator = translator,
     }
 end
 
 ---@param env Env
-function F.fini(env)
-    if env.candidate_pinner_translator_state then
-        env.candidate_pinner_translator_state.memory:disconnect()
-    end
-    env.candidate_pinner_translator_state = nil
-end
-
----@param translation Translation
----@param env Env
-function F.func(translation, env)
+function T.fini(env)
     local state = env.candidate_pinner_translator_state
     assert(state)
-    local segment = env.engine.context.composition:back()
-    assert(segment)
+    if state.translator then
+        state.translator:disconnect()
+    end
+    env.candidate_pinner_translator_state = nil
+    env.candidate_pinner_translator_config = nil
+end
 
-    ---@type Candidate[]
-    local pinned_cands = {}
-    local pinned_cands_len = 0
-    ---@type Candidate[]
-    local regular_cands = {}
-    local regular_cands_len = 0
+---@param input string
+---@param segment Segment
+---@param env Env
+function T.func(input, segment, env)
+    local config = env.candidate_pinner_translator_config
+    assert(config)
+    if not config.enabled then
+        return
+    end
+
+    local state = env.candidate_pinner_translator_state
+    assert(state)
+    if not state.translator then
+        return
+    end
+
+    -- The dictionary prism maps valid input spellings to the original codes stored in pinned.userdb.
+    local translation = state.translator:query(input, segment)
+    if not translation then
+        return
+    end
 
     for cand in translation:iter() do
-        -- Pin candidates that cover the entire segment and have an exact code match.
-        if cand.start == segment.start and cand._end == segment._end then
-            for entry in state.memory:useriter_lookup(cand.comment, false):iter() do
-                if entry.text == cand.text then
-                    local genuine = cand:get_genuine()
-                    genuine.type = "pinned"
-                    pinned_cands_len = pinned_cands_len + 1
-                    pinned_cands[pinned_cands_len] = genuine
-                    goto continue
-                end
-            end
+        -- Ignore system entries and pinned prefixes of a longer input segment.
+        if cand.type == "user_phrase" and cand.start == segment.start and cand._end == segment._end then
+            local pinned = Candidate("pinned", cand.start, cand._end, cand.text, cand.comment)
+            pinned.preedit = cand.preedit
+            pinned.quality = 100
+            yield(pinned)
         end
-
-        regular_cands_len = regular_cands_len + 1
-        regular_cands[regular_cands_len] = cand
-
-        ::continue::
-    end
-
-    -- Yield pinned candidates first, then regular ones.
-    for _, cand in ipairs(pinned_cands) do
-        yield(cand)
-    end
-    for _, cand in ipairs(regular_cands) do
-        yield(cand)
     end
 end
 
----@param env Env
----@return boolean
-function F.tags_match(_, env)
-    local config = env.candidate_pinner_filter_config
-    assert(config)
-
-    return config.enabled
-end
-
-return { P = P, F = F }
+return { P = P, T = T }

@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/renming.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/renming.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: person
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 白波	bái;po bō;dy	76
@@ -1625,7 +1625,6 @@ sort: by_weight
 王廷	wáng;at tíng;zr	713
 王湾	wáng;at wān;dg	86
 王伟	wáng;at wěi;rw	3196
-王威	wáng;at wēi;ng	414
 王卫	wáng;at wèi;ea	182
 王巍	wáng;at wēi;sv	94
 王玮	wáng;at wěi;ww	60
@@ -2269,7 +2268,7 @@ sort: by_weight
 张沛	zhāng;gi pèi;da	58
 张鹏	zhāng;gi péng;on	8021
 张品	zhāng;gi pǐn;kk	31
-张平	zhāng;gi píng;au	875
+张平	zhāng;gi píng;au	175
 张其	zhāng;gi qí;ab	156
 张倩	zhāng;gi qiàn;ro	608
 张强	zhāng;gi qiáng;gi	3470
@@ -5134,6 +5133,30 @@ sort: by_weight
 华允诚	huà;ru yǔn;ve chéng;yg	220
 华振中	huà;ru zhèn;fh zhōng;aa	189
 华忠男	huà;ru zhōng;vx nán;tl	256
+黄安琪	huáng;cb ān;gn qí;wb	423
+黄宝华	huáng;cb bǎo;gy huá;ru	243
+黄保华	huáng;cb bǎo;rl huá;ru	171
+黄宝君	huáng;cb bǎo;gy jūn;yk	432
+黄宝妮	huáng;cb bǎo;gy nī;nb	238
+黄柏峰	huáng;cb bò;lb fēng;sf	220
+黄聪翰	huáng;cb cōng;ex hàn;ux	256
+黄大发	huáng;cb dà;an fā;vy	472
+黄大海	huáng;cb dà;an hǎi;dm	284
+黄丹华	huáng;cb dān;pa huá;ru	459
+黄丹琪	huáng;cb dān;pa qí;wb	76
+黄丹乔	huáng;cb dān;pa qiáo;ya	243
+黄丹晴	huáng;cb dān;pa qíng;oo	284
+黄鼎钧	huáng;cb dǐng;mv jūn;jd	180
+黄定宇	huáng;cb dìng;gr yǔ;gy	243
+黄东红	huáng;cb dōng;ad hóng;sg	306
+黄栋梁	huáng;cb dòng;ld liáng;dl	220
+黄东升	huáng;cb dōng;ad shēng;pa	252
+黄飞龙	huáng;cb fēi;vd lóng;ab	220
+黄飞雄	huáng;cb fēi;vd xióng;aa	144
+黄凤亭	huáng;cb fèng;jy tíng;wd	324
+黄凤仪	huáng;cb fèng;jy yí;ry	346
+黄凤英	huáng;cb fèng;jy yīng;cy	554
+黄福生	huáng;cb fú;pt shēng;pa	99
 黄其森	huáng;cb qí;ab sēn;ll	98
 黄琪翔	huáng;cb qí;wb xiáng;ex	118
 黄麒英	huáng;cb qí;gb yīng;cy	68
@@ -5174,6 +5197,8 @@ sort: by_weight
 黄庭禅	huáng;cb tíng;gr chán;pd	85
 黄廷芳	huáng;cb tíng;zr fāng;cf	29
 黄庭经	huáng;cb tíng;gr jīng;sg	164
+黄武林	huáng;cb wǔ;vg lín;ll	580
+黄宪年	huáng;cb xiàn;ge nián;pa	4
 黄先耀	huáng;cb xiān;pe yào;ea	356
 黄湘丽	huáng;cb xiāng;dm lì;ad	30
 黄向阳	huáng;cb xiàng;pk yáng;eo	266
@@ -5184,6 +5209,7 @@ sort: by_weight
 黄晓东	huáng;cb xiǎo;oe dōng;ad	450
 黄小芳	huáng;cb xiǎo;vd fāng;cf	261
 黄晓峰	huáng;cb xiǎo;oe fēng;sf	207
+黄小河	huáng;cb xiǎo;vd hé;dk	396
 黄晓华	huáng;cb xiǎo;oe huá;ru	202
 黄小娟	huáng;cb xiǎo;vd juān;no	88
 黄晓军	huáng;cb xiǎo;oe jūn;gi	78
@@ -5235,6 +5261,8 @@ sort: by_weight
 黄秀政	huáng;cb xiù;hn zhèng;vw	315
 黄旭东	huáng;cb xù;jo dōng;ad	765
 黄旭华	huáng;cb xù;jo huá;ru	151
+黄学礼	huáng;cb xué;ez lǐ;pv	324
+黄雪琴	huáng;cb xuě;ya qín;wj	356
 黄循财	huáng;cb xún;rm cái;bc	0
 黄亚生	huáng;cb yà;ay shēng;pa	400
 黄炎培	huáng;cb yán;hh péi;tk	369
@@ -8366,6 +8394,7 @@ sort: by_weight
 柳秀荣	liǔ;le xiù;hn róng;cl	46
 刘旭辉	liú;wd xù;jo huī;ei	117
 刘学根	liú;wd xué;ez gēn;lh	192
+刘学军	liú;wd xué;ez jūn;gi	231
 刘雪荣	liú;wd xuě;ya róng;cl	95
 刘亚平	liú;wd yà;ay píng;au	28
 柳雅欣	liǔ;le yǎ;ya xīn;jr	38
@@ -8541,9 +8570,6 @@ sort: by_weight
 罗伯昭	luó;sx bó;rb zhāo;ok	44
 罗布科	luó;sx bù;aj kē;hu	35
 罗彩霞	luó;sx cǎi;pp xiá;yy	19
-罗刹鬼	luó;sx chà;xd guǐ;pv	99
-罗刹国	luó;sx chà;xd guó;wy	219
-罗刹女	luó;sx chà;xd nǚ;va	162
 罗常培	luó;sx cháng;ej péi;tk	69
 罗昌平	luó;sx chāng;oo píng;au	78
 罗成华	luó;sx chéng;vg huá;ru	29
@@ -9784,6 +9810,7 @@ sort: by_weight
 施蒂芬	shī;fy dì;cj fēn;cd	266
 施蒂勒	shī;fy dì;cj lè;cl	310
 施贵钧	shī;fy guì;vr jūn;jd	171
+史国信	shǐ;an guó;wy xìn;rk	45
 施惠国	shī;fy huì;ax guó;wy	346
 施基利	shī;fy jī;qt lì;hd	71
 施济美	shī;fy jì;dq měi;ed	25
@@ -10377,6 +10404,8 @@ sort: by_weight
 谭学军	tán;yu xué;ez jūn;gi	194
 谭雅玲	tán;yu yǎ;ya líng;wv	418
 谭雨涵	tán;yu yǔ;ad hán;dh	234
+唐志强	táng;gk zhì;ux qiáng;gi	32
+唐至清	táng;gk zhì;at qīng;do	43
 陶艾青	táo;ef ài;cx qīng;ao	53
 陶百川	táo;ef bǎi;ab chuān;pa	33
 陶碧华	táo;ef bì;wk huá;ru	96
@@ -11322,7 +11351,6 @@ sort: by_weight
 王维平	wáng;at wéi;sa píng;au	56
 王卫平	wáng;at wèi;ea píng;au	41
 王位时	wáng;at wèi;rl shí;oc	28
-王维诗	wáng;at wéi;sa shī;yc	26
 王伟涛	wáng;at wěi;rw tāo;dc	103
 王伟婷	wáng;at wěi;rw tíng;nd	49
 王薇薇	wáng;at wēi;cw wēi;cw	226
@@ -17371,6 +17399,12 @@ sort: by_weight
 川濑智子	chuān;pa lài;dr zhì;uo zǐ;va	21
 川浪叶子	chuān;pa làng;dh yè;ku zi;va	26
 春藤佳奈	chūn;ao téng;cu jiā;rt nài;dx	0
+次仁朗杰	cì;dr rén;re lǎng;do jié;le	4
+次仁罗布	cì;dr rén;re luó;sx bù;aj	320
+次仁旺姆	cì;dr rén;re wàng;ow mǔ;nm	130
+次仁玉珍	cì;dr rén;re yù;wd zhēn;wp	99
+次仁占堆	cì;dr rén;re zhàn;ak duī;ta	45
+次仁卓玛	cì;dr rén;re zhuó;au mǎ;wm	288
 村上国清	cūn;lc shàng;aa guó;wy qīng;do	0
 村上和也	cūn;lc shàng;aa hé;hk yě;vv	1
 村上虹郎	cūn;lc shàng;aa hóng;ig láng;de	0
@@ -17452,6 +17486,8 @@ sort: by_weight
 端木梓栎	duān;le mù;un zǐ;lu lì;ll	0
 端木醉蝶	duān;le mù;un zuì;yu dié;il	0
 端木佐佐	duān;le mù;un zuǒ;rg zuǒ;rg	0
+顿珠才仁	dùn;tr zhū;wv cái;ap rén;re	180
+顿珠彭措	dùn;tr zhū;wv péng;up cuò;fo	144
 二木佳奈	èr;aa mù;un jiā;rt nài;dx	1
 饭田道朗	fàn;uy tián;wu dào;zm lǎng;do	14
 饭田圭织	fàn;uy tián;wu guī;tt zhī;sb	2
@@ -18320,6 +18356,8 @@ sort: by_weight
 水野重央	shuǐ;vn yě;ly zhòng;pa yāng;an	0
 水野忠盈	shuǐ;vn yě;ly zhōng;vx yíng;nm	0
 水野忠重	shuǐ;vn yě;ly zhōng;vx zhòng;pa	0
+松坂康司	sōng;lv bǎn;ty kāng;gl sī;vk	238
+松坂一光	sōng;lv bǎn;ty yī;aa guāng;ee	212
 松本佳奈	sōng;lv běn;aa jiā;rt nài;dx	2
 松冈利胜	sōng;lv gāng;ax lì;hd shèng;ou	32
 松冈美佳	sōng;lv gāng;ax měi;ed jiā;rt	14
@@ -19113,8 +19151,6 @@ sort: by_weight
 佐治武士	zuǒ;rg zhì;dk wǔ;vg shì;ua	2
 佐治信方	zuǒ;rg zhì;dk xìn;rk fāng;wp	0
 佐治一成	zuǒ;rg zhì;dk yì;aa chéng;vg	0
-左支右绌	zuǒ;ag zhī;uy yòu;ak chù;si	199
-左支右吾	zuǒ;ag zhī;uy yòu;ak wú;wk	4
 佐竹百合	zuǒ;rg zhú;pd bǎi;ab hé;rk	0
 佐竹昌义	zuǒ;rg zhú;pd chāng;oo yì;dx	0
 佐竹海莉	zuǒ;rg zhú;pd hǎi;dm lì;cd	0
