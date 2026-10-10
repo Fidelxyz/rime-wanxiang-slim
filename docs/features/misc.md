@@ -37,9 +37,28 @@ backspace_limiter:
   enabled: false
 ```
 
-## 版本显示
+## `/` 命令
+
+### 方案切换
+
+详见[切换输入方案](/getting-started/quick-start#%E5%88%87%E6%8D%A2%E8%BE%93%E5%85%A5%E6%96%B9%E6%A1%88)。
+
+### 版本显示
 
 输入 `/version` 显示输入方案及 Rime 版本信息。
+
+### 配置
+
+```yaml
+speller:
+  # 首个编码允许的按键。作用同 `alphabet`，但仅作用于首个编码。
+  # 添加 `/` 以允许 `/` 开头的编码不直接上屏。
+  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA/`
+
+command:
+  # 启用 `/` 开头的命令。
+  enabled: true
+```
 
 ## Rime 内建功能
 

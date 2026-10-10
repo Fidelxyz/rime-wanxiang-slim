@@ -376,6 +376,10 @@ charset_filter:
       whitelist: ""
       blacklist: ""
 
+command:
+  # 启用 `/` 开头命令。
+  enabled: true
+
 ### 按键设置 ###
 
 key_binder:

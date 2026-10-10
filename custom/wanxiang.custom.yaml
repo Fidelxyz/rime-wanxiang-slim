@@ -31,6 +31,10 @@ patch:
   # 关闭自动造词。
   #user_dict_appender/enable_auto_phrase: false
 
+  # 禁用 `/` 开头的命令。
+  #command/enabled: false
+  #speller/initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`  # 移除 `/`，允许直接上屏
+
   # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
   #custom_phrase/user_dict: user_custom_phrase
 
