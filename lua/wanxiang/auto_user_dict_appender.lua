@@ -94,7 +94,17 @@ local function commit_handler(ctx, env)
     end
 
     local code = table.concat(codes, " ")
-    state.memory:update_userdict(utils.make_dict_entry(commit_text, code), 1, "")
+    local entry = utils.make_dict_entry(commit_text, code)
+    local commits = 1
+    local prefix = ""
+    if not state.memory:update_userdict(entry, commits, prefix) then
+        log.error(
+            (
+                "auto_user_dict_appender: update_userdict failed: "
+                .. "namespace=%q, text=%q, custom_code=%q, commits=%d, prefix=%q"
+            ):format("user_dict_appender", entry.text, entry.custom_code, commits, prefix)
+        )
+    end
 end
 
 local P = {}
