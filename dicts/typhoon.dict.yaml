@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/taifeng.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/taifeng.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: typhoon
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 台风达维	tái;sk fēng;jx dá;zd wéi;sf	1
