@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.1...v1.1.0-beta.1) (2026-10-10)
+
+
+### Features
+
+* add configuration to toggle slash commands ([6fe8888](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/6fe8888135a7576e7124893daf815dc949a028b6))
+
+
+### Bug Fixes
+
+* preserve candidate wrappers in display filters ([ba62a34](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ba62a341bfbfce99131bcef3ea5b3e4bc51229f9))
+
 ## [1.0.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0...v1.0.1) (2026-10-10)
 
 
