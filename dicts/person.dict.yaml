@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/renming.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/renming.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: person
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 白波	bái bō	76
@@ -1625,7 +1625,6 @@ sort: by_weight
 王廷	wáng tíng	713
 王湾	wáng wān	86
 王伟	wáng wěi	3196
-王威	wáng wēi	414
 王卫	wáng wèi	182
 王巍	wáng wēi	94
 王玮	wáng wěi	60
@@ -2269,7 +2268,7 @@ sort: by_weight
 张沛	zhāng pèi	58
 张鹏	zhāng péng	8021
 张品	zhāng pǐn	31
-张平	zhāng píng	875
+张平	zhāng píng	175
 张其	zhāng qí	156
 张倩	zhāng qiàn	608
 张强	zhāng qiáng	3470
@@ -5134,6 +5133,30 @@ sort: by_weight
 华允诚	huà yǔn chéng	220
 华振中	huà zhèn zhōng	189
 华忠男	huà zhōng nán	256
+黄安琪	huáng ān qí	423
+黄宝华	huáng bǎo huá	243
+黄保华	huáng bǎo huá	171
+黄宝君	huáng bǎo jūn	432
+黄宝妮	huáng bǎo nī	238
+黄柏峰	huáng bò fēng	220
+黄聪翰	huáng cōng hàn	256
+黄大发	huáng dà fā	472
+黄大海	huáng dà hǎi	284
+黄丹华	huáng dān huá	459
+黄丹琪	huáng dān qí	76
+黄丹乔	huáng dān qiáo	243
+黄丹晴	huáng dān qíng	284
+黄鼎钧	huáng dǐng jūn	180
+黄定宇	huáng dìng yǔ	243
+黄东红	huáng dōng hóng	306
+黄栋梁	huáng dòng liáng	220
+黄东升	huáng dōng shēng	252
+黄飞龙	huáng fēi lóng	220
+黄飞雄	huáng fēi xióng	144
+黄凤亭	huáng fèng tíng	324
+黄凤仪	huáng fèng yí	346
+黄凤英	huáng fèng yīng	554
+黄福生	huáng fú shēng	99
 黄其森	huáng qí sēn	98
 黄琪翔	huáng qí xiáng	118
 黄麒英	huáng qí yīng	68
@@ -5174,6 +5197,8 @@ sort: by_weight
 黄庭禅	huáng tíng chán	85
 黄廷芳	huáng tíng fāng	29
 黄庭经	huáng tíng jīng	164
+黄武林	huáng wǔ lín	580
+黄宪年	huáng xiàn nián	4
 黄先耀	huáng xiān yào	356
 黄湘丽	huáng xiāng lì	30
 黄向阳	huáng xiàng yáng	266
@@ -5184,6 +5209,7 @@ sort: by_weight
 黄晓东	huáng xiǎo dōng	450
 黄小芳	huáng xiǎo fāng	261
 黄晓峰	huáng xiǎo fēng	207
+黄小河	huáng xiǎo hé	396
 黄晓华	huáng xiǎo huá	202
 黄小娟	huáng xiǎo juān	88
 黄晓军	huáng xiǎo jūn	78
@@ -5235,6 +5261,8 @@ sort: by_weight
 黄秀政	huáng xiù zhèng	315
 黄旭东	huáng xù dōng	765
 黄旭华	huáng xù huá	151
+黄学礼	huáng xué lǐ	324
+黄雪琴	huáng xuě qín	356
 黄循财	huáng xún cái	0
 黄亚生	huáng yà shēng	400
 黄炎培	huáng yán péi	369
@@ -8366,6 +8394,7 @@ sort: by_weight
 柳秀荣	liǔ xiù róng	46
 刘旭辉	liú xù huī	117
 刘学根	liú xué gēn	192
+刘学军	liú xué jūn	231
 刘雪荣	liú xuě róng	95
 刘亚平	liú yà píng	28
 柳雅欣	liǔ yǎ xīn	38
@@ -8541,9 +8570,6 @@ sort: by_weight
 罗伯昭	luó bó zhāo	44
 罗布科	luó bù kē	35
 罗彩霞	luó cǎi xiá	19
-罗刹鬼	luó chà guǐ	99
-罗刹国	luó chà guó	219
-罗刹女	luó chà nǚ	162
 罗常培	luó cháng péi	69
 罗昌平	luó chāng píng	78
 罗成华	luó chéng huá	29
@@ -9784,6 +9810,7 @@ sort: by_weight
 施蒂芬	shī dì fēn	266
 施蒂勒	shī dì lè	310
 施贵钧	shī guì jūn	171
+史国信	shǐ guó xìn	45
 施惠国	shī huì guó	346
 施基利	shī jī lì	71
 施济美	shī jì měi	25
@@ -10377,6 +10404,8 @@ sort: by_weight
 谭学军	tán xué jūn	194
 谭雅玲	tán yǎ líng	418
 谭雨涵	tán yǔ hán	234
+唐志强	táng zhì qiáng	32
+唐至清	táng zhì qīng	43
 陶艾青	táo ài qīng	53
 陶百川	táo bǎi chuān	33
 陶碧华	táo bì huá	96
@@ -11322,7 +11351,6 @@ sort: by_weight
 王维平	wáng wéi píng	56
 王卫平	wáng wèi píng	41
 王位时	wáng wèi shí	28
-王维诗	wáng wéi shī	26
 王伟涛	wáng wěi tāo	103
 王伟婷	wáng wěi tíng	49
 王薇薇	wáng wēi wēi	226
@@ -17371,6 +17399,12 @@ sort: by_weight
 川濑智子	chuān lài zhì zǐ	21
 川浪叶子	chuān làng yè zi	26
 春藤佳奈	chūn téng jiā nài	0
+次仁朗杰	cì rén lǎng jié	4
+次仁罗布	cì rén luó bù	320
+次仁旺姆	cì rén wàng mǔ	130
+次仁玉珍	cì rén yù zhēn	99
+次仁占堆	cì rén zhàn duī	45
+次仁卓玛	cì rén zhuó mǎ	288
 村上国清	cūn shàng guó qīng	0
 村上和也	cūn shàng hé yě	1
 村上虹郎	cūn shàng hóng láng	0
@@ -17452,6 +17486,8 @@ sort: by_weight
 端木梓栎	duān mù zǐ lì	0
 端木醉蝶	duān mù zuì dié	0
 端木佐佐	duān mù zuǒ zuǒ	0
+顿珠才仁	dùn zhū cái rén	180
+顿珠彭措	dùn zhū péng cuò	144
 二木佳奈	èr mù jiā nài	1
 饭田道朗	fàn tián dào lǎng	14
 饭田圭织	fàn tián guī zhī	2
@@ -18320,6 +18356,8 @@ sort: by_weight
 水野重央	shuǐ yě zhòng yāng	0
 水野忠盈	shuǐ yě zhōng yíng	0
 水野忠重	shuǐ yě zhōng zhòng	0
+松坂康司	sōng bǎn kāng sī	238
+松坂一光	sōng bǎn yī guāng	212
 松本佳奈	sōng běn jiā nài	2
 松冈利胜	sōng gāng lì shèng	32
 松冈美佳	sōng gāng měi jiā	14
@@ -19113,8 +19151,6 @@ sort: by_weight
 佐治武士	zuǒ zhì wǔ shì	2
 佐治信方	zuǒ zhì xìn fāng	0
 佐治一成	zuǒ zhì yì chéng	0
-左支右绌	zuǒ zhī yòu chù	199
-左支右吾	zuǒ zhī yòu wú	4
 佐竹百合	zuǒ zhú bǎi hé	0
 佐竹昌义	zuǒ zhú chāng yì	0
 佐竹海莉	zuǒ zhú hǎi lì	0
