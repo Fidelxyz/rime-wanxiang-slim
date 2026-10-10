@@ -276,38 +276,72 @@ deploy:
           - wanxiang_algebra:/pro/自然码
           - wanxiang_algebra:/pro/直接辅助
     tests:
+      # First auxiliary-code group.
       - send: nir
         assert: eq(cand[1].text, "你")
       - send: nire
-        assert: has_cand("你")
+        assert: eq(cand[2].text, "你")
       - send: nire/
         assert: eq(cand[1].text, "你")
       - send: niRe
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: nirE
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: niRE
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: ni9r
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: nir9
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: ni9re
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: nir9e
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: nire9
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: ni9R
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: niR9
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: ni9RE
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: niR9E
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
       - send: niRE9
-        assert: has_cand("你")
+        assert: eq(cand[1].text, "你")
+      # Second auxiliary-code group.
+      - send: zlu
+        assert: eq(cand[1].text, "在")
+      - send: zlut
+        assert: eq(cand[1].text, "在")
+      - send: zlut/
+        assert: eq(cand[1].text, "在")
+      - send: zlUt
+        assert: eq(cand[1].text, "在")
+      - send: zluT
+        assert: eq(cand[1].text, "在")
+      - send: zlUT
+        assert: eq(cand[1].text, "在")
+      - send: zl0u
+        assert: eq(cand[1].text, "在")
+      - send: zlu0
+        assert: eq(cand[1].text, "在")
+      - send: zl0ut
+        assert: eq(cand[1].text, "在")
+      - send: zlu0t
+        assert: eq(cand[1].text, "在")
+      - send: zlut0
+        assert: eq(cand[1].text, "在")
+      - send: zl0U
+        assert: eq(cand[1].text, "在")
+      - send: zlU0
+        assert: eq(cand[1].text, "在")
+      - send: zl0UT
+        assert: eq(cand[1].text, "在")
+      - send: zlU0T
+        assert: eq(cand[1].text, "在")
+      - send: zlUT0
+        assert: eq(cand[1].text, "在")
 
   indirect-auxiliary-code:
     patch:
@@ -316,14 +350,54 @@ deploy:
           - wanxiang_algebra:/pro/自然码
           - wanxiang_algebra:/pro/间接辅助
     tests:
+      # First auxiliary-code group.
       - send: ni/r
+        assert: eq(cand[1].text, "你")
+      - send: ni9/r
         assert: eq(cand[1].text, "你")
       - send: ni/re
         assert: eq(cand[1].text, "你")
-      - send: "niRE ni9RE niR9E niRE9 "
-        assert: eq(commit, "你你你你")
-      - send: "wo/pd wo/pp wo9/pp woPP wo9PP woP9P woPP9 wo/p wo9/p woP wo9P woP9 "
-        assert: eq(commit, "我我我我我我我我我我我我")
+      - send: ni9/re
+        assert: eq(cand[1].text, "你")
+      - send: niR
+        assert: eq(cand[1].text, "你")
+      - send: ni9R
+        assert: eq(cand[1].text, "你")
+      - send: niR9
+        assert: eq(cand[1].text, "你")
+      - send: niRE
+        assert: eq(cand[1].text, "你")
+      - send: ni9RE
+        assert: eq(cand[1].text, "你")
+      - send: niR9E
+        assert: eq(cand[1].text, "你")
+      - send: niRE9
+        assert: eq(cand[1].text, "你")
+      # First and second auxiliary-code group.
+      - send: zl/ta
+        assert: eq(cand[1].text, "在")
+      - send: zl/ut
+        assert: eq(cand[1].text, "在")
+      - send: zl0/ut
+        assert: eq(cand[1].text, "在")
+      - send: zlUT
+        assert: eq(cand[1].text, "在")
+      - send: zl0UT
+        assert: eq(cand[1].text, "在")
+      - send: zlU0T
+        assert: eq(cand[1].text, "在")
+      - send: zlUT0
+        assert: eq(cand[1].text, "在")
+      - send: zl/u
+        assert: eq(cand[1].text, "在")
+      - send: zl0/u
+        assert: eq(cand[1].text, "在")
+      - send: zlU
+        assert: eq(cand[1].text, "在")
+      - send: zl0U
+        assert: eq(cand[1].text, "在")
+      - send: zlU0
+        assert: eq(cand[1].text, "在")
 
   indirect-auxiliary-code-pinyin:
     patch:
