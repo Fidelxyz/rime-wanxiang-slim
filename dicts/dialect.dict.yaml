@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/fangyan.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/fangyan.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: dialect
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 #北方方言-晋方言-大包片-大同小片
@@ -347,3 +347,6 @@ sort: by_weight
 便靓正	biàn;jb liàng;ae zhèng;fs
 唔够靓仔	wú;dd gòu;gl liàng;ae zǎi;jh
 最靓嘅猪腩肉	zuì;or liàng;ae kǎi;dd zhū;mo nǎn;vg ròu;mj
+都睇唔清	dōu;qt dì;qt wú;dd qīng;kv
+#中原
+跍蹲	kū;pc dūn;pk

@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/zi.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/zi.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: chars
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 啊	a;dz	759839
@@ -3527,6 +3527,7 @@ sort: by_weight
 常	cháng;sr	36860
 长	cháng;pc	36122
 场	chǎng;ge	14815
+场	cháng;ge	5159
 尝	cháng;sb	2836
 唱	chàng;do	2779
 厂	chǎng;xc	2027
@@ -3572,7 +3573,6 @@ sort: by_weight
 淐	chāng;ko	168
 悵	chàng;hp	167
 焻	chàng;co	166
-场	cháng;ge	159
 琩	chāng;no	154
 倘	cháng;js	152
 倡	chāng;jo	149
@@ -9652,16 +9652,16 @@ sort: by_weight
 富	fù;wq	2828
 福	fú;fq	2545
 负	fù;xo	2417
+付	fù;jk	1831
 副	fù;fp	1391
 幅	fú;rq	1233
 符	fú;rk	1216
+辅	fǔ;yn	929
 夫	fū;hf	811
 父	fù;hb	770
 肤	fū;vh	759
 妇	fù;bb	754
 腐	fǔ;xj	735
-付	fù;jk	731
-辅	fǔ;yn	729
 佛	fú;jt	718
 腹	fù;vh	712
 覆	fù;vh	710
@@ -12216,9 +12216,9 @@ sort: by_weight
 汉	hàn;kr	4039
 韩	hán;ng	3958
 寒	hán;ww	3878
-函	hán;am	2314
+喊	hǎn;dd	2314
 汗	hàn;ke	2198
-喊	hǎn;dd	704
+函	hán;am	704
 涵	hán;km	668
 罕	hǎn;we	656
 撼	hàn;uh	622
@@ -12546,6 +12546,7 @@ sort: by_weight
 豪	háo;gj	2631
 毫	háo;gv	2368
 耗	hào;av	1534
+薅	hāo;lk	1424
 浩	hào;kd	690
 皓	hào;ud	586
 蒿	hāo;lg	570
@@ -12558,7 +12559,6 @@ sort: by_weight
 灏	hào;kw	494
 昊	hào;om	453
 郝	hǎo;gt	440
-薅	hāo;lk	424
 颢	hào;ow	400
 貉	háo;ms	393
 嗥	háo;dn	372
@@ -17551,6 +17551,7 @@ sort: by_weight
 僦	jiù;jo	329
 氿	jiǔ;kk	314
 㠇	jiù;vo	304
+蹴	jiù;po	301
 舊	jiù;lp	262
 柾	jiù;es	245
 糾	jiū;ii	230
@@ -26185,6 +26186,7 @@ sort: by_weight
 鿭	nǐ;zx	23
 觬	ní;xp	23
 淣	ní;kp	23
+祢	nǐ;fy	2
 秜	ní;xv	1
 誽	nì;sp	1
 愵	nì;hw	1
@@ -27948,12 +27950,12 @@ sort: by_weight
 偏	piān;ji	15400
 篇	piān;ri	15092
 片	piān;ap	14892
-便	pián;jb	14594
 骗	piàn;ni	8829
+骈	pián;nl	5390
+便	pián;jb	4594
+谝	piǎn;si	1351
 翩	piān;mz	566
-骈	pián;nl	390
 騙	piàn;ni	357
-谝	piǎn;si	351
 胼	pián;vl	333
 蹁	pián;pi	276
 犏	piān;qi	230
@@ -28574,6 +28576,7 @@ sort: by_weight
 器	qì;dd	19132
 齐	qí;qq	11441
 起	qǐ;pv	10868
+骑	qí;nz	9749
 祁	qí;ft	1946
 期	qī;zv	933
 戚	qī;ny	926
@@ -28583,7 +28586,6 @@ sort: by_weight
 启	qǐ;md	811
 弃	qì;bl	799
 旗	qí;lh	767
-骑	qí;nz	749
 棋	qí;eh	746
 欺	qī;ze	727
 歧	qí;sc	645
@@ -40283,11 +40285,11 @@ sort: by_weight
 𪂼	xiāng;ex	1
 𣚺	xiàng;fk	1
 小	xiǎo;yx	305330
-效	xiào;ah	3542
+笑	xiào;rm	39452
+效	xiào;ah	13542
 消	xiāo;kv	3305
 校	xiào;eb	3238
 销	xiāo;zv	2582
-笑	xiào;rm	2452
 晓	xiǎo;op	781
 肖	xiào;yv	741
 孝	xiào;qh	703
@@ -45594,11 +45596,11 @@ sort: by_weight
 预	yù;iw	16664
 雨	yǔ;tv	16330
 玉	yù;ni	10705
-育	yù;bv	1602
+余	yú;jx	1602
 域	yù;gf	1521
 鱼	yú;wv	1444
 遇	yù;qu	1371
-余	yú;jx	935
+育	yù;bv	935
 与	yù;ff	927
 娱	yú;bm	776
 予	yǔ;iv	757
@@ -46271,6 +46273,7 @@ sort: by_weight
 园	yuán;rp	3489
 愿	yuàn;xh	3314
 圆	yuán;ro	1188
+媛	yuán;br	1120
 援	yuán;ur	747
 怨	yuàn;lh	742
 苑	yuàn;lz	729
@@ -46328,7 +46331,6 @@ sort: by_weight
 轅	yuán;yt	133
 鋺	yuǎn;zz	133
 圜	yuán;rt	124
-媛	yuán;br	120
 猨	yuán;mr	115
 囦	yuān;rk	111
 謜	yuán;sy	106

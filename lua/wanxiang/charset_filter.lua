@@ -22,6 +22,7 @@
 ---@field charset_filter_state CharsetFilterState?
 
 local utils = require("utils.utils")
+local file_utils = require("utils.file")
 
 ---Whether any character of `db_attr` is a key in `config_base_set`.
 ---@param db_attr string
@@ -108,7 +109,7 @@ function M.init(env)
     assert(rime_config)
 
     local charset_db = rime_api.get_distribution_code_name():lower() ~= "weasel"
-            and utils.get_filename_with_fallback("lua/data/charset.reverse.bin")
+            and file_utils.resolve_data_file("lua/data/charset.reverse.bin")
         or "lua/data/charset.reverse.bin"
 
     ---@type CharsetFilter[]
