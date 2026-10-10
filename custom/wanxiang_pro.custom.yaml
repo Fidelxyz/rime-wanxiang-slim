@@ -25,6 +25,12 @@ patch:
       #- wanxiang_algebra:/自然码提权
       #- wanxiang_algebra:/小鹤双拼提权
 
+  # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
+  #menu/page_size: 6
+
+  # 关闭自动造词。
+  #user_dict_appender/enable_auto_phrase: false
+
   # 使用非默认的自定义短语词库，位于用户目录下同名 user_custom_phrase.txt。
   #custom_phrase/user_dict: user_custom_phrase
 
@@ -32,13 +38,7 @@ patch:
   #translator/packs/+:
   #- userdict
 
-  # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
-  menu/page_size: 6
-
-  # 自动无词频造词（默认开启）。
-  # user_dict_appender/enable_auto_phrase: true
-
-  # [For Weasel 小狼毫] 前端图标。
-  # schema/+:
-  #   icon: "icons/zhong.ico"
-  #   ascii_icon: "icons/ying.ico"
+  # [Weasel 小狼毫] 前端图标。
+  #schema/+:
+  #  icon: "icons/zh.ico"
+  #  ascii_icon: "icons/en.ico"
