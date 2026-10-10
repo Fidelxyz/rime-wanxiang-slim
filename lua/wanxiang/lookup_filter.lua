@@ -496,6 +496,7 @@ function F.init(env)
             local source_val = sources_list:get_value_at(i)
             local source = source_val and source_val:get_string()
             if source ~= "aux_code" and source ~= "dictionary" then
+                log.warning(("lookup_filter: unknown source: %s"):format(source))
                 goto continue
             end
             ---@cast source LookupSource
@@ -537,6 +538,8 @@ function F.init(env)
                 stroke_projection = Projection()
                 stroke_projection:load(stroke_rules)
             end
+        else
+            log.warning("lookup_filter: dictionary source requires a non-empty dictionary name")
         end
     end
 

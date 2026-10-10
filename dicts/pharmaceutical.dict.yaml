@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/yaopin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/yaopin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: pharmaceutical
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 阿咖片	ā;ek kā;kk piàn;pv	10
@@ -65,6 +65,7 @@ sort: by_weight
 强肾片	qiáng;gi shèn;lo piàn;pv	10
 清肝片	qīng;do gān;og piàn;pv	10
 青果片	qīng;fo guǒ;tm piàn;pv	10
+清化饮	qīng;do huà;rb yǐn;uq	84
 清火片	qīng;do huǒ;br,rb piàn;pv	10
 清降片	qīng;do jiàng;ef piàn;pv	10
 清解片	qīng;do jiě;dn piàn;pv	10
@@ -118,7 +119,10 @@ sort: by_weight
 阿帕他胺	ā;ek pà;jb tā;ry àn;on	10
 阿帕替尼	ā;ek pà;jb tì;fo ní;ub	10
 阿思尼布	ā;ek sī;tx ní;ub bù;uj	10
-阿昔替尼	ā;ek xī;co tì;fo ní;ub	10
+阿昔洛韦	ā;ek xī;co luò;dk wéi;fv	60
+阿西美辛	ā;ek xī;ak,wk měi;yd xīn;lu	4
+阿昔莫司	ā;ek xī;co mò;cd sī;vk	84
+阿昔替尼	ā;ek xī;co tì;fo ní;ub	212
 艾伏尼布	ài;cx fú;rq ní;ub bù;uj	10
 埃克替尼	āi;tu kè;ux,ge tì;fo ní;ub	10
 埃普奈明	āi;tu pǔ;bo nài;du míng;oo	10
@@ -259,6 +263,7 @@ sort: by_weight
 脑心清片	nǎo;ox xīn;dd qīng;do piàn;pv	10
 脑血康片	nǎo;ox xuè;pm kāng;gl piàn;pv	10
 脑血栓片	nǎo;ox xuè;pm shuān;mw piàn;pv	10
+尼可刹米	ní;ub kě;dk shā;xd mǐ;bm	22
 尼拉帕利	ní;ub lā;fl pà;jb lì;hd	10
 尼洛替尼	ní;ub luò;dk tì;fo ní;ub	10
 尿路通片	niào;uu lù;zk tōng;zy piàn;pv	10
@@ -345,6 +350,7 @@ sort: by_weight
 西达本胺	xī;ak,wk dá;zd běn;ma àn;on	10
 仙灵脾片	xiān;ru líng;eh pí;ou piàn;pv	10
 消癌平片	xiāo;do ái;bu píng;au piàn;pv	10
+小接骨丹	xiǎo;lb jiē;fn gǔ;go dān;kd	76
 消咳喘片	xiāo;do ké;kr chuǎn;ke piàn;pv	10
 消渴灵片	xiāo;do kě;dr líng;eh piàn;pv	10
 消渴平片	xiāo;do kě;dr píng;au piàn;pv	10
@@ -423,6 +429,7 @@ sort: by_weight
 阿司匹林片	ā;ek sī;vk pǐ;ke lín;mm piàn;pv	10
 阿司匹林散	ā;ek sī;vk pǐ;ke lín;mm sàn;cw	10
 阿替洛尔片	ā;ek tì;fo luò;dk ěr;dx piàn;pv	10
+阿维A胶囊	ā;ek wéi;sv a; jiāo;of náng;gy	11
 阿魏八味丸	ā;ek wèi;hg bā;pn wèi;kw wán;jd	10
 阿魏化痞膏	ā;ek wèi;hg huà;rb pǐ;bk gāo;wo	10
 阿魏酸钠片	ā;ek wèi;hg suān;yw nà;jn piàn;pv	10
@@ -1207,7 +1214,7 @@ sort: by_weight
 复方贝母片	fù;pw fāng;wv bèi;kr mǔ;md piàn;pv	10
 复方贝母散	fù;pw fāng;wv bèi;kr mǔ;md sàn;cw	10
 复方薄荷酊	fù;pw fāng;wv bò;cc he;ck dīng;yd	10
-复方薄荷脑	fù;pw fāng;wv bò;cc hé;ck nǎo;ox	10
+复方薄荷脑	fù;pw fāng;wv bò;cc he;ck nǎo;ox	10
 复方补骨脂	fù;pw fāng;wv bǔ;pb gǔ;go zhī;oo	10
 复方草玉梅	fù;pw fāng;wv cǎo;cu yù;wd méi;mm	10
 复方茶丹片	fù;pw fāng;wv chá;cm dān;kd piàn;pv	10
@@ -5710,7 +5717,7 @@ sort: by_weight
 复方黄芩洗剂	fù;pw fāng;wv huáng;cb qín;cv xǐ;de jì;qd	10
 复方黄松湿巾	fù;pw fāng;wv huáng;cb sōng;mg shī;dy jīn;kl	10
 复方灰黄霉素	fù;pw fāng;wv huī;uh huáng;cb méi;ym sù;fx	10
-复方鸡内金片	fù;pw fāng;wv jī;yn nà;kr jīn;rb piàn;pv	10
+复方鸡内金片	fù;pw fāng;wv jī;yn nèi;kr jīn;rb piàn;pv	10
 复方己酸睾酮	fù;pw fāng;wv jǐ;kv suān;yw gāo;pg tóng;yk	10
 复方积雪草片	fù;pw fāng;wv jī;hv xuě;ye cǎo;cu piàn;pv	10
 复方鸡血藤膏	fù;pw fāng;wv jī;yn xuè;pm téng;cu gāo;wo	10
@@ -7682,7 +7689,9 @@ sort: by_weight
 双料喉风含片	shuāng;yy liào;md hóu;ku fēng;jx hán;rk piàn;pv	10
 双氯非那胺片	shuāng;yy lǜ;qu fēi;ls nà;ve àn;on piàn;pv	10
 双氯芬酸钾片	shuāng;yy lǜ;qu fēn;cf suān;yw jiǎ;jj piàn;pv	10
+双氯芬酸钾栓	shuāng;yy lǜ;qu fēn;cf suān;yw jiǎ;jj shuān;mw	10
 双氯芬酸钠片	shuāng;yy lǜ;qu fēn;cf suān;yw nà;jn piàn;pv	10
+双氯芬酸钠栓	shuāng;yy lǜ;qu fēn;cf suān;yw nà;jn shuān;mw	10
 双嘧啶混悬液	shuāng;yy mì;ku dìng;kz hùn;db xuán;qx yè;dw	10
 双扑伪麻胶囊	shuāng;yy pū;fb wěi;rw má;gm jiāo;of náng;gy	10
 双扑伪麻颗粒	shuāng;yy pū;fb wěi;rw má;gm kē;gy lì;ml	10
@@ -8070,7 +8079,7 @@ sort: by_weight
 小儿和胃消食	xiǎo;lb ér;pv hé;hk wèi;to xiāo;do shí;rg	10
 小儿化毒胶囊	xiǎo;lb ér;pv huà;rb dú;fm jiāo;of náng;gy	10
 小儿化滞健脾	xiǎo;lb ér;pv huà;rb zhì;dj jiàn;ry pí;ou	10
-小儿鸡内金散	xiǎo;lb ér;pv jī;yn nà;kr jīn;rb sàn;cw	10
+小儿鸡内金散	xiǎo;lb ér;pv jī;yn nèi;kr jīn;rb sàn;cw	10
 小儿健脾化积	xiǎo;lb ér;pv jiàn;ry pí;ou huà;rb jī;hv	10
 小儿健脾止泻	xiǎo;lb ér;pv jiàn;ry pí;ou zhǐ;lb,la,ba xiè;dy	10
 小儿健胃糖浆	xiǎo;lb ér;pv jiàn;ry wèi;to táng;mk jiāng;lu	10
@@ -9273,7 +9282,7 @@ sort: by_weight
 复方鳖甲软肝片	fù;pw fāng;wv biē;xy jiǎ;ol,tl ruǎn;iq gān;og piàn;pv	10
 复方丙谷胺胶囊	fù;pw fāng;wv bǐng;an gǔ;bk àn;on jiāo;of náng;gy	10
 复方薄荷滴鼻液	fù;pw fāng;wv bò;cc he;ck dī;dg bí;zw yè;dw	10
-复方薄荷脑软膏	fù;pw fāng;wv bò;cc hé;ck nǎo;ox ruǎn;iq gāo;wo	10
+复方薄荷脑软膏	fù;pw fāng;wv bò;cc he;ck nǎo;ox ruǎn;iq gāo;wo	10
 复方薄荷油滴鼻	fù;pw fāng;wv bò;cc he;ck yóu;dy dī;dg bí;zw	10
 复方菠萝蛋白酶	fù;pw fāng;wv bō;cp luó;cx dàn;zi bái;po méi;ym	10
 复方补骨脂颗粒	fù;pw fāng;wv bǔ;pb gǔ;go zhī;oo kē;gy lì;ml	10
@@ -9877,7 +9886,7 @@ sort: by_weight
 结合雌激素乳膏	jié;sk hé;rk cí;vv jī;dw sù;fx rǔ;vv gāo;wo	10
 结合雌激素软膏	jié;sk hé;rk cí;vv jī;dw sù;fx ruǎn;iq gāo;wo	10
 解肌宁嗽口服液	jiě;dn jī;oj níng;bd sòu;kq kǒu;la fú;oy yè;dw	10
-芥子气磷混合剂	jiè;cj zǐ;la qì;pv lín;uf hùn;db hé;rk jì;qd	10
+芥子气磷混合剂	jiè;cj zi;la qì;pv lín;uf hùn;db hé;rk jì;qd	10
 金邦前列通胶囊	jīn;rb bāng;fe qián;bd liè;dd tōng;zy jiāo;of náng;gy	10
 金贝痰咳清颗粒	jīn;rb bèi;kr tán;bh ké;kr qīng;do kē;gy lì;ml	10
 金参润喉口服液	jīn;rb cān;sp rùn;dw hóu;ku kǒu;la fú;oy yè;dw	10
@@ -10820,7 +10829,7 @@ sort: by_weight
 小儿风热清合剂	xiǎo;lb ér;pv fēng;jx rè;fh qīng;do hé;rk jì;qd	10
 小儿风热清颗粒	xiǎo;lb ér;pv fēng;jx rè;fh qīng;do kē;gy lì;ml	10
 小儿复方贝诺酯	xiǎo;lb ér;pv fù;pw fāng;wv bèi;kr nuò;yk zhǐ;yo	10
-小儿复方鸡内金	xiǎo;lb ér;pv fù;pw fāng;wv jī;yn nà;kr jīn;rb	10
+小儿复方鸡内金	xiǎo;lb ér;pv fù;pw fāng;wv jī;yn nèi;kr jīn;rb	10
 小儿复方四维亚	xiǎo;lb ér;pv fù;pw fāng;wv sì;ke wéi;sv yà;ay	10
 小儿敷脐止泻散	xiǎo;lb ér;pv fū;fw qí;oq zhǐ;lb,la,ba xiè;dy sàn;cw	10
 小儿腹泻宁糖浆	xiǎo;lb ér;pv fù;ow xiè;dy níng;bd táng;mk jiāng;lu	10

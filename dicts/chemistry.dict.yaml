@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v17.9.2/dicts/huaxue.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/huaxue.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: chemistry
-version: "17.9.2"
+version: "18.0.15"
 sort: by_weight
 ...
 锕铀铅	ā;jk yóu;jy qiān;jk	90
@@ -1218,6 +1218,7 @@ sort: by_weight
 铈原子	shì;jj yuán;ix zǐ;la	84
 叔丁苯	shū;uy dīng;al běn;cb	288
 双氯酚	shuāng;yy lǜ;qu fēn;yf	236
+双氯芬	shuāng;yy lǜ;qu fēn;cf	197
 水锑矾	shuǐ;ln tī;jd fán;uf	45
 水钨华	shuǐ;ln wū;jw huá;ru	38
 水铀矾	shuǐ;ln yóu;jy fán;uf	45
@@ -6660,6 +6661,7 @@ sort: by_weight
 活性氧化镁	huó;du xìng;xu yǎng;qy huà;rb měi;jd	10
 活性氧化铜	huó;du xìng;xu yǎng;qy huà;rb tóng;jk	10
 活性氧化锌	huó;du xìng;xu yǎng;qy huà;rb xīn;jx	10
+季铵化合物	jì;hz ǎn;jn huà;rb hé;rk wù;nw	10
 饥饿性酮症	jī;uj è;uw xìng;xu tóng;yk zhèng;bv	10
 己二醇聚酯	jǐ;kv èr;aa chún;yz jù;eu zhǐ;yo	10
 己二烯雌酚	jǐ;kv èr;aa xī;hj cí;vv fēn;yf	12
@@ -10753,7 +10755,7 @@ sort: by_weight
 丙烯酸酯夹板	bǐng;an xī;hj suān;yw zhǐ;yo jiā;ar bǎn;my	10
 丙烯酸酯甲冠	bǐng;an xī;hj suān;yw zhǐ;yo jiǎ;ol,tl guān;bc	10
 丙烯酸酯磨钻	bǐng;an xī;hj suān;yw zhǐ;yo mó;gu zuān;jv	10
-丙烯酸酯填塞	bǐng;an xī;hj suān;yw zhǐ;yo tián;tb sāi;bt	10
+丙烯酸酯填塞	bǐng;an xī;hj suān;yw zhǐ;yo tián;tb sè;bt	10
 丙烯酰胺中毒	bǐng;an xī;hj xiān;ye àn;on zhòng;kl dú;fm	10
 丙烯酰芬太尼	bǐng;an xī;hj xiān;ye fēn;cf tài;dd ní;ub	10
 丙烯酰甘氨酸	bǐng;an xī;hj xiān;ye gān;ca ān;qn suān;yw	10
@@ -13049,7 +13051,7 @@ sort: by_weight
 六氟锑酸三碘	liù;wb fú;qf tī;jd suān;yw sān;ae diǎn;ub	10
 六氟乙酰丙酮	liù;wb fú;qf yǐ;vv xiān;ye bǐng;an tóng;yk	10
 硫化铵水溶液	liú;ui huà;rb ǎn;jn shuǐ;ln róng;dg yè;dw	10
-硫化钠薄荷脑	liú;ui huà;rb nà;jn bò;cc hé;ck nǎo;ox	10
+硫化钠薄荷脑	liú;ui huà;rb nà;jn bò;cc he;ck nǎo;ox	10
 硫化钠高位槽	liú;ui huà;rb nà;jn gāo;wk wèi;rl cáo;mo	12
 硫化钠溶解槽	liú;ui huà;rb nà;jn róng;dg jiě;dn cáo;mo	12
 硫化氢分析盒	liú;ui huà;rb qīng;qj fēn;bd xī;mj hé;rm	10
@@ -14000,9 +14002,6 @@ sort: by_weight
 双胍辛乙酸盐	shuāng;yy guā;og xīn;lu yǐ;vv suān;yw yán;tm	10
 双硅酸盐矿物	shuāng;yy guī;ut suān;yw yán;tm kuàng;ug wù;nw	10
 双链核糖核酸	shuāng;yy liàn;ji hé;mr táng;mk hé;mr suān;yw	10
-双氯芬酸钾栓	shuāng;yy lǜ;qu fēn;cf suān;yw jiǎ;jj shuān;mw	10
-双氯芬酸钠栓	shuāng;yy lǜ;qu fēn;cf suān;yw nà;jn shuān;mw	10
-双氯酚酸钠栓	shuāng;yy lǜ;qu fēn;yf suān;yw nà;jn shuān;mw	10
 双氯青霉素钠	shuāng;yy lǜ;qu qīng;fo méi;ym sù;fx nà;jn	10
 双氰乙基苯胺	shuāng;yy qíng;qo yǐ;vv jī;ct běn;cb àn;on	10
 双氰乙氧基苯	shuāng;yy qíng;qo yǐ;vv yǎng;qy jī;ct běn;cb	10
@@ -17509,5 +17508,5 @@ sort: by_weight
 过氧化物和超氧化物	guò;zc yǎng;qy huà;rb wù;nw hé;hk chāo;tk yǎng;qy huà;rb wù;nw	10
 水印辊骨架二氧化锰	shuǐ;ln yìn;pe gǔn;ib gǔ;go jià;lm èr;aa yǎng;qy huà;rb měng;jm	10
 新制氢氧化铜悬浊液	xīn;lj zhì;nd qīng;qj yǎng;qy huà;rb tóng;jk xuán;qx zhuó;di yè;dw	10
-椰油酰胺丙基甜菜碱	yē;me yóu;dy xiān;ye àn;on bǐng;an jī;ct tián;ug cài;cc jiǎn;uk	yē yóu xiān àn bǐng jī tián cài jiǎn	1
-月桂醇聚醚硫酸酯钠	yuè;ke guì;mt chún;yz jù;eu mí;ym liú;ui suān;yw zhǐ;yo nà;jn	yuè guì chún jù mí liú suān zhǐ nà	1
+椰油酰胺丙基甜菜碱	yē;me yóu;dy xiān;ye àn;on bǐng;an jī;ct tián;ug cài;cc jiǎn;uk	1
+月桂醇聚醚硫酸酯钠	yuè;ke guì;mt chún;yz jù;eu mí;ym liú;ui suān;yw zhǐ;yo nà;jn	1
