@@ -1,6 +1,13 @@
 ---Display version information about the input schema and Rime when the user types "/version".
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
+---@class VersionDisplayerConfig
+---@field enabled boolean
+
+---@diagnostic disable-next-line: duplicate-type
+---@class Env
+---@field version_displayer_config VersionDisplayerConfig?
+
 local meta = require("meta")
 
 ---Pinyin schema markers to schema names mapping. The markers are defined in the algebra of each schema.
@@ -69,10 +76,33 @@ local function get_schema(env, markers_to_schemas)
     end
 end
 
+local T = {}
+
+---@param env Env
+function T.init(env)
+    local rime_config = env.engine.schema.config
+    assert(rime_config)
+
+    env.version_displayer_config = {
+        enabled = rime_config:get_bool("command/enabled") == true,
+    }
+end
+
+---@param env Env
+function T.fini(env)
+    env.version_displayer_config = nil
+end
+
 ---@param input string
 ---@param segment Segment
 ---@param env Env
-local function translator(input, segment, env)
+function T.func(input, segment, env)
+    local config = env.version_displayer_config
+    assert(config)
+    if not config.enabled then
+        return
+    end
+
     if input == "/version" then
         local messages = {
             ("%s – %s"):format(env.engine.schema.schema_name, meta.VERSION),
@@ -97,4 +127,4 @@ local function translator(input, segment, env)
     end
 end
 
-return translator
+return T

@@ -80,6 +80,11 @@ deploy:
       # Unicode
       - send: U4f60
         assert: "eq(cand[1].text, '你') and eq(cand[1].comment, 'U4F60') and eq(cand[2].text, '\U0004F600') and eq(cand[2].comment, 'U4F60~0')"
+      # Commands
+      - send: /version
+        assert: cand[1].text:find("万象拼音精简版〔基础版 Base〕", 1, true) ~= nil
+      - send: /pinyin
+        assert: eq(cand[1].text, "已切换至〔全拼〕方案，请重新部署。")
 
   tone-pinyin-code:
     options:
@@ -223,6 +228,15 @@ deploy:
         assert: not has_cand("你好")
       - send: hao
         assert: has_cand("好")
+
+  command-disabled:
+    patch:
+      command/enabled: false
+    tests:
+      - send: /version
+        assert: eq(#cand, 0)
+      - send: /pinyin
+        assert: eq(#cand, 0)
 
   schema-pinyin:
     patch:
