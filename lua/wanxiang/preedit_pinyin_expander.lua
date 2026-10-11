@@ -151,15 +151,7 @@ function F.func(input, env)
     assert(config)
 
     local context = env.engine.context
-    local is_tone_pinyin = context:get_option("tone_pinyin_code")
     local is_toneless_pinyin = context:get_option("toneless_pinyin_code")
-
-    if not is_tone_pinyin and not is_toneless_pinyin then
-        for cand in input:iter() do
-            yield(cand)
-        end
-        return
-    end
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
@@ -183,6 +175,13 @@ function F.func(input, env)
         yield(cand)
         ::continue::
     end
+end
+
+---@param env Env
+---@return boolean
+function F.tags_match(_, env)
+    local context = env.engine.context
+    return context:get_option("tone_pinyin_code") or context:get_option("toneless_pinyin_code")
 end
 
 return F
