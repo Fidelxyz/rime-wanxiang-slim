@@ -55,6 +55,7 @@ package_schema_base() {
         --include='install.*' \
         --exclude='wanxiang_pro.schema.yaml' \
         --exclude='pnpm-lock.yaml' \
+        --exclude='wanxiang_syllables.dict.yaml' \
         --include="*.yaml" \
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
@@ -97,6 +98,7 @@ package_schema_pro() {
         --include='install.*' \
         --exclude='wanxiang.schema.yaml' \
         --exclude='pnpm-lock.yaml' \
+        --exclude='wanxiang_syllables.dict.yaml' \
         --include="*.yaml" \
         --exclude='*' \
         "${root_dir}/" "${out_dir}/"
@@ -137,6 +139,11 @@ package_schema() {
     else
         out_dir="${dist_dir}/rime-wanxiang-${schema_name}-fuzhu"
         package_schema_pro "${schema_name}" "${out_dir}"
+    fi
+
+    if [[ "${include_dicts}" == "true" ]]; then
+        cp "${root_dir}/wanxiang_syllables.dict.yaml" "${out_dir}/wanxiang_syllables.dict.yaml"
+        python3 "${script_dir}/generate_syllable_dict.py" "${out_dir}"
     fi
 
     if [[ "${archive}" == "true" ]]; then

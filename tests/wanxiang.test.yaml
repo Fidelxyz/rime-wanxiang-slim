@@ -238,6 +238,59 @@ deploy:
       - send: /pinyin
         assert: eq(#cand, 0)
 
+  user-dict:
+    patch:
+      translator/enable_user_dict: false  # Disable automatic learning so tested user phrases come from manual phrase creation.
+      user_dict/initial_quality: 10  # Keep user phrases visible when identical system candidates are deduplicated.
+      candidate_type_marker/types/user_phrase: "[user_phrase]"
+      recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"
+    tests:
+      # English User Dictionary
+      - send: notaword
+        assert: cand[1] == nil or cand[1].text ~= "notaword"
+      - send: "``notaword"
+        assert: eq(cand[1].text, "notaword")
+      - send: "``notaword "
+        assert: eq(commit, "notaword")
+      - send: notaword
+        assert: eq(cand[1].text, "notaword")
+      # Chinese User Dictionary
+      - send: "ni'hao"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "")
+      - send: "``ni'hao{2}"
+        assert: eq(commit, "你好")
+      - send: "ni'hao"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+      - send: "ni9'hao9"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+      - send: "n'h"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+      - send: "ni9'h"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+
+  user-dict-translator:
+    patch:
+      candidate_type_marker/types/user_phrase: "[user_phrase]"
+      engine/translators:
+        - script_translator@user_dict_appender
+        - lua_translator@*wanxiang.user_dict*T
+      recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"
+    tests:
+      # An empty user dictionary must not emit system candidates.
+      - send: "ni'hao"
+        assert: "#cand == 0"
+      # Populate and query the dictionary without a system translator.
+      - send: "``ni'hao{2}"
+        assert: eq(commit, "你好")
+      - send: "ni'hao"
+        assert: eq(cand[1].text, "你好")
+      # Match a user phrase at the start of longer input.
+      - send: "ni'hao'ma"
+        assert: eq(cand[1].text, "你好") and eq(cand[1].comment, "[user_phrase]")
+      # A populated user dictionary must not emit unrelated system candidates.
+      - send: "zhe'shi"
+        assert: "#cand == 0"
+
   schema-pinyin:
     patch:
       translator/enable_user_dict: false

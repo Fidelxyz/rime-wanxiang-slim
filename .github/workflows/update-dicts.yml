@@ -102,6 +102,12 @@ jobs:
             --source "${{ github.workspace }}/upstream" \
             --tag "${{ steps.upstream-latest-tag.outputs.tag }}"
 
+      - name: Generate sparse user dictionary
+        working-directory: ${{ github.event.repository.name }}
+        run: |-
+          python3 scripts/generate_syllable_dict.py . \
+            --tag "${{ steps.upstream-latest-tag.outputs.tag }}"
+
       - name: Sync grammar parameters from upstream
         working-directory: ${{ github.event.repository.name }}
         run: |-

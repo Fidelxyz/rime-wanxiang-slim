@@ -15,6 +15,7 @@ schema:
   dependencies:
     - wanxiang_reverse
     - wanxiang_english
+    - wanxiang_syllables
 
 # 开关
 # reset: 默认状态。未定义时，切换窗口时不会重置到默认状态。
@@ -92,14 +93,14 @@ engine:
     - table_translator@wanxiang_english
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@user_dict_appender  # 手动造词
-    - script_translator@user_dict  # 使用自造词
+    - lua_translator@*wanxiang.user_dict*T  # 使用自造词
   filters:
     - lua_filter@*wanxiang.candidate_code_recorder*F
     - lua_filter@*wanxiang.lookup_filter  # 反查 / 辅助筛选
     - lua_filter@*wanxiang.english_case_formatter  # 智能英文大小写
     - lua_filter@*wanxiang.english_single_letter_promoter  # 单字母英文候选
     - lua_filter@*wanxiang.english_user_dict_appender  # 英文造词
-    - lua_filter@*wanxiang.user_dict_appender  # 手动造词
+    - lua_filter@*wanxiang.user_dict*F  # 手动造词
     - lua_filter@*wanxiang.charset_filter  # 字符集过滤
     - lua_filter@*wanxiang.preedit_pinyin_expander  # 编码区拼音展开（comment_hint_displayer 前）
     - lua_filter@*wanxiang.preedit_tone_displayer  # 声调数字转上标显示
@@ -210,7 +211,8 @@ wanxiang_reverse:
   tips: "〔反查：拆分｜笔画〕"
 
 user_dict:
-  dictionary: wanxiang
+  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
+  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
   user_dict: user_dict
   initial_quality: 2.5
   enable_completion: false
@@ -243,7 +245,8 @@ user_dict_appender:
 
 # 候选置顶
 candidate_pinner:
-  dictionary: wanxiang
+  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
+  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
   user_dict: pinned
   initial_quality: -1
   enable_completion: false

@@ -42,4 +42,5 @@ mkdir -p plum
   echo "install_files: >-"
   echo "  dicts/**/*"
   echo "  opencc/dicts/**/*"
+  echo "  wanxiang_syllables.dict.yaml"
 } > "plum/dicts.recipe.yaml"

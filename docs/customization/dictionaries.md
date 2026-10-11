@@ -66,14 +66,27 @@ patch:
 
 该方法适用于需要**修改方案词库**的情形。
 
-复制方案词库文件 `wanxiang.dict.yaml` 并重命名，并在方案自定义文件 `custom.yaml` 中修改所有引用：
+1. 复制方案词库文件 `wanxiang.dict.yaml` 到原文件旁，并重命名为任意名称。下文以 `your_user_dict.dict.yaml` 为例。
 
-```yaml
-patch:
-  translator/dictionary: your_user_dict
-  user_dict/dictionary: your_user_dict
-  user_dict_appender/dictionary: your_user_dict
-```
+2. 修改 `your_user_dict.dict.yaml` 中的 `import_tables` 词库引用。
+
+3. 在方案自定义文件 `custom.yaml` 中添加补丁：
+
+   ```yaml
+   patch:
+     translator/dictionary: your_user_dict
+     user_dict/prism: your_user_dict
+     candidate_pinner/prism: your_user_dict
+     user_dict_appender/dictionary: your_user_dict
+   ```
+
+4. 修改主词库后，需使用仓库中的脚本同步生成用户目录下的 `wanxiang_syllables.dict.yaml`，然后重新部署：
+
+   ```sh
+   python3 scripts/generate_syllable_dict.py . --dictionary your_user_dict
+   ```
+
+   以后更新该主词库或其引用的词库时，也需重新运行此命令。
 
 ### 扩展词库数据
 
