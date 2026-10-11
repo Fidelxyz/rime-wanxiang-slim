@@ -46,6 +46,13 @@ function T.func(input, segment, env)
         return
     end
 
+    -- Skip if the user dictionary contains no entries.
+    -- Flush pending learning before probing, as native Query does before matching.
+    translator:finish_session()
+    if user_dict:lookup_words("", true, 1).exhausted then
+        return
+    end
+
     local translation = translator:query(input, segment)
     if not translation then
         return
