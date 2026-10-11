@@ -78,6 +78,11 @@ outline: deep
 patch:
   speller/algebra:
     __patch:
+      # 可选笔画拆分编码方案：
+      # - "hspzn"（横 h、竖 s、撇 p、折 z、捺/点 n）
+      # - "hupvd"（横 h、竖 u、撇 p、折 v、捺/点 d）
+      # - "hspvd"（横 h、竖 s、撇 p、折 v、捺/点 d）
+      # - "hslzy"（横 h、竖 s、撇 l、折 z、捺/点 y）
       - wanxiang_algebra:/reverse/hspzn
 ```
 

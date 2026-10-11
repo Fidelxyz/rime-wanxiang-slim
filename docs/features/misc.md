@@ -60,6 +60,18 @@ command:
   enabled: true
 ```
 
+::: tip 禁用 `/` 命令
+
+在方案自定义文件 `custom.yaml` 中添加以下补丁，可禁用 `/` 命令，允许 `/` 直接上屏：
+
+```yaml
+patch:
+  command/enabled: false
+  speller/initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`  # 移除 `/`，允许直接上屏
+```
+
+:::
+
 ## Rime 内建功能
 
 ### 用户词删除

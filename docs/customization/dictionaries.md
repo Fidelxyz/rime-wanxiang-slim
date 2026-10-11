@@ -6,7 +6,7 @@ outline: deep
 
 ## 用户短语
 
-从 `custom` 文件夹下复制 `custom_phrase.txt`（或创建空白文本文件）到**用户目录**根目录后，可在该文件中添加用户短语。
+从 `custom` 文件夹下复制 `custom_phrase.txt`（或创建空白文本文件）到 [Rime **用户目录**](https://github.com/rime/home/wiki/UserData)后，可在该文件中添加用户短语。
 
 一行代表一个用户短语，格式为：`词汇<Tab>编码<Tab>权重`，以制表符分隔。权重为可选项。
 
@@ -21,6 +21,31 @@ outline: deep
 | `\t` | 制表符 |
 | `\\` | 反斜杠 |
 
+### 配置
+
+```yaml
+custom_phrase:
+  dictionary: ""
+  user_dict: custom_phrase
+  db_class: stabledb
+  enable_completion: false
+  enable_sentence: false
+  initial_quality: 99
+```
+
+::: tip 使用其他用户短语文件
+
+如需改用其他用户短语文件，可在方案自定义文件 `custom.yaml` 中添加以下补丁：
+
+```yaml
+patch:
+  custom_phrase/user_dict: user_custom_phrase
+```
+
+以上配置会将用户短语文件改为用户目录下的 `user_custom_phrase.txt`。
+
+:::
+
 ## 自定义主词库
 
 为避免更新时修改被覆盖，不建议直接修改方案的词库文件，而是创建新的自定义词库文件，通过以下其中一种方式添加用户词库。
@@ -29,34 +54,26 @@ outline: deep
 
 该方法适用于**仅追加新词库**的情形。
 
-新建词库文件 `your_user_dict.dict.yaml`，并在 `translator/packs` 项下引入新的词典：
+新建词库文件 `your_user_dict.dict.yaml`，并在方案自定义文件 `custom.yaml` 中 `translator/packs` 项下引入新的词典：
 
-::: code-group
-
-```yaml [wanxiang.custom.yaml]
+```yaml
 patch:
   translator/packs/+:
     - your_user_dict
 ```
 
-:::
-
 ### 方法二：修改方案引用词库
 
 该方法适用于需要**修改方案词库**的情形。
 
-复制方案词库文件 `wanxiang.dict.yaml` 并重命名，并更新所有方案文件中的引用：
+复制方案词库文件 `wanxiang.dict.yaml` 并重命名，并在方案自定义文件 `custom.yaml` 中修改所有引用：
 
-::: code-group
-
-```yaml [wanxiang.custom.yaml]
+```yaml
 patch:
   translator/dictionary: your_user_dict
   user_dict/dictionary: your_user_dict
   user_dict_appender/dictionary: your_user_dict
 ```
-
-:::
 
 ### 扩展词库数据
 

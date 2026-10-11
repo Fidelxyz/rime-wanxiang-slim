@@ -25,3 +25,24 @@ candidate_pinner:
 ## 单字 / 词组优先
 
 在[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)中切换「词组先」/「单字先」选项，控制单字与词组编码重合时优先显示单字或词组候选。
+
+## 自动调频
+
+仅 Base 默认开启。
+
+```yaml
+# 主翻译器
+translator:
+  enable_user_dict: true  # 启用自动调频。
+```
+
+::: tip <Badge type="tip" text="仅 Base" /> 关闭自动调频
+
+在方案自定义文件 `wanxiang.custom.yaml` 中添加以下补丁以关闭自动调频：
+
+```yaml
+patch:
+  translator/enable_user_dict: true
+```
+
+:::

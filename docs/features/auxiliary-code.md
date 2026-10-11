@@ -98,3 +98,18 @@ code_hint:
   # 显示辅助码注释的最大候选词长度。
   max_candidate_length: 1
 ```
+
+## 优化辅助码单字优先级 <Badge type="tip" text="仅 Pro" />
+
+自然码和小鹤双拼方案中，部分编码组合对应的候选字极少，几乎不参与构词。启用优化后，会提升这类编码对应四码字的优先级。
+
+在方案自定义文件 `wanxiang_pro.custom.yaml` 中取消当前方案对应规则的注释，以提升辅助码单字优先级：
+
+```yaml
+patch:
+  speller/algebra:
+    __patch:
+      # 取消当前方案对应规则的注释：
+      - wanxiang_algebra:/自然码提权
+      - wanxiang_algebra:/小鹤双拼提权
+```

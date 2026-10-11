@@ -4,5 +4,6 @@ dist/
 
 # Docs
 node_modules
+.pnpm-store
 docs/.vitepress/dist
 docs/.vitepress/cache

@@ -30,14 +30,14 @@ patch:
   speller/algebra:
     __patch:
       # 取消注释以开启模糊音。具体规则见 wanxiang_algebra.yaml。
-      #- wanxiang_algebra:/模糊音_n_l
-      #- wanxiang_algebra:/模糊音_r_y
-      #- wanxiang_algebra:/模糊音_h_f
-      #- wanxiang_algebra:/模糊音_r_l
-      #- wanxiang_algebra:/模糊音_k_g
-      #- wanxiang_algebra:/模糊音_en_eng
-      #- wanxiang_algebra:/模糊音_in_ing
-      #- wanxiang_algebra:/模糊音_c_ch
-      #- wanxiang_algebra:/模糊音_z_zh
-      #- wanxiang_algebra:/模糊音_s_sh
+      - wanxiang_algebra:/模糊音_n_l
+      - wanxiang_algebra:/模糊音_r_y
+      - wanxiang_algebra:/模糊音_h_f
+      - wanxiang_algebra:/模糊音_r_l
+      - wanxiang_algebra:/模糊音_k_g
+      - wanxiang_algebra:/模糊音_en_eng
+      - wanxiang_algebra:/模糊音_in_ing
+      - wanxiang_algebra:/模糊音_c_ch
+      - wanxiang_algebra:/模糊音_z_zh
+      - wanxiang_algebra:/模糊音_s_sh
 ```
