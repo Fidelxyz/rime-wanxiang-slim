@@ -28,6 +28,9 @@ patch:
   # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
   #menu/page_size: 6
 
+  # 启用自动调频用户词。
+  #translator/enable_user_dict: true
+
   # 关闭自动造词。
   #user_dict_appender/enable_auto_phrase: false
 

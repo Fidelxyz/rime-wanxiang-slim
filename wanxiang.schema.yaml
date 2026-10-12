@@ -234,7 +234,7 @@ user_dict_appender:
   ### 自动造词相关配置 ###
 
   # 启用自动造词。开启后，将自动记录词库中不存在的非句子词条。
-  enable_auto_phrase: true
+  enable_auto_phrase: false
 
 # 候选置顶
 candidate_pinner:

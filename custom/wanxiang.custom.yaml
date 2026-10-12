@@ -20,16 +20,16 @@ patch:
   # 每页候选词数量。由于 7、8、9、0 数字键被声调辅助筛选占用，该选项最大值为 6。
   #menu/page_size: 6
 
-  # 自动调频用户词。
-  #translator/enable_user_dict: true
+  # 关闭自动调频用户词。
+  #translator/enable_user_dict: false
 
   # 启用手动造词。
   #recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"
   #user_dict/enable_user_dict: true
   #user_dict_appender/enable_user_dict: true
 
-  # 关闭自动造词。
-  #user_dict_appender/enable_auto_phrase: false
+  # 启用自动造词。
+  #user_dict_appender/enable_auto_phrase: true
 
   # 禁用 `/` 开头的命令。
   #command/enabled: false
