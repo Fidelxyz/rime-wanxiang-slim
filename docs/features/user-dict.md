@@ -41,7 +41,7 @@ patch:
 
 ## 自动造词
 
-自动记录词库中不存在的**非句子**词条。
+自动记录词库中不存在的**非句子**词条。仅 Pro 默认开启。
 
 ```yaml
 user_dict_appender:
@@ -49,13 +49,13 @@ user_dict_appender:
   enable_auto_phrase: true
 ```
 
-::: tip 关闭自动造词
+::: tip 开启或关闭自动造词
 
-在方案自定义文件 `custom.yaml` 中添加以下补丁以关闭自动造词：
+在方案自定义文件 `custom.yaml` 中添加以下补丁以开启或关闭自动造词：
 
 ```yaml
 patch:
-  user_dict_appender/enable_auto_phrase: false
+  user_dict_appender/enable_auto_phrase: true
 ```
 
 :::
