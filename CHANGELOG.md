@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.1.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.1...v1.1.0-beta.1) (2026-10-14)
+
+
+### Features
+
+* add configuration to toggle slash commands ([09b59f4](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/09b59f4e1934ba3546d6300c883573582b3a6119))
+
+
+### Bug Fixes
+
+* disable auto phrase for base schema ([24f6f8a](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/24f6f8a078097deaf9964ae78e4d574548a485d2))
+* preserve candidate wrappers in display filters ([ba62a34](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/ba62a341bfbfce99131bcef3ea5b3e4bc51229f9))
+
+
+### Performance Improvements
+
+* skip inactive Lua filters through tags_match ([b650988](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b650988829462347c691f56a15430d55e06777a5))
+* skip user phrase and pinned lookup when the user dictionary is empty ([14cdd36](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/14cdd362a3ff1c37a786962eafa4c25a587a3849))
+
 ## [1.0.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.0.0...v1.0.1) (2026-10-10)
 
 
