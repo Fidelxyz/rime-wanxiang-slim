@@ -29,14 +29,13 @@ jobs:
         uses: robinraju/release-downloader@v1
         with:
           repository: rimeinn/mira
-          latest: true
-          fileName: mira-linux-x86_64
+          tag: latest
+          fileName: mira
           out-file-path: tests
 
-      - name: Rename Mira binary
+      - name: Make Mira executable
         working-directory: tests
         run: |
-          mv mira-linux-x86_64 mira
           chmod +x mira
 
       - name: Build
