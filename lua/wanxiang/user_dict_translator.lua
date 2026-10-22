@@ -1,17 +1,13 @@
----Retrieve user-created phrases and format candidates in word-creation mode.
+---Retrieve user-created phrases.
 ---
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
 ---@class UserDictTranslatorState
 ---@field translator ScriptTranslator
 
----@class UserDictAppenderConfig
----@field tips string?
-
 ---@diagnostic disable-next-line: duplicate-type
 ---@class Env
 ---@field user_dict_translator_state UserDictTranslatorState?
----@field user_dict_appender_config UserDictAppenderConfig?
 
 local T = {}
 
@@ -65,53 +61,4 @@ function T.func(input, segment, env)
     end
 end
 
-local F = {}
-
----@param env Env
-function F.init(env)
-    local rime_config = env.engine.schema.config
-    assert(rime_config)
-
-    local tips = rime_config:get_string("user_dict_appender/tips")
-    if tips == "" then
-        tips = nil
-    end
-
-    env.user_dict_appender_config = {
-        tips = tips,
-    }
-end
-
----@param env Env
-function F.fini(env)
-    env.user_dict_appender_config = nil
-end
-
----@param translation Translation
----@param env Env
-function F.func(translation, env)
-    local config = env.user_dict_appender_config
-    assert(config)
-
-    local context = env.engine.context
-    if config.tips then
-        local segment = context.composition:back()
-        if segment then
-            segment.prompt = config.tips
-        end
-    end
-
-    for cand in translation:iter() do
-        if cand.type ~= "sentence" then
-            yield(cand)
-        end
-    end
-end
-
----@param segment Segment
----@return boolean
-function F.tags_match(segment, _)
-    return segment:has_tag("user_dict_appender")
-end
-
-return { T = T, F = F }
+return T

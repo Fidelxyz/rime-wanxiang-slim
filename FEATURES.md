@@ -60,7 +60,8 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 `` `` `` 引导主动造词，支持后触发造词与次选造词。造词模式下添加造词提示并移除整句候选。
 
-- `lua/wanxiang/user_dict.lua`：`T` 在空自造词库时跳过检索，非空时保留原生拼写匹配与调频，仅输出用户词候选；`F` 添加造词提示并过滤整句候选
+- `lua/wanxiang/user_dict_translator.lua`：在空自造词库时跳过检索，非空时保留原生拼写匹配与调频，仅输出用户词候选
+- `lua/wanxiang/user_dict_appender.lua`：添加造词提示并过滤整句候选
 - `wanxiang_syllables.dict.yaml` / `wanxiang_syllables.schema.yaml`：仅含音节表的稀疏词典，供自造词与置顶检索使用；与主词典共用音节 ID 和拼写映射，不查询完整系统词表
 - `scripts/generate_syllable_dict.py`：根据当前主词典及其导入表生成稀疏词典；更改导入表后需重新生成，打包时按各版本词库自动生成
 - `custom/wanxiang_pro.schema.yaml`：用户词配置

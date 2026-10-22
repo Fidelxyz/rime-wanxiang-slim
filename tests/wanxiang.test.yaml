@@ -273,7 +273,7 @@ deploy:
       candidate_type_marker/types/user_phrase: "[user_phrase]"
       engine/translators:
         - script_translator@user_dict_appender
-        - lua_translator@*wanxiang.user_dict*T
+        - lua_translator@*wanxiang.user_dict_translator
       recognizer/patterns/user_dict_appender: "^``[A-Za-z/`']*$"
     tests:
       # An empty user dictionary must not emit system candidates.

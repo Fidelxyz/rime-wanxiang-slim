@@ -286,7 +286,7 @@ deploy:
       candidate_type_marker/types/user_phrase: "[user_phrase]"
       engine/translators:
         - script_translator@user_dict_appender
-        - lua_translator@*wanxiang.user_dict*T
+        - lua_translator@*wanxiang.user_dict_translator
     tests:
       # An empty user dictionary must not emit system candidates.
       - send: "ni'hao"
