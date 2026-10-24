@@ -151,22 +151,14 @@ function F.func(input, env)
     assert(config)
 
     local context = env.engine.context
-    local is_tone_pinyin = context:get_option("tone_pinyin_code")
     local is_toneless_pinyin = context:get_option("toneless_pinyin_code")
-
-    if not is_tone_pinyin and not is_toneless_pinyin then
-        for cand in input:iter() do
-            yield(cand)
-        end
-        return
-    end
 
     for cand in input:iter() do
         local genuine_cand = cand:get_genuine()
 
         -- Skip if candidate is pure English
         if genuine_cand.text:match("^[%a%p%s]+$") then
-            yield(genuine_cand)
+            yield(cand)
             goto continue
         end
 
@@ -180,9 +172,16 @@ function F.func(input, env)
             genuine_cand.preedit = preedit
         end
 
-        yield(genuine_cand)
+        yield(cand)
         ::continue::
     end
+end
+
+---@param env Env
+---@return boolean
+function F.tags_match(_, env)
+    local context = env.engine.context
+    return context:get_option("tone_pinyin_code") or context:get_option("toneless_pinyin_code")
 end
 
 return F
