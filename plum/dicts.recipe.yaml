@@ -8,3 +8,4 @@ recipe:
 install_files: >-
   dicts/**/*
   opencc/dicts/**/*
+  wanxiang_syllables.dict.yaml

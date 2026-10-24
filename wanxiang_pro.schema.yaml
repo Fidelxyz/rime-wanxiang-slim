@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang_pro
   name: 万象拼音精简版〔进阶版 Pro〕
-  version: "1.0.1"  # x-release-please-version
+  version: "1.1.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
@@ -15,6 +15,7 @@ schema:
   dependencies:
     - wanxiang_reverse
     - wanxiang_english
+    - wanxiang_syllables
 
 # 开关
 # reset: 默认状态。未定义时，切换窗口时不会重置到默认状态。
@@ -92,7 +93,7 @@ engine:
     - table_translator@wanxiang_english
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@user_dict_appender  # 手动造词
-    - script_translator@user_dict  # 使用自造词
+    - lua_translator@*wanxiang.user_dict_translator  # 使用自造词
   filters:
     - lua_filter@*wanxiang.candidate_code_recorder*F
     - lua_filter@*wanxiang.lookup_filter  # 反查 / 辅助筛选
@@ -210,7 +211,8 @@ wanxiang_reverse:
   tips: "〔反查：拆分｜笔画〕"
 
 user_dict:
-  dictionary: wanxiang
+  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
+  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
   user_dict: user_dict
   initial_quality: 2.5
   enable_completion: false
@@ -243,7 +245,8 @@ user_dict_appender:
 
 # 候选置顶
 candidate_pinner:
-  dictionary: wanxiang
+  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
+  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
   user_dict: pinned
   initial_quality: -1
   enable_completion: false
@@ -308,6 +311,7 @@ candidate_type_marker:
     sentence: "∞"  # 造句候选，启用 enable_sentence 时生成。
     completion: ""  # 补全候选，启用 enable_completion 时生成。
     pinned: "·"  # 置顶候选，由 candidate_pinner 生成。
+    unicode: ""  # Unicode 输入候选，由 unicode 生成。
     message: "ℹ"  # Lua 脚本产生的信息输出。
 
 # 以词定字
@@ -388,6 +392,10 @@ charset_filter:
       charset: ta
       whitelist: ""
       blacklist: ""
+
+command:
+  # 启用 `/` 开头的命令。
+  enabled: true
 
 ### 按键设置 ###
 

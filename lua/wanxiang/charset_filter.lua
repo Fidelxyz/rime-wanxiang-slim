@@ -245,42 +245,35 @@ function M.func(input, env)
     assert(state)
 
     local context = env.engine.context
-    local seg = context.composition:back()
 
     -- Collect the rules whose switches are currently on.
     ---@type CharsetFilter[]
     local active_rules = {}
-    if #config.filters > 0 and seg and should_filter(seg) then
-        local active_rules_len = 0
-        for _, rule in ipairs(config.filters) do
-            local is_rule_active = rule.options == true
-            ---@cast rule.options string[]
+    local active_rules_len = 0
+    for _, rule in ipairs(config.filters) do
+        local is_rule_active = rule.options == true
+        ---@cast rule.options string[]
 
-            if not is_rule_active then
-                ---@diagnostic disable-next-line: param-type-mismatch
-                for _, option in ipairs(rule.options) do
-                    if context:get_option(option) then
-                        is_rule_active = true
-                        break
-                    end
+        if not is_rule_active then
+            ---@diagnostic disable-next-line: param-type-mismatch
+            for _, option in ipairs(rule.options) do
+                if context:get_option(option) then
+                    is_rule_active = true
+                    break
                 end
             end
+        end
 
-            if is_rule_active then
-                active_rules_len = active_rules_len + 1
-                active_rules[active_rules_len] = rule
-            end
+        if is_rule_active then
+            active_rules_len = active_rules_len + 1
+            active_rules[active_rules_len] = rule
         end
     end
-
-    -- No active rule: pass everything through.
-    local charset_active = #active_rules > 0
 
     for cand in input:iter() do
         local text = cand.text
 
-        -- Filtering disabled: pass through.
-        if not charset_active or text == "" then
+        if text == "" then
             yield(cand)
             goto continue
         end
@@ -298,6 +291,32 @@ function M.func(input, env)
 
         ::continue::
     end
+end
+
+---@param segment Segment
+---@param env Env
+---@return boolean
+function M.tags_match(segment, env)
+    if not should_filter(segment) then
+        return false
+    end
+
+    local config = env.charset_filter_config
+    assert(config)
+
+    local context = env.engine.context
+
+    for _, rule in ipairs(config.filters) do
+        if rule.options == true then
+            return true
+        end
+        for _, option in ipairs(rule.options) do
+            if context:get_option(option) then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 return M
