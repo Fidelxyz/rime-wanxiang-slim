@@ -40,10 +40,10 @@ function F.func(input, env)
 
         -- Skip pure-English candidates.
         if genuine_cand.text:match("^[%a%p%s]+$") then
-            yield(genuine_cand)
+            yield(cand)
         else
             genuine_cand.preedit = map_tone_digits(genuine_cand.preedit)
-            yield(genuine_cand)
+            yield(cand)
         end
     end
 end
