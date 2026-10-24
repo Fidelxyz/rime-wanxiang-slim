@@ -1,4 +1,4 @@
----Display tips and drop sentence candidates in word-creation mode.
+---Display prompts and filter sentence candidates in word-creation mode.
 ---
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
@@ -37,7 +37,6 @@ function F.func(translation, env)
     local config = env.user_dict_appender_config
     assert(config)
 
-    -- Attach the word-creation tip.
     local context = env.engine.context
     if config.tips then
         local segment = context.composition:back()
@@ -47,7 +46,6 @@ function F.func(translation, env)
     end
 
     for cand in translation:iter() do
-        -- Drop sentence candidates.
         if cand.type ~= "sentence" then
             yield(cand)
         end

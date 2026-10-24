@@ -3,6 +3,13 @@
 ---@author amzxyz
 ---@author Fidel Yin <fidel.yin@hotmail.com>
 
+---@class SchemaSwitcherConfig
+---@field enabled boolean
+
+---@diagnostic disable-next-line: duplicate-type
+---@class Env
+---@field schema_switcher_config SchemaSwitcherConfig?
+
 local file = require("utils.file")
 
 local PINYIN_SCHEMAS = {
@@ -121,12 +128,35 @@ local function set_aux_schema(custom_file, schema_name)
     end)
 end
 
+local T = {}
+
+---@param env Env
+function T.init(env)
+    local rime_config = env.engine.schema.config
+    assert(rime_config)
+
+    env.schema_switcher_config = {
+        enabled = rime_config:get_bool("command/enabled") == true,
+    }
+end
+
+---@param env Env
+function T.fini(env)
+    env.schema_switcher_config = nil
+end
+
 ---Rime translator that handles `/`-prefixed schema-switch commands by
 ---rewriting the relevant `*.custom.yaml` files and yielding a status candidate.
 ---@param input string
 ---@param seg Segment
 ---@param env Env
-local function translator(input, seg, env)
+function T.func(input, seg, env)
+    local config = env.schema_switcher_config
+    assert(config)
+    if not config.enabled then
+        return
+    end
+
     if input:sub(1, 1) ~= "/" then
         return
     end
@@ -192,4 +222,4 @@ local function translator(input, seg, env)
     end
 end
 
-return translator
+return T
