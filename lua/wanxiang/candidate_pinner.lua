@@ -232,6 +232,18 @@ function T.func(input, segment, env)
         return
     end
 
+    local user_dict = state.translator.user_dict
+    if not user_dict or not user_dict.loaded then
+        return
+    end
+
+    -- Skip if the user dictionary contains no entries.
+    -- Flush pending learning before probing, as native Query does before matching.
+    state.translator:finish_session()
+    if user_dict:lookup_words("", true, 1).exhausted then
+        return
+    end
+
     -- The dictionary prism maps valid input spellings to the original codes stored in pinned.userdb.
     local translation = state.translator:query(input, segment)
     if not translation then
