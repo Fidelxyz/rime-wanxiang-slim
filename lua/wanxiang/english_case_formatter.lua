@@ -10,16 +10,16 @@
 
 local utils = require("utils.utils")
 
----@param text string
----@param input_code string
+---@param text string The text to format.
+---@param input_code string The input code, starting with an uppercase letter.
 ---@return string
 local function apply_casing(text, input_code)
+    -- If the input code starts with two uppercase letters, convert the text to ALL CAPS.
     if input_code:find("^%u%u") then
         return text:upper()
-    elseif input_code:find("^%u") then
-        return (text:gsub("^%a", string.upper))
     end
-    return text
+    -- If the input code starts with an uppercase letter followed by a lowercase letter, convert the text to Title Case.
+    return (text:gsub("^%a", string.upper))
 end
 
 local F = {}
@@ -41,6 +41,7 @@ function F.func(input, env)
             goto continue
         end
 
+        -- The code is expected to start with an uppercase letter, gauranteed by F.tags_match().
         local new_text = apply_casing(text, code)
         if new_text ~= text then
             local new_cand = Candidate(cand.type, cand.start, cand._end, new_text, cand.comment)
@@ -52,6 +53,13 @@ function F.func(input, env)
 
         ::continue::
     end
+end
+
+---@param env Env
+---@return boolean
+function F.tags_match(_, env)
+    -- Only apply to English phrases that start with an uppercase letter.
+    return env.engine.context.input:find("^%u") ~= nil
 end
 
 return F

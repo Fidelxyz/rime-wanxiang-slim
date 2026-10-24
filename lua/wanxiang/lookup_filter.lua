@@ -612,17 +612,11 @@ function F.func(translation, env)
     local config = env.lookup_filter_config
     assert(config)
 
-    -- `trigger` is ensured to be non-nil in `F.init()`.
     assert(config.trigger)
 
     local input = context.input
     local _, aux_code = split_lookup_input(input, config.trigger, config.bypass_prefix)
-    if not aux_code or aux_code == "" then
-        for cand in translation:iter() do
-            yield(cand)
-        end
-        return
-    end
+    ---@cast aux_code string
 
     local state = env.lookup_filter_state
     assert(state)
@@ -768,6 +762,11 @@ function F.tags_match(segment, env)
     assert(config)
 
     if not config.trigger or next(config.sources) == nil then
+        return false
+    end
+
+    local _, aux_code = split_lookup_input(env.engine.context.input, config.trigger, config.bypass_prefix)
+    if not aux_code or aux_code == "" then
         return false
     end
 
