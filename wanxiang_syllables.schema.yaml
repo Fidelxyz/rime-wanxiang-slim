@@ -1,0 +1,22 @@
+# Rime schema settings
+# encoding: utf-8
+
+# User phrase and pinned candidate retrieval need only user-dictionary entries,
+# but native ScriptTranslator also queries the main dictionary.
+# Using this sparse dictionary avoids searching the full main dictionary.
+#
+# Its sole placeholder entry has a code containing exactly the same syllables
+# as the main dictionary, including its imported tables. Rime assigns IDs to
+# sorted unique syllables, so both dictionaries have identical syllable IDs.
+#
+# Both retrieval paths use this sparse dictionary and reuse the main schema's
+# prism. Identical syllable IDs let them use the main schema's spelling rules
+# to look up user-dictionary entries.
+
+schema:
+  schema_id: wanxiang_syllables
+  version: "1.1.0"  # x-release-please-version
+
+translator:
+  dictionary: wanxiang_syllables
+  enable_user_dict: false
