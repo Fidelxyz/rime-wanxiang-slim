@@ -117,7 +117,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 
 #### 英文输入
 
-整句英文输入、首字母/全大写格式化。
+英文词库输入、首字母/全大写格式化。
 
 - `lua/wanxiang/english_case_formatter.lua`：智能英文大小写格式化
 - `lua/wanxiang/english_single_letter_promoter.lua`：单字母输入时生成大小写候选并置前
@@ -201,58 +201,106 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 
 ## 已移除功能
 
+本节记录已删除及上游新增但本项目未引入的功能，供合并上游时参考。
+
 ### 输入相关
 
-以下功能已从本仓库中移除。保留记录以便从上游合并时参考。
+#### 词组直接辅助码（仅 Base）
 
-#### 辅筛定点改字
+输入完整两字词拼音后，直接追加辅助码筛选词组，支持任意字的单码、双码及两字首码组合。[上游说明](https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/docs/doc/super_lookup.md)
+
+- `lua/wanxiang/super_lookup.lua`：无引导符的两字词辅助筛选
+- `wanxiang.schema.yaml`：`wanxiang_lookup/enable_direct` 配置项
+
+#### 辅筛声调混合筛选
+
+在辅筛引导符后输入声调数字 `7890`，可插在辅助码任意位置，提取后按字序筛选声调。本项目仅支持在拼音编码中输入声调。
+
+- `lua/wanxiang/super_lookup.lua`：声调提取与候选匹配
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`wanxiang_lookup/enable_tone` 配置项
+
+#### 辅助筛选排序优化
+
+同长度候选按辅助码数据源优先级、集中命中单字或跨字匹配的情况调整顺序。
+
+- `lua/wanxiang/super_lookup.lua`：匹配来源与匹配程度排序
+
+#### 辅助筛选定点改字
 
 通过辅助码修改候选长句中的特定字。
 
-- `lua/wanxiang/lookup_filter.lua`：候选定点修改
+- `lua/wanxiang/super_lookup.lua`：`attempt_phrase_correction` 候选定点修改
 
-#### 成对符号包裹
+#### 反查声调筛选
 
-输入编码末尾追加 `\a` 等触发成对符号包裹。
+部件或笔画反查后追加 `7890`，按目标字本身的声调筛选；连续按下声调键可修正选择。
 
-- `lua/wanxiang/super_filter.lua`：符号包裹处理
-- `wanxiang.schema.yaml`：`paired_symbols` 配置段
-- `custom/wanxiang_pro.schema.yaml`：`paired_symbols` 配置段
-- `custom/wanxiang.custom.yaml`：`paired_symbols` 配置段
-- `custom/wanxiang_pro.custom.yaml`：`paired_symbols` 配置段
+- `wanxiang_reverse.dict.yaml`：携带目标字声调的反查编码
+- `wanxiang_algebra.yaml`：`reverse` 段中的声调转写规则
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：反查 recognizer 允许声调数字
+- `lua/wanxiang/super_processor.lua`：反查状态下的声调修正
+
+#### 上下文调频
+
+学习连续上屏词语之间的关系，根据前一个或前两个词调整现有候选顺序。[上游说明](https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/docs/doc/context_reorder.md)
+
+- `lua/wanxiang/context_reorder.lua`：上下文学习、排序、删词及退格撤销学习记录
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`context_reorder` 开关、处理器、过滤器及同名配置段
 
 #### 量词预测调频
 
 输入数字后提升单字量词权重。
 
-- `lua/wanxiang/user_predict.lua`：量词预测逻辑
-- `wanxiang.schema.yaml` 等：量词数据
+- `lua/wanxiang/context_reorder.lua`：数字后量词调频
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`context_reorder/custom_classifiers` 配置项
 
-#### 输入预测
+#### 回删重输交换候选
 
-根据上文输入置顶预测词或主动弹出预测词。
+回删编码后重新输入同一完整编码时，交换当前段的前两个候选。
 
-- `lua/wanxiang/user_predict.lua`：上下文预测处理
+- `lua/wanxiang/context_reorder.lua`：回删与重新输入识别、候选交换
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`context_reorder/enable_fallback_reorder` 配置项
 
-##### 联想空格打断
+#### 联想空格打断
 
 空格键打断联想并上屏空格，对齐大厂输入法行为。
 
-- `lua/wanxiang/user_predict.lua`：`predict_space` 配置与打断逻辑
-- `wanxiang.schema.yaml`：`user_predict/enable_predict_space` 配置项
+- `lua/wanxiang/super_processor.lua`：联想空格打断逻辑
+- `wanxiang.schema.yaml`：`super_processor/enable_predict_space` 配置项
+
+#### 候选逐项排序
+
+Ctrl+J/K 将候选向前或向后移动，Ctrl+L 重置排序记录，支持多设备同步。
+
+- `lua/wanxiang/super_sequence.lua`：手动排序模块，LevelDB 数据库 `sequence`
+- `wanxiang.schema.yaml`：排序快捷键配置
 
 #### 自动英文空格
 
 在英文单词前后自动添加空格。
 
-- `lua/wanxiang/english_spacer.lua`：加空格逻辑
+- `lua/wanxiang/super_english.lua`：连续英文自动空格
 - `wanxiang.schema.yaml` (`english` 段)：加空格策略配置项
+
+#### 整句英文输入
+
+连续输入多个英文单词，生成带词间空格的整句候选。
+
+- `wanxiang_english.schema.yaml`：`super_english` 处理器、翻译器与过滤器挂载
+- `lua/wanxiang/super_english.lua`：整句候选的词间空格恢复
+
+#### 英文候选开关
+
+在方案选单中关闭中文输入里的英文候选。
+
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`english` 开关
+- `lua/wanxiang/super_english.lua`：按开关决定是否输出英文候选
 
 #### 空码回溯
 
 前面编码有候选但继续输入无候选时，显示上一次候选并标注 `~`。
 
-- `lua/wanxiang/fallback_filter.lua`：3 码回退逻辑，空码候选恢复与 `~` 标注
+- `lua/wanxiang/super_filter.lua`：3 码回退逻辑，空码候选恢复与 `~` 标注
 
 #### 固定已输入语句
 
@@ -271,52 +319,7 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 限制重复按键输入或分词过多的编码。
 
 - `lua/wanxiang/super_processor.lua`：`RepeatLimit` 重复声母 / 最大分词数限制逻辑
-- `wanxiang.schema.yaml`：`super_processor/limit_repeated` 配置项
-- `wanxiang_pro.schema.yaml`：`super_processor/limit_repeated` 配置项
-
-#### 输入模式切换
-
-Shift+Space 在中文/英文/混合候选词之间切换。
-
-- `lua/wanxiang/super_filter.lua`：英文句子过滤、模式切换逻辑
-- `wanxiang.schema.yaml`：`input_type` 开关配置
-- `wanxiang_english.schema.yaml`：英文方案 Shift+Space 切换配置
-
-#### 超级替换
-
-替代 OpenCC 的增强组件，支持 append/replace/comment/abbrev 四种模式，链式/并行处理。
-
-- `lua/wanxiang/super_replacer.lua`：超级替换模块，LevelDB 数据库 `lua/replacer.userdb`
-- `lua/data/emoji.txt`：Emoji 数据
-- `lua/data/abbrev.txt`：公共简码数据
-- `lua/data/STCharacters.txt`：简繁单字转换
-- `lua/data/STPhrases.txt`：简繁词组转换
-- `lua/data/HKVariants.txt`：香港繁体变体
-- `lua/data/TWVariants.txt`：台湾繁体变体
-- `lua/data/others.txt`：其他替换数据
-- `wanxiang.schema.yaml`：`super_replacer` 段配置
-
-#### 候选排序
-
-Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
-
-- `lua/wanxiang/sequencer.lua`：手动排序模块，LevelDB 数据库 `lua/sequence.userdb`
-- `wanxiang.schema.yaml`：排序快捷键配置
-
-#### 混合词输入
-
-字母、汉字、数字、特殊符号组合输入。
-
-- `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
-- `wanxiang_mixedcode.dict.yaml`：混合编码词典
-- `dicts/mixedcode.dict.yaml`：中英混合词条
-- `custom/wanxiang_mixedcode.custom.yaml`：混合编码 custom 模板
-- `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
-- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`dependencies`、`translators` 与 `wanxiang_mixedcode` 配置段
-- `lua/wanxiang/schema_switcher.lua`：方案切换中 `wanxiang_mixedcode` 分支及 custom 文件列表
-- `scripts/update_dicts.py`：`"mixed": "mixedcode"` 映射
-- `scripts/generate_pro_dicts.py`：混合词对齐逻辑与 `mixedcode.dict.yaml` 免转换项
-- `.github/release-config.json` / `.github/prerelease-config.json`：schema 文件列表
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`super_processor/limit_repeated` 配置项
 
 ### 快捷短语相关
 
@@ -332,9 +335,48 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 #### 符号输入
 
-`/` 前缀触发特殊符号候选。
+`/` 前缀触发特殊符号候选，包含 XCompose 组合序列。
 
 - `wanxiang_symbols.yaml`：符号输入方案定义
+
+#### 按名称搜索符号与 Emoji
+
+通过 `/sym` 和 `/emoji` 按 Codex 名称查找符号与 Emoji，支持路径补全、模糊搜索和多个关键词搜索。[上游说明](https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/docs/doc/super_symbols.md)
+
+- `lua/wanxiang/super_symbols.lua`：名称搜索与路径补全
+- `lua/data/codex_sym.txt` / `lua/data/codex_emoji.txt`：符号与 Emoji 名称数据
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`super_symbols` 翻译器、配置段及 recognizer 规则
+
+#### 成对符号包裹
+
+输入编码末尾追加 `\a` 等触发成对符号包裹。
+
+- `lua/wanxiang/super_filter.lua`：符号包裹处理
+- `wanxiang.schema.yaml`：`paired_symbols` 配置段
+- `custom/wanxiang_pro.schema.yaml`：`paired_symbols` 配置段
+- `custom/wanxiang.custom.yaml`：`paired_symbols` 配置段
+- `custom/wanxiang_pro.custom.yaml`：`paired_symbols` 配置段
+
+#### 随机标识与密码生成
+
+通过 `/uuid`、`/uuidq`、`/ulid`、`/mima`、`/mimas` 生成 UUID v4、UUID v7、ULID 或随机密码。[上游说明](https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/docs/doc/random_tools.md)
+
+- `lua/wanxiang/random_tools.lua`：随机标识与密码翻译器
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`random_tools` 翻译器与配置段
+
+#### 多进制 Unicode 输入
+
+使用二、八、十进制 Unicode 码点输入字符。
+
+- `lua/wanxiang/unicode_conversion.lua`：多进制码点解析
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`unicode_conversion` 翻译器及扩展 recognizer 规则
+
+#### 字符编码转换
+
+将字符转换为 Unicode 转义、UTF-8、UTF-16、HTML 和 URL 编码，作为候选输入。Ctrl+U 可将当前候选转入编码转换，再次按下恢复原编码。
+
+- `lua/wanxiang/unicode_conversion.lua`：编码转换及候选查询处理器
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`unicode_conversion` 处理器及 `unicode/key` 配置
 
 #### 时间日期输入
 
@@ -346,23 +388,36 @@ Ctrl+J/K/L/P 手动调整候选排序，支持多设备同步。
 
 大小写中文数字转换。
 
-- `lua/wanxiang/number_translator.lua`：数字翻译器
+- `lua/wanxiang/number_conversion.lua`：数字与金额翻译器
+
+#### 金额与日期模式字母选词
+
+在金额、日期等模式下，使用字母键选择当前页候选。
+
+- `lua/wanxiang/super_processor.lua`：特殊模式下的字母选词
 
 #### 中英翻译
 
 Ctrl+E 进入翻译模式。
 
-- `lua/data/chinese_english.txt`：中译英数据
 - `lua/data/english_chinese.txt`：英译中数据
-- `wanxiang.schema.yaml` 等：`chinese_english` 开关、replacer type、Ctrl+E 绑定
+- `wanxiang.schema.yaml` 等：`english_chinese` 开关、`super_replacer` 规则、Ctrl+E 绑定
 
 #### 短语格式化
 
 自定义短语中重复字符与动态变量格式化。
 
-| 已删除文件 | 说明 |
-|------------|------|
-| `lua/wanxiang/super_filter.lua` | 短语动态变量格式化 |
+- `lua/wanxiang/super_filter.lua`：短语动态变量格式化
+
+#### 超级替换
+
+增强替换组件，支持 append/replace/comment/abbrev 四种模式、链式/并行处理，以及按最长匹配分段替换或派生整句候选。
+
+- `lua/wanxiang/super_replacer.lua`：超级替换模块，LevelDB 数据库 `build/replacer`
+- `lua/data/others.txt`：其他替换数据
+- `lua/data/sentence.txt`：整句派生数据
+- `lua/data/en_abbrev.txt`：英文简码数据
+- `wanxiang.schema.yaml`：`super_replacer` 段配置
 
 ### 提示相关
 
@@ -374,6 +429,12 @@ Ctrl+E 进入翻译模式。
 - `lua/data/tips_show.txt`：Tips 自带数据
 - `lua/data/tips_user.txt预留自定义文件`：Tips 用户自定义数据
 - `wanxiang.schema.yaml` 等：`tips` 段配置、Ctrl+T 开关、`super_tips` 开关与处理器
+
+#### 反查字符区提示
+
+在反查候选注释中显示汉字所属的基本区、扩展区或兼容区。
+
+- `lua/wanxiang/super_comment_preedit.lua`：反查候选的 Unicode 字符区注释
 
 #### 计算器
 
@@ -387,14 +448,48 @@ Ctrl+E 进入翻译模式。
 
 - `lua/wanxiang/input_statistics.lua`：输入字数统计
 
+### 词库相关
+
+#### 中英混合词输入
+
+字母、汉字、数字、特殊符号组合输入。
+
+- `wanxiang_mixedcode.schema.yaml`：混合编码方案定义
+- `wanxiang_mixedcode.dict.yaml`：混合编码词典
+- `dicts/mixedcode.dict.yaml`：中英混合词条
+- `custom/wanxiang_mixedcode.custom.yaml`：混合编码 custom 模板
+- `wanxiang_algebra.yaml` (`mixed` 段)：混合编码转写规则
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`dependencies`、`translators` 与 `wanxiang_mixedcode` 配置段
+- `lua/wanxiang/schema_switcher.lua`：方案切换中 `wanxiang_mixedcode` 分支及 custom 文件列表
+- `scripts/update_dicts.py`：`"mixed": "mixedcode"` 映射
+- `scripts/generate_pro_dicts.py`：混合词对齐逻辑与 `mixedcode.dict.yaml` 免转换项
+- `.github/release-config.json` / `.github/prerelease-config.json`：schema 文件列表
+
+#### 简码输入
+
+按简码查询公共词条（含成语简码），并指定简码候选插入的位置与数量。
+
+- `wanxiang_abbrev.dict.yaml` / `dicts/abbrev.dict.yaml`：公共简码数据
+- `wanxiang_abbrev.schema.yaml`：简码编译方案
+- `lua/wanxiang/custom_phrase.lua`：简码候选插入与去重
+- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`abbrev` 开关、`abbrev_phrase` 配置段
+
 ### 特殊布局相关
+
+#### 万象带调双拼
+
+声母键与带声调的韵母键组成双拼编码，同一韵母的一至四声分配到不同键位，支持 `/wxsp` 切换。[上游说明](https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/docs/doc/wxsp.md)
+
+- `wanxiang_algebra.yaml`：`base/万象双拼`、`pro/万象双拼` 转写规则
+- `lua/wanxiang/set_schema.lua`：`/wxsp` 方案切换
 
 #### T9 九宫格方案
 
 移动端 T9 输入方案。
 
-- `wanxiang_t9.schema.yaml`：九宫格方案定义
-- `lua/data/t9_abbrev.txt`：T9 专用简码数据
+- `wanxiang_t9.schema.yaml` / `wanxiang_t9i.schema.yaml`：九宫格方案定义
+- `wanxiang_abbrev_t9.dict.yaml` / `wanxiang_abbrev_t9.schema.yaml`：T9 简码词库
+- `wanxiang_phrase_t9.schema.yaml`：T9 自定义词库
 
 #### 14 键 / 18 键
 
