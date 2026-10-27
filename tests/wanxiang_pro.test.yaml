@@ -303,6 +303,19 @@ deploy:
       - send: "zhe'shi"
         assert: "#cand == 0"
 
+  auto-user-dict:
+    patch:
+      candidate_type_marker/types/user_phrase: "[user_phrase]"
+      candidate_type_marker/types/sentence: "[sentence]"
+    tests:
+      - send: "ni'hao'shi'jie"
+        assert: eq(cand[1].text, "你好世界") and eq(cand[1].comment, "[sentence]")
+      # Select two phrases separately to create a user phrase.
+      - send: "ni'hao'shi'jie{5}{1}"
+        assert: eq(commit, "你好世界")
+      - send: "ni'hao'shi'jie"
+        assert: eq(cand[1].text, "你好世界") and eq(cand[1].comment, "[user_phrase]")
+
   direct-auxiliary-code:
     patch:
       speller/algebra:
