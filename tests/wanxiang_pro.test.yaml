@@ -3,9 +3,12 @@ source_dir: ../dist/rime-wanxiang-zrm-fuzhu
 
 script: |
   function eq(actual, expected)
-    print('Actual:   ' .. tostring(actual))
-    print('Expected: ' .. tostring(expected))
-    return actual == expected
+    local equal = actual == expected
+    if not equal then
+      print('Actual:   ' .. tostring(actual))
+      print('Expected: ' .. tostring(expected))
+    end
+    return equal
   end
 
   function has_cand(text)
