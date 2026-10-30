@@ -125,7 +125,7 @@ function P.init(env)
 
     local user_dict_enabled = rime_config:get_bool("user_dict_appender/enable_user_dict")
     if user_dict_enabled == nil then
-        user_dict_enabled = false
+        user_dict_enabled = true
     end
 
     local enabled = auto_phrase_enabled and user_dict_enabled
