@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.0...v1.1.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* enable automatic phrase creation with default user dictionary settings ([9ea20ab](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9ea20abe2fa3741a8f57f5d515cb01b95e14bd93))
+
 ## [1.1.1-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.0...v1.1.1-beta.1) (2026-10-28)
 
 
