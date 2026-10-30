@@ -38,9 +38,6 @@ switches:
     abbrev: [英, 关]
   - options: [zh_cn, zh_hant, zh_hk, zh_tw]  # 简繁转换。
     states: [简, 繁, 港繁, 臺繁]
-  - name: abbrev
-    states: [简码关, 简码开]
-    abbrev: [关, 简]
   - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
     states: [大字集, 小字集]
   # Features
