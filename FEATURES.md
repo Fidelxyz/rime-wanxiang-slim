@@ -120,7 +120,9 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 英文词库输入、首字母/全大写格式化。
 
 - `lua/wanxiang/english_case_formatter.lua`：智能英文大小写格式化
+- `lua/wanxiang/english_translator.lua`：按开关输出英文词库及英文用户词典候选
 - `lua/wanxiang/english_single_letter_promoter.lua`：单字母输入时生成大小写候选并置前
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`disable_english` 开关，默认开启英文候选，关闭时同时停用单字母候选派生和英文造词
 - `lua/utils/utils.lua`：英文判断公共工具函数
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
@@ -288,13 +290,6 @@ Ctrl+J/K 将候选向前或向后移动，Ctrl+L 重置排序记录，支持多�
 
 - `wanxiang_english.schema.yaml`：`super_english` 处理器、翻译器与过滤器挂载
 - `lua/wanxiang/super_english.lua`：整句候选的词间空格恢复
-
-#### 英文候选开关
-
-在方案选单中关闭中文输入里的英文候选。
-
-- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`english` 开关
-- `lua/wanxiang/super_english.lua`：按开关决定是否输出英文候选
 
 #### 空码回溯
 

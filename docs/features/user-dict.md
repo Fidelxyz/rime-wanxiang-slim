@@ -8,6 +8,8 @@ outline: deep
 
 在编码**起始**或**末尾**处输入造词引导符 ` `` ` 进入手动造词模式，随后提交的**中文**或**英文**词条会被记录到用户词库中。仅 Pro 默认开启。
 
+英文造词随[英文输入开关](/features/extra-dicts#英文输入)启用或关闭。
+
 ```yaml
 recognizer:
   patterns:

@@ -33,6 +33,9 @@ switches:
   - name: emoji
     states: [表情关, 表情开]
     abbrev: [🚫, 😀]
+  - name: disable_english
+    states: [英文开, 英文关]
+    abbrev: [英, 关]
   - options: [zh_cn, zh_hant, zh_hk, zh_tw]  # 简繁转换。
     states: [简, 繁, 港繁, 臺繁]
   - name: abbrev
@@ -87,7 +90,7 @@ engine:
     - lua_translator@*wanxiang.schema_switcher  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # Unicode 输入
     - table_translator@custom_phrase
-    - table_translator@wanxiang_english
+    - lua_translator@*wanxiang.english_translator
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@user_dict_appender  # 手动造词
     - lua_translator@*wanxiang.user_dict_translator  # 使用自造词

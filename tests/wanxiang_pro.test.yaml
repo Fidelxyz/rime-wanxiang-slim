@@ -118,6 +118,25 @@ deploy:
       - send: haha
         assert: eq(cand[2].text, "😄") and eq(cand[2].comment, "〔哈哈〕")
 
+  english-disabled:
+    options:
+      disable_english: true
+    tests:
+      - send: hello
+        assert: not has_cand("hello")
+      - send: a
+        assert: not has_cand("a") and not has_cand("A")
+      - send: A
+        assert: not has_cand("a") and not has_cand("A")
+      - send: and/
+        assert: not has_cand("and")
+      # English word creation is disabled.
+      - send: "``notaword"
+        assert: not has_cand("notaword")
+      # Chinese input remains available.
+      - send: ni'hao
+        assert: eq(cand[1].text, "你好")
+
   zh-hant:
     options:
       zh_cn: false
