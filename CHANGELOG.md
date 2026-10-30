@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.1-beta.1...v1.2.0-beta.1) (2026-10-30)
+
+
+### Features
+
+* add a switch `disable_english` to disable English input ([6a6cade](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/6a6cade21943a81f011fb9591551fe593f79c6a1))
+
 ## [1.1.1-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.0...v1.1.1-beta.1) (2026-10-28)
 
 
