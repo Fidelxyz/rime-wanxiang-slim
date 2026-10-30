@@ -63,7 +63,12 @@ end
 ---@param env Env
 ---@return boolean
 function F.tags_match(_, env)
-    local code = env.engine.context.input
+    local context = env.engine.context
+    if context:get_option("disable_english") then
+        return false
+    end
+
+    local code = context.input
     return #code == 1 and utils.has_ascii_letter(code)
 end
 

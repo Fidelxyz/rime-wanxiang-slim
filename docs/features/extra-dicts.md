@@ -8,6 +8,8 @@ outline: deep
 
 万象拼音输入方案包含英文词库 `wanxiang_english`，支持英文单词输入。
 
+在[方案选单](https://github.com/rime/home/wiki/UserGuide#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%A1%88%E9%81%B8%E5%96%AE)中切换「英文开」/「英文关」选项，可启用或关闭英文输入。
+
 ### 自动大小写
 
 英文候选根据输入编码**前两位**确定大小写形式：
