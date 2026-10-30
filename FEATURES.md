@@ -467,7 +467,7 @@ Ctrl+E 进入翻译模式。
 - `wanxiang_abbrev.dict.yaml` / `dicts/abbrev.dict.yaml`：公共简码数据
 - `wanxiang_abbrev.schema.yaml`：简码编译方案
 - `lua/wanxiang/custom_phrase.lua`：简码候选插入与去重
-- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`abbrev` 开关、`abbrev_phrase` 配置段
+- `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`abbrev` 开关、`abbrev_phrase` 配置段
 
 ### 特殊布局相关
 
