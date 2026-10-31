@@ -29,6 +29,13 @@
 - `lua/utils/segmented_cache.lua`：反查/注释解析结果的分段缓存
 - `wanxiang.schema.yaml` (`lookup_filter` 段)：反查配置
 
+#### 辅筛声调混合筛选
+
+在辅筛引导符后输入声调数字 `7890`，可插在辅助码任意位置，提取后按字序筛选声调，剩余字母继续匹配辅助码。
+
+- `lua/wanxiang/lookup_filter.lua`：声调提取与候选匹配
+- `lua/utils/utils.lua`：`get_pinyin_tone` 从注释拼音读取声调
+
 #### 声调辅助筛选
 
 7890 数字键代表一二三四声，支持连续按键修正声调。
@@ -213,13 +220,6 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 
 - `lua/wanxiang/super_lookup.lua`：无引导符的两字词辅助筛选
 - `wanxiang.schema.yaml`：`wanxiang_lookup/enable_direct` 配置项
-
-#### 辅筛声调混合筛选
-
-在辅筛引导符后输入声调数字 `7890`，可插在辅助码任意位置，提取后按字序筛选声调。本项目仅支持在拼音编码中输入声调。
-
-- `lua/wanxiang/super_lookup.lua`：声调提取与候选匹配
-- `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：`wanxiang_lookup/enable_tone` 配置项
 
 #### 辅助筛选排序优化
 

@@ -30,6 +30,8 @@ deploy:
         assert: eq(cand[1].text, "这是") and eq(preedit, "zhe⁴ shi⁴")
       - send: zhe0shi8
         assert: eq(cand[1].text, "这时") and eq(preedit, "zhe⁴ shi²")
+      - send: ma0
+        assert: eq(cand[1].text, "吗") and eq(preedit, "ma⁴")
       # Tone Fallback
       - send: zhe0shi80
         assert: eq(cand[1].text, "这是") and eq(preedit, "zhe⁴ shi⁴")
@@ -58,6 +60,44 @@ deploy:
         assert: eq(cand[1].text, "你好")
       - send: nihao`x
         assert: cand[1].text ~= "你好"
+      - send: shu`0
+        assert: has_cand("树")
+      - send: shu`7
+        assert: not has_cand("树")
+      - send: shu`mudui0
+        assert: eq(cand[1].text, "树")
+      - send: shu`mudui7
+        assert: not has_cand("树")
+      - send: shu`0mudui
+        assert: eq(cand[1].text, "树")
+      - send: shu`7mudui
+        assert: not has_cand("树")
+      - send: nihao`99
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`90
+        assert: not has_cand("你好")
+      - send: nihao`09
+        assert: not has_cand("你好")
+      - send: nihao`r99
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`r90
+        assert: not has_cand("你好")
+      - send: nihao`rn99
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`rn90
+        assert: not has_cand("你好")
+      - send: nihao`renz99
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`renz90
+        assert: not has_cand("你好")
+      - send: nihao`r9
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`r0
+        assert: not has_cand("你好")
+      - send: nihao`r9n9
+        assert: eq(cand[1].text, "你好")
+      - send: nihao`r9n0
+        assert: not has_cand("你好")
       # Simplifier
       - send: weishenme
         assert: eq(cand[1].text, "为什么")
