@@ -7,9 +7,8 @@ into this repository's working tree.
 
 What it does:
 
-1. Rename each upstream pinyin dictionary identifier to a proper English
-   identifier, renaming the output file to ``dicts/<english>.dict.yaml`` and
-   rewriting the file's internal ``name:``.
+1. Copy and rename each upstream dictionary to the current repository, and
+   rewrite the file's internal ``name:``.
 2. Set each dictionary's ``version:`` field to the upstream release version.
 3. Replace each dictionary's original comment header with a standardized header
    recording the upstream source, the original file name, and the upstream
@@ -33,6 +32,8 @@ UPSTREAM_REPO = "amzxyz/rime-wanxiang"
 UPSTREAM_URL = f"https://github.com/{UPSTREAM_REPO}"
 UPSTREAM_LICENSE = "CC BY 4.0"
 
+SRC_DICT_PATH = Path("dicts")
+DST_DICT_PATH = Path("dicts")
 DICT_NAME_MAPPING: dict[str, str] = {
     "zi": "chars",
     "jichu": "base",
@@ -275,14 +276,14 @@ def write_auxiliary_decomposition_tables(
 def validate_upstream_files(source_dir: Path) -> bool:
     """Report upstream file changes and return whether all required files exist."""
     expected_files = {
-        Path("dicts") / f"{pinyin}.dict.yaml" for pinyin in DICT_NAME_MAPPING
+        SRC_DICT_PATH / f"{src_dict}.dict.yaml" for src_dict in DICT_NAME_MAPPING
     }
     expected_files.add(SRC_AUXILIARY_CSV_PATH)
     expected_files.update(SRC_DEDICATED_DECOMPOSITION.values())
 
     actual_files = {
         path.relative_to(source_dir)
-        for path in (source_dir / "dicts").glob("*.dict.yaml")
+        for path in (source_dir / SRC_DICT_PATH).glob("*.dict.yaml")
         if path.is_file()
     }
     actual_files.update(
@@ -292,7 +293,7 @@ def validate_upstream_files(source_dir: Path) -> bool:
         if path.is_file()
     )
 
-    ignored_files = {Path("dicts") / name for name in IGNORED_DICTS}
+    ignored_files = {SRC_DICT_PATH / name for name in IGNORED_DICTS}
 
     new_files = sorted(actual_files - expected_files - ignored_files)
     if new_files:
@@ -313,19 +314,19 @@ def validate_upstream_files(source_dir: Path) -> bool:
     return True
 
 
-def build_dict_header(src_name: str, tag: str) -> str:
+def build_dict_header(src_name: str, src_tag: str) -> str:
     """Return the standardized comment header for a normalized dictionary."""
     return (
         "# Rime dictionary\n"
         "# encoding: utf-8\n"
         "#\n"
-        f"# Original file: {UPSTREAM_URL}/blob/{tag}/dicts/{src_name}.dict.yaml\n"
+        f"# Original file: {UPSTREAM_URL}/blob/{src_tag}/dicts/{src_name}.dict.yaml\n"
         f"# Copyright (c) amzxyz, licensed under {UPSTREAM_LICENSE}.\n"
     )
 
 
 def normalize_dict_text(
-    text: str, english: str, version: str, pinyin: str, tag: str
+    text: str, name: str, version: str, src_name: str, src_tag: str
 ) -> str:
     """Rewrite a dictionary's header, ``name:`` and ``version:`` directives.
 
@@ -341,10 +342,10 @@ def normalize_dict_text(
     )
     if marker_index is None:
         raise Error(
-            f"dictionary has no '---' document marker: dicts/{pinyin}.dict.yaml"
+            f"dictionary has no '---' document marker: dicts/{src_name}.dict.yaml"
         )
 
-    output_lines = [build_dict_header(pinyin, tag), "---\n"]
+    output_lines = [build_dict_header(src_name, src_tag), "---\n"]
 
     saw_name = False
     in_directives = True
@@ -355,7 +356,7 @@ def normalize_dict_text(
                 output_lines.append(line)
                 continue
             if line.startswith("name:"):
-                output_lines.append(f"name: {english}\n")
+                output_lines.append(f"name: {name}\n")
                 saw_name = True
                 continue
             if line.startswith("version:"):
@@ -364,28 +365,29 @@ def normalize_dict_text(
         output_lines.append(line)
 
     if not saw_name:
-        raise Error(f"dictionary has no 'name:' directive: dicts/{pinyin}.dict.yaml")
+        raise Error(f"dictionary has no 'name:' directive: dicts/{src_name}.dict.yaml")
 
     return "".join(output_lines)
 
 
 def normalize_dictionaries(
-    source_dir: Path, repo_root: Path, version: str, tag: str
+    source_dir: Path, repo_root: Path, version: str, src_tag: str
 ) -> None:
     """Normalize every configured upstream dictionary."""
     print("==> Normalizing dictionaries")
-    for stale_path in (repo_root / "dicts").glob("*.dict.yaml"):
+    for stale_path in (repo_root / DST_DICT_PATH).glob("*.dict.yaml"):
         stale_path.unlink()
 
-    for pinyin, english in DICT_NAME_MAPPING.items():
-        input_path = source_dir / "dicts" / f"{pinyin}.dict.yaml"
-        output_path = repo_root / "dicts" / f"{english}.dict.yaml"
+    for src_dict, dst_dict in DICT_NAME_MAPPING.items():
+        input_path = source_dir / SRC_DICT_PATH / f"{src_dict}.dict.yaml"
+        output_path = repo_root / DST_DICT_PATH / f"{dst_dict}.dict.yaml"
 
         text = input_path.read_text(encoding="utf-8")
         output_path.write_text(
-            normalize_dict_text(text, english, version, pinyin, tag), encoding="utf-8"
+            normalize_dict_text(text, dst_dict, version, src_dict, src_tag),
+            encoding="utf-8",
         )
-        print(f"    dicts/{pinyin}.dict.yaml -> dicts/{english}.dict.yaml")
+        print(f"    dicts/{src_dict}.dict.yaml -> dicts/{dst_dict}.dict.yaml")
 
 
 def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
