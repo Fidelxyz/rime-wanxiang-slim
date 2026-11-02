@@ -374,6 +374,9 @@ def normalize_dictionaries(
 ) -> None:
     """Normalize every configured upstream dictionary."""
     print("==> Normalizing dictionaries")
+    for stale_path in (repo_root / "dicts").glob("*.dict.yaml"):
+        stale_path.unlink()
+
     for pinyin, english in DICT_NAME_MAPPING.items():
         input_path = source_dir / "dicts" / f"{pinyin}.dict.yaml"
         output_path = repo_root / "dicts" / f"{english}.dict.yaml"
@@ -384,10 +387,6 @@ def normalize_dictionaries(
         )
         print(f"    dicts/{pinyin}.dict.yaml -> dicts/{english}.dict.yaml")
 
-        # Remove the stale pinyin-named file left over from before the rename.
-        if pinyin != english:
-            (repo_root / "dicts" / f"{pinyin}.dict.yaml").unlink(missing_ok=True)
-
 
 def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
     """Generate code-only auxiliary data and normalized decomposition tables."""
@@ -396,17 +395,22 @@ def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
     normalized_data = parse_auxiliary_code_csv(source_dir / SRC_AUXILIARY_CSV_PATH)
 
     print("  Writing normalized auxiliary-code CSV:")
-    write_code_only_auxiliary_csv(normalized_data, repo_root / DST_AUXILIARY_CSV_PATH)
+    auxiliary_csv_path = repo_root / DST_AUXILIARY_CSV_PATH
+    auxiliary_csv_path.unlink(missing_ok=True)
+    write_code_only_auxiliary_csv(normalized_data, auxiliary_csv_path)
     print(f"    {DST_AUXILIARY_CSV_PATH.as_posix()}")
 
     print("  Writing normalized auxiliary decomposition tables:")
+    decomposition_directory = repo_root / DST_DECOMPOSITION_DIR
+    for stale_path in decomposition_directory.glob("*.txt"):
+        stale_path.unlink()
     decomposition_schemas = [
         schema
         for schema in AUXILIARY_SCHEMA_MAPPING.values()
         if schema not in SRC_DEDICATED_DECOMPOSITION
     ]
     write_auxiliary_decomposition_tables(
-        normalized_data, decomposition_schemas, repo_root / DST_DECOMPOSITION_DIR
+        normalized_data, decomposition_schemas, decomposition_directory
     )
     for schema in decomposition_schemas:
         print(f"    {(DST_DECOMPOSITION_DIR / f'{schema}.txt').as_posix()}")
