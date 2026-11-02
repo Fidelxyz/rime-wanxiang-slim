@@ -37,24 +37,17 @@ DST_DICT_PATH = Path("dicts")
 DICT_NAME_MAPPING: dict[str, str] = {
     "zi": "chars",
     "jichu": "base",
-    "lianxiang": "association",
     "cuoyin": "correction",
     "duoyin": "polyphone",
-    "shici": "poetry",
     "diming": "place",
-    "wuzhong": "species",
-    "renming": "person",
-    "yixue": "medical",
-    "huaxue": "chemistry",
-    "yaopin": "pharmaceutical",
     "mingren": "celebrity",
     "yiren": "artist",
-    "fangyan": "dialect",
-    "taifeng": "typhoon",
     "en": "english",
 }
 IGNORED_DICTS = {
     "mixed.dict.yaml",
+    "abbrev.dict.yaml",
+    "t9_abbrev.dict.yaml",
 }
 
 SRC_AUXILIARY_CSV_PATH = Path("custom/aux_code.csv")

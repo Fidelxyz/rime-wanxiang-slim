@@ -94,13 +94,5 @@ patch:
 
 | 词库 | 用途 |
 | --- | --- |
-| `dicts/association` | 联想词库 |
-| `dicts/species` | 物种词库 |
-| `dicts/person` | 人名词库 |
-| `dicts/medical` | 医学词库 |
-| `dicts/chemistry` | 化学词库 |
-| `dicts/pharmaceutical` | 药品词库 |
 | `dicts/celebrity` | 名人词库 |
 | `dicts/artist` | 艺人词库 |
-| `dicts/dialect` | 方言词库 |
-| `dicts/typhoon` | 台风词库 |
