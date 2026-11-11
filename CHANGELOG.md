@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2026-11-11)
+
+
+### Bug Fixes
+
+* use main dictionary for user phrase and pinned candidate lookup ([#38](https://github.com/Fidelxyz/rime-wanxiang-slim/issues/38)) ([4155e76](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/4155e76614c0d8048399769aa380204ffe19c5a9))
+
 ## [1.2.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.1...v1.2.0-beta.1) (2026-11-07)
 
 
