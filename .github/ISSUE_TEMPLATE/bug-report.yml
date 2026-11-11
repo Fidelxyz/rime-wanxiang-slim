@@ -1,6 +1,6 @@
 name: Bug 报告
 description: 功能未按预期运行
-labels: ["bug"]
+type: Bug
 body:
   - type: markdown
     attributes:
