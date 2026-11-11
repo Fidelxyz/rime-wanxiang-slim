@@ -15,7 +15,6 @@ schema:
   dependencies:
     - wanxiang_reverse
     - wanxiang_english
-    - wanxiang_syllables
 
 # 开关
 # reset: 默认状态。未定义时，切换窗口时不会重置到默认状态。
@@ -206,8 +205,7 @@ wanxiang_reverse:
   tips: "〔反查：拆分｜笔画〕"
 
 user_dict:
-  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
-  prism: wanxiang  # 音节 ID 与主词典一致，可共用主拼写映射。
+  dictionary: wanxiang
   user_dict: user_dict
   initial_quality: 0
   enable_completion: false
@@ -238,8 +236,7 @@ user_dict_appender:
 
 # 候选置顶
 candidate_pinner:
-  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
-  prism: wanxiang  # 音节 ID 与主词典一致，可共用主拼写映射。
+  dictionary: wanxiang
   user_dict: pinned
   initial_quality: -1
   enable_completion: false
