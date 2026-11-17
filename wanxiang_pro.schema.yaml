@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang_pro
   name: 万象拼音精简版〔进阶版 Pro〕
-  version: "1.1.1"  # x-release-please-version
+  version: "1.2.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
@@ -15,7 +15,6 @@ schema:
   dependencies:
     - wanxiang_reverse
     - wanxiang_english
-    - wanxiang_syllables
 
 # 开关
 # reset: 默认状态。未定义时，切换窗口时不会重置到默认状态。
@@ -33,11 +32,11 @@ switches:
   - name: emoji
     states: [表情关, 表情开]
     abbrev: [🚫, 😀]
+  - name: disable_english
+    states: [英文开, 英文关]
+    abbrev: [英, 关]
   - options: [zh_cn, zh_hant, zh_hk, zh_tw]  # 简繁转换。
     states: [简, 繁, 港繁, 臺繁]
-  - name: abbrev
-    states: [简码关, 简码开]
-    abbrev: [关, 简]
   - name: charset_filter  # 字符集过滤。默认切换快捷键 Ctrl+G。
     states: [大字集, 小字集]
   # Features
@@ -90,7 +89,7 @@ engine:
     - lua_translator@*wanxiang.schema_switcher  # 拼音方案切换
     - lua_translator@*wanxiang.unicode  # Unicode 输入
     - table_translator@custom_phrase
-    - table_translator@wanxiang_english
+    - lua_translator@*wanxiang.english_translator
     - reverse_lookup_translator@wanxiang_reverse
     - script_translator@user_dict_appender  # 手动造词
     - lua_translator@*wanxiang.user_dict_translator  # 使用自造词
@@ -211,8 +210,7 @@ wanxiang_reverse:
   tips: "〔反查：拆分｜笔画〕"
 
 user_dict:
-  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
-  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
+  dictionary: wanxiang
   user_dict: user_dict
   initial_quality: 2.5
   enable_completion: false
@@ -245,8 +243,7 @@ user_dict_appender:
 
 # 候选置顶
 candidate_pinner:
-  dictionary: wanxiang_syllables  # 使用稀疏词典降低检索开销。
-  prism: wanxiang  # 音节表与主词典一致，可共用主词典拼写映射。
+  dictionary: wanxiang
   user_dict: pinned
   initial_quality: -1
   enable_completion: false

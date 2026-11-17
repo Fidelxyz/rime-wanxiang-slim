@@ -183,40 +183,42 @@ function M.is_english_or_mixed_phrase(str)
     return str:find("[%w%p]") ~= nil
 end
 
----@type table<string, string>
-local TONE_STRIP_MAP = {
-    ["ā"] = "a",
-    ["á"] = "a",
-    ["ǎ"] = "a",
-    ["à"] = "a",
-    ["ē"] = "e",
-    ["é"] = "e",
-    ["ě"] = "e",
-    ["è"] = "e",
-    ["ī"] = "i",
-    ["í"] = "i",
-    ["ǐ"] = "i",
-    ["ì"] = "i",
-    ["ō"] = "o",
-    ["ó"] = "o",
-    ["ǒ"] = "o",
-    ["ò"] = "o",
-    ["ū"] = "u",
-    ["ú"] = "u",
-    ["ǔ"] = "u",
-    ["ù"] = "u",
-    ["ǖ"] = "ü",
-    ["ǘ"] = "ü",
-    ["ǚ"] = "ü",
-    ["ǜ"] = "ü",
-    ["ḿ"] = "m",
-    ["ń"] = "n",
-    ["ň"] = "n",
-    ["ǹ"] = "n",
-    ["̄"] = "",
-    ["́"] = "",
-    ["̌"] = "",
-    ["̀"] = "",
+---Corresponding toneless letter and tone digit of each pinyin tone mark.
+---@type table<string, {letter: string, tone_digit: string}>
+local PINYIN_TONE_MARKS = {
+    ["ā"] = { letter = "a", tone_digit = "7" },
+    ["á"] = { letter = "a", tone_digit = "8" },
+    ["ǎ"] = { letter = "a", tone_digit = "9" },
+    ["à"] = { letter = "a", tone_digit = "0" },
+    ["ē"] = { letter = "e", tone_digit = "7" },
+    ["é"] = { letter = "e", tone_digit = "8" },
+    ["ě"] = { letter = "e", tone_digit = "9" },
+    ["è"] = { letter = "e", tone_digit = "0" },
+    ["ī"] = { letter = "i", tone_digit = "7" },
+    ["í"] = { letter = "i", tone_digit = "8" },
+    ["ǐ"] = { letter = "i", tone_digit = "9" },
+    ["ì"] = { letter = "i", tone_digit = "0" },
+    ["ō"] = { letter = "o", tone_digit = "7" },
+    ["ó"] = { letter = "o", tone_digit = "8" },
+    ["ǒ"] = { letter = "o", tone_digit = "9" },
+    ["ò"] = { letter = "o", tone_digit = "0" },
+    ["ū"] = { letter = "u", tone_digit = "7" },
+    ["ú"] = { letter = "u", tone_digit = "8" },
+    ["ǔ"] = { letter = "u", tone_digit = "9" },
+    ["ù"] = { letter = "u", tone_digit = "0" },
+    ["ǖ"] = { letter = "ü", tone_digit = "7" },
+    ["ǘ"] = { letter = "ü", tone_digit = "8" },
+    ["ǚ"] = { letter = "ü", tone_digit = "9" },
+    ["ǜ"] = { letter = "ü", tone_digit = "0" },
+    ["ḿ"] = { letter = "m", tone_digit = "8" },
+    ["ń"] = { letter = "n", tone_digit = "8" },
+    ["ň"] = { letter = "n", tone_digit = "9" },
+    ["ǹ"] = { letter = "n", tone_digit = "0" },
+    -- Combining marks used by `m̄` and `m̀`.
+    ["̄"] = { letter = "", tone_digit = "7" },
+    ["́"] = { letter = "", tone_digit = "8" },
+    ["̌"] = { letter = "", tone_digit = "9" },
+    ["̀"] = { letter = "", tone_digit = "0" },
 }
 
 --- Remove pinyin tone marks from a string.
@@ -227,10 +229,24 @@ function M.remove_pinyin_tone(s)
     local result = {}
     local result_len = 0
     for uchar in s:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+        local tone_mark = PINYIN_TONE_MARKS[uchar]
         result_len = result_len + 1
-        result[result_len] = TONE_STRIP_MAP[uchar] or uchar
+        result[result_len] = tone_mark and tone_mark.letter or uchar
     end
     return table.concat(result)
+end
+
+---Get the tone digit of one pinyin syllable. A syllable without a tone mark, which is neutral, maps to `0`.
+---@param pinyin string
+---@return string
+function M.get_pinyin_tone(pinyin)
+    for uchar in pinyin:gmatch("[%z\1-\127\194-\244][\128-\191]*") do
+        local tone_mark = PINYIN_TONE_MARKS[uchar]
+        if tone_mark then
+            return tone_mark.tone_digit
+        end
+    end
+    return "0"
 end
 
 ---@return number

@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/zi.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/dicts/zi.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: chars
-version: "18.0.15"
+version: "18.1.8"
 sort: by_weight
 ...
 啊	a;kv	759839
@@ -45,7 +45,7 @@ sort: by_weight
 砹	ài;hc	335
 嫒	ài;np	324
 叆	ài;hp	322
-乂	aì;pd	310
+乂	ài;pd	310
 瑷	ài;wp	304
 毐	ǎi;th	258
 锿	āi;jd	220
@@ -6815,31 +6815,30 @@ sort: by_weight
 递	dì;dz	2597
 敌	dí;pp	1702
 弟	dì;dp	811
-的	dì;pp	770
-的	dī;pp	680
 抵	dǐ;fp	666
 帝	dì;ds	657
 滴	dī;ud	650
 蒂	dì;cs	647
+狄	dí;pq	630
 堤	dī;tl	629
 笛	dí;gh	622
 迪	dí;sz	613
-的	dí;pp	591
 缔	dì;id	549
 涤	dí;up	546
 提	dī;fl	542
 嘀	dī;kd	522
 嘀	dí;kd	514
 提	dǐ;fl	503
-狄	dí;pq	501
 邸	dǐ;pv	499
 睇	dì;sd	497
 谛	dì;ad	487
 嫡	dí;nd	468
 棣	dì;mv	452
 诋	dǐ;ap	444
+的	dī;pp	430
 砥	dǐ;hp	428
 骶	dǐ;sp	425
+的	dì;pp	420
 荻	dí;cq	411
 坻	dǐ;tp	394
 娣	dì;nd	380
@@ -6859,6 +6858,7 @@ sort: by_weight
 禘	dì;dd	215
 杕	dì;mh	206
 踶	dì;zl	194
+的	dí;pp	191
 媂	dì;nd	174
 蹢	dí;zd	169
 翟	dí;vh	161
@@ -9472,6 +9472,7 @@ sort: by_weight
 锋	fēng;jp	2278
 凤	fèng;pd	2164
 疯	fēng;dd	2055
+冯	féng;dv	1966
 奉	fèng;hs	1952
 逢	féng;pz	800
 缝	fèng;ip	796
@@ -9479,7 +9480,6 @@ sort: by_weight
 讽	fěng;ap	637
 枫	fēng;mp	630
 缝	féng;ip	623
-冯	féng;dv	610
 烽	fēng;qp	474
 俸	fèng;rh	459
 沣	fēng;uh	457
@@ -12492,6 +12492,7 @@ sort: by_weight
 颃	háng;dh	246
 桁	háng;mp	134
 垳	háng;tp	134
+行	hàng;ph	122
 斻	háng;dp	109
 迒	háng;dz	101
 絎	háng;ip	101
@@ -12976,10 +12977,10 @@ sort: by_weight
 䓳	hěn;	1
 𦚣	hén;	1
 哼	hēng;kd	9137
-衡	héng;pp	2974
-横	héng;mc	2677
+横	héng;mc	2974
+衡	héng;pp	2677
 恒	héng;xh	2409
-亨	hēng;ds	2065
+亨	hēng;ds	1465
 横	hèng;mc	1120
 桁	héng;mp	440
 蘅	héng;cs	370
@@ -16689,10 +16690,11 @@ sort: by_weight
 𪖄	jiào;	1
 𪚰	jiāo;	1
 𫈇	jiāo;	1
-解	jiě;pv	27356
+姐	jiě;ns	27356
+借	jiè;rc	8614
 接	jiē;fd	3776
 结	jié;it	3398
-姐	jiě;ns	3058
+解	jiě;pv	3058
 节	jié;cs	2748
 界	jiè;ss	1801
 届	jiè;vh	980
@@ -16709,7 +16711,6 @@ sort: by_weight
 阶	jiē;vr	653
 竭	jié;dl	649
 芥	jiè;cs	638
-借	jiè;rc	614
 睫	jié;sh	554
 结	jiē;it	549
 诫	jiè;ah	537
@@ -20818,6 +20819,7 @@ sort: by_weight
 枥	lì;mh	234
 鲡	lí;ph	226
 猁	lì;pe	216
+郦	lì;hv	206
 逦	lǐ;hz	204
 粝	lì;dh	202
 疠	lì;dp	194
