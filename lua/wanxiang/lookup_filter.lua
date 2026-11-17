@@ -12,12 +12,17 @@
 ---@field reverse_lookup ReverseLookup?
 ---@field component_projection Projection?
 ---@field stroke_projection Projection?
----@field comment_split_pattern string?
----@field bypass_prefix string?
+---@field comment_split_pattern string
+---@field bypass_prefix string
+
+---Per-character codes parsed from a candidate comment.
+---@class CommentCodes
+---@field aux_codes string[][]
+---@field tones string[]
 
 ---@class LookupFilterState
 ---@field db_cache SegmentedCache<{component_match_codes: string[], stroke_match_codes: string[]}>
----@field comment_cache SegmentedCache<string[][]|false>
+---@field comment_cache SegmentedCache<CommentCodes|false>
 ---
 ---@field select_notifier Connection?
 
@@ -47,24 +52,136 @@ local function any_starts_with(list, prefix)
     return false
 end
 
----Find the start of the rightmost literal occurrence of `needle` at or after `init`.
----@param haystack string
----@param needle string
----@param init integer
----@return integer? match_start
-local function find_last(haystack, needle, init)
-    ---@type integer?
-    local match_start = nil
-    local scan_from = init
-    while true do
-        local hit_start = haystack:find(needle, scan_from, true)
-        if not hit_start then
-            break
-        end
-        match_start = hit_start
-        scan_from = hit_start + 1
+---Split input into prefix, base code and auxiliary code at the lookup trigger.
+---@param input string
+---@param trigger string
+---@param bypass_prefix string
+---@return string? prefix `nil` when the input contains no trigger after the prefix.
+---@return string? base_code
+---@return string? aux_code
+local function split_lookup_input(input, trigger, bypass_prefix)
+    local prefix = ""
+    if bypass_prefix ~= "" and input:sub(1, #bypass_prefix) == bypass_prefix then
+        prefix = bypass_prefix
     end
-    return match_start
+
+    local base_code_pos = #prefix + 1
+    local trigger_pos = input:find(trigger, base_code_pos, true)
+    if not trigger_pos then
+        return nil
+    end
+
+    local base_code = input:sub(base_code_pos, trigger_pos - 1)
+    local aux_code = input:sub(trigger_pos + #trigger)
+
+    return prefix, base_code, aux_code
+end
+
+---Separate tone digits from the auxiliary code, keeping their order.
+---@param aux_code string
+---@return string letters
+---@return string[] tones
+local function split_tone_digits(aux_code)
+    ---@type string[]
+    local tones = {}
+    local tones_len = 0
+    for tone in aux_code:gmatch("[7890]") do
+        tones_len = tones_len + 1
+        tones[tones_len] = tone
+    end
+    local letters = aux_code:gsub("[7890]", "")
+    return letters, tones
+end
+
+---Parse per-character auxiliary codes and tones from a candidate comment.
+---@param comment string
+---@param pattern string
+---@param target_len integer
+---@return CommentCodes?
+local function parse_comment_codes(comment, pattern, target_len)
+    if comment == "" then
+        return nil
+    end
+
+    ---@type string[]
+    local parts = {}
+    local parts_len = 0
+
+    if target_len == 1 then
+        parts = { comment }
+    else
+        for part in comment:gmatch(pattern) do
+            parts_len = parts_len + 1
+            parts[parts_len] = part
+        end
+        if #parts ~= target_len then
+            return nil
+        end
+    end
+
+    ---@type string[][]
+    local aux_codes = {}
+    ---@type string[]
+    local tones = {}
+    for i, part in ipairs(parts) do
+        local p1, p2 = part:find(";")
+
+        local pinyin_part = p1 and part:sub(1, p1 - 1) or part
+        tones[i] = utils.get_pinyin_tone(pinyin_part)
+
+        local codes_part = p1 and part:sub(p2 + 1) or ""
+
+        ---@type string[]
+        local codes_list = {}
+        local codes_list_len = 0
+        -- Extract auxiliary codes.
+        if #codes_part > 0 then
+            for c in codes_part:gmatch("[^,]+") do
+                local trimmed = c:gsub("^%s+", ""):gsub("%s+$", "")
+                if #trimmed > 0 then
+                    codes_list_len = codes_list_len + 1
+                    codes_list[codes_list_len] = trimmed
+                end
+            end
+        end
+        aux_codes[i] = codes_list
+    end
+    return { aux_codes = aux_codes, tones = tones }
+end
+
+---Get cached comment codes of a candidate, parsing them on a cache miss.
+---@param cand Candidate
+---@param cand_len integer
+---@param config LookupFilterConfig
+---@param state LookupFilterState
+---@return CommentCodes?
+local function get_comment_codes(cand, cand_len, config, state)
+    local cand_text = cand.text
+    local comment_text = cand:get_genuine().comment
+    if comment_text == "" then
+        return nil
+    end
+
+    local cache_key = cand_text .. ":" .. comment_text
+    local comment_codes = state.comment_cache:get(cache_key)
+    if comment_codes == nil then
+        comment_codes = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len) or false
+        state.comment_cache:insert(cache_key, comment_codes)
+    end
+    return comment_codes or nil
+end
+
+---Return whether each input tone matches the tone of the character at the same position.
+---@param input_tones string[]
+---@param cand_tones string[]
+---@return boolean
+local function match_tones(input_tones, cand_tones)
+    for i, tone in ipairs(input_tones) do
+        if cand_tones[i] ~= tone then
+            return false
+        end
+    end
+    return true
 end
 
 ---Load component and stroke projection rules from a schema.
@@ -368,90 +485,6 @@ local function match_fuzzy_recursive(codes_sequence, idx, input_str, input_idx, 
     return result
 end
 
----Split input into base and auxiliary codes at the lookup trigger.
----@param input string
----@param trigger string
----@param bypass_prefix string?
----@return string? base_code
----@return string? aux_code
-local function split_lookup_input(input, trigger, bypass_prefix)
-    if input == "" then
-        return nil
-    end
-
-    local scan_from = 1
-    -- If a word-creation prefix is configured and matches at the start, advance the scan origin past it.
-    if bypass_prefix and bypass_prefix ~= "" and input:sub(1, #bypass_prefix) == bypass_prefix then
-        scan_from = #bypass_prefix + 1
-    end
-
-    local input_body = input:sub(scan_from)
-    -- Reject a body starting with a symbol trigger (no base code precedes it); alphanumeric triggers are exempt.
-    if input_body:sub(1, #trigger) == trigger and not trigger:match("^%w+$") then
-        return nil
-    end
-
-    local trigger_start = find_last(input, trigger, scan_from)
-    if not trigger_start then
-        return nil
-    end
-
-    local base_code = input:sub(1, trigger_start - 1)
-    local aux_code = input:sub(trigger_start + #trigger)
-    return base_code, aux_code
-end
-
----Parse per-character auxiliary codes from a candidate comment.
----@param comment string
----@param pattern string
----@param target_len integer
----@return string[][]?
-local function parse_comment_codes(comment, pattern, target_len)
-    if comment == "" then
-        return nil
-    end
-
-    ---@type string[]
-    local parts = {}
-    local parts_len = 0
-
-    if target_len == 1 then
-        parts = { comment }
-    else
-        for seg in comment:gmatch(pattern) do
-            parts_len = parts_len + 1
-            parts[parts_len] = seg
-        end
-        if #parts ~= target_len then
-            return nil
-        end
-    end
-
-    ---@type string[][]
-    local result = {}
-    for i, part in ipairs(parts) do
-        local p1, p2 = part:find(";")
-
-        local codes_part = p1 and part:sub(p2 + 1) or ""
-
-        ---@type string[]
-        local codes_list = {}
-        local codes_list_len = 0
-        -- Extract auxiliary codes.
-        if #codes_part > 0 then
-            for c in codes_part:gmatch("[^,]+") do
-                local trimmed = c:gsub("^%s+", ""):gsub("%s+$", "")
-                if #trimmed > 0 then
-                    codes_list_len = codes_list_len + 1
-                    codes_list[codes_list_len] = trimmed
-                end
-            end
-        end
-        result[i] = codes_list
-    end
-    return result
-end
-
 local F = {}
 
 ---@param env Env
@@ -488,7 +521,6 @@ function F.init(env)
     ---@type table<LookupSource, boolean>
     local seen_sources = {}
     local has_dictionary_source = false
-    local has_aux_code_source = false
     local sources_list_item = cfg_root and cfg_root:get("sources")
     local sources_list = sources_list_item and sources_list_item:get_list()
     if sources_list then
@@ -508,9 +540,7 @@ function F.init(env)
             sources_len = sources_len + 1
             sources[sources_len] = source
 
-            if source == "aux_code" then
-                has_aux_code_source = true
-            else
+            if source == "dictionary" then
                 has_dictionary_source = true
             end
 
@@ -543,17 +573,13 @@ function F.init(env)
         end
     end
 
-    ---@type string?
-    local comment_split_pattern = nil
-    if has_aux_code_source then
-        local delimiter = rime_config:get_string("speller/delimiter") or " '"
-        if delimiter == "" then
-            delimiter = " "
-        end
-        comment_split_pattern = "[^" .. utils.escape_for_pattern(delimiter) .. "]+"
+    local delimiter = rime_config:get_string("speller/delimiter") or " '"
+    if delimiter == "" then
+        delimiter = " "
     end
+    local comment_split_pattern = "[^" .. utils.escape_for_pattern(delimiter) .. "]+"
 
-    local bypass_prefix = rime_config:get_string("user_dict_appender/prefix")
+    local bypass_prefix = rime_config:get_string("user_dict_appender/prefix") or ""
 
     -- Keep the trigger after selecting a partial composition; remove it and commit when conversion is complete.
     ---@type Connection?
@@ -561,16 +587,17 @@ function F.init(env)
     if trigger then
         select_notifier = env.engine.context.select_notifier:connect(function(ctx)
             local input = ctx.input
-            local base_code = split_lookup_input(input, trigger, bypass_prefix)
+            local prefix, base_code = split_lookup_input(input, trigger, bypass_prefix)
             if not base_code or base_code == "" then
                 return
             end
+            ---@cast prefix string
 
-            local edit = split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix)
-            if edit and edit:match("[%w/]") then
-                ctx.input = base_code .. trigger
+            local _, preedit_base_code = split_lookup_input(ctx:get_preedit().text, trigger, bypass_prefix)
+            if preedit_base_code and preedit_base_code:match("[%w/]") then
+                ctx.input = prefix .. base_code .. trigger
             else
-                ctx.input = base_code
+                ctx.input = prefix .. base_code
                 ctx:commit()
             end
         end)
@@ -615,8 +642,9 @@ function F.func(translation, env)
     assert(config.trigger)
 
     local input = context.input
-    local _, aux_code = split_lookup_input(input, config.trigger, config.bypass_prefix)
+    local _, _, aux_code = split_lookup_input(input, config.trigger, config.bypass_prefix)
     ---@cast aux_code string
+    local aux_letters, input_tones = split_tone_digits(aux_code)
 
     local state = env.lookup_filter_state
     assert(state)
@@ -646,46 +674,44 @@ function F.func(translation, env)
             goto continue
         end
 
+        ---@type CommentCodes?
+        local comment_codes = nil
+        if #input_tones > 0 then
+            comment_codes = get_comment_codes(cand, cand_len, config, state)
+            if not comment_codes or not match_tones(input_tones, comment_codes.tones) then
+                goto continue
+            end
+        end
+
         ---@type boolean
-        local matched = false
+        local matched = aux_letters == ""
         for _, source in ipairs(config.sources) do
+            if matched then
+                break
+            end
+
             if source == "aux_code" then
-                if not config.comment_split_pattern then
-                    goto continue
+                comment_codes = comment_codes or get_comment_codes(cand, cand_len, config, state)
+                if not comment_codes then
+                    goto continue_source
                 end
 
-                local genuine = cand:get_genuine()
-                local comment_text = genuine.comment
-                if comment_text == "" then
-                    goto continue
-                end
-
-                local cache_key = cand_text .. ":" .. comment_text
-                local codes_sequence = state.comment_cache:get(cache_key)
-                ---@cast codes_sequence string[][]|false
-                if codes_sequence == nil then
-                    codes_sequence = parse_comment_codes(comment_text, config.comment_split_pattern, cand_len) or false
-                    state.comment_cache:insert(cache_key, codes_sequence)
-                end
-                if not codes_sequence then
-                    goto continue
-                end
-
+                local codes_sequence = comment_codes.aux_codes
                 if cand_len == 1 then
                     assert(#codes_sequence == 1)
-                    matched = any_starts_with(codes_sequence[1], aux_code)
+                    matched = any_starts_with(codes_sequence[1], aux_letters)
                 else
-                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_code, 1, {}, false)
+                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_letters, 1, {}, false)
                 end
             else -- if source == "dictionary" then
                 if not config.reverse_lookup then
-                    goto continue
+                    goto continue_source
                 end
 
                 if cand_len == 1 then
                     local entry = get_reverse_entry(cand_text, config, state)
-                    matched = any_starts_with(entry.component_match_codes, aux_code)
-                        or any_starts_with(entry.stroke_match_codes, aux_code)
+                    matched = any_starts_with(entry.component_match_codes, aux_letters)
+                        or any_starts_with(entry.stroke_match_codes, aux_letters)
                 else
                     ---@type (string[]|false)[]
                     local codes_sequence = {}
@@ -697,15 +723,11 @@ function F.func(translation, env)
                         -- Preserve the sequence length for characters without component codes.
                         codes_sequence[codes_sequence_len] = next(codes) ~= nil and codes or false
                     end
-                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_code, 1, {}, true)
+                    matched = match_fuzzy_recursive(codes_sequence, 1, aux_letters, 1, {}, true)
                 end
             end
 
-            if matched then
-                break
-            end
-
-            ::continue::
+            ::continue_source::
         end
 
         if not matched then
@@ -765,7 +787,7 @@ function F.tags_match(segment, env)
         return false
     end
 
-    local _, aux_code = split_lookup_input(env.engine.context.input, config.trigger, config.bypass_prefix)
+    local _, _, aux_code = split_lookup_input(env.engine.context.input, config.trigger, config.bypass_prefix)
     if not aux_code or aux_code == "" then
         return false
     end
