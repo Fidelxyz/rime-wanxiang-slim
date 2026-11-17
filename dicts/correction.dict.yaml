@@ -1,11 +1,11 @@
 # Rime dictionary
 # encoding: utf-8
 #
-# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.0.15/dicts/cuoyin.dict.yaml
+# Original file: https://github.com/amzxyz/rime-wanxiang/blob/v18.1.8/dicts/cuoyin.dict.yaml
 # Copyright (c) amzxyz, licensed under CC BY 4.0.
 ---
 name: correction
-version: "18.0.15"
+version: "18.1.8"
 sort: by_weight
 ...
 株木琅玛	zhū mù láng mǎ	205	有声
