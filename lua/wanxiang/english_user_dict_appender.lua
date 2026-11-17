@@ -29,6 +29,10 @@ end
 ---@param ctx Context
 ---@param env Env
 local function commit_handler(ctx, env)
+    if ctx:get_option("disable_english") then
+        return
+    end
+
     local state = env.english_user_dict_appender_state
     assert(state)
 
@@ -157,9 +161,10 @@ function F.func(input, env)
 end
 
 ---@param segment Segment
+---@param env Env
 ---@return boolean
-function F.tags_match(segment, _)
-    return segment:has_tag("user_dict_appender")
+function F.tags_match(segment, env)
+    return segment:has_tag("user_dict_appender") and not env.engine.context:get_option("disable_english")
 end
 
 return F
