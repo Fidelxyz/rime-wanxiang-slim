@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.1...v1.2.0) (2026-11-17)
+
+
+### Features
+
+* add a switch `disable_english` to disable English input ([c5a5a6d](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/c5a5a6d68c9eb0c70f1e8a4d1c4b5ee60d537194))
+* **lookup_filter:** support tone digits in auxiliary code lookup ([b396917](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/b39691761ec7f92a58392ec2e315a3be55e8604c))
+
+
+### Bug Fixes
+
+* remove stale generated dictionaries and tables ([40ec12a](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/40ec12ab85c77c6b2ca3eea27835d9d240142ac6))
+* use main dictionary for user phrase and pinned candidate lookup ([#38](https://github.com/Fidelxyz/rime-wanxiang-slim/issues/38)) ([4155e76](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/4155e76614c0d8048399769aa380204ffe19c5a9))
+
 ## [1.2.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2026-11-11)
 
 
