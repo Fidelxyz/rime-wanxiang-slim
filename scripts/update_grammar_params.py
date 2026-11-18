@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Sync grammar parameters from upstream schema files into this repository.
 
 Extracts grammar parameter values from upstream schema files and updates the
@@ -10,12 +9,11 @@ Only individual parameter values are updated; the rest of the local schema
 
 Usage::
 
-    scripts/update_grammar_params.py --source <upstream_dir> [--repo-root <dir>]
+    python3 scripts/update_grammar_params.py --source <upstream_dir> [--repo-root <dir>]
 """
 
 import argparse
 import re
-import sys
 from pathlib import Path
 
 # Maps local schema path to upstream source path (relative to source dir root).
@@ -34,10 +32,6 @@ GRAMMAR_PARAM_KEYS: tuple[str, ...] = (
 )
 
 PARAM_LINE_PATTERN = re.compile(r"^(\s+)([a-zA-Z_]+)\s*:\s*(.*)")
-
-
-class GrammarUpdateError(Exception):
-    """Raised for any expected, user-facing failure."""
 
 
 def extract_grammar_range(text: str) -> tuple[int, int]:
@@ -102,9 +96,6 @@ def sync_grammar_params(source_dir: Path, repo_root: Path) -> None:
         upstream_file = source_dir / upstream_path
         local_file = repo_root / local_path
 
-        if not upstream_file.is_file():
-            raise GrammarUpdateError(f"missing upstream schema: {upstream_file}")
-
         upstream_text = upstream_file.read_text(encoding="utf-8")
         upstream_params = extract_params(upstream_text)
 
@@ -142,25 +133,11 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
+def main() -> None:
     args = parse_args()
-
-    source_dir = args.source
-    repo_root = args.repo_root.resolve()
-
-    if not source_dir.is_dir():
-        print(f"error: source directory does not exist: {source_dir}", file=sys.stderr)
-        return 1
-
-    try:
-        sync_grammar_params(source_dir, repo_root)
-    except GrammarUpdateError as error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
-
+    sync_grammar_params(args.source, args.repo_root.resolve())
     print("==> Done")
-    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

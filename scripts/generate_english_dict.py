@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+# /// script
+# dependencies = [
+#     "wordfreq>=3.1.1",
+# ]
+# ///
 """Generate the English dictionary from ESDB words and wordfreq weights.
 
 Words come from the English Speller Database (ESDB, formerly SCOWL), a curated

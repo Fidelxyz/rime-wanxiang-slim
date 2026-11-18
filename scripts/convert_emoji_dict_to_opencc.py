@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Data source: https://github.com/dofy/apple-emoji-dict
 """
@@ -35,4 +34,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

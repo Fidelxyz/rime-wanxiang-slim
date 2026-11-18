@@ -140,7 +140,7 @@ jobs:
       - name: Generate English dictionary
         working-directory: ${{ github.event.repository.name }}
         run: |-
-          uv run --project scripts scripts/generate_english_dict.py \
+          uv run scripts/generate_english_dict.py \
             --esdb "${{ github.workspace }}/esdb"
 
       - uses: stefanzweifel/git-auto-commit-action@v7

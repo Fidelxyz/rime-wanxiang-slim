@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Generate Pro dictionaries from normalized auxiliary-code data."""
 
 import csv
@@ -171,4 +170,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

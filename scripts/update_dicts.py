@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Normalize dictionary and auxiliary-code data from upstream.
 
 This script reads dictionary and auxiliary-code source data from an already
@@ -18,7 +17,7 @@ What it does:
 
 Usage::
 
-    scripts/update_dicts.py --source <upstream_dir> --tag <tag> [--repo-root <dir>]
+    python3 scripts/update_dicts.py --source <upstream_dir> --tag <tag> [--repo-root <dir>]
 """
 
 import argparse
@@ -77,10 +76,6 @@ AUXILIARY_CODE_ONLY_PATTERN = re.compile(r"[a-z]+(?:[,;][a-z]+)*")
 GLUED_AUXILIARY_CODE_PREFIX_PATTERN = re.compile(r"^([a-z]+)(?=[^a-z])")
 GLUED_AUXILIARY_CODE_SUFFIX_PATTERN = re.compile(r"([a-z]+)$")
 GLUED_DECOMPOSITION_CODE_PATTERN = re.compile(r"([^\sa-z])([a-z]+)$")
-
-
-class Error(Exception):
-    """Raised for any expected, user-facing failure."""
 
 
 @dataclass(frozen=True)
@@ -200,20 +195,20 @@ def parse_auxiliary_code_csv(input_path: Path) -> NormalizedAuxiliaryData:
         reader = csv.reader(input_file)
         header = next(reader, None)
         if header is None:
-            raise Error(f"auxiliary-code CSV has no header: {input_path}")
+            raise ValueError(f"auxiliary-code CSV has no header: {input_path}")
 
         expected_columns = len(AUXILIARY_SCHEMA_MAPPING) + 1
         if len(header) != expected_columns:
-            raise Error(
+            raise ValueError(
                 f"auxiliary-code CSV header has {len(header)} columns, "
                 f"expected {expected_columns}: {input_path}"
             )
         if tuple(header) != ("#", *AUXILIARY_SCHEMA_MAPPING):
-            raise Error(f"unexpected auxiliary-code CSV header: {input_path}")
+            raise ValueError(f"unexpected auxiliary-code CSV header: {input_path}")
 
         for line_number, row in enumerate(reader, start=2):
             if len(row) != expected_columns:
-                raise Error(
+                raise ValueError(
                     f"auxiliary-code CSV row {line_number} has {len(row)} columns, "
                     f"expected {expected_columns}: {input_path}"
                 )
@@ -269,8 +264,8 @@ def write_auxiliary_decomposition_tables(
         output_file.write_text("".join(lines), encoding="utf-8")
 
 
-def validate_upstream_files(source_dir: Path) -> bool:
-    """Report upstream file changes and return whether all required files exist."""
+def validate_upstream_files(source_dir: Path) -> None:
+    """Warn about unrecognized upstream files and fail on missing required files."""
     expected_files = {
         SRC_DICT_PATH / f"{src_dict}.dict.yaml" for src_dict in DICT_NAME_MAPPING
     }
@@ -302,12 +297,10 @@ def validate_upstream_files(source_dir: Path) -> bool:
 
     missing_files = sorted(expected_files - actual_files)
     if missing_files:
-        print("error: required upstream files are missing:", file=sys.stderr)
-        for path in missing_files:
-            print(f"    {path.as_posix()}", file=sys.stderr)
-        return False
-
-    return True
+        raise FileNotFoundError(
+            "required upstream files are missing: "
+            + ", ".join(path.as_posix() for path in missing_files)
+        )
 
 
 def build_dict_header(src_name: str, src_tag: str) -> str:
@@ -337,7 +330,7 @@ def normalize_dict_text(
         (i for i, line in enumerate(lines) if line.rstrip("\n") == "---"), None
     )
     if marker_index is None:
-        raise Error(
+        raise ValueError(
             f"dictionary has no '---' document marker: dicts/{src_name}.dict.yaml"
         )
 
@@ -361,7 +354,9 @@ def normalize_dict_text(
         output_lines.append(line)
 
     if not saw_name:
-        raise Error(f"dictionary has no 'name:' directive: dicts/{src_name}.dict.yaml")
+        raise ValueError(
+            f"dictionary has no 'name:' directive: dicts/{src_name}.dict.yaml"
+        )
 
     return "".join(output_lines)
 
@@ -450,7 +445,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> int:
+def main() -> None:
     args = parse_args()
 
     source_dir = args.source
@@ -458,27 +453,17 @@ def main() -> int:
     tag = args.tag
     version = tag.removeprefix("v")
 
-    if not source_dir.is_dir():
-        print(f"error: source directory does not exist: {source_dir}", file=sys.stderr)
-        return 1
-
-    if not validate_upstream_files(source_dir):
-        return 1
+    validate_upstream_files(source_dir)
 
     print(f"==> Updating dictionaries from {UPSTREAM_REPO} {tag} (version {version})")
     print(f"    source:    {source_dir}")
     print(f"    repo-root: {repo_root}")
 
-    try:
-        normalize_dictionaries(source_dir, repo_root, version, tag)
-        normalize_auxiliary_sources(source_dir, repo_root)
-    except Error as error:
-        print(f"error: {error}", file=sys.stderr)
-        return 1
+    normalize_dictionaries(source_dir, repo_root, version, tag)
+    normalize_auxiliary_sources(source_dir, repo_root)
 
     print("==> Done")
-    return 0
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()
