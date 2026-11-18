@@ -163,6 +163,7 @@ punctuator:
 translator:
   dictionary: wanxiang
   enable_completion: true  # 启用补全。
+  enable_word_completion: false  # 禁用整词补全，候选词的音节数不超过输入的音节数。
   enable_user_dict: false  # 启用自动调频。
   contextual_suggestions: false  # 使用 Rime 内置的语法模型，效果一般，建议关闭。
   max_homophones: 8
