@@ -40,12 +40,12 @@ DICT_NAME_MAPPING: dict[str, str] = {
     "cuoyin": "correction",
     "duoyin": "polyphone",
     "diming": "place",
-    "mingren": "celebrity",
-    "yiren": "artist",
     "en": "english",
 }
 IGNORED_DICTS = {
     "mixed.dict.yaml",
+    "celebrity.dict.yaml",
+    "artist.dict.yaml",
     "abbrev.dict.yaml",
     "t9_abbrev.dict.yaml",
 }

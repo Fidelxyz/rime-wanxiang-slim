@@ -82,9 +82,4 @@ patch:
 
 ### 扩展词库数据
 
-部分扩展词库数据未默认启用，可查阅 `wanxiang.dict.yaml` 中的注释项，通过上述方式按需开启：
-
-| 词库 | 用途 |
-| --- | --- |
-| `dicts/celebrity` | 名人词库 |
-| `dicts/artist` | 艺人词库 |
+可前往上游 [rime-wanxiang-data](https://github.com/amzxyz/rime-wanxiang-data/releases/tag/dict-nightly) 仓库获取扩展词库，通过上述方式按需开启。

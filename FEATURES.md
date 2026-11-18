@@ -467,6 +467,14 @@ Ctrl+E 进入翻译模式。
 - `lua/wanxiang/custom_phrase.lua`：简码候选插入与去重
 - `wanxiang.schema.yaml` / `wanxiang_pro.schema.yaml`：`abbrev` 开关、`abbrev_phrase` 配置段
 
+#### 扩展词库
+
+仓库内置的扩展词库数据，在主词典中按需启用。扩展词库改由上游 [rime-wanxiang-data](https://github.com/amzxyz/rime-wanxiang-data/releases/tag/dict-nightly) 提供。
+
+- `dicts/` 目录下的扩展词库文件
+- `wanxiang.dict.yaml`：扩展词库的导入项
+- `scripts/update_dicts.py`：扩展词库的名称映射，由 `IGNORED_DICTS` 忽略
+
 ### 特殊布局相关
 
 #### 万象带调双拼
