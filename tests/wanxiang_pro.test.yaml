@@ -389,7 +389,7 @@ deploy:
       - send: nir
         assert: eq(cand[1].text, "你")
       - send: nire
-        assert: eq(cand[2].text, "你")
+        assert: eq(cand[3].text, "你")
       - send: nire/
         assert: eq(cand[1].text, "你")
       - send: niRe

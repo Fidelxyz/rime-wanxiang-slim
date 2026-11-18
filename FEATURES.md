@@ -132,6 +132,8 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `wanxiang_english.schema.yaml`：英文输入方案定义
 - `wanxiang_english.dict.yaml`：英文词典数据
 - `dicts/english.dict.yaml`：英文词条
+- `scripts/generate_english_dict.py`：从 ESDB 词表和 wordfreq 词频生成英文词条
+- `scripts/update_dicts.py`：`LOCAL_DICTS` 使同步上游词库时保留英文词条
 - `wanxiang_algebra.yaml` (`english` 段)：英文输入转写规则
 
 ### 其他功能
