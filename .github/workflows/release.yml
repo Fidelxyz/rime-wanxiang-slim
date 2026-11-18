@@ -96,8 +96,6 @@ jobs:
 
       - name: Generate release note
         id: release-note
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: bash scripts/generate-release-note.sh > release-note.md
 
       - uses: ncipollo/release-action@v1
