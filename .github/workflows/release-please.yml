@@ -1,0 +1,48 @@
+name: Release Please
+
+on:
+  workflow_call:
+    inputs:
+      config-file:
+        type: string
+        required: true
+      manifest-file:
+        type: string
+        required: true
+    outputs:
+      release_created:
+        value: ${{ jobs.release-please.outputs.release_created }}
+      tag_name:
+        value: ${{ jobs.release-please.outputs.tag_name }}
+
+jobs:
+  release-please:
+    runs-on: ubuntu-slim
+
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          config-file: ${{ inputs.config-file }}
+          manifest-file: ${{ inputs.manifest-file }}
+          target-branch: ${{ github.ref_name }}
+
+      - uses: actions/checkout@v7
+        if: steps.release.outputs.prs_created == 'true'
+        with:
+          ref: ${{ fromJSON(steps.release.outputs.pr).headBranchName }}
+
+      - name: Translate the breaking changes heading in the changelog
+        if: steps.release.outputs.prs_created == 'true'
+        run: sed -i 's/^### ⚠ BREAKING CHANGES$/### ⚠ 破坏性变更/' CHANGELOG.md
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        if: steps.release.outputs.prs_created == 'true'
+        with:
+          commit_message: "chore: translate the breaking changes heading in the changelog"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          file_pattern: CHANGELOG.md
+
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}

@@ -11,17 +11,17 @@
             "bump-minor-pre-major": true,
             "pull-request-title-pattern": "release${scope}: release${component} ${version}",
             "changelog-sections": [
-                { "type": "feat", "section": "Features" },
-                { "type": "fix", "section": "Bug Fixes" },
-                { "type": "perf", "section": "Performance Improvements" },
-                { "type": "revert", "section": "Reverts" },
-                { "type": "chore", "section": "Miscellaneous Chores" },
-                { "type": "docs", "section": "Documentation", "hidden": true },
-                { "type": "style", "section": "Styles", "hidden": true },
-                { "type": "refactor", "section": "Code Refactoring" },
-                { "type": "test", "section": "Tests", "hidden": true },
-                { "type": "build", "section": "Build System", "hidden": true },
-                { "type": "ci", "section": "Continuous Integration", "hidden": true }
+                { "type": "feat", "section": "新增功能" },
+                { "type": "fix", "section": "问题修复" },
+                { "type": "perf", "section": "性能优化" },
+                { "type": "revert", "section": "回退" },
+                { "type": "chore", "section": "杂项" },
+                { "type": "refactor", "section": "重构" },
+                { "type": "docs", "section": "文档", "hidden": true },
+                { "type": "style", "section": "代码风格", "hidden": true },
+                { "type": "test", "section": "测试", "hidden": true },
+                { "type": "build", "section": "构建系统", "hidden": true },
+                { "type": "ci", "section": "持续集成", "hidden": true }
             ],
             "extra-files": [
                 "lua/meta.lua",

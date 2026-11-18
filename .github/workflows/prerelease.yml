@@ -13,19 +13,10 @@ permissions:
 
 jobs:
   release-please:
-    runs-on: ubuntu-slim
-
-    steps:
-      - uses: googleapis/release-please-action@v5
-        id: release
-        with:
-          config-file: .github/prerelease-config.json
-          manifest-file: .github/prerelease-manifest.json
-          target-branch: ${{ github.ref_name }}
-
-    outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
+    uses: $/.github/workflows/release-please.yml
+    with:
+      config-file: .github/prerelease-config.json
+      manifest-file: .github/prerelease-manifest.json
 
   release:
     runs-on: ubuntu-latest

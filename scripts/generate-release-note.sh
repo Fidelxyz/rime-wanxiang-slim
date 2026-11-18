@@ -30,7 +30,14 @@ done
 repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
 download_url="${repo_url}/releases/download/${TAG_NAME}"
 
-changes="$(gh release view --json body -t "{{.body}}" "${TAG_NAME}" | sed '1d; /./,$!d')"
+# Read the changes from the section of this version in the translated changelog.
+changes="$(
+    awk -v heading="## [${TAG_NAME#v}]" '
+        index($0, heading) == 1 { found = 1; next }
+        found && /^## / { exit }
+        found { print }
+    ' CHANGELOG.md | sed '/./,$!d'
+)"
 
 ##########################
 # Print the release note #
