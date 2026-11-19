@@ -42,11 +42,11 @@ DICT_NAME_MAPPING: dict[str, str] = {
     "duoyin": "polyphone",
     "diming": "place",
 }
-IGNORED_DICTS = {
+IGNORED_SRC_DICTS = {
     "en.dict.yaml",
     "mixed.dict.yaml",
-    "celebrity.dict.yaml",
-    "artist.dict.yaml",
+    "mingren.dict.yaml",
+    "yiren.dict.yaml",
     "abbrev.dict.yaml",
     "t9_abbrev.dict.yaml",
 }
@@ -292,7 +292,7 @@ def validate_upstream_files(source_dir: Path) -> None:
         if path.is_file()
     )
 
-    ignored_files = {SRC_DICT_PATH / name for name in IGNORED_DICTS}
+    ignored_files = {SRC_DICT_PATH / name for name in IGNORED_SRC_DICTS}
 
     new_files = sorted(actual_files - expected_files - ignored_files)
     if new_files:
