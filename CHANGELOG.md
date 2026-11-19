@@ -5,23 +5,17 @@
 
 ### 新增功能
 
-* generate the English dictionary from ESDB and wordfreq ([f9a66fb](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f9a66fbdb799c5dd2584c07927fa906ac73459d4))
+* 基于 ESDB 和 wordfreq 生成英文词库 ([f9a66fb](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f9a66fbdb799c5dd2584c07927fa906ac73459d4))
 
 
 ### 问题修复
 
-* disable word completion for the main translator ([086adf3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/086adf3221d930f4d97ade3cab39d8f3e214cd0f))
-
-
-### 杂项
-
-* add check-upstream-algebra skill ([9c8be4f](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c8be4fad0ff1a4ce753334816c67eace272b81e))
+* 为主翻译器关闭词语补全 ([086adf3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/086adf3221d930f4d97ade3cab39d8f3e214cd0f))
 
 
 ### 重构
 
-* remove celebrity and artist dictionaries ([1708efc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1708efc57659cbd1173368b5f3674cc202c7480f))
-* simplify Python script entry points and error handling ([1724836](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1724836f3e3724035f2b26f56861fdc8afc4a5cc))
+* 移除名人和艺人词库 ([1708efc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1708efc57659cbd1173368b5f3674cc202c7480f))
 
 ## [1.2.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.1...v1.2.0) (2026-11-17)
 
