@@ -60,6 +60,7 @@ Ctrl+S 切换编码区显示模式：原编码 / 带声调全拼 / 无声调全�
 - `wanxiang_reverse.dict.yaml`：反查字典数据
 - `wanxiang.schema.yaml`：`reverse_lookup` 段与 `affix_segmentor` 配置
 - `wanxiang_algebra.yaml` (`reverse` 段)：各拼音与笔画规则
+- `scripts/update_dicts.py`：从上游同步反查字典数据
 
 ### 造词
 
@@ -241,6 +242,7 @@ Ctrl+P 置顶当前候选，Ctrl+L 取消置顶。置顶记录写入独立的用
 - `wanxiang_algebra.yaml`：`reverse` 段中的声调转写规则
 - `wanxiang.schema.yaml` / `custom/wanxiang_pro.schema.yaml`：反查 recognizer 允许声调数字
 - `lua/wanxiang/super_processor.lua`：反查状态下的声调修正
+- `scripts/update_dicts.py`：同步反查字典数据时去除拆分编码末尾的声调后缀
 
 #### 上下文调频
 

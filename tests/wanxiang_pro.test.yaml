@@ -39,7 +39,7 @@ deploy:
         assert: eq(cand[1].text, "这时") and eq(preedit, "zhe⁴ shi²")
       # Reverse Lookup
       - send: "`mudui"
-        assert: eq(cand[1].text, "棁") and eq(cand[2].text, "树")
+        assert: eq(cand[1].text, "树")
       - send: "`muyoucun"
         assert: eq(cand[1].text, "树")
       - send: "`hspnznhsn"
