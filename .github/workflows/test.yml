@@ -6,9 +6,13 @@ on:
     branches:
       - main
       - stable
-    paths-ignore:
-      - 'docs/**'
-      - '**/*.md'
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!**/*.md'
+      - '!.agents/**'
+      - '!.github/**'
+      - '.github/workflows/test.yml'
   pull_request:
 
 permissions:
@@ -17,6 +21,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, 'release-please--') && !startsWith(github.event.head_commit.message, 'release') }}
 
     steps:
       - uses: actions/checkout@v7
