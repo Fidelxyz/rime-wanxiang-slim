@@ -1,5 +1,22 @@
 # 更新日志
 
+## [1.3.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0-beta.1) (2026-11-19)
+
+
+### 新增功能
+
+* 基于 ESDB 和 wordfreq 生成英文词库 ([f9a66fb](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f9a66fbdb799c5dd2584c07927fa906ac73459d4))
+
+
+### 问题修复
+
+* 为主翻译器关闭词语补全 ([086adf3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/086adf3221d930f4d97ade3cab39d8f3e214cd0f))
+
+
+### 重构
+
+* 移除名人和艺人词库 ([1708efc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1708efc57659cbd1173368b5f3674cc202c7480f))
+
 ## [1.2.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.1.1...v1.2.0) (2026-11-17)
 
 
