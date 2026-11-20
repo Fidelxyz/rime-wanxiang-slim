@@ -1,5 +1,12 @@
 # 更新日志
 
+## [1.3.0-beta.2](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.3.0-beta.1...v1.3.0-beta.2) (2026-11-20)
+
+
+### 杂项
+
+* update bug report issue template ([037e088](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/037e0880b5a08679b6b852f8a9cb2324aedb062d))
+
 ## [1.3.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0-beta.1) (2026-11-19)
 
 
