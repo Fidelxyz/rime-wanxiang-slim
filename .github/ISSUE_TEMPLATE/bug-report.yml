@@ -40,17 +40,5 @@ body:
 
   - type: textarea
     attributes:
-      label: 错误日志
-      description: 如日志中存在相关错误，请将其粘贴至此处。
-      render: text
-
-  - type: textarea
-    attributes:
-      label: 配置文件
-      description: 如果您认为问题与您的配置文件（`custom.yaml`）相关，请将其内容粘贴至此处。
-      render: yaml
-
-  - type: textarea
-    attributes:
       label: 补充信息
-      description: 任何关于该问题的其他信息。
+      description: 任何关于该问题的其他信息。如日志中存在相关错误，或问题与您的配置文件（`custom.yaml`）相关，请将其作为附件上传至此处。
