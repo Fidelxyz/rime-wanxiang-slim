@@ -23,6 +23,7 @@ New-Item -ItemType Directory -Force -Path (Split-Path ${binary}) | Out-Null
 Add-Type -AssemblyName System.Net.Http
 ${client} = [System.Net.Http.HttpClient]::new()
 ${response} = ${null}
+${temp} = ${null}
 try {
     if (Test-Path -LiteralPath ${binary} -PathType Leaf) {
         ${client}.DefaultRequestHeaders.IfModifiedSince = [System.IO.File]::GetLastWriteTimeUtc(${binary})
@@ -38,7 +39,7 @@ try {
         if (Test-Path -LiteralPath ${binary} -PathType Leaf) {
             Write-Host 'Updating installer...'
         }
-        ${temp} = [System.IO.Path]::GetTempFileName()
+        ${temp} = "${binary}.$([System.IO.Path]::GetRandomFileName())"
         [System.IO.File]::WriteAllBytes(${temp}, ${response}.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult())
         ${modified} = ${response}.Content.Headers.LastModified
         if (${null} -ne ${modified}) {
@@ -50,6 +51,9 @@ try {
         Move-Item -LiteralPath ${temp} -Destination ${binary} -Force
     }
 } finally {
+    if (${null} -ne ${temp}) {
+        Remove-Item -LiteralPath ${temp} -Force -ErrorAction Ignore
+    }
     if (${null} -ne ${response}) {
         ${response}.Dispose()
     }
