@@ -10,6 +10,7 @@ on:
       - '**'
       - '!docs/**'
       - '!**/*.md'
+      - '!install.*'
       - '!.agents/**'
       - '!.github/**'
       - '.github/workflows/test.yml'
