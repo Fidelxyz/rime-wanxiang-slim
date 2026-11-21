@@ -1,12 +1,22 @@
 ${ErrorActionPreference} = 'Stop'
 
-${arch} = switch ([System.Runtime.InteropServices.RuntimeInformation,mscorlib]::OSArchitecture) {
+${runtime} = [System.Runtime.InteropServices.RuntimeInformation,mscorlib]
+${platform} = [System.Runtime.InteropServices.OSPlatform,mscorlib]
+
+${arch} = switch (${runtime}::OSArchitecture) {
     'X64' { 'x86_64' }
     'Arm64' { 'aarch64' }
     default { throw 'Unsupported CPU architecture' }
 }
 
-${name} = "rime-wanxiang-slim-installer-${arch}-pc-windows-msvc.exe"
+${windows} = ${runtime}::IsOSPlatform(${platform}::Windows)
+${target} = if (${windows}) { "${arch}-pc-windows-msvc" }
+    elseif (${runtime}::IsOSPlatform(${platform}::OSX)) { "${arch}-apple-darwin" }
+    elseif (${runtime}::IsOSPlatform(${platform}::Linux)) { "${arch}-unknown-linux-gnu" }
+    else { throw 'Unsupported operating system' }
+${suffix} = if (${windows}) { '.exe' } else { '' }
+
+${name} = "rime-wanxiang-slim-installer-${target}${suffix}"
 ${binary} = Join-Path (Get-Location).Path ".installer/${name}"
 New-Item -ItemType Directory -Force -Path (Split-Path ${binary}) | Out-Null
 
@@ -33,6 +43,9 @@ try {
         ${modified} = ${response}.Content.Headers.LastModified
         if (${null} -ne ${modified}) {
             [System.IO.File]::SetLastWriteTimeUtc(${temp}, ${modified}.UtcDateTime)
+        }
+        if (-not ${windows}) {
+            & chmod +x ${temp}
         }
         Move-Item -LiteralPath ${temp} -Destination ${binary} -Force
     }
