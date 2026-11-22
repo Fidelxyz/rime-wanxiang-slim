@@ -4,7 +4,7 @@
 schema:
   schema_id: wanxiang
   name: 万象拼音精简版〔基础版 Base〕
-  version: "1.2.0"  # x-release-please-version
+  version: "1.3.0"  # x-release-please-version
   author:
     - amzxyz
     - Fidel Yin <fidel.yin@hotmail.com>
@@ -152,6 +152,7 @@ punctuator:
 translator:
   dictionary: wanxiang
   enable_completion: true  # 启用补全。
+  enable_word_completion: false  # 禁用整词补全，候选词的音节数不超过输入的音节数。
   enable_user_dict: true  # 启用自动调频。
   core_word_length: 4  # >0 启用，按段学词 + 相邻段拼接
   max_word_length: 7  # >0 启用，过长短语不记整词，只加元素权重

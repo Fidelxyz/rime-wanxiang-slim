@@ -24,8 +24,11 @@ if [ -f "${binary}" ]; then
     set -- -z "${binary}"
 fi
 
-temp=$(mktemp "${TMPDIR:-/tmp}/rime-wanxiang-slim-installer.XXXXXX")
-status=$(curl -fSL -R "${@}" -o "${temp}" -w '%{http_code}' \
+temp=$(mktemp ".installer/${name}.XXXXXX")
+trap 'rm -f "${temp}"' EXIT
+trap 'exit 1' HUP INT TERM
+
+status=$(curl -fSL -R "${@+"$@"}" -o "${temp}" -w '%{http_code}' \
     "https://github.com/Fidelxyz/rime-wanxiang-slim-installer/releases/latest/download/${name}")
 if [ "${status}" = 200 ]; then
     if [ -f "${binary}" ]; then
@@ -34,5 +37,6 @@ if [ "${status}" = 200 ]; then
     chmod +x "${temp}"
     mv -f "${temp}" "${binary}"
 fi
+rm -f "${temp}"
 
 exec "${binary}" <"$(tty <&2)"
