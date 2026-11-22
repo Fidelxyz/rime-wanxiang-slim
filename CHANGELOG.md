@@ -1,16 +1,19 @@
 # 更新日志
 
-## [1.3.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0-beta.1) (2026-11-19)
+## [1.3.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0) (2026-11-22)
 
 
 ### 新增功能
 
 * 基于 ESDB 和 wordfreq 生成英文词库 ([f9a66fb](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f9a66fbdb799c5dd2584c07927fa906ac73459d4))
+* install.ps1 支持 macOS 和 Linux ([876ef77](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/876ef779d223ed589118c19daff90bbf77179b9e))
 
 
 ### 问题修复
 
+* 安装脚本运行后清理临时下载文件 ([07dd671](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/07dd6717e6ca752cb1edc9b5243ff2c6ca0842d8))
 * 为主翻译器关闭词语补全 ([086adf3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/086adf3221d930f4d97ade3cab39d8f3e214cd0f))
+* 在 4.1 以前版本的 bash 中正确处理 install.sh 的空参数 ([#44](https://github.com/Fidelxyz/rime-wanxiang-slim/issues/44)) ([bcba874](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bcba874e6f4281f7b98bb7bc96b6dd7f734407b4))
 
 
 ### 重构
