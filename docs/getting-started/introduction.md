@@ -12,7 +12,7 @@ outline: deep
 
 这是源自于 C++ 的[零开销（Zero-overhead）](https://en.cppreference.com/w/cpp/language/Zero-overhead_principle.html)设计哲学。
 
-原版[万象拼音输入方案](https://github.com/amzxyz/rime_wanxiang)涵盖了丰富的功能，在“对标大厂体验”的同时也引入了具有“大厂风味”的庞大臃肿：其中大部分与输入无关的功能不会被绝大多数用户使用（我为什么要在一个输入法中计算时辰，且[该功能花费了超 3000 行代码来实现](https://github.com/amzxyz/rime_wanxiang/blob/v15.7.0/lua/wanxiang/shijian.lua)？），却依旧会带来潜在的性能负担。此外，其“低内聚、高耦合”的混乱架构设计[^1]也增加了用户的自定义难度及开发者的维护难度。
+原版[万象拼音输入方案](https://github.com/amzxyz/rime-wanxiang)涵盖了丰富的功能，在“对标大厂体验”的同时也引入了具有“大厂风味”的庞大臃肿：其中大部分与输入无关的功能不会被绝大多数用户使用（我为什么要在一个输入法中计算时辰，且[该功能花费了超 3000 行代码来实现](https://github.com/amzxyz/rime-wanxiang/blob/v15.7.0/lua/wanxiang/shijian.lua)？），却依旧会带来潜在的性能负担。此外，其“低内聚、高耦合”的混乱架构设计[^1]也增加了用户的自定义难度及开发者的维护难度。
 
 该 Fork 作为一个**专注于输入**的精简分支，移除了原版中与输入无关的低频功能，遵循 [SOLID 原则](https://en.wikipedia.org/wiki/SOLID)重构了代码架构，并全部重写了原版由 LLM 生成的低效代码，提供更轻量高效的输入体验。该 Fork 为全部 Lua 模块添加了完整的类型注解与自动化测试，并由自动化 CI/CD 定期同步上游词库。同时，该 Fork 重写了原版混乱的说明文档，以降低上手和自定义门槛。
 
@@ -41,6 +41,7 @@ outline: deep
 
 - <Badge>v1.3.0 新增</Badge> **英文词库**：基于 [ESDB](https://github.com/en-wl/wordlist) 词表与 [wordfreq](https://github.com/rspeer/wordfreq) 词频重新生成更高质量的英文词库。
 - <Badge>v1.3.0 新增</Badge> **关闭整词补全**：限制候选词音节数不超过输入音节数，避免出现与输入无关的长词组。
+- **统一造词入口**：中文与英文[手动造词](/features/user-dict#手动造词)共用造词引导符 ` `` `，统一触发方式。
 
 ### 性能优化
 
@@ -77,7 +78,7 @@ outline: deep
 | **符号输入** | `/` 前缀触发特殊符号候选 | |
 | **成对符号包裹** | 输入末尾追加 `\` + 映射键，将候选词用符号对包裹 | |
 | **随机标识与密码生成** | 生成 UUID、ULID 或随机密码 | 无密码学安全保证 |
-| **多进制 Unicode 输入** | 使用二、八、十进制 Unicode 码点输入字符 | 以仅十六进制 Unicode 输入替代 |
+| **多进制 Unicode 输入** | 使用二、八、十进制 Unicode 码点输入字符 | 仅保留十六进制 Unicode 输入 |
 | **字符编码转换** | 将字符转换为 UTF-8、UTF-16、HTML、URL 等编码并输入 | |
 | **时间日期输入** | 输入多种格式的时间与日期 | |
 | **中文大写数字输入** | 将数字转换为中文大写数字或金额 | |
@@ -110,5 +111,5 @@ outline: deep
 
 ## 鸣谢
 
-- [万象拼音](https://github.com/amzxyz/rime_wanxiang) — 该项目分叉自万象拼音输入方案。
+- [万象拼音](https://github.com/amzxyz/rime-wanxiang) — 该项目分叉自万象拼音输入方案。
 - [Mira / 韵镜](https://github.com/rimeinn/mira) — 该项目的自动化测试由 Mira 驱动。
