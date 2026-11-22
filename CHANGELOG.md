@@ -1,5 +1,32 @@
 # 更新日志
 
+## [1.3.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0) (2026-11-22)
+
+
+### 新增功能
+
+* generate the English dictionary from ESDB and wordfreq ([f9a66fb](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/f9a66fbdb799c5dd2584c07927fa906ac73459d4))
+* support macOS and Linux in install.ps1 ([876ef77](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/876ef779d223ed589118c19daff90bbf77179b9e))
+
+
+### 问题修复
+
+* clean up temporary installer downloads in install scripts ([07dd671](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/07dd6717e6ca752cb1edc9b5243ff2c6ca0842d8))
+* disable word completion for the main translator ([086adf3](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/086adf3221d930f4d97ade3cab39d8f3e214cd0f))
+* handle empty arguments in install.sh on bash before 4.1 ([#44](https://github.com/Fidelxyz/rime-wanxiang-slim/issues/44)) ([bcba874](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/bcba874e6f4281f7b98bb7bc96b6dd7f734407b4))
+
+
+### 杂项
+
+* add check-upstream-algebra skill ([9c8be4f](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9c8be4fad0ff1a4ce753334816c67eace272b81e))
+* update bug report issue template ([037e088](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/037e0880b5a08679b6b852f8a9cb2324aedb062d))
+
+
+### 重构
+
+* remove celebrity and artist dictionaries ([1708efc](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1708efc57659cbd1173368b5f3674cc202c7480f))
+* simplify Python script entry points and error handling ([1724836](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/1724836f3e3724035f2b26f56861fdc8afc4a5cc))
+
 ## [1.3.0-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0-beta.1) (2026-11-19)
 
 
