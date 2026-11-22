@@ -89,10 +89,10 @@ sh install.sh
 Windows 用户须使用 Git Bash 运行脚本，不支持 PowerShell 或 Command Prompt。
 :::
 
-1. 克隆 plum 分支。
+1. 在任意目录下克隆东风破仓库。
 
     ```bash
-    git clone https://github.com/Fidelxyz/rime-wanxiang-slim.git -b plum --depth 1
+    git clone https://github.com/rime/plum.git --depth 1
     cd plum
     ```
 
