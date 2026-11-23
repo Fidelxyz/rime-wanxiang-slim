@@ -60,7 +60,7 @@ ascii_composer:
     Control_R: noop
 
 # 快捷键
-# 按键表达式详见 https://fidel.js.org/rime-wanxiang-slim/customization/key-events。
+# 按键表达式详见 https://fidel.js.org/rime-wanxiang-slim/customization/key-bindings#%E6%8C%89%E9%94%AE%E8%A1%A8%E8%BE%BE%E5%BC%8F
 key_binder:
   bindings:
     # emacs_editing:
