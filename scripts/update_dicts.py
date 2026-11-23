@@ -370,8 +370,9 @@ def normalize_dict_text(
 def strip_reverse_tone_suffixes(text: str) -> str:
     """Strip tone suffixes from decomposition codes after the '...' marker.
 
-    Stroke codes and blank lines are kept verbatim. Raises ValueError with the line
-    number when an entry matches neither code format or the marker is missing.
+    Stroke codes, the columns after each code and blank lines are kept verbatim.
+    Raises ValueError with the line number when an entry matches neither code
+    format or the marker is missing.
     """
     output_lines = []
     in_entries = False
@@ -387,10 +388,12 @@ def strip_reverse_tone_suffixes(text: str) -> str:
             output_lines.append(line)
             continue
 
-        char, _, code = content.partition("\t")
+        char, code, *other_columns = content.split("\t")
         decomposition_match = REVERSE_DECOMPOSITION_CODE_PATTERN.fullmatch(code)
         if decomposition_match:
-            output_lines.append(f"{char}\t{decomposition_match.group(1)}{ending}")
+            output_lines.append(
+                "\t".join([char, decomposition_match.group(1), *other_columns]) + ending
+            )
         elif REVERSE_STROKE_CODE_PATTERN.fullmatch(code):
             output_lines.append(line)
         else:

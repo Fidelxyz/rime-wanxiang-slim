@@ -9,6 +9,7 @@ export default defineConfig({
   description: "万象拼音输入方案精简版",
   cleanUrls: true,
   lastUpdated: false,
+  srcExclude: ["adr/**"],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [],

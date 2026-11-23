@@ -61,6 +61,7 @@ User documentation describes only what users need to know to understand and use 
 #### Developer Documentation
 
 - [FEATURES.md](FEATURES.md): A detailed mapping of project features to their implementation files, also recording removed features.
+- [docs/adr/](docs/adr/): Architecture decision records, excluded from the VitePress site.
 
 ### Checklist for Updates
 
