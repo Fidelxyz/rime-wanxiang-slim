@@ -25,7 +25,7 @@ user_dict_appender:
 key_binder:
   bindings:
     # 编码中输入 `` 进入造词模式。
-    - {match: "^.*`$", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
+    - {match: ".*`", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
 ```
 
 ::: tip <Badge type="tip" text="仅 Base" /> 启用手动造词

@@ -387,12 +387,12 @@ key_binder:
   import_preset: default
   bindings:
     # Ctrl + Shift + 3 切换中英标点。
-    - {when: always, toggle: ascii_punct, accept: Control+Shift+3}
-    - {when: always, toggle: ascii_punct, accept: Control+Shift+numbersign}
+    - {when: always, accept: Control+Shift+3, toggle: ascii_punct}
+    - {when: always, accept: Control+Shift+numbersign, toggle: ascii_punct}
 
     # Ctrl + Shift + 4 切换简繁。
-    - {when: always, toggle: s2t, accept: Control+Shift+4}
-    - {when: always, toggle: s2t, accept: Control+Shift+dollar}
+    - {when: always, accept: Control+Shift+4, toggle: s2t}
+    - {when: always, accept: Control+Shift+dollar, toggle: s2t}
 
     # Option/Alt + ←/→ 切换光标至下/上一个拼音。
     - {when: composing, accept: Alt+Left, send: Shift+Left}
@@ -420,10 +420,10 @@ key_binder:
     - {when: composing, accept: "Control+Tab", send_sequence: '{Home}{Shift+Right}{1}{Shift+Right}'}
 
     # 编码中输入 `` 进入造词模式。
-    - {match: "^.*`$", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
+    - {match: ".*`", accept: "`", send_sequence: '{BackSpace}{Home}{`}{`}{End}'}
 
     # 双击斜杠键上屏 /。
-    - {match: "^/$", accept: "/", send_sequence: '{space}',}
+    - {match: "/", accept: "/", send_sequence: '{space}',}
 
 editor:
   bindings:
