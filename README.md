@@ -125,7 +125,7 @@
 
 ## 功能一览
 
-### 辅助码
+### [辅助码](https://fidel.js.org/rime-wanxiang-slim/features/auxiliary-code)
 
 **直接辅助码**（仅 Pro）：在拼音编码后直接追加辅助码。
 
@@ -133,33 +133,33 @@
 
 **声调辅助筛选**：输入拼音后，按 `7` `8` `9` `0`（分别代表一二三四声）筛选读音声调。
 
-### 反查 / 辅助筛选
+### [反查 / 辅助筛选](https://fidel.js.org/rime-wanxiang-slim/features/reverse-lookup)
 
 在不清楚某个字的拼音编码与/或辅助码时，通过拆分部件来查找目标字。
 
-### 提示
+### [提示](https://fidel.js.org/rime-wanxiang-slim/features/hints)
 
 **错音错字提示**：输入常见错误读音时提示正确读音。
 
 **编码全拼展开**：将拼音编码展开为无声调或带声调的全拼读音。
 
-**辅助码提示**（仅 Pro）：显示候选词的辅助码提示。
+[**辅助码提示**](https://fidel.js.org/rime-wanxiang-slim/features/auxiliary-code#辅助码提示)（仅 Pro）：显示候选词的辅助码提示。
 
-### 模糊音
+### [模糊音](https://fidel.js.org/rime-wanxiang-slim/features/fuzzy-pinyin)
 
 内置可选择开启的模糊音规则，允许输入的声母或韵母匹配另一种读音。
 
-### 候选排序
+### [候选排序](https://fidel.js.org/rime-wanxiang-slim/features/candidate-sorting)
 
 **候选置顶**：<kbd>Ctrl</kbd> <kbd>P</kbd> 置顶所选候选，<kbd>Ctrl</kbd> <kbd>L</kbd> 取消置顶。
 
 **单字/词组优先**：可配置单字或词组编码重合时，优先显示单字或词组候选。
 
-### 字符集过滤
+### [字符集过滤](https://fidel.js.org/rime-wanxiang-slim/features/charset-filter)
 
 可通过开关切换字符集范围（通用规范汉字表、GB2312、GBK、Big5、简繁体等）。支持联动简繁转换开关，对不同开关单独配置字符集范围和黑白名单。
 
-### 非汉字词库输入
+### [非汉字词库输入](https://fidel.js.org/rime-wanxiang-slim/features/extra-dicts)
 
 **英文输入**：包含英文词库，支持自动大小写。
 
@@ -167,7 +167,7 @@
 
 **Emoji 输入**：支持通过汉字词汇输入 Emoji。
 
-### 造词
+### [造词](https://fidel.js.org/rime-wanxiang-slim/features/user-dict)
 
 **手动造词**（仅 Pro 默认开启）：在编码起始或末尾处输入造词引导符 ` `` ` 进入手动造词模式，随后提交的中文或英文词条会被记录到用户词库中。
 
@@ -175,11 +175,11 @@
 
 ### 快捷短语
 
-**Unicode 输入**：`U` + Unicode 编码输入对应字符。
+[**Unicode 输入**](https://fidel.js.org/rime-wanxiang-slim/features/misc#unicode-输入)：`U` + Unicode 编码输入对应字符。
 
-**短语字符转义**：将用户短语中的 `\n`、`\s`、`\t` 解析为换行、空格、制表符。
+[**短语字符转义**](https://fidel.js.org/rime-wanxiang-slim/customization/dictionaries#特殊字符转义)：将用户短语中的 `\n`、`\s`、`\t` 解析为换行、空格、制表符。
 
-### 其他功能
+### [其他功能](https://fidel.js.org/rime-wanxiang-slim/features/misc)
 
 **小键盘行为**：可配置小键盘参与编码，不直接上屏。
 
