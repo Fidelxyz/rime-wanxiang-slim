@@ -79,7 +79,7 @@ AUXILIARY_CODE_ONLY_PATTERN = re.compile(r"[a-z]+(?:[,;][a-z]+)*")
 GLUED_AUXILIARY_CODE_PREFIX_PATTERN = re.compile(r"^([a-z]+)(?=[^a-z])")
 GLUED_AUXILIARY_CODE_SUFFIX_PATTERN = re.compile(r"([a-z]+)$")
 GLUED_DECOMPOSITION_CODE_PATTERN = re.compile(r"([^\sa-z])([a-z]+)$")
-REVERSE_DECOMPOSITION_CODE_PATTERN = re.compile(r"([a-zü]+(?:'[a-zü]+)*)'[0-9~]")
+REVERSE_TONED_DECOMPOSITION_CODE_PATTERN = re.compile(r"([a-zü]+(?:'[a-zü]+)*)'[0-9~]")
 REVERSE_STROKE_CODE_PATTERN = re.compile(r"[A-Z]+")
 
 
@@ -179,38 +179,25 @@ def format_decomposition_cell(candidates: list[AuxiliaryCandidate]) -> str:
 def normalize_dedicated_decomposition_text(text: str) -> str:
     """Convert a dedicated decomposition source to the normalized OpenCC format."""
     output_lines = []
-    for line in text.splitlines(keepends=True):
-        content = line.rstrip("\n")
-        ending = line[len(content) :]
-        if " " in content:
-            content = content.replace(" ", ":")
+    for line in text.splitlines():
+        if " " in line:
+            output_lines.append(line.replace(" ", ":"))
         else:
-            content = GLUED_DECOMPOSITION_CODE_PATTERN.sub(r"\1:\2", content)
-        output_lines.append(content + ending)
-    return "".join(output_lines)
+            output_lines.append(GLUED_DECOMPOSITION_CODE_PATTERN.sub(r"\1:\2", line))
+    return "\n".join(output_lines) + "\n"
 
 
 def parse_auxiliary_code_csv(input_path: Path) -> NormalizedAuxiliaryData:
     """Parse an upstream auxiliary-code CSV into normalized rows."""
     normalized_data: NormalizedAuxiliaryData = []
 
-    with input_path.open(
-        "r", encoding="utf-8-sig", errors="ignore", newline=""
-    ) as input_file:
+    with input_path.open("r", encoding="utf-8-sig", newline="") as input_file:
         reader = csv.reader(input_file)
-        header = next(reader, None)
-        if header is None:
-            raise ValueError(f"auxiliary-code CSV has no header: {input_path}")
-
-        expected_columns = len(AUXILIARY_SCHEMA_MAPPING) + 1
-        if len(header) != expected_columns:
-            raise ValueError(
-                f"auxiliary-code CSV header has {len(header)} columns, "
-                f"expected {expected_columns}: {input_path}"
-            )
+        header = next(reader)
         if tuple(header) != ("#", *AUXILIARY_SCHEMA_MAPPING):
             raise ValueError(f"unexpected auxiliary-code CSV header: {input_path}")
 
+        expected_columns = len(header)
         for line_number, row in enumerate(reader, start=2):
             if len(row) != expected_columns:
                 raise ValueError(
@@ -218,11 +205,8 @@ def parse_auxiliary_code_csv(input_path: Path) -> NormalizedAuxiliaryData:
                     f"expected {expected_columns}: {input_path}"
                 )
 
-            char = row[0].strip()
-            if not char:
-                continue
-
-            normalized_cells = [normalize_auxiliary_cell(cell) for cell in row[1:]]
+            char, *cells = row
+            normalized_cells = [normalize_auxiliary_cell(cell) for cell in cells]
             normalized_data.append(NormalizedAuxiliaryRow(char, normalized_cells))
 
     return normalized_data
@@ -233,7 +217,6 @@ def write_code_only_auxiliary_csv(
     output_path: Path,
 ) -> None:
     """Write normalized auxiliary codes to a code-only CSV."""
-    output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8", newline="") as output_file:
         writer = csv.writer(output_file, lineterminator="\n")
         writer.writerow(["#", *AUXILIARY_SCHEMA_MAPPING.values()])
@@ -252,9 +235,7 @@ def write_auxiliary_decomposition_tables(
     decomposition_lines: dict[str, list[str]] = {schema: [] for schema in schemas}
 
     for row in normalized_data:
-        for schema, candidates in zip(
-            AUXILIARY_SCHEMA_MAPPING.values(), row.cells, strict=True
-        ):
+        for schema, candidates in zip(AUXILIARY_SCHEMA_MAPPING.values(), row.cells):
             if schema not in decomposition_lines:
                 continue
             decomposition_cell = format_decomposition_cell(candidates)
@@ -263,7 +244,6 @@ def write_auxiliary_decomposition_tables(
                     f"{row.char}\t{decomposition_cell}\n"
                 )
 
-    decomposition_directory.mkdir(parents=True, exist_ok=True)
     for schema, lines in decomposition_lines.items():
         output_file = decomposition_directory / f"{schema}.txt"
         output_file.write_text("".join(lines), encoding="utf-8")
@@ -281,7 +261,6 @@ def validate_upstream_files(source_dir: Path) -> None:
     actual_files = {
         path.relative_to(source_dir)
         for path in (source_dir / SRC_DICT_PATH).glob("*.dict.yaml")
-        if path.is_file()
     }
     if (source_dir / REVERSE_DICT_PATH).is_file():
         actual_files.add(REVERSE_DICT_PATH)
@@ -289,7 +268,6 @@ def validate_upstream_files(source_dir: Path) -> None:
         path.relative_to(source_dir)
         for pattern in ("*.csv", "*_chaifen.txt")
         for path in (source_dir / "custom").glob(pattern)
-        if path.is_file()
     )
 
     ignored_files = {SRC_DICT_PATH / name for name in IGNORED_SRC_DICTS}
@@ -313,12 +291,14 @@ def validate_upstream_files(source_dir: Path) -> None:
 
 def build_dict_header(src_path: Path, src_tag: str) -> str:
     """Return the standardized comment header for a normalized dictionary."""
-    return (
-        "# Rime dictionary\n"
-        "# encoding: utf-8\n"
-        "#\n"
-        f"# Original file: {UPSTREAM_URL}/blob/{src_tag}/{src_path.as_posix()}\n"
-        f"# Copyright (c) amzxyz, licensed under {UPSTREAM_LICENSE}.\n"
+    return "\n".join(
+        [
+            "# Rime dictionary",
+            "# encoding: utf-8",
+            "#",
+            f"# Original file: {UPSTREAM_URL}/blob/{src_tag}/{src_path.as_posix()}",
+            f"# Copyright (c) amzxyz, licensed under {UPSTREAM_LICENSE}.",
+        ]
     )
 
 
@@ -332,39 +312,28 @@ def normalize_dict_text(
     ``---`` and ``...``) the ``name:`` and ``version:`` values are rewritten.
     Entry lines after ``...`` are preserved verbatim.
     """
-    lines = text.splitlines(keepends=True)
+    lines = text.splitlines()
+    marker_index = lines.index("---")
 
-    marker_index = next(
-        (i for i, line in enumerate(lines) if line.rstrip("\n") == "---"), None
-    )
-    if marker_index is None:
-        raise ValueError(
-            f"dictionary has no '---' document marker: {src_path.as_posix()}"
-        )
-
-    output_lines = [build_dict_header(src_path, src_tag), "---\n"]
+    output_lines = [build_dict_header(src_path, src_tag), "---"]
 
     saw_name = False
     in_directives = True
     for line in lines[marker_index + 1 :]:
         if in_directives:
-            if line.rstrip("\n") == "...":
+            if line == "...":
                 in_directives = False
-                output_lines.append(line)
-                continue
-            if line.startswith("name:"):
-                output_lines.append(f"name: {name}\n")
+            elif line.startswith("name:"):
+                line = f"name: {name}"
                 saw_name = True
-                continue
-            if line.startswith("version:"):
-                output_lines.append(f'version: "{version}"\n')
-                continue
+            elif line.startswith("version:"):
+                line = f'version: "{version}"'
         output_lines.append(line)
 
     if not saw_name:
         raise ValueError(f"dictionary has no 'name:' directive: {src_path.as_posix()}")
 
-    return "".join(output_lines)
+    return "\n".join(output_lines) + "\n"
 
 
 def strip_reverse_tone_suffixes(text: str) -> str:
@@ -376,23 +345,19 @@ def strip_reverse_tone_suffixes(text: str) -> str:
     """
     output_lines = []
     in_entries = False
-    for line_number, line in enumerate(text.splitlines(keepends=True), start=1):
-        if not in_entries:
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if not in_entries or not line:
             output_lines.append(line)
-            in_entries = line.rstrip("\n") == "..."
+            in_entries = in_entries or line == "..."
             continue
 
-        content = line.rstrip("\n")
-        ending = line[len(content) :]
-        if not content:
-            output_lines.append(line)
-            continue
-
-        char, code, *other_columns = content.split("\t")
-        decomposition_match = REVERSE_DECOMPOSITION_CODE_PATTERN.fullmatch(code)
-        if decomposition_match:
+        char, code, *other_columns = line.split("\t")
+        toned_decomposition_match = REVERSE_TONED_DECOMPOSITION_CODE_PATTERN.fullmatch(
+            code
+        )
+        if toned_decomposition_match:
             output_lines.append(
-                "\t".join([char, decomposition_match.group(1), *other_columns]) + ending
+                "\t".join([char, toned_decomposition_match.group(1), *other_columns])
             )
         elif REVERSE_STROKE_CODE_PATTERN.fullmatch(code):
             output_lines.append(line)
@@ -408,7 +373,7 @@ def strip_reverse_tone_suffixes(text: str) -> str:
             f"{REVERSE_DICT_PATH.as_posix()}"
         )
 
-    return "".join(output_lines)
+    return "\n".join(output_lines) + "\n"
 
 
 def normalize_dictionaries(
@@ -467,9 +432,7 @@ def normalize_auxiliary_sources(source_dir: Path, repo_root: Path) -> None:
     normalized_data = parse_auxiliary_code_csv(source_dir / SRC_AUXILIARY_CSV_PATH)
 
     print("  Writing normalized auxiliary-code CSV:")
-    auxiliary_csv_path = repo_root / DST_AUXILIARY_CSV_PATH
-    auxiliary_csv_path.unlink(missing_ok=True)
-    write_code_only_auxiliary_csv(normalized_data, auxiliary_csv_path)
+    write_code_only_auxiliary_csv(normalized_data, repo_root / DST_AUXILIARY_CSV_PATH)
     print(f"    {DST_AUXILIARY_CSV_PATH.as_posix()}")
 
     print("  Writing normalized auxiliary decomposition tables:")
