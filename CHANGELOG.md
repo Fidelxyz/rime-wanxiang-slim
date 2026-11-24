@@ -1,5 +1,19 @@
 # 更新日志
 
+## [1.3.1-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.3.0...v1.3.1-beta.1) (2026-11-24)
+
+
+### 杂项
+
+* **dicts:** keep upstream weights in the reverse-lookup dictionary ([6a07aef](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/6a07aef64e26cdb9433b27813fc39728eba08f0a))
+* **skills:** turn translate-changelog skill into release skill ([9701559](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/9701559a02bf1b974d47ea9c6c0a80d4a45a98f0))
+
+
+### 重构
+
+* **dicts:** move reverse-lookup entries into dicts/ ([dbaf641](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/dbaf64149731f9b3796f3a799852e93069675851))
+* **scripts:** simplify update_dicts.py line handling ([fb7427c](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/fb7427cf7fca74a6da684a682d7613cf0fc14b46))
+
 ## [1.3.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0) (2026-11-22)
 
 
