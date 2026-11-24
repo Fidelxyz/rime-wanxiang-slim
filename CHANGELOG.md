@@ -1,5 +1,17 @@
 # 更新日志
 
+## [1.3.1-beta.1](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.3.0...v1.3.1-beta.1) (2026-11-24)
+
+
+### 杂项
+
+* **dicts:** 反查词库保留上游权重 ([6a07aef](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/6a07aef64e26cdb9433b27813fc39728eba08f0a))
+
+
+### 重构
+
+* **dicts:** 将反查词条移至 dicts/ ([dbaf641](https://github.com/Fidelxyz/rime-wanxiang-slim/commit/dbaf64149731f9b3796f3a799852e93069675851))
+
 ## [1.3.0](https://github.com/Fidelxyz/rime-wanxiang-slim/compare/v1.2.0...v1.3.0) (2026-11-22)
 
 
