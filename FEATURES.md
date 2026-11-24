@@ -30,7 +30,8 @@
 通过 `` ` `` 引导拆字/笔画模式。
 
 - `wanxiang_reverse.schema.yaml`：拆分与笔画反查方案定义
-- `wanxiang_reverse.dict.yaml`：反查字典数据
+- `wanxiang_reverse.dict.yaml`：反查词典，导入 `dicts/reverse.dict.yaml`
+- `dicts/reverse.dict.yaml`：反查词条，由 `scripts/update_dicts.py` 从上游同步
 - `custom/wanxiang_reverse.custom.yaml`：反查 custom 模板
 - `schema.yaml`：`wanxiang_reverse` 段，`reverse_lookup_translator` 与 `affix_segmentor` 挂载
 - `wanxiang_algebra.yaml`（`reverse` 段）：各拼音与笔画规则

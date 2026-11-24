@@ -8,7 +8,7 @@ from pathlib import Path
 DICTS_DIR = Path("dicts")
 DIST_DIR = Path("dist")
 AUX_CODE_FILE = Path("data/aux_code.csv")
-IGNORED_DICTS = ["english.dict.yaml"]
+IGNORED_DICTS = ["english.dict.yaml", "reverse.dict.yaml"]
 
 
 def get_alignment(
